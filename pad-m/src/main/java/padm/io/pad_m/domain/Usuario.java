@@ -1,6 +1,6 @@
 package padm.io.pad_m.domain;
 
-/*import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Usuario {
 
@@ -56,8 +56,3 @@ public class Usuario {
 		this.image = image;
 		this.flag = flag;
 	}
-	*/
-	
-	
-
-
