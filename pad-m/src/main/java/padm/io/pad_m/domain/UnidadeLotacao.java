@@ -2,32 +2,42 @@ package padm.io.pad_m.domain;
 
 import java.util.Objects;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 @Entity
 public class UnidadeLotacao {
 
-	@id
+	@Id
 	private Integer id;
 
 	@Column(name = "ORGAOID")
 	private Orgao orgao;
 
 	@Column(name = "LOCALIDADEID")
-	private Localidade localidade;
+	private int localidade;
 
 	private String nome;
 
 	private String segmento;
+	
 	private String descricao;
+	
 	private String sigla;
+	
 	private String obs;
+	
 	private int seq;
+	
 	private int flag;
+	
 	private int placed;
 
 	public UnidadeLotacao() {
 	}
 
-	public UnidadeLotacao(Integer id, Orgao orgao, Localidade localidade, String nome, String segmento,
+	public UnidadeLotacao(Integer id, Orgao orgao, int localidade, String nome, String segmento,
 			String descricao, String sigla, String obs, int seq, int flag, int placed) {
 		this.id = id;
 		this.orgao = orgao;
@@ -58,11 +68,11 @@ public class UnidadeLotacao {
 		this.orgao = orgao;
 	}
 
-	public Localidade getLocalidade() {
+	public int getLocalidade() {
 		return localidade;
 	}
 
-	public void setLocalidade(Localidade localidade) {
+	public void setLocalidade(int localidade) {
 		this.localidade = localidade;
 	}
 

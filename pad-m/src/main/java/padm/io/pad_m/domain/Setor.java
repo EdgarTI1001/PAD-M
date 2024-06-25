@@ -1,6 +1,10 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Setor {
@@ -9,29 +13,46 @@ public class Setor {
 	private Integer id;
 
 	private Orgao orgao;
+	
 	private int localidadeid;
+	
 	private int unidadelotacaoid;
+	
 	private int setorpai;
+	
 	private String descricao;
+	
 	private String segmento;
+	
 	private String sigla;
+	
 	private int userId;
+	
 	private int usercriadorId;
-	private DateTime datacriacao;
+	
+	private LocalDateTime datacriacao;
+	
 	private int responsavelId;
+	
 	private int atendenteId;
+	
 	private int moderadorId;
+	
 	private int gestorId;
+	
 	private String obs;
+	
 	private int seq;
+	
 	private int flag;
+	
 	private int placed;
 
 	public Setor() {
 	}
 
 	public Setor(Integer id, Orgao orgao, int localidadeid, int unidadelotacaoid, int setorpai, String descricao,
-			String segmento, String sigla, int userId, int usercriadorId, DateTime datacriacao, int responsavelId,
+			String segmento, String sigla, int userId, int usercriadorId, LocalDateTime datacriacao, int responsavelId,
 			int atendenteId, int moderadorId, int gestorId, String obs, int seq, int flag, int placed) {
 		this.id = id;
 		this.orgao = orgao;
@@ -134,11 +155,11 @@ public class Setor {
 		this.usercriadorId = usercriadorId;
 	}
 
-	public DateTime getDatacriacao() {
+	public LocalDateTime getDatacriacao() {
 		return datacriacao;
 	}
 
-	public void setDatacriacao(DateTime datacriacao) {
+	public void setDatacriacao(LocalDateTime datacriacao) {
 		this.datacriacao = datacriacao;
 	}
 

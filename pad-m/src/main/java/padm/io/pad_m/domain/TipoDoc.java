@@ -1,6 +1,10 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class TipoDoc {
@@ -9,15 +13,19 @@ public class TipoDoc {
 	private Integer id;
 
 	private String tipo;
-	private DateTime data;
+	
+	private LocalDateTime data;
+	
 	private String obs;
+	
 	private int seq;
+	
 	private int flag;
 
 	public TipoDoc() {
 	}
 
-	public TipoDoc(Integer id, String tipo, DateTime data, String obs, int seq, int flag) {
+	public TipoDoc(Integer id, String tipo, LocalDateTime data, String obs, int seq, int flag) {
 		this.id = id;
 		this.tipo = tipo;
 		this.data = data;
@@ -42,11 +50,11 @@ public class TipoDoc {
 		this.tipo = tipo;
 	}
 
-	public DateTime getData() {
+	public LocalDateTime getData() {
 		return data;
 	}
 
-	public void setData(DateTime data) {
+	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
 

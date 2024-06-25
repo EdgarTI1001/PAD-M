@@ -1,6 +1,11 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Moderador {
@@ -15,32 +20,39 @@ public class Moderador {
 	private Integer idServidor;
 
 	@Column(name = "SIGILO_ID")
-	private Integer idSigilo;
+	private Sigilo sigilo;
+
 	private String visibilidade;
-	private DateTime data;
+
+	private LocalDateTime data;
+
 	private String obs;
 
 	@Column(name = "USERCRIADOR_ID")
 	private Integer idCriador;
 
 	@Column(name = "DATACRIACAO")
-	private DateTime dataCriacao;
+	private LocalDateTime dataCriacao;
+
 	@Column(name = "DATAREMOCAO")
-	private DataeTime dataRemocao;
+	private LocalDateTime dataRemocao;
+
 	private int seq;
+
 	private int flag;
+
 	private int placed;
 
 	public Moderador() {
 	}
 
-	public Moderador(Integer id, Integer idSetor, Integer idServidor, Integer idSigilo, String visibilidade,
-			DateTime data, String obs, Integer idCriador, DateTime dataCriacao, DataeTime dataRemocao, int seq,
-			int flag, int placed) {
+	public Moderador(Integer id, Integer idSetor, Integer idServidor, Sigilo sigilo, String visibilidade,
+			LocalDateTime data, String obs, Integer idCriador, LocalDateTime dataCriacao, LocalDateTime dataRemocao,
+			int seq, int flag, int placed) {
 		this.id = id;
 		this.idSetor = idSetor;
 		this.idServidor = idServidor;
-		this.idSigilo = idSigilo;
+		this.sigilo = sigilo;
 		this.visibilidade = visibilidade;
 		this.data = data;
 		this.obs = obs;
@@ -76,12 +88,12 @@ public class Moderador {
 		this.idServidor = idServidor;
 	}
 
-	public Integer getIdSigilo() {
-		return idSigilo;
+	public Sigilo getSigilo() {
+		return sigilo;
 	}
 
-	public void setIdSigilo(Integer idSigilo) {
-		this.idSigilo = idSigilo;
+	public void setSigilo(Sigilo sigilo) {
+		this.sigilo = sigilo;
 	}
 
 	public String getVisibilidade() {
@@ -92,11 +104,11 @@ public class Moderador {
 		this.visibilidade = visibilidade;
 	}
 
-	public DateTime getData() {
+	public LocalDateTime getData() {
 		return data;
 	}
 
-	public void setData(DateTime data) {
+	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
 
@@ -116,19 +128,19 @@ public class Moderador {
 		this.idCriador = idCriador;
 	}
 
-	public DateTime getDataCriacao() {
+	public LocalDateTime getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(DateTime dataCriacao) {
+	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public DataeTime getDataRemocao() {
+	public LocalDateTime getDataRemocao() {
 		return dataRemocao;
 	}
 
-	public void setDataRemocao(DataeTime dataRemocao) {
+	public void setDataRemocao(LocalDateTime dataRemocao) {
 		this.dataRemocao = dataRemocao;
 	}
 
@@ -175,9 +187,10 @@ public class Moderador {
 
 	@Override
 	public String toString() {
-		return "Moderador [id=" + id + ", idSetor=" + idSetor + ", idServidor=" + idServidor + ", idSigilo=" + idSigilo
-				+ ", visibilidade=" + visibilidade + ", obs=" + obs + ", idCriador=" + idCriador + ", seq=" + seq
-				+ ", flag=" + flag + ", placed=" + placed + "]";
+		return "Moderador [id=" + id + ", idSetor=" + idSetor + ", idServidor=" + idServidor + ", sigilo=" + sigilo
+				+ ", visibilidade=" + visibilidade + ", data=" + data + ", obs=" + obs + ", idCriador=" + idCriador
+				+ ", dataCriacao=" + dataCriacao + ", dataRemocao=" + dataRemocao + ", seq=" + seq + ", flag=" + flag
+				+ ", placed=" + placed + "]";
 	}
 
 }

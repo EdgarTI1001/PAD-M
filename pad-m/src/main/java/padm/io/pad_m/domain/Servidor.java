@@ -1,6 +1,12 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Servidor {
@@ -9,40 +15,72 @@ public class Servidor {
 	private Integer id;
 
 	private int usuarioId;
+
 	private String nome;
+
 	private String nomeReduzido;
+
 	private String cpf;
 
-	@IgnoreJson
+	@JsonIgnore
 	private String senha;
+
 	private String rg;
+
 	private String rgorgao;
+
 	private String cargofuncao;
+
 	private String endereco;
+
 	private String numero;
+
 	private String bairro;
+
 	private String complemento;
+
 	private String cidade;
+
 	private String cep;
+
 	private String telefone1;
+
 	private String telefone2;
+
 	private String redeSocial;
+
 	private String email;
-	private DateTime dataadmissao;
-	private DateTime datadesligamento;
+
+	private LocalDateTime dataadmissao;
+
+	private LocalDateTime datadesligamento;
+
 	private int contratoId;
+
 	private int setorpaiId;
+
 	private int setorlotacaoId;
-	private DateTime datacadastro;
+
+	private LocalDateTime datacadastro;
+
 	private int perfilId;
+
 	private String hash;
+
 	private String certificado;
-	private DateTime dataexpiracao;
+
+	private LocalDateTime dataexpiracao;
+
 	private String image;
+
 	private int placeid;
+
 	private int ativo;
+
 	private String obs;
+
 	private int seq;
+
 	private int flag;
 
 	public Servidor() {
@@ -51,8 +89,8 @@ public class Servidor {
 	public Servidor(Integer id, int usuarioId, String nome, String nomeReduzido, String cpf, String senha, String rg,
 			String rgorgao, String cargofuncao, String endereco, String numero, String bairro, String complemento,
 			String cidade, String cep, String telefone1, String telefone2, String redeSocial, String email,
-			DateTime dataadmissao, DateTime datadesligamento, int contratoId, int setorpaiId, int setorlotacaoId,
-			DateTime datacadastro, int perfilId, String hash, String certificado, DateTime dataexpiracao, String image,
+			LocalDateTime dataadmissao, LocalDateTime datadesligamento, int contratoId, int setorpaiId, int setorlotacaoId,
+			LocalDateTime datacadastro, int perfilId, String hash, String certificado, LocalDateTime dataexpiracao, String image,
 			int placeid, int ativo, String obs, int seq, int flag) {
 		this.id = id;
 		this.usuarioId = usuarioId;
@@ -243,19 +281,19 @@ public class Servidor {
 		this.email = email;
 	}
 
-	public DateTime getDataadmissao() {
+	public LocalDateTime getDataadmissao() {
 		return dataadmissao;
 	}
 
-	public void setDataadmissao(DateTime dataadmissao) {
+	public void setDataadmissao(LocalDateTime dataadmissao) {
 		this.dataadmissao = dataadmissao;
 	}
 
-	public DateTime getDatadesligamento() {
+	public LocalDateTime getDatadesligamento() {
 		return datadesligamento;
 	}
 
-	public void setDatadesligamento(DateTime datadesligamento) {
+	public void setDatadesligamento(LocalDateTime datadesligamento) {
 		this.datadesligamento = datadesligamento;
 	}
 
@@ -283,11 +321,11 @@ public class Servidor {
 		this.setorlotacaoId = setorlotacaoId;
 	}
 
-	public DateTime getDatacadastro() {
+	public LocalDateTime getDatacadastro() {
 		return datacadastro;
 	}
 
-	public void setDatacadastro(DateTime datacadastro) {
+	public void setDatacadastro(LocalDateTime datacadastro) {
 		this.datacadastro = datacadastro;
 	}
 
@@ -315,11 +353,11 @@ public class Servidor {
 		this.certificado = certificado;
 	}
 
-	public DateTime getDataexpiracao() {
+	public LocalDateTime getDataexpiracao() {
 		return dataexpiracao;
 	}
 
-	public void setDataexpiracao(DateTime dataexpiracao) {
+	public void setDataexpiracao(LocalDateTime dataexpiracao) {
 		this.dataexpiracao = dataexpiracao;
 	}
 

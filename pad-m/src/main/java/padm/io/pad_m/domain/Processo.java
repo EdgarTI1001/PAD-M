@@ -1,6 +1,11 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Processo {
@@ -15,7 +20,7 @@ public class Processo {
 	@Column(name = "NUMANOPROC")
 	private String numAnoProc;
 
-	private Srting assunto;
+	private String assunto;
 
 	@Column(name = "DOCPROC_ID")
 	private int idDocProc;
@@ -40,7 +45,7 @@ public class Processo {
 	@Column(name = "SETCRIADOR_ID")
 	private int idSetCriador;
 
-	private DateTime dataCriacao;
+	private LocalDateTime dataCriacao;
 
 	@Column(name = "INTERESSADO_ID")
 	private int idInteressado;
@@ -84,7 +89,7 @@ public class Processo {
 
 	private String motivoAnexoPrinc;
 
-	private DateTime data;
+	private LocalDateTime data;
 
 	private String obs;
 
@@ -95,12 +100,12 @@ public class Processo {
 	public Processo() {
 	}
 
-	public Processo(Integer id, String tipo, Long ano, String numAnoProc, Srting assunto, int idDocProc, int idEvento,
+	public Processo(Integer id, String tipo, Long ano, String numAnoProc, String assunto, int idDocProc, int idEvento,
 			int idClass, String classificacao, int idFase, int idRotulo, int idUsuCriador, int idSetCriador,
-			DateTime dataCriacao, int idInteressado, int idMinuta, int idLembrete, int idSigilo, int idProcapensado,
-			int idFlagapenso, String motivoApenso, int idFlagapensoprinc, String motivoApensoPrinc, int idProcanexado,
-			int idFlagAnexado, String motivoAnexo, int idProcAnexoPrinc, int idFlagAnexaPrinc, String motivoAnexoPrinc,
-			DateTime data, String obs, int seq, int flag) {
+			LocalDateTime dataCriacao, int idInteressado, int idMinuta, int idLembrete, int idSigilo,
+			int idProcapensado, int idFlagapenso, String motivoApenso, int idFlagapensoprinc, String motivoApensoPrinc,
+			int idProcanexado, int idFlagAnexado, String motivoAnexo, int idProcAnexoPrinc, int idFlagAnexaPrinc,
+			String motivoAnexoPrinc, LocalDateTime data, String obs, int seq, int flag) {
 		this.id = id;
 		this.tipo = tipo;
 		this.ano = ano;
@@ -133,6 +138,270 @@ public class Processo {
 		this.data = data;
 		this.obs = obs;
 		this.seq = seq;
+		this.flag = flag;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public Long getAno() {
+		return ano;
+	}
+
+	public void setAno(Long ano) {
+		this.ano = ano;
+	}
+
+	public String getNumAnoProc() {
+		return numAnoProc;
+	}
+
+	public void setNumAnoProc(String numAnoProc) {
+		this.numAnoProc = numAnoProc;
+	}
+
+	public String getAssunto() {
+		return assunto;
+	}
+
+	public void setAssunto(String assunto) {
+		this.assunto = assunto;
+	}
+
+	public int getIdDocProc() {
+		return idDocProc;
+	}
+
+	public void setIdDocProc(int idDocProc) {
+		this.idDocProc = idDocProc;
+	}
+
+	public int getIdEvento() {
+		return idEvento;
+	}
+
+	public void setIdEvento(int idEvento) {
+		this.idEvento = idEvento;
+	}
+
+	public int getIdClass() {
+		return idClass;
+	}
+
+	public void setIdClass(int idClass) {
+		this.idClass = idClass;
+	}
+
+	public String getClassificacao() {
+		return classificacao;
+	}
+
+	public void setClassificacao(String classificacao) {
+		this.classificacao = classificacao;
+	}
+
+	public int getIdFase() {
+		return idFase;
+	}
+
+	public void setIdFase(int idFase) {
+		this.idFase = idFase;
+	}
+
+	public int getIdRotulo() {
+		return idRotulo;
+	}
+
+	public void setIdRotulo(int idRotulo) {
+		this.idRotulo = idRotulo;
+	}
+
+	public int getIdUsuCriador() {
+		return idUsuCriador;
+	}
+
+	public void setIdUsuCriador(int idUsuCriador) {
+		this.idUsuCriador = idUsuCriador;
+	}
+
+	public int getIdSetCriador() {
+		return idSetCriador;
+	}
+
+	public void setIdSetCriador(int idSetCriador) {
+		this.idSetCriador = idSetCriador;
+	}
+
+	public LocalDateTime getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(LocalDateTime dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
+
+	public int getIdInteressado() {
+		return idInteressado;
+	}
+
+	public void setIdInteressado(int idInteressado) {
+		this.idInteressado = idInteressado;
+	}
+
+	public int getIdMinuta() {
+		return idMinuta;
+	}
+
+	public void setIdMinuta(int idMinuta) {
+		this.idMinuta = idMinuta;
+	}
+
+	public int getIdLembrete() {
+		return idLembrete;
+	}
+
+	public void setIdLembrete(int idLembrete) {
+		this.idLembrete = idLembrete;
+	}
+
+	public int getIdSigilo() {
+		return idSigilo;
+	}
+
+	public void setIdSigilo(int idSigilo) {
+		this.idSigilo = idSigilo;
+	}
+
+	public int getIdProcapensado() {
+		return idProcapensado;
+	}
+
+	public void setIdProcapensado(int idProcapensado) {
+		this.idProcapensado = idProcapensado;
+	}
+
+	public int getIdFlagapenso() {
+		return idFlagapenso;
+	}
+
+	public void setIdFlagapenso(int idFlagapenso) {
+		this.idFlagapenso = idFlagapenso;
+	}
+
+	public String getMotivoApenso() {
+		return motivoApenso;
+	}
+
+	public void setMotivoApenso(String motivoApenso) {
+		this.motivoApenso = motivoApenso;
+	}
+
+	public int getIdFlagapensoprinc() {
+		return idFlagapensoprinc;
+	}
+
+	public void setIdFlagapensoprinc(int idFlagapensoprinc) {
+		this.idFlagapensoprinc = idFlagapensoprinc;
+	}
+
+	public String getMotivoApensoPrinc() {
+		return motivoApensoPrinc;
+	}
+
+	public void setMotivoApensoPrinc(String motivoApensoPrinc) {
+		this.motivoApensoPrinc = motivoApensoPrinc;
+	}
+
+	public int getIdProcanexado() {
+		return idProcanexado;
+	}
+
+	public void setIdProcanexado(int idProcanexado) {
+		this.idProcanexado = idProcanexado;
+	}
+
+	public int getIdFlagAnexado() {
+		return idFlagAnexado;
+	}
+
+	public void setIdFlagAnexado(int idFlagAnexado) {
+		this.idFlagAnexado = idFlagAnexado;
+	}
+
+	public String getMotivoAnexo() {
+		return motivoAnexo;
+	}
+
+	public void setMotivoAnexo(String motivoAnexo) {
+		this.motivoAnexo = motivoAnexo;
+	}
+
+	public int getIdProcAnexoPrinc() {
+		return idProcAnexoPrinc;
+	}
+
+	public void setIdProcAnexoPrinc(int idProcAnexoPrinc) {
+		this.idProcAnexoPrinc = idProcAnexoPrinc;
+	}
+
+	public int getIdFlagAnexaPrinc() {
+		return idFlagAnexaPrinc;
+	}
+
+	public void setIdFlagAnexaPrinc(int idFlagAnexaPrinc) {
+		this.idFlagAnexaPrinc = idFlagAnexaPrinc;
+	}
+
+	public String getMotivoAnexoPrinc() {
+		return motivoAnexoPrinc;
+	}
+
+	public void setMotivoAnexoPrinc(String motivoAnexoPrinc) {
+		this.motivoAnexoPrinc = motivoAnexoPrinc;
+	}
+
+	public LocalDateTime getData() {
+		return data;
+	}
+
+	public void setData(LocalDateTime data) {
+		this.data = data;
+	}
+
+	public String getObs() {
+		return obs;
+	}
+
+	public void setObs(String obs) {
+		this.obs = obs;
+	}
+
+	public int getSeq() {
+		return seq;
+	}
+
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
+
+	public int getFlag() {
+		return flag;
+	}
+
+	public void setFlag(int flag) {
 		this.flag = flag;
 	}
 

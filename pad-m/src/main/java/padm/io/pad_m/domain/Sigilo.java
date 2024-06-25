@@ -1,6 +1,10 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Sigilo {
@@ -9,15 +13,19 @@ public class Sigilo {
 	private Integer id;
 
 	private String visibilidade;
-	private DateTime data;
+	
+	private LocalDateTime data;
+	
 	private String obs;
+	
 	private int seq;
+	
 	private int flag;
 
 	public Sigilo() {
 	}
 
-	public Sigilo(Integer id, String visibilidade, DateTime data, String obs, int seq, int flag) {
+	public Sigilo(Integer id, String visibilidade, LocalDateTime data, String obs, int seq, int flag) {
 		this.id = id;
 		this.visibilidade = visibilidade;
 		this.data = data;
@@ -42,11 +50,11 @@ public class Sigilo {
 		this.visibilidade = visibilidade;
 	}
 
-	public DateTime getData() {
+	public LocalDateTime getData() {
 		return data;
 	}
 
-	public void setData(DateTime data) {
+	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
 

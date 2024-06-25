@@ -128,4 +128,10 @@ public class Orgao {
 		return Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		return "Orgao [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", segmento=" + segmento + ", sigla="
+				+ sigla + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + ", placed=" + placed + "]";
+	}
+
 }

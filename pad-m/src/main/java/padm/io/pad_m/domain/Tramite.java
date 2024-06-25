@@ -1,6 +1,10 @@
 package padm.io.pad_m.domain;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 @Entity
 public class Tramite {
@@ -8,48 +12,80 @@ public class Tramite {
 	@Id
 	private Integer id;
 
-	private Sting tipo;
+	private String tipo;
+
 	private int setororigem;
+
 	private int setorcriador;
+
 	private int localtramite;
+
 	private int setordestino;
-	private DateTime datachegada;
-	private DateTime datasaida;
-	private DateTime datacheck;
+
+	private LocalDateTime datachegada;
+
+	private LocalDateTime datasaida;
+
+	private LocalDateTime datacheck;
+
 	private int procId;
+
 	private int docId;
+
 	private int userId;
+
 	private int usercriadorId;
+
 	private int resposavelId;
+
 	private int atendenteId;
+
 	private int moderadorId;
+
 	private int gestorId;
+
 	private String tramitacao;
+
 	private int finalidadeId;
+
 	private String finalidade;
-	private DateTime datadesarquivamento;
-	private DateTime dataarquivamento;
+
+	private LocalDateTime datadesarquivamento;
+
+	private LocalDateTime dataarquivamento;
+
 	private String obs;
+
 	private int sigiloId;
+
 	private String visibilidade;
+
 	private int recebimento;
-	private DateTime datarecebimento;
+
+	private LocalDateTime datarecebimento;
+
 	private int espera;
-	private DateTime datainiciioespera;
-	private DateTime datafimespera;
+
+	private LocalDateTime datainiciioespera;
+
+	private LocalDateTime datafimespera;
+
 	private int seq;
+
 	private int flag;
+
 	private int placeid;
 
 	public Tramite() {
 	}
 
-	public Tramite(Integer id, Sting tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
-			DateTime datachegada, DateTime datasaida, DateTime datacheck, int procId, int docId, int userId,
-			int usercriadorId, int resposavelId, int atendenteId, int moderadorId, int gestorId, String tramitacao,
-			int finalidadeId, String finalidade, DateTime datadesarquivamento, DateTime dataarquivamento, String obs,
-			int sigiloId, String visibilidade, int recebimento, DateTime datarecebimento, int espera,
-			DateTime datainiciioespera, DateTime datafimespera, int seq, int flag, int placeid) {
+	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
+			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, int procId, int docId,
+			int userId, int usercriadorId, int resposavelId, int atendenteId, int moderadorId, int gestorId,
+			String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
+			LocalDateTime dataarquivamento, String obs, int sigiloId, String visibilidade, int recebimento,
+			LocalDateTime datarecebimento, int espera, LocalDateTime datainiciioespera, LocalDateTime datafimespera,
+			int seq, int flag, int placeid) {
 		this.id = id;
 		this.tipo = tipo;
 		this.setororigem = setororigem;
@@ -93,11 +129,11 @@ public class Tramite {
 		this.id = id;
 	}
 
-	public Sting getTipo() {
+	public String getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(Sting tipo) {
+	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
 
@@ -133,27 +169,27 @@ public class Tramite {
 		this.setordestino = setordestino;
 	}
 
-	public DateTime getDatachegada() {
+	public LocalDateTime getDatachegada() {
 		return datachegada;
 	}
 
-	public void setDatachegada(DateTime datachegada) {
+	public void setDatachegada(LocalDateTime datachegada) {
 		this.datachegada = datachegada;
 	}
 
-	public DateTime getDatasaida() {
+	public LocalDateTime getDatasaida() {
 		return datasaida;
 	}
 
-	public void setDatasaida(DateTime datasaida) {
+	public void setDatasaida(LocalDateTime datasaida) {
 		this.datasaida = datasaida;
 	}
 
-	public DateTime getDatacheck() {
+	public LocalDateTime getDatacheck() {
 		return datacheck;
 	}
 
-	public void setDatacheck(DateTime datacheck) {
+	public void setDatacheck(LocalDateTime datacheck) {
 		this.datacheck = datacheck;
 	}
 
@@ -245,19 +281,19 @@ public class Tramite {
 		this.finalidade = finalidade;
 	}
 
-	public DateTime getDatadesarquivamento() {
+	public LocalDateTime getDatadesarquivamento() {
 		return datadesarquivamento;
 	}
 
-	public void setDatadesarquivamento(DateTime datadesarquivamento) {
+	public void setDatadesarquivamento(LocalDateTime datadesarquivamento) {
 		this.datadesarquivamento = datadesarquivamento;
 	}
 
-	public DateTime getDataarquivamento() {
+	public LocalDateTime getDataarquivamento() {
 		return dataarquivamento;
 	}
 
-	public void setDataarquivamento(DateTime dataarquivamento) {
+	public void setDataarquivamento(LocalDateTime dataarquivamento) {
 		this.dataarquivamento = dataarquivamento;
 	}
 
@@ -293,11 +329,11 @@ public class Tramite {
 		this.recebimento = recebimento;
 	}
 
-	public DateTime getDatarecebimento() {
+	public LocalDateTime getDatarecebimento() {
 		return datarecebimento;
 	}
 
-	public void setDatarecebimento(DateTime datarecebimento) {
+	public void setDatarecebimento(LocalDateTime datarecebimento) {
 		this.datarecebimento = datarecebimento;
 	}
 
@@ -309,19 +345,19 @@ public class Tramite {
 		this.espera = espera;
 	}
 
-	public DateTime getDatainiciioespera() {
+	public LocalDateTime getDatainiciioespera() {
 		return datainiciioespera;
 	}
 
-	public void setDatainiciioespera(DateTime datainiciioespera) {
+	public void setDatainiciioespera(LocalDateTime datainiciioespera) {
 		this.datainiciioespera = datainiciioespera;
 	}
 
-	public DateTime getDatafimespera() {
+	public LocalDateTime getDatafimespera() {
 		return datafimespera;
 	}
 
-	public void setDatafimespera(DateTime datafimespera) {
+	public void setDatafimespera(LocalDateTime datafimespera) {
 		this.datafimespera = datafimespera;
 	}
 
