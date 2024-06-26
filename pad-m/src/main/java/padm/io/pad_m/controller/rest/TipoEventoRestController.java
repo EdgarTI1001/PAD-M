@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import padm.io.pad_m.domain.Orgao;
-import padm.io.pad_m.service.OrgaoService;
+import padm.io.pad_m.domain.TipoEvento;
+import padm.io.pad_m.service.TipoEventoService;
 
 @RestController
-@RequestMapping("/api/orgaos")
-public class OrgaoRestController {
+@RequestMapping("/api/tiposEventos")
+public class TipoEventoRestController {
 	@Autowired
-	OrgaoService orgaoService;
+	TipoEventoService tipoEventoService;
 
 	@GetMapping
-	public ResponseEntity<List<Orgao>> findAll() {
-		return ResponseEntity.ok(orgaoService.findAll());
+	public ResponseEntity<List<TipoEvento>> findAll() {
+		return ResponseEntity.ok(tipoEventoService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Orgao> findById(@PathVariable("id") Integer id) {
+	public ResponseEntity<TipoEvento> findById(@PathVariable("id") Integer id) {
 		System.out.println("=======================");
-		Orgao orgao = orgaoService.findById(id).get();
-		return ResponseEntity.ok(orgao);
+		TipoEvento tipoEvento = tipoEventoService.findById(id).get();
+		return ResponseEntity.ok(tipoEvento);
 	}
 
 }

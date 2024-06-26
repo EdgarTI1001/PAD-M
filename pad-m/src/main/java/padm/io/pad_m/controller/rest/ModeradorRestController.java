@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import padm.io.pad_m.domain.Orgao;
-import padm.io.pad_m.service.OrgaoService;
+import padm.io.pad_m.domain.Moderador;
+import padm.io.pad_m.service.ModeradorService;
 
 @RestController
-@RequestMapping("/api/orgaos")
-public class OrgaoRestController {
+@RequestMapping("/api/moderadores")
+public class ModeradorRestController {
 	@Autowired
-	OrgaoService orgaoService;
+	ModeradorService moderadorService;
 
 	@GetMapping
-	public ResponseEntity<List<Orgao>> findAll() {
-		return ResponseEntity.ok(orgaoService.findAll());
+	public ResponseEntity<List<Moderador>> findAll() {
+		return ResponseEntity.ok(moderadorService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Orgao> findById(@PathVariable("id") Integer id) {
+	public ResponseEntity<Moderador> findById(@PathVariable("id") Integer id) {
 		System.out.println("=======================");
-		Orgao orgao = orgaoService.findById(id).get();
-		return ResponseEntity.ok(orgao);
+		Moderador moderador = moderadorService.findById(id).get();
+		return ResponseEntity.ok(moderador);
 	}
 
 }

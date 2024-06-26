@@ -14,46 +14,46 @@ public class Setor {
 	@Id
 	private Integer id;
 
-	private Orgao orgao;
-	
+	private int orgao;
+
 	private int localidadeid;
-	
+
 	private int unidadelotacaoid;
-	
+
 	private int setorpai;
-	
+
 	private String descricao;
-	
+
 	private String segmento;
-	
+
 	private String sigla;
-	
+
 	private int userId;
-	
+
 	private int usercriadorId;
-	
+
 	private LocalDateTime datacriacao;
-	
+
 	private int responsavelId;
-	
+
 	private int atendenteId;
-	
+
 	private int moderadorId;
-	
+
 	private int gestorId;
-	
+
 	private String obs;
-	
+
 	private int seq;
-	
+
 	private int flag;
-	
+
 	private int placed;
 
 	public Setor() {
 	}
 
-	public Setor(Integer id, Orgao orgao, int localidadeid, int unidadelotacaoid, int setorpai, String descricao,
+	public Setor(Integer id, int orgao, int localidadeid, int unidadelotacaoid, int setorpai, String descricao,
 			String segmento, String sigla, int userId, int usercriadorId, LocalDateTime datacriacao, int responsavelId,
 			int atendenteId, int moderadorId, int gestorId, String obs, int seq, int flag, int placed) {
 		this.id = id;
@@ -85,11 +85,11 @@ public class Setor {
 		this.id = id;
 	}
 
-	public Orgao getOrgao() {
+	public int getOrgao() {
 		return orgao;
 	}
 
-	public void setOrgao(Orgao orgao) {
+	public void setOrgao(int orgao) {
 		this.orgao = orgao;
 	}
 

@@ -22,7 +22,7 @@ public class Moderador {
 	private Integer idServidor;
 
 	@Column(name = "SIGILO_ID")
-	private Sigilo sigilo;
+	private int sigilo;
 
 	private String visibilidade;
 
@@ -48,7 +48,7 @@ public class Moderador {
 	public Moderador() {
 	}
 
-	public Moderador(Integer id, Integer idSetor, Integer idServidor, Sigilo sigilo, String visibilidade,
+	public Moderador(Integer id, Integer idSetor, Integer idServidor, int sigilo, String visibilidade,
 			LocalDateTime data, String obs, Integer idCriador, LocalDateTime dataCriacao, LocalDateTime dataRemocao,
 			int seq, int flag, int placed) {
 		this.id = id;
@@ -90,11 +90,11 @@ public class Moderador {
 		this.idServidor = idServidor;
 	}
 
-	public Sigilo getSigilo() {
+	public int getSigilo() {
 		return sigilo;
 	}
 
-	public void setSigilo(Sigilo sigilo) {
+	public void setSigilo(int sigilo) {
 		this.sigilo = sigilo;
 	}
 

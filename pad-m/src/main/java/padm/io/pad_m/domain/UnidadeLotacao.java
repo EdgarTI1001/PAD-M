@@ -15,7 +15,7 @@ public class UnidadeLotacao {
 	private Integer id;
 
 	@Column(name = "ORGAOID")
-	private Orgao orgao;
+	private int orgao;
 
 	@Column(name = "LOCALIDADEID")
 	private int localidade;
@@ -23,24 +23,24 @@ public class UnidadeLotacao {
 	private String nome;
 
 	private String segmento;
-	
+
 	private String descricao;
-	
+
 	private String sigla;
-	
+
 	private String obs;
-	
+
 	private int seq;
-	
+
 	private int flag;
-	
+
 	private int placed;
 
 	public UnidadeLotacao() {
 	}
 
-	public UnidadeLotacao(Integer id, Orgao orgao, int localidade, String nome, String segmento,
-			String descricao, String sigla, String obs, int seq, int flag, int placed) {
+	public UnidadeLotacao(Integer id, int orgao, int localidade, String nome, String segmento, String descricao,
+			String sigla, String obs, int seq, int flag, int placed) {
 		this.id = id;
 		this.orgao = orgao;
 		this.localidade = localidade;
@@ -62,11 +62,11 @@ public class UnidadeLotacao {
 		this.id = id;
 	}
 
-	public Orgao getOrgao() {
+	public int getOrgao() {
 		return orgao;
 	}
 
-	public void setOrgao(Orgao orgao) {
+	public void setOrgao(int orgao) {
 		this.orgao = orgao;
 	}
 

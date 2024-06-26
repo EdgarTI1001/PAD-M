@@ -9,25 +9,25 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import padm.io.pad_m.domain.Orgao;
-import padm.io.pad_m.service.OrgaoService;
+import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.service.UsuarioService;
 
 @RestController
-@RequestMapping("/api/orgaos")
-public class OrgaoRestController {
+@RequestMapping("/api/usuarios")
+public class UsuarioRestController {
 	@Autowired
-	OrgaoService orgaoService;
+	UsuarioService usuarioService;
 
 	@GetMapping
-	public ResponseEntity<List<Orgao>> findAll() {
-		return ResponseEntity.ok(orgaoService.findAll());
+	public ResponseEntity<List<Usuario>> findAll() {
+		return ResponseEntity.ok(usuarioService.findAll());
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Orgao> findById(@PathVariable("id") Integer id) {
+	public ResponseEntity<Usuario> findById(@PathVariable("id") Integer id) {
 		System.out.println("=======================");
-		Orgao orgao = orgaoService.findById(id).get();
-		return ResponseEntity.ok(orgao);
+		Usuario usuario = usuarioService.findById(id).get();
+		return ResponseEntity.ok(usuario);
 	}
 
 }
