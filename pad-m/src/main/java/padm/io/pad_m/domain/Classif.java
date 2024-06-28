@@ -2,20 +2,16 @@ package padm.io.pad_m.domain;
 
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbClassif")
+@Table(name = "tbclassif")
 public class Classif {
 
 	@Id
 	private Integer id;
-
-	@Column(name = "classgeral")
-	private Integer classGeral;
 
 	private String nome;
 
@@ -35,10 +31,9 @@ public class Classif {
 
 	}
 
-	public Classif(Integer id, Integer classGeral, String nome, String descricao, String sigla, String obs, int seq,
-			int flag, int placed) {
+	public Classif(Integer id, String nome, String descricao, String sigla, String obs, int seq, int flag, int placed) {
 		this.id = id;
-		this.classGeral = classGeral;
+
 		this.nome = nome;
 		this.descricao = descricao;
 		this.sigla = sigla;
@@ -54,14 +49,6 @@ public class Classif {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Integer getClassGeral() {
-		return classGeral;
-	}
-
-	public void setClassGeral(Integer classGeral) {
-		this.classGeral = classGeral;
 	}
 
 	public String getNome() {

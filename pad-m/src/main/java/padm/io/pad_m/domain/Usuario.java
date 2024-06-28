@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbUsuario")
+@Table(name = "tbUsuario")
 public class Usuario {
 
 	@Id
@@ -23,14 +23,12 @@ public class Usuario {
 
 	private String nickName;
 
-	private Servidor servidor;
+	private int servidor;
 
 	@JsonIgnore
 	private String senha;
 
 	private int perfil;
-
-	private UnidadeLotacao lotacao;
 
 	private int ativo;
 
@@ -52,9 +50,9 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String name, Long cpf, String nickName, Servidor servidor, String senha, int perfil,
-			UnidadeLotacao lotacao, int ativo, String certificado, LocalDateTime dataExpiracao,
-			LocalDateTime ultimoAcesso, LocalDateTime dataCriacao, String image, int flag) {
+	public Usuario(Integer id, String name, Long cpf, String nickName, int servidor, String senha, int perfil,
+			int ativo, String certificado, LocalDateTime dataExpiracao, LocalDateTime ultimoAcesso,
+			LocalDateTime dataCriacao, String image, int flag) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
@@ -62,7 +60,6 @@ public class Usuario {
 		this.servidor = servidor;
 		this.senha = senha;
 		this.perfil = perfil;
-		this.lotacao = lotacao;
 		this.ativo = ativo;
 		this.certificado = certificado;
 		this.dataExpiracao = dataExpiracao;
@@ -104,11 +101,11 @@ public class Usuario {
 		this.nickName = nickName;
 	}
 
-	public Servidor getServidor() {
+	public int getServidor() {
 		return servidor;
 	}
 
-	public void setServidor(Servidor servidor) {
+	public void setServidor(int servidor) {
 		this.servidor = servidor;
 	}
 
@@ -126,14 +123,6 @@ public class Usuario {
 
 	public void setPerfil(int perfil) {
 		this.perfil = perfil;
-	}
-
-	public UnidadeLotacao getLotacao() {
-		return lotacao;
-	}
-
-	public void setLotacao(UnidadeLotacao lotacao) {
-		this.lotacao = lotacao;
 	}
 
 	public int getAtivo() {
@@ -212,7 +201,7 @@ public class Usuario {
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", name=" + name + ", cpf=" + cpf + ", nickName=" + nickName + ", servidor="
-				+ servidor + ", senha=" + senha + ", perfil=" + perfil + ", lotacao=" + lotacao + ", ativo=" + ativo
+				+ servidor + ", senha=" + senha + ", perfil=" + perfil + ", lotacao=" + ", ativo=" + ativo
 				+ ", certificado=" + certificado + ", dataExpiracao=" + dataExpiracao + ", ultimoAcesso=" + ultimoAcesso
 				+ ", dataCriacao=" + dataCriacao + ", image=" + image + ", flag=" + flag + "]";
 	}
