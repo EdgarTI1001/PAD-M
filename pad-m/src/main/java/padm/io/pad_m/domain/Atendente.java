@@ -16,16 +16,16 @@ public class Atendente {
 	private Integer id;
 
 	@Column(name = "USER_ID")
-	private Integer userId;
+	private Usuario usuario;
 
 	@Column(name = "SETOR_ID")
-	private Integer setorId;
+	private Setor setor;
 
 	@Column(name = "SERVIDOR_ID")
-	private Integer servidorId;
+	private Servidor servidor;
 
 	@Column(name = "SIGILO_ID")
-	private Integer sigiloId;
+	private Sigilo sigilo;
 
 	private String visibilidade;
 
@@ -34,13 +34,13 @@ public class Atendente {
 	private String obs;
 
 	@Column(name = "USERCRIADOR_ID")
-	private Integer useCriadorId;
+	private Usuario usecriadorid;
 
 	@Column(name = "datacriacao")
-	private LocalDateTime dataCriacao;
+	private LocalDateTime datacriacao;
 
 	@Column(name = "dataremocao")
-	private LocalDateTime dataRemocao;
+	private LocalDateTime dataremocao;
 
 	private int seq;
 
@@ -52,20 +52,21 @@ public class Atendente {
 
 	}
 
-	public Atendente(Integer id, Integer userId, Integer setorId, Integer servidorId, Integer sigiloId,
-			String visibilidade, LocalDateTime data, String obs, Integer useCriadorId, LocalDateTime dataCriacao,
-			LocalDateTime dataRemocao, int seq, int flag, int placed) {
+	public Atendente(Integer id, Usuario usuario, Setor setor, Servidor servidor, Sigilo sigilo, String visibilidade,
+			LocalDateTime data, String obs, Usuario usecriadorid, LocalDateTime datacriacao, LocalDateTime dataremocao,
+			int seq, int flag, int placed) {
+		super();
 		this.id = id;
-		this.userId = userId;
-		this.setorId = setorId;
-		this.servidorId = servidorId;
-		this.sigiloId = sigiloId;
+		this.usuario = usuario;
+		this.setor = setor;
+		this.servidor = servidor;
+		this.sigilo = sigilo;
 		this.visibilidade = visibilidade;
 		this.data = data;
 		this.obs = obs;
-		this.useCriadorId = useCriadorId;
-		this.dataCriacao = dataCriacao;
-		this.dataRemocao = dataRemocao;
+		this.usecriadorid = usecriadorid;
+		this.datacriacao = datacriacao;
+		this.dataremocao = dataremocao;
 		this.seq = seq;
 		this.flag = flag;
 		this.placed = placed;
@@ -79,36 +80,36 @@ public class Atendente {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
-	public Integer getSetorId() {
-		return setorId;
+	public Setor getSetor() {
+		return setor;
 	}
 
-	public void setSetorId(Integer setorId) {
-		this.setorId = setorId;
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 
-	public Integer getServidorId() {
-		return servidorId;
+	public Servidor getServidor() {
+		return servidor;
 	}
 
-	public void setServidorId(Integer servidorId) {
-		this.servidorId = servidorId;
+	public void setServidor(Servidor servidor) {
+		this.servidor = servidor;
 	}
 
-	public Integer getSigiloId() {
-		return sigiloId;
+	public Sigilo getSigilo() {
+		return sigilo;
 	}
 
-	public void setSigiloId(Integer sigiloId) {
-		this.sigiloId = sigiloId;
+	public void setSigilo(Sigilo sigilo) {
+		this.sigilo = sigilo;
 	}
 
 	public String getVisibilidade() {
@@ -135,28 +136,28 @@ public class Atendente {
 		this.obs = obs;
 	}
 
-	public Integer getUseCriadorId() {
-		return useCriadorId;
+	public Usuario getUsecriadorid() {
+		return usecriadorid;
 	}
 
-	public void setUseCriadorId(Integer useCriadorId) {
-		this.useCriadorId = useCriadorId;
+	public void setUsecriadorid(Usuario usecriadorid) {
+		this.usecriadorid = usecriadorid;
 	}
 
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
+	public LocalDateTime getDatacriacao() {
+		return datacriacao;
 	}
 
-	public void setDataCriacao(LocalDateTime dataCriacao) {
-		this.dataCriacao = dataCriacao;
+	public void setDatacriacao(LocalDateTime datacriacao) {
+		this.datacriacao = datacriacao;
 	}
 
-	public LocalDateTime getDataRemocao() {
-		return dataRemocao;
+	public LocalDateTime getDataremocao() {
+		return dataremocao;
 	}
 
-	public void setDataRemocao(LocalDateTime dataRemocao) {
-		this.dataRemocao = dataRemocao;
+	public void setDataremocao(LocalDateTime dataremocao) {
+		this.dataremocao = dataremocao;
 	}
 
 	public int getSeq() {

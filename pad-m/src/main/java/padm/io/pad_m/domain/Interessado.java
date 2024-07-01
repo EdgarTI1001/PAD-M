@@ -9,17 +9,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbInteressado")
+@Table(name = "tbinteressado")
 public class Interessado {
 
 	@Id
 	private Integer id;
 
 	@Column(name = "PROC_ID")
-	private Integer procId;
+	private Processo proc_id;
 
 	@Column(name = "USU_ID")
-	private Integer usuId;
+	private Usuario usu_id;
 
 	private String interessado;
 
@@ -35,11 +35,12 @@ public class Interessado {
 
 	}
 
-	public Interessado(Integer id, Integer procId, Integer usuId, String interessado, LocalDateTime data, String obs,
+	public Interessado(Integer id, Processo proc_id, Usuario usu_id, String interessado, LocalDateTime data, String obs,
 			int seq, int flag) {
+		super();
 		this.id = id;
-		this.procId = procId;
-		this.usuId = usuId;
+		this.proc_id = proc_id;
+		this.usu_id = usu_id;
 		this.interessado = interessado;
 		this.data = data;
 		this.obs = obs;
@@ -55,20 +56,20 @@ public class Interessado {
 		this.id = id;
 	}
 
-	public Integer getProcId() {
-		return procId;
+	public Processo getProc_id() {
+		return proc_id;
 	}
 
-	public void setProcId(Integer procId) {
-		this.procId = procId;
+	public void setProc_id(Processo proc_id) {
+		this.proc_id = proc_id;
 	}
 
-	public Integer getUsuId() {
-		return usuId;
+	public Usuario getUsu_id() {
+		return usu_id;
 	}
 
-	public void setUsuId(Integer usuId) {
-		this.usuId = usuId;
+	public void setUsu_id(Usuario usu_id) {
+		this.usu_id = usu_id;
 	}
 
 	public String getInteressado() {

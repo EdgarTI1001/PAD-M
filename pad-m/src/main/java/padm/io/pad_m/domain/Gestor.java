@@ -9,30 +9,30 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbGestor")
+@Table(name = "tbgestor")
 public class Gestor {
 
 	@Id
 	private Integer id;
 
 	@Column(name = "USER_ID")
-	private Integer userId;
+	private Usuario user_id;
 
 	@Column(name = "SETOR_ID")
-	private Integer setorId;
+	private Setor setor_id;
 
 	@Column(name = "SERVIDOR_ID")
-	private Integer servidorId;
+	private Servidor servidor_id;
 
 	@Column(name = "SIGILO_ID")
-	private Integer sigiloId;
+	private Sigilo sigilo_id;
 
 	private String visibilidade;
 
 	private String obs;
 
 	@Column(name = "USERCRIADOR_ID")
-	private Integer userCriadorId;
+	private Usuario usercriador_id;
 
 	private LocalDateTime datacriacao;
 
@@ -48,17 +48,18 @@ public class Gestor {
 
 	}
 
-	public Gestor(Integer id, Integer userId, Integer setorId, Integer servidorId, Integer sigiloId,
-			String visibilidade, String obs, Integer userCriadorId, LocalDateTime datacriacao,
+	public Gestor(Integer id, Usuario user_id, Setor setor_id, Servidor servidor_id, Sigilo sigilo_id,
+			String visibilidade, String obs, Usuario usercriador_id, LocalDateTime datacriacao,
 			LocalDateTime dataremocao, int seq, int flag, int placed) {
+		super();
 		this.id = id;
-		this.userId = userId;
-		this.setorId = setorId;
-		this.servidorId = servidorId;
-		this.sigiloId = sigiloId;
+		this.user_id = user_id;
+		this.setor_id = setor_id;
+		this.servidor_id = servidor_id;
+		this.sigilo_id = sigilo_id;
 		this.visibilidade = visibilidade;
 		this.obs = obs;
-		this.userCriadorId = userCriadorId;
+		this.usercriador_id = usercriador_id;
 		this.datacriacao = datacriacao;
 		this.dataremocao = dataremocao;
 		this.seq = seq;
@@ -74,36 +75,36 @@ public class Gestor {
 		this.id = id;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Usuario getUser_id() {
+		return user_id;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUser_id(Usuario user_id) {
+		this.user_id = user_id;
 	}
 
-	public Integer getSetorId() {
-		return setorId;
+	public Setor getSetor_id() {
+		return setor_id;
 	}
 
-	public void setSetorId(Integer setorId) {
-		this.setorId = setorId;
+	public void setSetor_id(Setor setor_id) {
+		this.setor_id = setor_id;
 	}
 
-	public Integer getServidorId() {
-		return servidorId;
+	public Servidor getServidor_id() {
+		return servidor_id;
 	}
 
-	public void setServidorId(Integer servidorId) {
-		this.servidorId = servidorId;
+	public void setServidor_id(Servidor servidor_id) {
+		this.servidor_id = servidor_id;
 	}
 
-	public Integer getSigiloId() {
-		return sigiloId;
+	public Sigilo getSigilo_id() {
+		return sigilo_id;
 	}
 
-	public void setSigiloId(Integer sigiloId) {
-		this.sigiloId = sigiloId;
+	public void setSigilo_id(Sigilo sigilo_id) {
+		this.sigilo_id = sigilo_id;
 	}
 
 	public String getVisibilidade() {
@@ -122,12 +123,12 @@ public class Gestor {
 		this.obs = obs;
 	}
 
-	public Integer getUserCriadorId() {
-		return userCriadorId;
+	public Usuario getUsercriador_id() {
+		return usercriador_id;
 	}
 
-	public void setUserCriadorId(Integer userCriadorId) {
-		this.userCriadorId = userCriadorId;
+	public void setUsercriador_id(Usuario usercriador_id) {
+		this.usercriador_id = usercriador_id;
 	}
 
 	public LocalDateTime getDatacriacao() {

@@ -6,20 +6,22 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbAcompanha")
+@Table(name = "tbacompanha")
 public class Acompanha {
 
 	@Id
 	private Integer id;
 
-	@Column(name = "PROC_ID")
-	private Integer procId;
+	@ManyToOne
+	@Column(name = "proc_id")
+	private Processo processo;
 
 	@Column(name = "USU_ID")
-	private int usuId;
+	private Usuario usuario;
 
 	private String interessado;
 
@@ -35,11 +37,11 @@ public class Acompanha {
 
 	}
 
-	public Acompanha(Integer id, Integer procId, int usuId, String interessado, LocalDateTime data, String obs, int seq,
-			int flag) {
+	public Acompanha(Integer id, Processo processo, Usuario usuario, String interessado, LocalDateTime data, String obs,
+			int seq, int flag) {
 		this.id = id;
-		this.procId = procId;
-		this.usuId = usuId;
+		this.processo = processo;
+		this.usuario = usuario;
 		this.interessado = interessado;
 		this.data = data;
 		this.obs = obs;
@@ -55,20 +57,20 @@ public class Acompanha {
 		this.id = id;
 	}
 
-	public Integer getProcId() {
-		return procId;
+	public Processo getProcesso() {
+		return processo;
 	}
 
-	public void setProcId(Integer procId) {
-		this.procId = procId;
+	public void setProcesso(Processo processo) {
+		this.processo = processo;
 	}
 
-	public int getUsuId() {
-		return usuId;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setUsuId(int usuId) {
-		this.usuId = usuId;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getInteressado() {

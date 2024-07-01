@@ -6,35 +6,37 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbMinuta")
+@Table(name = "tbminuta")
 public class Minuta {
 
 	@Id
 	private Integer id;
 
+	@ManyToOne
 	@Column(name = "PROC_ID")
-	private Integer procId;
+	private Processo proc_id;
 
 	@Column(name = "USU_ID")
-	private Integer usuId;
+	private Usuario usu_id;
 
 	@Column(name = "SET_ID")
-	private Integer setorId;
+	private Setor set_id;
 
 	@Column(name = "NOMDOC")
-	private String nomeDoc;
+	private String nomdoc;
 
 	@Column(name = "EXTDOC")
-	private String extDoc;
+	private String extdoc;
 
 	@Column(name = "TIPODOC")
-	private String tipoDoc;
+	private String tipodoc;
 
 	@Column(name = "TAMDOC")
-	private String tamDoc;
+	private String tamdoc;
 
 	private LocalDateTime data;
 
@@ -48,16 +50,17 @@ public class Minuta {
 
 	}
 
-	public Minuta(Integer id, Integer procId, Integer usuId, Integer setorId, String nomeDoc, String extDoc,
-			String tipoDoc, String tamDoc, LocalDateTime data, String obs, int seq, int flag) {
+	public Minuta(Integer id, Processo proc_id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc,
+			String tipodoc, String tamdoc, LocalDateTime data, String obs, int seq, int flag) {
+		super();
 		this.id = id;
-		this.procId = procId;
-		this.usuId = usuId;
-		this.setorId = setorId;
-		this.nomeDoc = nomeDoc;
-		this.extDoc = extDoc;
-		this.tipoDoc = tipoDoc;
-		this.tamDoc = tamDoc;
+		this.proc_id = proc_id;
+		this.usu_id = usu_id;
+		this.set_id = set_id;
+		this.nomdoc = nomdoc;
+		this.extdoc = extdoc;
+		this.tipodoc = tipodoc;
+		this.tamdoc = tamdoc;
 		this.data = data;
 		this.obs = obs;
 		this.seq = seq;
@@ -72,60 +75,60 @@ public class Minuta {
 		this.id = id;
 	}
 
-	public Integer getProcId() {
-		return procId;
+	public Processo getProc_id() {
+		return proc_id;
 	}
 
-	public void setProcId(Integer procId) {
-		this.procId = procId;
+	public void setProc_id(Processo proc_id) {
+		this.proc_id = proc_id;
 	}
 
-	public Integer getUsuId() {
-		return usuId;
+	public Usuario getUsu_id() {
+		return usu_id;
 	}
 
-	public void setUsuId(Integer usuId) {
-		this.usuId = usuId;
+	public void setUsu_id(Usuario usu_id) {
+		this.usu_id = usu_id;
 	}
 
-	public Integer getSetorId() {
-		return setorId;
+	public Setor getSet_id() {
+		return set_id;
 	}
 
-	public void setSetorId(Integer setorId) {
-		this.setorId = setorId;
+	public void setSet_id(Setor set_id) {
+		this.set_id = set_id;
 	}
 
-	public String getNomeDoc() {
-		return nomeDoc;
+	public String getNomdoc() {
+		return nomdoc;
 	}
 
-	public void setNomeDoc(String nomeDoc) {
-		this.nomeDoc = nomeDoc;
+	public void setNomdoc(String nomdoc) {
+		this.nomdoc = nomdoc;
 	}
 
-	public String getExtDoc() {
-		return extDoc;
+	public String getExtdoc() {
+		return extdoc;
 	}
 
-	public void setExtDoc(String extDoc) {
-		this.extDoc = extDoc;
+	public void setExtdoc(String extdoc) {
+		this.extdoc = extdoc;
 	}
 
-	public String getTipoDoc() {
-		return tipoDoc;
+	public String getTipodoc() {
+		return tipodoc;
 	}
 
-	public void setTipoDoc(String tipoDoc) {
-		this.tipoDoc = tipoDoc;
+	public void setTipodoc(String tipodoc) {
+		this.tipodoc = tipodoc;
 	}
 
-	public String getTamDoc() {
-		return tamDoc;
+	public String getTamdoc() {
+		return tamdoc;
 	}
 
-	public void setTamDoc(String tamDoc) {
-		this.tamDoc = tamDoc;
+	public void setTamdoc(String tamdoc) {
+		this.tamdoc = tamdoc;
 	}
 
 	public LocalDateTime getData() {

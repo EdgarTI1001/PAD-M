@@ -16,16 +16,16 @@ public class Evento {
 	private Integer id;
 
 	@Column(name = "TIPO_ID")
-	private Integer tipoId;
+	private TipoEvento tipo_id;
 
 	@Column(name = "TRAMITE_ID")
-	private Integer tramiteId;
+	private Tramite tramite_id;
 
 	@Column(name = "PROC_ID")
-	private Integer procId;
+	private Processo proc_id;
 
 	@Column(name = "DOC_ID")
-	private Integer docId;
+	private Doc doc_id;
 
 	private LocalDateTime dataevento;
 
@@ -34,25 +34,25 @@ public class Evento {
 	private LocalDateTime datatermino;
 
 	@Column(name = "USER_ID")
-	private Integer userId;
+	private Usuario user_id;
 
 	@Column(name = "USERCRIADO_ID")
-	private Integer userCriadoId;
+	private Integer usercriado_id;
 
 	@Column(name = "RESPONSAVEL_ID")
-	private Integer responsavelId;
+	private Integer responsavel_id;
 
 	@Column(name = "ATENDENTE_ID")
-	private Integer atendenteId;
+	private Atendente atendente_id;
 
 	@Column(name = "MODERADOR_ID")
-	private Integer moderadorId;
+	private Moderador moderador_id;
 
 	@Column(name = "GESTOR_ID")
-	private Integer gestorId;
+	private Gestor gestor_id;
 
 	@Column(name = "SETOR_ID")
-	private Integer setorId;
+	private Setor setor_Id;
 
 	private String evento;
 
@@ -77,12 +77,12 @@ public class Evento {
 	private LocalDateTime datasaida;
 
 	@Column(name = "FINALIDADE_ID")
-	private Integer finalidadeId;
+	private Integer finalidade_id;
 
 	private String finalidade;
 
 	@Column(name = "MOTIVO_ID")
-	private Integer motivoId;
+	private Integer motivo_id;
 
 	private String motivo;
 
@@ -104,29 +104,30 @@ public class Evento {
 
 	}
 
-	public Evento(Integer id, Integer tipoId, Integer tramiteId, Integer procId, Integer docId,
-			LocalDateTime dataevento, LocalDateTime datainicio, LocalDateTime datatermino, Integer userId,
-			Integer userCriadoId, Integer responsavelId, Integer atendenteId, Integer moderadorId, Integer gestorId,
-			Integer setorId, String evento, String orgenv, LocalDateTime dataorgenv, String usuenv,
+	public Evento(Integer id, TipoEvento tipo_id, Tramite tramite_id, Processo proc_id, Doc doc_id,
+			LocalDateTime dataevento, LocalDateTime datainicio, LocalDateTime datatermino, Usuario user_id,
+			Integer usercriado_id, Integer responsavel_id, Atendente atendente_id, Moderador moderador_id,
+			Gestor gestor_id, Setor setor_Id, String evento, String orgenv, LocalDateTime dataorgenv, String usuenv,
 			LocalDateTime datausuenv, String orgrec, LocalDateTime dataorgrec, String usurec, LocalDateTime datausurec,
-			LocalDateTime datachegada, LocalDateTime datasaida, Integer finalidadeId, String finalidade,
-			Integer motivoId, String motivo, String statusenviado, String statusrecebido, String statusproc, String obs,
-			Integer seq, Integer flag, Integer placed) {
+			LocalDateTime datachegada, LocalDateTime datasaida, Integer finalidade_id, String finalidade,
+			Integer motivo_id, String motivo, String statusenviado, String statusrecebido, String statusproc,
+			String obs, Integer seq, Integer flag, Integer placed) {
+		super();
 		this.id = id;
-		this.tipoId = tipoId;
-		this.tramiteId = tramiteId;
-		this.procId = procId;
-		this.docId = docId;
+		this.tipo_id = tipo_id;
+		this.tramite_id = tramite_id;
+		this.proc_id = proc_id;
+		this.doc_id = doc_id;
 		this.dataevento = dataevento;
 		this.datainicio = datainicio;
 		this.datatermino = datatermino;
-		this.userId = userId;
-		this.userCriadoId = userCriadoId;
-		this.responsavelId = responsavelId;
-		this.atendenteId = atendenteId;
-		this.moderadorId = moderadorId;
-		this.gestorId = gestorId;
-		this.setorId = setorId;
+		this.user_id = user_id;
+		this.usercriado_id = usercriado_id;
+		this.responsavel_id = responsavel_id;
+		this.atendente_id = atendente_id;
+		this.moderador_id = moderador_id;
+		this.gestor_id = gestor_id;
+		this.setor_Id = setor_Id;
 		this.evento = evento;
 		this.orgenv = orgenv;
 		this.dataorgenv = dataorgenv;
@@ -138,9 +139,9 @@ public class Evento {
 		this.datausurec = datausurec;
 		this.datachegada = datachegada;
 		this.datasaida = datasaida;
-		this.finalidadeId = finalidadeId;
+		this.finalidade_id = finalidade_id;
 		this.finalidade = finalidade;
-		this.motivoId = motivoId;
+		this.motivo_id = motivo_id;
 		this.motivo = motivo;
 		this.statusenviado = statusenviado;
 		this.statusrecebido = statusrecebido;
@@ -159,36 +160,36 @@ public class Evento {
 		this.id = id;
 	}
 
-	public Integer getTipoId() {
-		return tipoId;
+	public TipoEvento getTipo_id() {
+		return tipo_id;
 	}
 
-	public void setTipoId(Integer tipoId) {
-		this.tipoId = tipoId;
+	public void setTipo_id(TipoEvento tipo_id) {
+		this.tipo_id = tipo_id;
 	}
 
-	public Integer getTramiteId() {
-		return tramiteId;
+	public Tramite getTramite_id() {
+		return tramite_id;
 	}
 
-	public void setTramiteId(Integer tramiteId) {
-		this.tramiteId = tramiteId;
+	public void setTramite_id(Tramite tramite_id) {
+		this.tramite_id = tramite_id;
 	}
 
-	public Integer getProcId() {
-		return procId;
+	public Processo getProc_id() {
+		return proc_id;
 	}
 
-	public void setProcId(Integer procId) {
-		this.procId = procId;
+	public void setProc_id(Processo proc_id) {
+		this.proc_id = proc_id;
 	}
 
-	public Integer getDocId() {
-		return docId;
+	public Doc getDoc_id() {
+		return doc_id;
 	}
 
-	public void setDocId(Integer docId) {
-		this.docId = docId;
+	public void setDoc_id(Doc doc_id) {
+		this.doc_id = doc_id;
 	}
 
 	public LocalDateTime getDataevento() {
@@ -215,60 +216,60 @@ public class Evento {
 		this.datatermino = datatermino;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public Usuario getUser_id() {
+		return user_id;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUser_id(Usuario user_id) {
+		this.user_id = user_id;
 	}
 
-	public Integer getUserCriadoId() {
-		return userCriadoId;
+	public Integer getUsercriado_id() {
+		return usercriado_id;
 	}
 
-	public void setUserCriadoId(Integer userCriadoId) {
-		this.userCriadoId = userCriadoId;
+	public void setUsercriado_id(Integer usercriado_id) {
+		this.usercriado_id = usercriado_id;
 	}
 
-	public Integer getResponsavelId() {
-		return responsavelId;
+	public Integer getResponsavel_id() {
+		return responsavel_id;
 	}
 
-	public void setResponsavelId(Integer responsavelId) {
-		this.responsavelId = responsavelId;
+	public void setResponsavel_id(Integer responsavel_id) {
+		this.responsavel_id = responsavel_id;
 	}
 
-	public Integer getAtendenteId() {
-		return atendenteId;
+	public Atendente getAtendente_id() {
+		return atendente_id;
 	}
 
-	public void setAtendenteId(Integer atendenteId) {
-		this.atendenteId = atendenteId;
+	public void setAtendente_id(Atendente atendente_id) {
+		this.atendente_id = atendente_id;
 	}
 
-	public Integer getModeradorId() {
-		return moderadorId;
+	public Moderador getModerador_id() {
+		return moderador_id;
 	}
 
-	public void setModeradorId(Integer moderadorId) {
-		this.moderadorId = moderadorId;
+	public void setModerador_id(Moderador moderador_id) {
+		this.moderador_id = moderador_id;
 	}
 
-	public Integer getGestorId() {
-		return gestorId;
+	public Gestor getGestor_id() {
+		return gestor_id;
 	}
 
-	public void setGestorId(Integer gestorId) {
-		this.gestorId = gestorId;
+	public void setGestor_id(Gestor gestor_id) {
+		this.gestor_id = gestor_id;
 	}
 
-	public Integer getSetorId() {
-		return setorId;
+	public Setor getSetor_Id() {
+		return setor_Id;
 	}
 
-	public void setSetorId(Integer setorId) {
-		this.setorId = setorId;
+	public void setSetor_Id(Setor setor_Id) {
+		this.setor_Id = setor_Id;
 	}
 
 	public String getEvento() {
@@ -359,12 +360,12 @@ public class Evento {
 		this.datasaida = datasaida;
 	}
 
-	public Integer getFinalidadeId() {
-		return finalidadeId;
+	public Integer getFinalidade_id() {
+		return finalidade_id;
 	}
 
-	public void setFinalidadeId(Integer finalidadeId) {
-		this.finalidadeId = finalidadeId;
+	public void setFinalidade_id(Integer finalidade_id) {
+		this.finalidade_id = finalidade_id;
 	}
 
 	public String getFinalidade() {
@@ -375,12 +376,12 @@ public class Evento {
 		this.finalidade = finalidade;
 	}
 
-	public Integer getMotivoId() {
-		return motivoId;
+	public Integer getMotivo_id() {
+		return motivo_id;
 	}
 
-	public void setMotivoId(Integer motivoId) {
-		this.motivoId = motivoId;
+	public void setMotivo_id(Integer motivo_id) {
+		this.motivo_id = motivo_id;
 	}
 
 	public String getMotivo() {

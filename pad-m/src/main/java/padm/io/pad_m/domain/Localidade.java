@@ -8,14 +8,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbLocalidade")
+@Table(name = "tblocalidade")
 public class Localidade {
 
 	@Id
 	private Integer id;
 
 	@Column(name = "ORAGOID")
-	private Integer orgaoId;
+	private Orgao orgaoid;
 
 	private String nome;
 
@@ -37,10 +37,11 @@ public class Localidade {
 
 	}
 
-	public Localidade(Integer id, Integer orgaoId, String nome, String descricao, String segmento, String sigla,
+	public Localidade(Integer id, Orgao orgaoid, String nome, String descricao, String segmento, String sigla,
 			String obs, int seq, int flag, int placed) {
+		super();
 		this.id = id;
-		this.orgaoId = orgaoId;
+		this.orgaoid = orgaoid;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.segmento = segmento;
@@ -59,12 +60,12 @@ public class Localidade {
 		this.id = id;
 	}
 
-	public Integer getOrgaoId() {
-		return orgaoId;
+	public Orgao getOrgaoid() {
+		return orgaoid;
 	}
 
-	public void setOrgaoId(Integer orgaoId) {
-		this.orgaoId = orgaoId;
+	public void setOrgaoid(Orgao orgaoid) {
+		this.orgaoid = orgaoid;
 	}
 
 	public String getNome() {
@@ -147,7 +148,5 @@ public class Localidade {
 		Localidade other = (Localidade) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 
 }

@@ -13,6 +13,8 @@ public class Classif {
 	@Id
 	private Integer id;
 
+	private int classgeral_id;
+
 	private String nome;
 
 	private String descricao;
@@ -31,9 +33,10 @@ public class Classif {
 
 	}
 
-	public Classif(Integer id, String nome, String descricao, String sigla, String obs, int seq, int flag, int placed) {
+	public Classif(Integer id, int classgeral_id, String nome, String descricao, String sigla, String obs, int seq,
+			int flag, int placed) {
 		this.id = id;
-
+		this.classgeral_id = classgeral_id;
 		this.nome = nome;
 		this.descricao = descricao;
 		this.sigla = sigla;
@@ -105,6 +108,14 @@ public class Classif {
 
 	public void setPlaced(int placed) {
 		this.placed = placed;
+	}
+
+	public int getClassgeral_id() {
+		return classgeral_id;
+	}
+
+	public void setClassgeral_id(int classgeral_id) {
+		this.classgeral_id = classgeral_id;
 	}
 
 	@Override
