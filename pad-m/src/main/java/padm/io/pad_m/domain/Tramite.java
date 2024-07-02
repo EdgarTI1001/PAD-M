@@ -3,12 +3,13 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbTramite")
+@Table(name = "tbtramite")
 public class Tramite {
 
 	@Id
@@ -30,8 +31,10 @@ public class Tramite {
 
 	private LocalDateTime datacheck;
 
+	@Column(name = "proc_id")
 	private int procId;
 
+	@Column(name = "doc_id")
 	private int docId;
 
 	private int userId;
@@ -42,9 +45,11 @@ public class Tramite {
 
 	private int atendenteId;
 
-	private int moderadorId;
+	@Column(name = "moderador_id")
+	private Moderador moderadorId;
 
-	private int gestorId;
+	@Column(name = "gestor_id")
+	private Gestor gestorId;
 
 	private String tramitacao;
 
@@ -58,7 +63,8 @@ public class Tramite {
 
 	private String obs;
 
-	private int sigiloId;
+	@Column(name = "sigilo_id")
+	private Sigilo sigiloId;
 
 	private String visibilidade;
 
@@ -83,9 +89,9 @@ public class Tramite {
 
 	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
 			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, int procId, int docId,
-			int userId, int usercriadorId, int resposavelId, int atendenteId, int moderadorId, int gestorId,
+			int userId, int usercriadorId, int resposavelId, int atendenteId, Moderador moderadorId, Gestor gestorId,
 			String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
-			LocalDateTime dataarquivamento, String obs, int sigiloId, String visibilidade, int recebimento,
+			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
 			LocalDateTime datarecebimento, int espera, LocalDateTime datainiciioespera, LocalDateTime datafimespera,
 			int seq, int flag, int placeid) {
 		this.id = id;
@@ -243,19 +249,19 @@ public class Tramite {
 		this.atendenteId = atendenteId;
 	}
 
-	public int getModeradorId() {
+	public Moderador getModeradorId() {
 		return moderadorId;
 	}
 
-	public void setModeradorId(int moderadorId) {
+	public void setModeradorId(Moderador moderadorId) {
 		this.moderadorId = moderadorId;
 	}
 
-	public int getGestorId() {
+	public Gestor getGestorId() {
 		return gestorId;
 	}
 
-	public void setGestorId(int gestorId) {
+	public void setGestorId(Gestor gestorId) {
 		this.gestorId = gestorId;
 	}
 
@@ -307,11 +313,11 @@ public class Tramite {
 		this.obs = obs;
 	}
 
-	public int getSigiloId() {
+	public Sigilo getSigiloId() {
 		return sigiloId;
 	}
 
-	public void setSigiloId(int sigiloId) {
+	public void setSigiloId(Sigilo sigiloId) {
 		this.sigiloId = sigiloId;
 	}
 

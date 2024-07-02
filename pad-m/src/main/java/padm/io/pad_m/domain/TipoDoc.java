@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbTipoDoc")
+@Table(name = "tbtipodoc")
 public class TipoDoc {
 
 	@Id

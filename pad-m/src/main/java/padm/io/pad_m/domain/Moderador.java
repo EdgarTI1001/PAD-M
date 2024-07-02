@@ -9,20 +9,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbModerador")
+@Table(name = "tbmoderador")
 public class Moderador {
 
 	@Id
 	private Integer id;
 
-	@Column(name = "SETOR_ID")
-	private Integer idSetor;
+	@Column(name = "setor_id")
+	private Setor setorId;
 
-	@Column(name = "SERVIDOR_ID")
-	private Integer idServidor;
+	@Column(name = "servidor_id")
+	private Servidor servidorId;
 
-	@Column(name = "SIGILO_ID")
-	private int sigilo;
+	@Column(name = "sigilo_id")
+	private Sigilo sigiloId;
 
 	private String visibilidade;
 
@@ -30,14 +30,13 @@ public class Moderador {
 
 	private String obs;
 
-	@Column(name = "USERCRIADOR_ID")
-	private Integer idCriador;
+	@Column(name = "usercriador_id")
+	private Integer usercriadorId;
 
-	@Column(name = "DATACRIACAO")
-	private LocalDateTime dataCriacao;
+	private LocalDateTime datacriacao;
 
 	@Column(name = "DATAREMOCAO")
-	private LocalDateTime dataRemocao;
+	private LocalDateTime dataremocao;
 
 	private int seq;
 
@@ -48,19 +47,19 @@ public class Moderador {
 	public Moderador() {
 	}
 
-	public Moderador(Integer id, Integer idSetor, Integer idServidor, int sigilo, String visibilidade,
-			LocalDateTime data, String obs, Integer idCriador, LocalDateTime dataCriacao, LocalDateTime dataRemocao,
+	public Moderador(Integer id, Setor setorId, Servidor servidorId, Sigilo sigiloId, String visibilidade,
+			LocalDateTime data, String obs, Integer usercriadorId, LocalDateTime datacriacao, LocalDateTime dataremocao,
 			int seq, int flag, int placed) {
 		this.id = id;
-		this.idSetor = idSetor;
-		this.idServidor = idServidor;
-		this.sigilo = sigilo;
+		this.setorId = setorId;
+		this.servidorId = servidorId;
+		this.sigiloId = sigiloId;
 		this.visibilidade = visibilidade;
 		this.data = data;
 		this.obs = obs;
-		this.idCriador = idCriador;
-		this.dataCriacao = dataCriacao;
-		this.dataRemocao = dataRemocao;
+		this.usercriadorId = usercriadorId;
+		this.datacriacao = datacriacao;
+		this.dataremocao = dataremocao;
 		this.seq = seq;
 		this.flag = flag;
 		this.placed = placed;
@@ -74,28 +73,28 @@ public class Moderador {
 		this.id = id;
 	}
 
-	public Integer getIdSetor() {
-		return idSetor;
+	public Setor getSetorId() {
+		return setorId;
 	}
 
-	public void setIdSetor(Integer idSetor) {
-		this.idSetor = idSetor;
+	public void setSetorId(Setor setorId) {
+		this.setorId = setorId;
 	}
 
-	public Integer getIdServidor() {
-		return idServidor;
+	public Servidor getServidorId() {
+		return servidorId;
 	}
 
-	public void setIdServidor(Integer idServidor) {
-		this.idServidor = idServidor;
+	public void setServidorId(Servidor servidorId) {
+		this.servidorId = servidorId;
 	}
 
-	public int getSigilo() {
-		return sigilo;
+	public Sigilo getSigiloId() {
+		return sigiloId;
 	}
 
-	public void setSigilo(int sigilo) {
-		this.sigilo = sigilo;
+	public void setSigiloId(Sigilo sigiloId) {
+		this.sigiloId = sigiloId;
 	}
 
 	public String getVisibilidade() {
@@ -122,28 +121,28 @@ public class Moderador {
 		this.obs = obs;
 	}
 
-	public Integer getIdCriador() {
-		return idCriador;
+	public Integer getUsercriadorId() {
+		return usercriadorId;
 	}
 
-	public void setIdCriador(Integer idCriador) {
-		this.idCriador = idCriador;
+	public void setUsercriadorId(Integer usercriadorId) {
+		this.usercriadorId = usercriadorId;
 	}
 
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
+	public LocalDateTime getDatacriacao() {
+		return datacriacao;
 	}
 
-	public void setDataCriacao(LocalDateTime dataCriacao) {
-		this.dataCriacao = dataCriacao;
+	public void setDatacriacao(LocalDateTime datacriacao) {
+		this.datacriacao = datacriacao;
 	}
 
-	public LocalDateTime getDataRemocao() {
-		return dataRemocao;
+	public LocalDateTime getDataremocao() {
+		return dataremocao;
 	}
 
-	public void setDataRemocao(LocalDateTime dataRemocao) {
-		this.dataRemocao = dataRemocao;
+	public void setDataremocao(LocalDateTime dataremocao) {
+		this.dataremocao = dataremocao;
 	}
 
 	public int getSeq() {
@@ -189,9 +188,9 @@ public class Moderador {
 
 	@Override
 	public String toString() {
-		return "Moderador [id=" + id + ", idSetor=" + idSetor + ", idServidor=" + idServidor + ", sigilo=" + sigilo
-				+ ", visibilidade=" + visibilidade + ", data=" + data + ", obs=" + obs + ", idCriador=" + idCriador
-				+ ", dataCriacao=" + dataCriacao + ", dataRemocao=" + dataRemocao + ", seq=" + seq + ", flag=" + flag
+		return "Moderador [id=" + id + ", setorId=" + setorId + ", sigiloId=" + sigiloId + ", visibilidade="
+				+ visibilidade + ", data=" + data + ", obs=" + obs + ", usercriadorId=" + usercriadorId
+				+ ", datacriacao=" + datacriacao + ", dataremocao=" + dataremocao + ", seq=" + seq + ", flag=" + flag
 				+ ", placed=" + placed + "]";
 	}
 

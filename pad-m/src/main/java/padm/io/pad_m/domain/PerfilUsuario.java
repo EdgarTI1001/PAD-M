@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbPerfilUsuario")
+@Table(name = "tbperfilusuario")
 public class PerfilUsuario {
 
 	@Id
@@ -18,7 +18,7 @@ public class PerfilUsuario {
 
 	private int nivel;
 
-	@Column(name = "REGRA_ID")
+	@Column(name = "regra_id")
 	private int regraId;
 
 	private int seq;

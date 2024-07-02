@@ -3,20 +3,23 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "dbo.tbSetor")
+@Table(name = "tbsetor")
 public class Setor {
 
 	@Id
 	private Integer id;
 
-	private int orgao;
+	@Column(name = "orgaoid")
+	private Orgao orgaoid;
 
-	private int localidadeid;
+	@Column(name = "localidadeid")
+	private Localidade localidadeid;
 
 	private int unidadelotacaoid;
 
@@ -36,11 +39,13 @@ public class Setor {
 
 	private int responsavelId;
 
-	private int atendenteId;
+	@Column(name = "atendente_id")
+	private Atendente atendenteId;
 
 	private int moderadorId;
 
-	private int gestorId;
+	@Column(name = "gestor_id")
+	private Gestor gestorId;
 
 	private String obs;
 
@@ -53,11 +58,12 @@ public class Setor {
 	public Setor() {
 	}
 
-	public Setor(Integer id, int orgao, int localidadeid, int unidadelotacaoid, int setorpai, String descricao,
-			String segmento, String sigla, int userId, int usercriadorId, LocalDateTime datacriacao, int responsavelId,
-			int atendenteId, int moderadorId, int gestorId, String obs, int seq, int flag, int placed) {
+	public Setor(Integer id, Orgao orgaoid, Localidade localidadeid, int unidadelotacaoid, int setorpai,
+			String descricao, String segmento, String sigla, int userId, int usercriadorId, LocalDateTime datacriacao,
+			int responsavelId, Atendente atendenteId, int moderadorId, Gestor gestorId, String obs, int seq, int flag,
+			int placed) {
 		this.id = id;
-		this.orgao = orgao;
+		this.orgaoid = orgaoid;
 		this.localidadeid = localidadeid;
 		this.unidadelotacaoid = unidadelotacaoid;
 		this.setorpai = setorpai;
@@ -85,19 +91,19 @@ public class Setor {
 		this.id = id;
 	}
 
-	public int getOrgao() {
-		return orgao;
+	public Orgao getOrgaoid() {
+		return orgaoid;
 	}
 
-	public void setOrgao(int orgao) {
-		this.orgao = orgao;
+	public void setOrgaoid(Orgao orgaoid) {
+		this.orgaoid = orgaoid;
 	}
 
-	public int getLocalidadeid() {
+	public Localidade getLocalidadeid() {
 		return localidadeid;
 	}
 
-	public void setLocalidadeid(int localidadeid) {
+	public void setLocalidadeid(Localidade localidadeid) {
 		this.localidadeid = localidadeid;
 	}
 
@@ -173,11 +179,11 @@ public class Setor {
 		this.responsavelId = responsavelId;
 	}
 
-	public int getAtendenteId() {
+	public Atendente getAtendenteId() {
 		return atendenteId;
 	}
 
-	public void setAtendenteId(int atendenteId) {
+	public void setAtendenteId(Atendente atendenteId) {
 		this.atendenteId = atendenteId;
 	}
 
@@ -189,11 +195,11 @@ public class Setor {
 		this.moderadorId = moderadorId;
 	}
 
-	public int getGestorId() {
+	public Gestor getGestorId() {
 		return gestorId;
 	}
 
-	public void setGestorId(int gestorId) {
+	public void setGestorId(Gestor gestorId) {
 		this.gestorId = gestorId;
 	}
 
@@ -248,11 +254,12 @@ public class Setor {
 
 	@Override
 	public String toString() {
-		return "Setor [id=" + id + ", orgao=" + orgao + ", localidadeid=" + localidadeid + ", unidadelotacaoid="
+		return "Setor [id=" + id + ", orgaoid=" + orgaoid + ", localidadeid=" + localidadeid + ", unidadelotacaoid="
 				+ unidadelotacaoid + ", setorpai=" + setorpai + ", descricao=" + descricao + ", segmento=" + segmento
-				+ ", sigla=" + sigla + ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", responsavelId="
-				+ responsavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId="
-				+ gestorId + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + ", placed=" + placed + "]";
+				+ ", sigla=" + sigla + ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", datacriacao="
+				+ datacriacao + ", responsavelId=" + responsavelId + ", atendenteId=" + atendenteId + ", moderadorId="
+				+ moderadorId + ", gestorId=" + gestorId + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag
+				+ ", placed=" + placed + "]";
 	}
 
 }

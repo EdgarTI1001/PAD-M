@@ -12,13 +12,21 @@ public class Orgao {
 
 	@Id
 	private Integer id;
+	
 	private String nome;
+	
 	private String descricao;
+	
 	private String segmento;
+	
 	private String sigla;
+	
 	private String obs;
+	
 	private Integer seq;
+	
 	private Integer flag;
+	
 	private Integer placed;
 
 	public Orgao() {
