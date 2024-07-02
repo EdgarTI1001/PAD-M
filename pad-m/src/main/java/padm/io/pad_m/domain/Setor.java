@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,10 +16,10 @@ public class Setor {
 	@Id
 	private Integer id;
 
-	@Column(name = "orgaoid")
+	@JoinColumn(name = "orgaoid")
 	private Orgao orgaoid;
 
-	@Column(name = "localidadeid")
+	@JoinColumn(name = "localidadeid")
 	private Localidade localidadeid;
 
 	private int unidadelotacaoid;
@@ -39,12 +40,12 @@ public class Setor {
 
 	private int responsavelId;
 
-	@Column(name = "atendente_id")
+	@JoinColumn(name = "atendente_id")
 	private Atendente atendenteId;
 
 	private int moderadorId;
 
-	@Column(name = "gestor_id")
+	@JoinColumn(name = "gestor_id")
 	private Gestor gestorId;
 
 	private String obs;

@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -47,15 +48,15 @@ public class Processo {
 
 	private LocalDateTime datacriacao;
 
-	@Column(name = "interessado_id")
+	@JoinColumn(name = "interessado_id")
 	private Interessado interessadoId;
 
-	@Column(name = "minuta_id")
+	@JoinColumn(name = "minuta_id")
 	private Minuta minutaId;
 	
 	private int lembreteId;
 
-	@Column(name = "sigilo_id")
+	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
 
 	private int procapensadoId;

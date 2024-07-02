@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,7 +35,7 @@ public class Tramite {
 
 	@Column(name = "proc_id")
 	private int procId;
-
+	
 	@Column(name = "doc_id")
 	private int docId;
 
@@ -45,10 +47,12 @@ public class Tramite {
 
 	private int atendenteId;
 
-	@Column(name = "moderador_id")
+	@ManyToOne
+	@JoinColumn(name = "moderador_id")
 	private Moderador moderadorId;
 
-	@Column(name = "gestor_id")
+	@ManyToOne
+	@JoinColumn(name = "gestor_id")
 	private Gestor gestorId;
 
 	private String tramitacao;
@@ -63,7 +67,8 @@ public class Tramite {
 
 	private String obs;
 
-	@Column(name = "sigilo_id")
+	@ManyToOne
+	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
 
 	private String visibilidade;

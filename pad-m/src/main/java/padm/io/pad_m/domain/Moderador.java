@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,13 +16,13 @@ public class Moderador {
 	@Id
 	private Integer id;
 
-	@Column(name = "setor_id")
+	@JoinColumn(name = "setor_id")
 	private Setor setorId;
 
-	@Column(name = "servidor_id")
+	@JoinColumn(name = "servidor_id")
 	private Servidor servidorId;
 
-	@Column(name = "sigilo_id")
+	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
 
 	private String visibilidade;

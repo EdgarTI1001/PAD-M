@@ -17,31 +17,29 @@ public class Usuario {
 	@Id
 	private Integer id;
 
-	private String name;
+	private String nome;
 
 	private Long cpf;
 
-	private String nickName;
+	private String nickname;
 
-	private int servidor;
+	@Column(name = "servidor_id")
+	private Servidor servidorId;
 
 	@JsonIgnore
 	private String senha;
 
-	private int perfil;
+	private int perfilId;
 
 	private int ativo;
 
 	private String certificado;
 
-	@Column(name = "dataExpiracao")
-	private LocalDateTime dataExpiracao;
+	private LocalDateTime dataexpiracao;
 
-	@Column(name = "ultimoAcesso")
-	private LocalDateTime ultimoAcesso;
+	private LocalDateTime ultimoacesso;
 
-	@Column(name = "dataCriacao")
-	private LocalDateTime dataCriacao;
+	private LocalDateTime datacriacao;
 
 	private String image;
 
@@ -50,21 +48,21 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String name, Long cpf, String nickName, int servidor, String senha, int perfil,
-			int ativo, String certificado, LocalDateTime dataExpiracao, LocalDateTime ultimoAcesso,
-			LocalDateTime dataCriacao, String image, int flag) {
+	public Usuario(Integer id, String nome, Long cpf, String nickname, Servidor servidorId, String senha, int perfilId,
+			int ativo, String certificado, LocalDateTime dataexpiracao, LocalDateTime ultimoacesso,
+			LocalDateTime datacriacao, String image, int flag) {
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 		this.cpf = cpf;
-		this.nickName = nickName;
-		this.servidor = servidor;
+		this.nickname = nickname;
+		this.servidorId = servidorId;
 		this.senha = senha;
-		this.perfil = perfil;
+		this.perfilId = perfilId;
 		this.ativo = ativo;
 		this.certificado = certificado;
-		this.dataExpiracao = dataExpiracao;
-		this.ultimoAcesso = ultimoAcesso;
-		this.dataCriacao = dataCriacao;
+		this.dataexpiracao = dataexpiracao;
+		this.ultimoacesso = ultimoacesso;
+		this.datacriacao = datacriacao;
 		this.image = image;
 		this.flag = flag;
 	}
@@ -77,12 +75,12 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Long getCpf() {
@@ -93,20 +91,20 @@ public class Usuario {
 		this.cpf = cpf;
 	}
 
-	public String getNickName() {
-		return nickName;
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
-	public int getServidor() {
-		return servidor;
+	public Servidor getServidorId() {
+		return servidorId;
 	}
 
-	public void setServidor(int servidor) {
-		this.servidor = servidor;
+	public void setServidorId(Servidor servidorId) {
+		this.servidorId = servidorId;
 	}
 
 	public String getSenha() {
@@ -117,12 +115,12 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	public int getPerfil() {
-		return perfil;
+	public int getPerfilId() {
+		return perfilId;
 	}
 
-	public void setPerfil(int perfil) {
-		this.perfil = perfil;
+	public void setPerfilId(int perfilId) {
+		this.perfilId = perfilId;
 	}
 
 	public int getAtivo() {
@@ -141,28 +139,28 @@ public class Usuario {
 		this.certificado = certificado;
 	}
 
-	public LocalDateTime getDataExpiracao() {
-		return dataExpiracao;
+	public LocalDateTime getDataexpiracao() {
+		return dataexpiracao;
 	}
 
-	public void setDataExpiracao(LocalDateTime dataExpiracao) {
-		this.dataExpiracao = dataExpiracao;
+	public void setDataexpiracao(LocalDateTime dataexpiracao) {
+		this.dataexpiracao = dataexpiracao;
 	}
 
-	public LocalDateTime getUltimoAcesso() {
-		return ultimoAcesso;
+	public LocalDateTime getUltimoacesso() {
+		return ultimoacesso;
 	}
 
-	public void setUltimoAcesso(LocalDateTime ultimoAcesso) {
-		this.ultimoAcesso = ultimoAcesso;
+	public void setUltimoacesso(LocalDateTime ultimoacesso) {
+		this.ultimoacesso = ultimoacesso;
 	}
 
-	public LocalDateTime getDataCriacao() {
-		return dataCriacao;
+	public LocalDateTime getDatacriacao() {
+		return datacriacao;
 	}
 
-	public void setDataCriacao(LocalDateTime dataCriacao) {
-		this.dataCriacao = dataCriacao;
+	public void setDatacriacao(LocalDateTime datacriacao) {
+		this.datacriacao = datacriacao;
 	}
 
 	public String getImage() {
@@ -200,10 +198,10 @@ public class Usuario {
 
 	@Override
 	public String toString() {
-		return "Usuario [id=" + id + ", name=" + name + ", cpf=" + cpf + ", nickName=" + nickName + ", servidor="
-				+ servidor + ", senha=" + senha + ", perfil=" + perfil + ", lotacao=" + ", ativo=" + ativo
-				+ ", certificado=" + certificado + ", dataExpiracao=" + dataExpiracao + ", ultimoAcesso=" + ultimoAcesso
-				+ ", dataCriacao=" + dataCriacao + ", image=" + image + ", flag=" + flag + "]";
+		return "Usuario [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", nickname=" + nickname + ", servidorId="
+				+ servidorId + ", senha=" + senha + ", perfilId=" + perfilId + ", ativo=" + ativo + ", certificado="
+				+ certificado + ", dataexpiracao=" + dataexpiracao + ", ultimoacesso=" + ultimoacesso + ", datacriacao="
+				+ datacriacao + ", image=" + image + ", flag=" + flag + "]";
 	}
 
 }
