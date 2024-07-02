@@ -6,6 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -17,7 +18,7 @@ public class Acompanha {
 	private Integer id;
 
 	@ManyToOne
-	@Column(name = "proc_id")
+	@JoinColumn(name = "proc_id")
 	private Processo processo;
 
 	@Column(name = "USU_ID")
