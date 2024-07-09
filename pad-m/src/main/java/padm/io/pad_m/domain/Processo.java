@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,18 +27,22 @@ public class Processo {
 
 	private String assunto;
 
-	private int docprocId;
+	@ManyToOne
+	@JoinColumn(name = "docproc_id")
+	private Doc documento;
 
-	@Column(name = "evento_id")
-	private int eventoId;
+	@ManyToOne
+	@JoinColumn(name = "evento_id")
+	private Evento eventoId;
 
 	@Column(name = "class_id")
 	private int classId;
 
 	private String classificacao;
 
-	@Column(name = "fase_id")
-	private int faseId;
+	@ManyToOne
+	@JoinColumn(name = "fase_id")
+	private Fase faseId;
 
 	private int rotuloId;
 
@@ -48,14 +53,17 @@ public class Processo {
 
 	private LocalDateTime datacriacao;
 
+	@ManyToOne
 	@JoinColumn(name = "interessado_id")
 	private Interessado interessadoId;
 
+	@ManyToOne
 	@JoinColumn(name = "minuta_id")
 	private Minuta minutaId;
-	
+
 	private int lembreteId;
 
+	@ManyToOne
 	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
 
@@ -93,18 +101,20 @@ public class Processo {
 	}
 
 	public Processo(Integer id, Integer numproc, String tipo, Long ano, String numanoproc, String assunto,
-			int docprocId, int eventoId, int classId, String classificacao, int faseId, int rotuloId, int usucriadorId,
-			int setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId, Minuta minutaId, int lembreteId,
-			Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso, int procapensoprincId,
-			String motivoapensoprinc, int procoanexadoId, int flaganexadoId, String motivoanexo, int procanexoprincId,
-			int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs, int seq, int flag) {
+			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
+			int usucriadorId, int setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId, Minuta minutaId,
+			int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
+			int procapensoprincId, String motivoapensoprinc, int procoanexadoId, int flaganexadoId, String motivoanexo,
+			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
+			int seq, int flag) {
+		super();
 		this.id = id;
 		this.numproc = numproc;
 		this.tipo = tipo;
 		this.ano = ano;
 		this.numanoproc = numanoproc;
 		this.assunto = assunto;
-		this.docprocId = docprocId;
+		this.documento = documento;
 		this.eventoId = eventoId;
 		this.classId = classId;
 		this.classificacao = classificacao;
@@ -182,22 +192,6 @@ public class Processo {
 		this.assunto = assunto;
 	}
 
-	public int getDocprocId() {
-		return docprocId;
-	}
-
-	public void setDocprocId(int docprocId) {
-		this.docprocId = docprocId;
-	}
-
-	public int getEventoId() {
-		return eventoId;
-	}
-
-	public void setEventoId(int eventoId) {
-		this.eventoId = eventoId;
-	}
-
 	public int getClassId() {
 		return classId;
 	}
@@ -212,14 +206,6 @@ public class Processo {
 
 	public void setClassificacao(String classificacao) {
 		this.classificacao = classificacao;
-	}
-
-	public int getFaseId() {
-		return faseId;
-	}
-
-	public void setFaseId(int faseId) {
-		this.faseId = faseId;
 	}
 
 	public int getRotuloId() {
@@ -406,6 +392,30 @@ public class Processo {
 		this.flag = flag;
 	}
 
+	public Doc getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(Doc documento) {
+		this.documento = documento;
+	}
+
+	public Evento getEventoId() {
+		return eventoId;
+	}
+
+	public void setEventoId(Evento eventoId) {
+		this.eventoId = eventoId;
+	}
+
+	public Fase getFaseId() {
+		return faseId;
+	}
+
+	public void setFaseId(Fase faseId) {
+		this.faseId = faseId;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -421,21 +431,6 @@ public class Processo {
 			return false;
 		Processo other = (Processo) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "Processo [id=" + id + ", numproc=" + numproc + ", tipo=" + tipo + ", ano=" + ano + ", numanoproc="
-				+ numanoproc + ", assunto=" + assunto + ", docprocId=" + docprocId + ", eventoId=" + eventoId
-				+ ", classId=" + classId + ", classificacao=" + classificacao + ", faseId=" + faseId + ", rotuloId="
-				+ rotuloId + ", usucriadorId=" + usucriadorId + ", setorcriadorId=" + setorcriadorId + ", datacriacao="
-				+ datacriacao + ", interessadoId=" + interessadoId + ", minutaId=" + minutaId + ", lembreteId="
-				+ lembreteId + ", sigiloId=" + sigiloId + ", procapensadoId=" + procapensadoId + ", flagapensoId="
-				+ flagapensoId + ", motivoapenso=" + motivoapenso + ", procapensoprincId=" + procapensoprincId
-				+ ", motivoapensoprinc=" + motivoapensoprinc + ", procoanexadoId=" + procoanexadoId + ", flaganexadoId="
-				+ flaganexadoId + ", motivoanexo=" + motivoanexo + ", procanexoprincId=" + procanexoprincId
-				+ ", flaganexoprincId=" + flaganexoprincId + ", motivoanexoprinc=" + motivoanexoprinc + ", data=" + data
-				+ ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + "]";
 	}
 
 }

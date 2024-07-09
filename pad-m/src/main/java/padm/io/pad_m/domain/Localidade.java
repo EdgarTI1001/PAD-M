@@ -2,9 +2,10 @@ package padm.io.pad_m.domain;
 
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,7 +15,8 @@ public class Localidade {
 	@Id
 	private Integer id;
 
-	@Column(name = "ORAGOID")
+	@ManyToOne
+	@JoinColumn(name = "orgaoid")
 	private Orgao orgaoid;
 
 	private String nome;

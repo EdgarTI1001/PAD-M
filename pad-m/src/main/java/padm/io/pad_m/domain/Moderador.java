@@ -7,6 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,12 +17,15 @@ public class Moderador {
 	@Id
 	private Integer id;
 
+	@ManyToOne
 	@JoinColumn(name = "setor_id")
 	private Setor setorId;
 
+	@ManyToOne
 	@JoinColumn(name = "servidor_id")
 	private Servidor servidorId;
 
+	@ManyToOne
 	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
 

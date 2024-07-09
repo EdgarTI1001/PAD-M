@@ -20,10 +20,12 @@ public class Doc {
 	@JoinColumn(name = "PROC_ID")
 	private Processo proc_id;
 
-	@Column(name = "USU_ID")
+	@ManyToOne
+	@JoinColumn(name = "usu_id")
 	private Usuario usu_id;
 
-	@Column(name = "SET_ID")
+	@ManyToOne
+	@JoinColumn(name = "set_id")
 	private Setor set_id;
 
 	@Column(name = "NOMDOC")

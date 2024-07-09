@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,16 +17,20 @@ public class Gestor {
 	@Id
 	private Integer id;
 
-	@Column(name = "USER_ID")
+	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private Usuario user_id;
 
-	@Column(name = "SETOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "setor_id")
 	private Setor setor_id;
 
-	@Column(name = "SERVIDOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "servidor_id")
 	private Servidor servidor_id;
 
-	@Column(name = "SIGILO_ID")
+	@ManyToOne
+	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigilo_id;
 
 	private String visibilidade;
@@ -32,7 +38,7 @@ public class Gestor {
 	private String obs;
 
 	@Column(name = "USERCRIADOR_ID")
-	private Usuario usercriador_id;
+	private int usercriador_id;
 
 	private LocalDateTime datacriacao;
 
@@ -49,7 +55,7 @@ public class Gestor {
 	}
 
 	public Gestor(Integer id, Usuario user_id, Setor setor_id, Servidor servidor_id, Sigilo sigilo_id,
-			String visibilidade, String obs, Usuario usercriador_id, LocalDateTime datacriacao,
+			String visibilidade, String obs, int usercriador_id, LocalDateTime datacriacao,
 			LocalDateTime dataremocao, int seq, int flag, int placed) {
 		super();
 		this.id = id;
@@ -123,11 +129,11 @@ public class Gestor {
 		this.obs = obs;
 	}
 
-	public Usuario getUsercriador_id() {
+	public int getUsercriador_id() {
 		return usercriador_id;
 	}
 
-	public void setUsercriador_id(Usuario usercriador_id) {
+	public void setUsercriador_id(int usercriador_id) {
 		this.usercriador_id = usercriador_id;
 	}
 

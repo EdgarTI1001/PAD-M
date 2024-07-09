@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,16 +17,20 @@ public class Evento {
 	@Id
 	private Integer id;
 
-	@Column(name = "TIPO_ID")
+	@ManyToOne
+	@JoinColumn(name = "tipo_id")
 	private TipoEvento tipo_id;
 
-	@Column(name = "TRAMITE_ID")
+	@ManyToOne
+	@JoinColumn(name = "tramite_id")
 	private Tramite tramite_id;
 
-	@Column(name = "PROC_ID")
+	@ManyToOne
+	@JoinColumn(name = "proc_id")
 	private Processo proc_id;
 
-	@Column(name = "DOC_ID")
+	@ManyToOne
+	@JoinColumn(name = "doc_id")
 	private Doc doc_id;
 
 	private LocalDateTime dataevento;
@@ -33,7 +39,8 @@ public class Evento {
 
 	private LocalDateTime datatermino;
 
-	@Column(name = "USER_ID")
+	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private Usuario user_id;
 
 	@Column(name = "USERCRIADO_ID")
@@ -42,16 +49,20 @@ public class Evento {
 	@Column(name = "RESPONSAVEL_ID")
 	private Integer responsavel_id;
 
-	@Column(name = "ATENDENTE_ID")
+	@ManyToOne
+	@JoinColumn(name = "atendente_id")
 	private Atendente atendente_id;
 
-	@Column(name = "MODERADOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "moderador_id")
 	private Moderador moderador_id;
 
-	@Column(name = "GESTOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "gestor_id")
 	private Gestor gestor_id;
 
-	@Column(name = "SETOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "setor_Id")
 	private Setor setor_Id;
 
 	private String evento;
@@ -76,8 +87,9 @@ public class Evento {
 
 	private LocalDateTime datasaida;
 
-	@Column(name = "FINALIDADE_ID")
-	private Integer finalidade_id;
+	@ManyToOne
+	@JoinColumn(name = "finalidade_id")
+	private Finalidade finalidade_id;
 
 	private String finalidade;
 
@@ -109,7 +121,7 @@ public class Evento {
 			Integer usercriado_id, Integer responsavel_id, Atendente atendente_id, Moderador moderador_id,
 			Gestor gestor_id, Setor setor_Id, String evento, String orgenv, LocalDateTime dataorgenv, String usuenv,
 			LocalDateTime datausuenv, String orgrec, LocalDateTime dataorgrec, String usurec, LocalDateTime datausurec,
-			LocalDateTime datachegada, LocalDateTime datasaida, Integer finalidade_id, String finalidade,
+			LocalDateTime datachegada, LocalDateTime datasaida, Finalidade finalidade_id, String finalidade,
 			Integer motivo_id, String motivo, String statusenviado, String statusrecebido, String statusproc,
 			String obs, Integer seq, Integer flag, Integer placed) {
 		super();
@@ -360,11 +372,11 @@ public class Evento {
 		this.datasaida = datasaida;
 	}
 
-	public Integer getFinalidade_id() {
+	public Finalidade getFinalidade_id() {
 		return finalidade_id;
 	}
 
-	public void setFinalidade_id(Integer finalidade_id) {
+	public void setFinalidade_id(Finalidade finalidade_id) {
 		this.finalidade_id = finalidade_id;
 	}
 

@@ -6,6 +6,8 @@ import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,16 +17,20 @@ public class Atendente {
 	@Id
 	private Integer id;
 
-	@Column(name = "USER_ID")
+	@ManyToOne
+	@JoinColumn(name = "user_id")
 	private Usuario usuario;
 
-	@Column(name = "SETOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "setor_id")
 	private Setor setor;
 
-	@Column(name = "SERVIDOR_ID")
+	@ManyToOne
+	@JoinColumn(name = "servidor_id")
 	private Servidor servidor;
 
-	@Column(name = "SIGILO_ID")
+	@ManyToOne
+	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigilo;
 
 	private String visibilidade;
@@ -33,8 +39,7 @@ public class Atendente {
 
 	private String obs;
 
-	@Column(name = "USERCRIADOR_ID")
-	private Usuario usecriadorid;
+	private int usecriadorId;
 
 	@Column(name = "datacriacao")
 	private LocalDateTime datacriacao;
@@ -53,7 +58,7 @@ public class Atendente {
 	}
 
 	public Atendente(Integer id, Usuario usuario, Setor setor, Servidor servidor, Sigilo sigilo, String visibilidade,
-			LocalDateTime data, String obs, Usuario usecriadorid, LocalDateTime datacriacao, LocalDateTime dataremocao,
+			LocalDateTime data, String obs, int usecriadorId, LocalDateTime datacriacao, LocalDateTime dataremocao,
 			int seq, int flag, int placed) {
 		super();
 		this.id = id;
@@ -64,7 +69,7 @@ public class Atendente {
 		this.visibilidade = visibilidade;
 		this.data = data;
 		this.obs = obs;
-		this.usecriadorid = usecriadorid;
+		this.usecriadorId = usecriadorId;
 		this.datacriacao = datacriacao;
 		this.dataremocao = dataremocao;
 		this.seq = seq;
@@ -136,12 +141,12 @@ public class Atendente {
 		this.obs = obs;
 	}
 
-	public Usuario getUsecriadorid() {
-		return usecriadorid;
+	public int getUsecriadorId() {
+		return usecriadorId;
 	}
 
-	public void setUsecriadorid(Usuario usecriadorid) {
-		this.usecriadorid = usecriadorid;
+	public void setUsecriadorId(int usecriadorId) {
+		this.usecriadorId = usecriadorId;
 	}
 
 	public LocalDateTime getDatacriacao() {

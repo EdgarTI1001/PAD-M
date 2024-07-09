@@ -3,7 +3,6 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -33,19 +32,25 @@ public class Tramite {
 
 	private LocalDateTime datacheck;
 
-	@Column(name = "proc_id")
-	private int procId;
-	
-	@Column(name = "doc_id")
-	private int docId;
+	@ManyToOne
+	@JoinColumn(name = "proc_id")
+	private Processo procId;
 
-	private int userId;
+	@ManyToOne
+	@JoinColumn(name = "doc_id")
+	private Doc docId;
+
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	private Usuario userId;
 
 	private int usercriadorId;
 
 	private int resposavelId;
 
-	private int atendenteId;
+	@ManyToOne
+	@JoinColumn(name = "atendente_id")
+	private Atendente atendenteId;
 
 	@ManyToOne
 	@JoinColumn(name = "moderador_id")
@@ -93,12 +98,13 @@ public class Tramite {
 	}
 
 	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
-			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, int procId, int docId,
-			int userId, int usercriadorId, int resposavelId, int atendenteId, Moderador moderadorId, Gestor gestorId,
-			String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
+			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId, Doc docId,
+			Usuario userId, int usercriadorId, int resposavelId, Atendente atendenteId, Moderador moderadorId,
+			Gestor gestorId, String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
 			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
 			LocalDateTime datarecebimento, int espera, LocalDateTime datainiciioespera, LocalDateTime datafimespera,
 			int seq, int flag, int placeid) {
+		super();
 		this.id = id;
 		this.tipo = tipo;
 		this.setororigem = setororigem;
@@ -206,30 +212,6 @@ public class Tramite {
 		this.datacheck = datacheck;
 	}
 
-	public int getProcId() {
-		return procId;
-	}
-
-	public void setProcId(int procId) {
-		this.procId = procId;
-	}
-
-	public int getDocId() {
-		return docId;
-	}
-
-	public void setDocId(int docId) {
-		this.docId = docId;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
-
 	public int getUsercriadorId() {
 		return usercriadorId;
 	}
@@ -244,14 +226,6 @@ public class Tramite {
 
 	public void setResposavelId(int resposavelId) {
 		this.resposavelId = resposavelId;
-	}
-
-	public int getAtendenteId() {
-		return atendenteId;
-	}
-
-	public void setAtendenteId(int atendenteId) {
-		this.atendenteId = atendenteId;
 	}
 
 	public Moderador getModeradorId() {
@@ -396,6 +370,38 @@ public class Tramite {
 
 	public void setPlaceid(int placeid) {
 		this.placeid = placeid;
+	}
+
+	public Processo getProcId() {
+		return procId;
+	}
+
+	public void setProcId(Processo procId) {
+		this.procId = procId;
+	}
+
+	public Doc getDocId() {
+		return docId;
+	}
+
+	public void setDocId(Doc docId) {
+		this.docId = docId;
+	}
+
+	public Usuario getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Usuario userId) {
+		this.userId = userId;
+	}
+
+	public Atendente getAtendenteId() {
+		return atendenteId;
+	}
+
+	public void setAtendenteId(Atendente atendenteId) {
+		this.atendenteId = atendenteId;
 	}
 
 	@Override

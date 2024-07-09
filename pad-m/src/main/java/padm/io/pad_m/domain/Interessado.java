@@ -3,9 +3,10 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -15,10 +16,12 @@ public class Interessado {
 	@Id
 	private Integer id;
 
-	@Column(name = "PROC_ID")
+	@ManyToOne
+	@JoinColumn(name = "proc_id")
 	private Processo proc_id;
 
-	@Column(name = "USU_ID")
+	@ManyToOne
+	@JoinColumn(name = "usu_id")
 	private Usuario usu_id;
 
 	private String interessado;

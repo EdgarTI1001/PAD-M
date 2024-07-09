@@ -3,7 +3,6 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -21,7 +20,8 @@ public class Acompanha {
 	@JoinColumn(name = "proc_id")
 	private Processo processo;
 
-	@Column(name = "USU_ID")
+	@ManyToOne
+	@JoinColumn(name = "usu_id")
 	private Usuario usuario;
 
 	private String interessado;

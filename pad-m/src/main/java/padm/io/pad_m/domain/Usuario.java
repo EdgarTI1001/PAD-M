@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,7 +24,7 @@ public class Usuario {
 
 	private String nickname;
 
-	@Column(name = "servidor_id")
+	@JoinColumn(name = "servidor_id")
 	private Servidor servidorId;
 
 	@JsonIgnore
