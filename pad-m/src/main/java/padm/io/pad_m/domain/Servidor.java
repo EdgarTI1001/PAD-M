@@ -84,7 +84,7 @@ public class Servidor {
 
 	private String image;
 
-	private int placeid;
+	private int placed;
 
 	private int ativo;
 
@@ -103,7 +103,7 @@ public class Servidor {
 			String email, LocalDateTime dataadmissao, LocalDateTime datadesligamento, int contratoId, int setorpaiId,
 			int setorlotacaoId, LocalDateTime datacadastro, int perfilId, String hash, String certificado,
 			LocalDateTime dataexpiracao, LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image,
-			int placeid, int ativo, String obs, int seq, int flag) {
+			int placed, int ativo, String obs, int seq, int flag) {
 		this.id = id;
 		this.usuarioId = usuarioId;
 		this.nome = nome;
@@ -136,7 +136,7 @@ public class Servidor {
 		this.ultimoacesso = ultimoacesso;
 		this.datacriacao = datacriacao;
 		this.image = image;
-		this.placeid = placeid;
+		this.placed = placed;
 		this.ativo = ativo;
 		this.obs = obs;
 		this.seq = seq;
@@ -399,12 +399,12 @@ public class Servidor {
 		this.image = image;
 	}
 
-	public int getPlaceid() {
-		return placeid;
+	public int getPlaced() {
+		return placed;
 	}
 
-	public void setPlaceid(int placeid) {
-		this.placeid = placeid;
+	public void setPlaced(int placed) {
+		this.placed = placed;
 	}
 
 	public int getAtivo() {
@@ -467,8 +467,7 @@ public class Servidor {
 				+ ", setorpaiId=" + setorpaiId + ", setorlotacaoId=" + setorlotacaoId + ", datacadastro=" + datacadastro
 				+ ", perfilId=" + perfilId + ", hash=" + hash + ", certificado=" + certificado + ", dataexpiracao="
 				+ dataexpiracao + ", ultimoacesso=" + ultimoacesso + ", datacriacao=" + datacriacao + ", image=" + image
-				+ ", placeid=" + placeid + ", ativo=" + ativo + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag
-				+ "]";
+				+ ", placed=" + placed + ", ativo=" + ativo + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + "]";
 	}
 
 }

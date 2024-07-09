@@ -3,6 +3,7 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,19 +18,19 @@ public class Atendente {
 	@Id
 	private Integer id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id")
 	private Usuario usuario;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "setor_id")
 	private Setor setor;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "servidor_id")
 	private Servidor servidor;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigilo;
 
@@ -38,8 +39,6 @@ public class Atendente {
 	private LocalDateTime data;
 
 	private String obs;
-
-	private int usecriadorId;
 
 	@Column(name = "datacriacao")
 	private LocalDateTime datacriacao;
@@ -51,16 +50,12 @@ public class Atendente {
 
 	private int flag;
 
-	private int placed;
-
 	public Atendente() {
 
 	}
 
 	public Atendente(Integer id, Usuario usuario, Setor setor, Servidor servidor, Sigilo sigilo, String visibilidade,
-			LocalDateTime data, String obs, int usecriadorId, LocalDateTime datacriacao, LocalDateTime dataremocao,
-			int seq, int flag, int placed) {
-		super();
+			LocalDateTime data, String obs, LocalDateTime datacriacao, LocalDateTime dataremocao, int seq, int flag) {
 		this.id = id;
 		this.usuario = usuario;
 		this.setor = setor;
@@ -69,12 +64,10 @@ public class Atendente {
 		this.visibilidade = visibilidade;
 		this.data = data;
 		this.obs = obs;
-		this.usecriadorId = usecriadorId;
 		this.datacriacao = datacriacao;
 		this.dataremocao = dataremocao;
 		this.seq = seq;
 		this.flag = flag;
-		this.placed = placed;
 	}
 
 	public Integer getId() {
@@ -141,14 +134,6 @@ public class Atendente {
 		this.obs = obs;
 	}
 
-	public int getUsecriadorId() {
-		return usecriadorId;
-	}
-
-	public void setUsecriadorId(int usecriadorId) {
-		this.usecriadorId = usecriadorId;
-	}
-
 	public LocalDateTime getDatacriacao() {
 		return datacriacao;
 	}
@@ -181,14 +166,6 @@ public class Atendente {
 		this.flag = flag;
 	}
 
-	public int getPlaced() {
-		return placed;
-	}
-
-	public void setPlaced(int placed) {
-		this.placed = placed;
-	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -204,6 +181,14 @@ public class Atendente {
 			return false;
 		Atendente other = (Atendente) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "Atendente [id=" + id + ", usuario=" + usuario + ", setor=" + setor + ", servidor=" + servidor
+				+ ", sigilo=" + sigilo + ", visibilidade=" + visibilidade + ", data=" + data + ", obs=" + obs
+				+ ", datacriacao=" + datacriacao + ", dataremocao=" + dataremocao + ", seq=" + seq + ", flag=" + flag
+				+ "]";
 	}
 
 }

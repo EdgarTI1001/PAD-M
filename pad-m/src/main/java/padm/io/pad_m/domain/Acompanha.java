@@ -3,6 +3,7 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -16,11 +17,11 @@ public class Acompanha {
 	@Id
 	private Integer id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "proc_id")
 	private Processo processo;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "usu_id")
 	private Usuario usuario;
 
