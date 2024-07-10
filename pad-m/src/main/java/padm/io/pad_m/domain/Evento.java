@@ -43,8 +43,7 @@ public class Evento {
 	@JoinColumn(name = "user_id")
 	private Usuario user_id;
 
-	@Column(name = "USERCRIADO_ID")
-	private Integer usercriado_id;
+	private Integer usercriador_id;
 
 	@Column(name = "RESPONSAVEL_ID")
 	private Integer responsavel_id;
@@ -118,7 +117,7 @@ public class Evento {
 
 	public Evento(Integer id, TipoEvento tipo_id, Tramite tramite_id, Processo proc_id, Doc doc_id,
 			LocalDateTime dataevento, LocalDateTime datainicio, LocalDateTime datatermino, Usuario user_id,
-			Integer usercriado_id, Integer responsavel_id, Atendente atendente_id, Moderador moderador_id,
+			Integer usercriador_id, Integer responsavel_id, Atendente atendente_id, Moderador moderador_id,
 			Gestor gestor_id, Setor setor_Id, String evento, String orgenv, LocalDateTime dataorgenv, String usuenv,
 			LocalDateTime datausuenv, String orgrec, LocalDateTime dataorgrec, String usurec, LocalDateTime datausurec,
 			LocalDateTime datachegada, LocalDateTime datasaida, Finalidade finalidade_id, String finalidade,
@@ -134,7 +133,7 @@ public class Evento {
 		this.datainicio = datainicio;
 		this.datatermino = datatermino;
 		this.user_id = user_id;
-		this.usercriado_id = usercriado_id;
+		this.usercriador_id = usercriador_id;
 		this.responsavel_id = responsavel_id;
 		this.atendente_id = atendente_id;
 		this.moderador_id = moderador_id;
@@ -236,12 +235,12 @@ public class Evento {
 		this.user_id = user_id;
 	}
 
-	public Integer getUsercriado_id() {
-		return usercriado_id;
+	public Integer getUsercriador_id() {
+		return usercriador_id;
 	}
 
-	public void setUsercriado_id(Integer usercriado_id) {
-		this.usercriado_id = usercriado_id;
+	public void setUsercriador_id(Integer usercriador_id) {
+		this.usercriador_id = usercriador_id;
 	}
 
 	public Integer getResponsavel_id() {

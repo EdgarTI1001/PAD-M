@@ -48,7 +48,7 @@ public class Processo {
 
 	private int usucriadorId;
 
-	@Column(name = "setorcriador_id")
+	@Column(name = "setcriador_id")
 	private int setorcriadorId;
 
 	private LocalDateTime datacriacao;
@@ -77,7 +77,7 @@ public class Processo {
 
 	private String motivoapensoprinc;
 
-	private int procoanexadoId;
+	private int procanexado_id;
 
 	private int flaganexadoId;
 
@@ -104,7 +104,7 @@ public class Processo {
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
 			int usucriadorId, int setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId, Minuta minutaId,
 			int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
-			int procapensoprincId, String motivoapensoprinc, int procoanexadoId, int flaganexadoId, String motivoanexo,
+			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexadoId, String motivoanexo,
 			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
 			int seq, int flag) {
 		super();
@@ -132,7 +132,7 @@ public class Processo {
 		this.motivoapenso = motivoapenso;
 		this.procapensoprincId = procapensoprincId;
 		this.motivoapensoprinc = motivoapensoprinc;
-		this.procoanexadoId = procoanexadoId;
+		this.procanexado_id = procanexado_id;
 		this.flaganexadoId = flaganexadoId;
 		this.motivoanexo = motivoanexo;
 		this.procanexoprincId = procanexoprincId;
@@ -312,12 +312,12 @@ public class Processo {
 		this.motivoapensoprinc = motivoapensoprinc;
 	}
 
-	public int getProcoanexadoId() {
-		return procoanexadoId;
+	public int getProcanexado_id() {
+		return procanexado_id;
 	}
 
-	public void setProcoanexadoId(int procoanexadoId) {
-		this.procoanexadoId = procoanexadoId;
+	public void setProcanexado_id(int procanexado_id) {
+		this.procanexado_id = procanexado_id;
 	}
 
 	public int getFlaganexadoId() {

@@ -46,7 +46,7 @@ public class Tramite {
 
 	private int usercriadorId;
 
-	private int resposavelId;
+	private int responsavelId;
 
 	@ManyToOne
 	@JoinColumn(name = "atendente_id")
@@ -84,7 +84,7 @@ public class Tramite {
 
 	private int espera;
 
-	private LocalDateTime datainiciioespera;
+	private LocalDateTime datainicioespera;
 
 	private LocalDateTime datafimespera;
 
@@ -92,18 +92,18 @@ public class Tramite {
 
 	private int flag;
 
-	private int placeid;
+	private int placed;
 
 	public Tramite() {
 	}
 
 	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
 			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId, Doc docId,
-			Usuario userId, int usercriadorId, int resposavelId, Atendente atendenteId, Moderador moderadorId,
+			Usuario userId, int usercriadorId, int responsavelId, Atendente atendenteId, Moderador moderadorId,
 			Gestor gestorId, String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
 			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
-			LocalDateTime datarecebimento, int espera, LocalDateTime datainiciioespera, LocalDateTime datafimespera,
-			int seq, int flag, int placeid) {
+			LocalDateTime datarecebimento, int espera, LocalDateTime datainicioespera, LocalDateTime datafimespera,
+			int seq, int flag, int placed) {
 		super();
 		this.id = id;
 		this.tipo = tipo;
@@ -118,7 +118,7 @@ public class Tramite {
 		this.docId = docId;
 		this.userId = userId;
 		this.usercriadorId = usercriadorId;
-		this.resposavelId = resposavelId;
+		this.responsavelId = responsavelId;
 		this.atendenteId = atendenteId;
 		this.moderadorId = moderadorId;
 		this.gestorId = gestorId;
@@ -133,11 +133,11 @@ public class Tramite {
 		this.recebimento = recebimento;
 		this.datarecebimento = datarecebimento;
 		this.espera = espera;
-		this.datainiciioespera = datainiciioespera;
+		this.datainicioespera = datainicioespera;
 		this.datafimespera = datafimespera;
 		this.seq = seq;
 		this.flag = flag;
-		this.placeid = placeid;
+		this.placed = placed;
 	}
 
 	public Integer getId() {
@@ -220,12 +220,14 @@ public class Tramite {
 		this.usercriadorId = usercriadorId;
 	}
 
-	public int getResposavelId() {
-		return resposavelId;
+	
+
+	public int getResponsavelId() {
+		return responsavelId;
 	}
 
-	public void setResposavelId(int resposavelId) {
-		this.resposavelId = resposavelId;
+	public void setResponsavelId(int responsavelId) {
+		this.responsavelId = responsavelId;
 	}
 
 	public Moderador getModeradorId() {
@@ -332,12 +334,12 @@ public class Tramite {
 		this.espera = espera;
 	}
 
-	public LocalDateTime getDatainiciioespera() {
-		return datainiciioespera;
+	public LocalDateTime getDatainicioespera() {
+		return datainicioespera;
 	}
 
-	public void setDatainiciioespera(LocalDateTime datainiciioespera) {
-		this.datainiciioespera = datainiciioespera;
+	public void setDatainicioespera(LocalDateTime datainicioespera) {
+		this.datainicioespera = datainicioespera;
 	}
 
 	public LocalDateTime getDatafimespera() {
@@ -364,12 +366,12 @@ public class Tramite {
 		this.flag = flag;
 	}
 
-	public int getPlaceid() {
-		return placeid;
+	public int getPlaced() {
+		return placed;
 	}
 
-	public void setPlaceid(int placeid) {
-		this.placeid = placeid;
+	public void setPlaced(int placed) {
+		this.placed = placed;
 	}
 
 	public Processo getProcId() {
@@ -426,11 +428,11 @@ public class Tramite {
 		return "Tramite [id=" + id + ", setororigem=" + setororigem + ", setorcriador=" + setorcriador
 				+ ", localtramite=" + localtramite + ", setordestino=" + setordestino + ", procId=" + procId
 				+ ", docId=" + docId + ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", resposavelId="
-				+ resposavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId="
+				+ responsavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId="
 				+ gestorId + ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId + ", finalidade="
 				+ finalidade + ", obs=" + obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade
 				+ ", recebimento=" + recebimento + ", espera=" + espera + ", seq=" + seq + ", flag=" + flag
-				+ ", placeid=" + placeid + "]";
+				+ ", placed=" + placed + "]";
 	}
 
 }

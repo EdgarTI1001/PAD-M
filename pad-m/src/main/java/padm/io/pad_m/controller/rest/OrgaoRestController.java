@@ -24,8 +24,7 @@ public class OrgaoRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Orgao> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
+	public ResponseEntity<Orgao> findById(@PathVariable("id") Integer id) {		
 		Orgao orgao = orgaoService.findById(id).get();
 		return ResponseEntity.ok(orgao);
 	}
