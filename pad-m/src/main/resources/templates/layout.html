@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+   <head>
+ <meta charset="UTF-8"/>
+ <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+ <meta name="description" content="Sistema Template" />
+ <meta name="author" content="Moacir Viana" />
+ <title>VotaCom</title>  
+ <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" />
+ <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"> 
+ <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"> 
+ <link th:href="@{/css/animate.min.css}" rel="stylesheet">
+ <link th:href="@{/css/sweetalert2.min.css}" rel="stylesheet">
+ <link th:href="@{/css/main.css}" rel="stylesheet" sec:authorize="isAuthenticated()">
+ <link th:href="@{/css/login.css}" rel="stylesheet" sec:authorize="!isAuthenticated()">
+ <link th:href="@{/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4" sec:authorize="isAuthenticated()">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">VotaCom</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a th:classappend="${activePage} == 'home' ? 'active'" 
+               class="nav-link" th:href="@{/}">Home</a>
+        </li>
+        
+        
+           <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" th:classappend="${activePage} == 'mnuTabelas' ? 'active'" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Candidatos          
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">            
+            <li><a class="dropdown-item" th:href="@{/candidato}">Consultar</a></li>           
+             <li><a class="dropdown-item" sec:authorize="hasAnyRole('ROLE_ADMIN')" th:href="@{/candidato/new}">Novo</a></li>
+          </ul>          
+        </li>
+
+              
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+          <a th:classappend="${activePage} == 'mnuLogin' ? 'active'" 
+            class="nav-link" th:href="@{/step1}">Login 
+                <i class="fa fa-database fa" aria-hidden="true" 
+          		     th:style="${isProducao} ? 'color:green' : 'color:red'"
+          		         th:title="${isProducao} ? 'Banco Produção' : 'Banco Homologação'"></i>
+          </a>
+        </li>
+        
+         <li class="nav-item dropdown" sec:authorize="isAuthenticated()"
+                  th:with="userName=${#authentication.getPrincipal().getUsername()}, 
+                  			isProducao=${#authentication.getPrincipal().getUsuario().isProducao()}, 
+                 			 nome=${#authentication.getPrincipal().getUsuario().getNome()}">
+           <a th:classappend="${activePage} == 'mnuUsuarios' ? 'active'" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
+                 data-bs-toggle="dropdown" aria-expanded="false">
+             <small th:text="@{(${userName})}"></small> - 
+             <small th:text="@{(${nome})}"></small>
+             &nbsp;
+             <i class="fa fa-database fa" aria-hidden="true" 
+          		     th:style="@{(${isProducao})} ? 'color:green' : 'color:red'"
+          		         th:title="@{(${isProducao})} ? 'Banco Produção' : 'Banco Homologação'"></i>
+          </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" th:href="@{/usuarios/meusdados}">Meus dados</a></li>           
+            <li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item" th:href="@{/usuarios}">Usuários</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+          </ul>
+          
+        </li>
+        
+      </ul>
+ 
+    </div>
+  </div>
+ </nav>
+  
+<main class="container">
+ <div class="p-0 rounded">
+   <section layout:fragment="content">
+      <p>Conteúdo será renderizado aqui</p>
+   </section>
+ </div>
+</main>
+
+ <div layout:fragment="jscript">
+  <div id="loader" class="loader" style="display:none;"></div>
+ <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+ <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+ <script th:src="@{/js/sweetalert.min.js}"></script>
+ <script th:src="@{/js/jquery.inputmask.min.js}"></script>
+  <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+  <script th:src="@{/js/utils.js}"></script> 
+ 
+ </div> 
+ 
+</body>
+</html>

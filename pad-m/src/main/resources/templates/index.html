@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head></head>
+<body>
+ <section layout:fragment="content">
+
+   <h1>VotaCom</h1>
+    <p class="lead">
+Apresentamos o Sistema de Votação Voluntário, uma plataforma inovadora que visa enriquecer o processo democrático ao oferecer aos cidadãos a oportunidade de participar das eleições de forma opcional e flexível. Nossa plataforma permite que os eleitores votem de maneira conveniente, seja remotamente por meio de dispositivos eletrônicos ou presencialmente em locais designados.
+</br>
+Acreditamos que a democracia deve se adaptar às mudanças da sociedade e, portanto, valorizamos a liberdade de escolha dos cidadãos para exercer seu direito ao voto. Além disso, investimos em rigorosas medidas de segurança, incluindo a criptografia dos votos, para garantir a integridade e a transparência do processo eleitoral.
+</br>
+Nossa visão é fomentar o engajamento cívico, ampliando a participação dos eleitores e tornando a democracia mais inclusiva. Ao adotar o Sistema de Votação Voluntário, buscamos proporcionar uma plataforma confiável e acessível, permitindo que cada cidadão contribua para moldar o futuro de nossa nação.
+</br>
+Convidamos todos os cidadãos engajados a se unirem a nós nesse movimento de mudança, fortalecendo a democracia por meio da participação ativa. Ao exercerem seu direito de voto, os eleitores se tornam parte fundamental do processo decisório e do desenvolvimento de uma sociedade mais conectada e comprometida com os princípios democráticos.
+    </p>
+    <a class="btn btn-lg btn-primary" th:href="@{/candidato/new}" role="button">Cadastrar Candidato &raquo;</a> 
+ </section>
+ 
+<div layout:fragment="jscript">
+ <!-- <script src="content-script.js"></script>  -->
+ <script>
+    var URL = '[[@{/}]]api/';
+ </script>
+</div>
+  
+</body>
+</html>

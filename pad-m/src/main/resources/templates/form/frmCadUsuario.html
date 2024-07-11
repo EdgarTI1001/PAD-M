@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head></head>
+<body>
+ <section layout:fragment="content">
+
+ <div class="card">
+  <div class="card-header">Cadastro de Novo Usuarios</div>
+  <div class="card-body">
+	  <form class="row g-3" th:object="${usuario}" th:action="@{/usuarios/save}" method="post" id="frm">
+		<input type="hidden" th:field="*{id}">
+	    <div class="col-6">
+		   <label for="cbxUsuarios" class="form-label">Nome</label>
+		   <input type="text" id="nome" class="form-control" th:field="*{nome}" placeholder=""> 	  
+		    <br>
+		    <label for="cbxUsuarios" class="form-label">CPF</label>
+		   <input type="text" id="nome" class="form-control" th:field="*{cpf}" placeholder=""> 
+		    <br>
+		    <label for="cbxUsuarios" class="form-label">NickName</label>
+		   <input type="text" id="nome" class="form-control" th:field="*{nickname}" placeholder="">
+		   
+		 </div> 
+		 
+		  <div class="col-6">
+		 	 <label for="servidor" class="form-label">Servidor</label>		      
+		     <select id="servidor" class="form-select" >
+		     	     	
+		     </select>
+		    <br>
+		    <label for="cbxUsuarios" class="form-label">Senha</label>
+		   <input type="password" id="nome" class="form-control" th:field="*{senha}" placeholder=""> 
+		    <span class="fa fa-exclamation" style="color: red;">&nbsp;<small>Atenção  a senha é de uso pessoal e intransferível</small></span>
+		 </div>  
+		 
+		  
+         <div class="col-1"></div>
+		  <!--  <div class="col-4" >
+		  	<label for="chkPerfis" class="form-label">Perfis</label>
+		    <div class="form-check form-switch">
+			  <input class="form-check-input" type="checkbox" value="1" role="switch" id="perfis11" name="perfis[]">
+			  <label class="form-check-label" for="perfis11">Admin</label>
+			</div>
+		   	<div class="form-check form-switch">
+			 <input class="form-check-input" type="checkbox" value="ADMIN" role="switch" id="perfis11" name="perfis[]">
+			  <label class="form-check-label" for="perfis11">Operador</label>
+			</div> 
+
+			 
+		  </div>  -->
+		  
+		  <div class="col-12" >		  
+		       <button type="button" id="salvar" class="btn btn-primary btn-sm">Salvar</button>
+		    </div>
+		</form>          
+     </div>
+ </div>       
+    
+
+ </section>
+<div layout:fragment="jscript">
+<script type="text/javascript">
+ var URL = '[[@{/}]]';
+ $("#loader").show();
+ $( document ).ready(function() {
+	 $("#loader").hide();
+	 
+ $( "#salvar" ).click(function(event) {
+		event.preventDefault();
+		var data = $(event.delegateTarget).data();
+		var id = data.recordId;
+		
+	swal({
+		  title: 'Salvar?',
+		  text: "Deseja salvar novo Usuario?",
+		  icon: 'warning',
+		  buttons: [true, "Sim Salvar!"]
+		}).then((result) => {
+		  if (result) {
+		 	var frm = $("#frm").submit();
+		   }
+		}) 
+	 });
+ 
+
+ 
+});
+</script>
+</div>
+ 
+</body>
+</html>
