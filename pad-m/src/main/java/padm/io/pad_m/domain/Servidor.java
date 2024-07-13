@@ -3,8 +3,6 @@ package padm.io.pad_m.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +21,7 @@ public class Servidor {
 
 	private String nomereduzido;
 
-	private String cpf;
-
-	@JsonIgnore
-	private String senha;
+	private String cpf;	
 
 	private String rg;
 
@@ -93,7 +88,7 @@ public class Servidor {
 	public Servidor() {
 	}
 
-	public Servidor(Integer id, String nome, String nomereduzido, String cpf, String senha,
+	public Servidor(Integer id, String nome, String nomereduzido, String cpf,
 			String rg, String rgorgao, String cargofuncao, String endereco, String numero, String bairro,
 			String complemento, String cidade, String cep, String telefone1, String telefone2, String redesocial,
 			String email, LocalDateTime dataadmissao, LocalDateTime datadesligamento, int contratoId, int setorpaiId,
@@ -103,8 +98,7 @@ public class Servidor {
 		this.id = id;		
 		this.nome = nome;
 		this.nomereduzido = nomereduzido;
-		this.cpf = cpf;
-		this.senha = senha;
+		this.cpf = cpf;		
 		this.rg = rg;
 		this.rgorgao = rgorgao;
 		this.cargofuncao = cargofuncao;
@@ -172,13 +166,7 @@ public class Servidor {
 		this.cpf = cpf;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+	
 
 	public String getRg() {
 		return rg;
@@ -448,7 +436,7 @@ public class Servidor {
 	@Override
 	public String toString() {
 		return "Servidor [id=" + id +  ", nome=" + nome + ", nomereduzido=" + nomereduzido
-				+ ", cpf=" + cpf + ", senha=" + senha + ", rg=" + rg + ", rgorgao=" + rgorgao + ", cargofuncao="
+				+ ", cpf=" + cpf  + ", rg=" + rg + ", rgorgao=" + rgorgao + ", cargofuncao="
 				+ cargofuncao + ", endereco=" + endereco + ", numero=" + numero + ", bairro=" + bairro
 				+ ", complemento=" + complemento + ", cidade=" + cidade + ", cep=" + cep + ", telefone1=" + telefone1
 				+ ", telefone2=" + telefone2 + ", redesocial=" + redesocial + ", email=" + email + ", dataadmissao="
