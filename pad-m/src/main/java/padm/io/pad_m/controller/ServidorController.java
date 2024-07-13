@@ -27,7 +27,7 @@ public class ServidorController {
 
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consultas/servidores");
+		ModelAndView mv = new ModelAndView("consulta/servidores");
 		mv.addObject("servidores", servidorService.findAll());
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
@@ -42,8 +42,8 @@ public class ServidorController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("servidor") Servidor servidor, BindingResult result) {
 		try {
-			Servidor s = new Servidor();
-			servidorService.save(s);
+			
+			servidorService.save(servidor);
 
 		} catch (Exception e) {
 			e.printStackTrace();
