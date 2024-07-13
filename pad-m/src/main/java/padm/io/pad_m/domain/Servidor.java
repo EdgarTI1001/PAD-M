@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,10 +15,6 @@ public class Servidor {
 
 	@Id
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuarioId;
 
 	private String nome;
 
@@ -96,15 +90,14 @@ public class Servidor {
 	public Servidor() {
 	}
 
-	public Servidor(Integer id, Usuario usuarioId, String nome, String nomereduzido, String cpf, String senha,
+	public Servidor(Integer id, String nome, String nomereduzido, String cpf, String senha,
 			String rg, String rgorgao, String cargofuncao, String endereco, String numero, String bairro,
 			String complemento, String cidade, String cep, String telefone1, String telefone2, String redesocial,
 			String email, LocalDateTime dataadmissao, LocalDateTime datadesligamento, int contratoId, int setorpaiId,
 			int setorlotacaoId, LocalDateTime datacadastro, int perfilId, String hash, String certificado,
 			LocalDateTime dataexpiracao, LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image,
 			int placed, int ativo, String obs, int seq, int flag) {
-		this.id = id;
-		this.usuarioId = usuarioId;
+		this.id = id;		
 		this.nome = nome;
 		this.nomereduzido = nomereduzido;
 		this.cpf = cpf;
@@ -150,13 +143,7 @@ public class Servidor {
 		this.id = id;
 	}
 
-	public Usuario getUsuarioId() {
-		return usuarioId;
-	}
 
-	public void setUsuarioId(Usuario usuarioId) {
-		this.usuarioId = usuarioId;
-	}
 
 	public String getNome() {
 		return nome;
@@ -457,7 +444,7 @@ public class Servidor {
 
 	@Override
 	public String toString() {
-		return "Servidor [id=" + id + ", usuarioId=" + usuarioId + ", nome=" + nome + ", nomereduzido=" + nomereduzido
+		return "Servidor [id=" + id +  ", nome=" + nome + ", nomereduzido=" + nomereduzido
 				+ ", cpf=" + cpf + ", senha=" + senha + ", rg=" + rg + ", rgorgao=" + rgorgao + ", cargofuncao="
 				+ cargofuncao + ", endereco=" + endereco + ", numero=" + numero + ", bairro=" + bairro
 				+ ", complemento=" + complemento + ", cidade=" + cidade + ", cep=" + cep + ", telefone1=" + telefone1

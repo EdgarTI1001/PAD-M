@@ -62,15 +62,15 @@ public class UsuarioController {
 	public String saveObject(@ModelAttribute("usuario") Usuario usuario, BindingResult result) {
 		try {
 			
-			Usuario u = new Usuario();
 		
-			u.setNome(usuario.getNome());
+		
+			
 			//u.setEmail(usuario.getEmail());
 			//u.setSenha(pe.encode(usuario.getSenha()));
-			u.setAtivo(1);
-			u.setPerfilId(1);
+			usuario.setAtivo(1);
+			usuario.setPerfilId(1);
 			
-			usuarioService.save(u);
+			usuarioService.save(usuario);
 			
 			
 			
