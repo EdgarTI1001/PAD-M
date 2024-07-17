@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head>
+<style>
+.bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+</style>
+</head>
+<body class="text-center">
+ <section layout:fragment="content">
+   <div class="form-signin w-100 m-auto">
+           <div class="alert alert-danger" role="alert" th:if="${error}">
+				 
+			</div>         
+	                 
+            <img class="mb-4"  th:src="@{/images/brasao_republica_vetor.gif}" alt="" width="70" height="70">
+    		<h1 class="h3 mb-3 fw-normal">PAD-M Área restrita</h1>
+    
+              <form th:action="@{/2factor}" th:object="${usuario}" method="post">
+              
+              <div class="form-floating">
+			      <input type="email" class="form-control" th:field="*{nickname}" placeholder="name@example.com" required autofocus>
+			      <label for="floatingInput">Usuario</label>
+			    </div>
+			    <div class="form-floating">
+			      <input type="password" class="form-control" th:field="*{senha}" placeholder="Password" required>
+			      <label for="floatingPassword">Senha</label>
+			    </div>
+                 <p class="text-danger" th:if="${error}">Erro ao tentar efetuar o login. Verifique suas credenciais!</p> 
+                                   
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+    			<p class="mt-2 mb-2 text-muted">&copy; PAD-M</p>
+    			
+    			  <!-- <img th:src="@{/images/QRCode.png}" class="img-thumbnail" width="120" height="120"/>  -->
+    
+         </form>
+  
+
+  
+ 
+   
+  </div>
+
+ </section>
+ <div layout:fragment="jscript">
+	<script th:if="${error}">
+	    var URL = '[[@{/}]]api/';
+	    swal("ATENÇÃO!", "Veririque suas credenciais!", "error");
+	</script>
+  </div>
+</body>
+</html>
