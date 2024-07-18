@@ -1,17 +1,23 @@
 package padm.io.pad_m.domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import padm.io.pad_m.enums.Perfil;
 
 @Entity
 @Table(name = "tbusuario")
@@ -22,12 +28,12 @@ public class Usuario {
 
 	private String nome;
 
-	private Long cpf;
+	private String cpf;
 
 	private String nickname;
 
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	//@ManyToOne(fetch = FetchType.EAGER)
+	// @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "servidor_id")
 	private Servidor servidorId;
 
@@ -36,7 +42,9 @@ public class Usuario {
 
 	private int perfilId;
 
-	private int ativo;
+	private int lotacao_id;
+
+	private String ativo;
 
 	private String certificado;
 
@@ -50,12 +58,19 @@ public class Usuario {
 
 	private int flag;
 
+	/*
+	 * @ElementCollection(fetch = FetchType.EAGER)
+	 * 
+	 * @CollectionTable(name = "PERFIS") private Set<Integer> perfis = new
+	 * HashSet<>();
+	 */
 	public Usuario() {
 	}
 
-	public Usuario(Integer id, String nome, Long cpf, String nickname, Servidor servidorId, String senha, int perfilId,
-			int ativo, String certificado, LocalDateTime dataexpiracao, LocalDateTime ultimoacesso,
-			LocalDateTime datacriacao, String image, int flag) {
+	public Usuario(Integer id, String nome, String cpf, String nickname, Servidor servidorId, String senha,
+			int perfilId, int lotacao_id, String ativo, String certificado, LocalDateTime dataexpiracao,
+			LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image, int flag) {
+		super();
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -63,6 +78,7 @@ public class Usuario {
 		this.servidorId = servidorId;
 		this.senha = senha;
 		this.perfilId = perfilId;
+		this.lotacao_id = lotacao_id;
 		this.ativo = ativo;
 		this.certificado = certificado;
 		this.dataexpiracao = dataexpiracao;
@@ -70,6 +86,11 @@ public class Usuario {
 		this.datacriacao = datacriacao;
 		this.image = image;
 		this.flag = flag;
+	}
+
+	public String getFirstName() {
+		String[] nameparts = nome.split(" ");
+		return nameparts[0];
 	}
 
 	public Integer getId() {
@@ -86,14 +107,6 @@ public class Usuario {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public Long getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(Long cpf) {
-		this.cpf = cpf;
 	}
 
 	public String getNickname() {
@@ -126,14 +139,6 @@ public class Usuario {
 
 	public void setPerfilId(int perfilId) {
 		this.perfilId = perfilId;
-	}
-
-	public int getAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(int ativo) {
-		this.ativo = ativo;
 	}
 
 	public String getCertificado() {
@@ -182,6 +187,30 @@ public class Usuario {
 
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public int getLotacao_id() {
+		return lotacao_id;
+	}
+
+	public void setLotacao_id(int lotacao_id) {
+		this.lotacao_id = lotacao_id;
+	}
+
+	public String getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(String ativo) {
+		this.ativo = ativo;
 	}
 
 	@Override

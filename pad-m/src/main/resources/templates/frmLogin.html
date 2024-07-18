@@ -56,18 +56,15 @@
 </head>
 <body class="text-center">
  <section layout:fragment="content">
-   <div class="form-signin w-100 m-auto">
-           <div class="alert alert-danger" role="alert" th:if="${error}">
-				 
-			</div>         
+   <div class="form-signin w-100 m-auto">             
 	                 
-            <img class="mb-4"  th:src="@{/images/brasao_republica_vetor.gif}" alt="" width="70" height="70">
+            <img class="mb-4"  th:src="@{/images/padm.png}" alt="" width="70" height="70">
     		<h1 class="h3 mb-3 fw-normal">PAD-M Área restrita</h1>
     
-              <form th:action="@{/2factor}" th:object="${usuario}" method="post">
+              <form th:action="@{/step1}" th:object="${usuario}" method="post">
               
               <div class="form-floating">
-			      <input type="email" class="form-control" th:field="*{nickname}" placeholder="name@example.com" required autofocus>
+			      <input type="text" class="form-control" th:field="*{nickname}" placeholder="name@example.com" required autofocus>
 			      <label for="floatingInput">Usuario</label>
 			    </div>
 			    <div class="form-floating">

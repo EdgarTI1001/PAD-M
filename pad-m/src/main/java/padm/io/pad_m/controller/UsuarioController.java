@@ -67,7 +67,7 @@ public class UsuarioController {
 			
 			//u.setEmail(usuario.getEmail());
 			//u.setSenha(pe.encode(usuario.getSenha()));
-			usuario.setAtivo(1);
+			usuario.setAtivo("1");
 			usuario.setPerfilId(1);
 			
 			usuarioService.save(usuario);

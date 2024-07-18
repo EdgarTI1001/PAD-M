@@ -8,28 +8,33 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 	@Autowired
-	UsuarioService usuarioService;
+	UsuarioRepository usuariorepo;
 
 	public List<Usuario> findAll() {
-		return usuarioService.findAll();
+		return usuariorepo.findAll();
 	}
 
 	public Optional<Usuario> findById(Integer id) {
-		return usuarioService.findById(id);
+		return usuariorepo.findById(id);
+	}
+	
+	public Optional<Usuario> findByNickName(String email) {
+		return usuariorepo.findByNickName(email);
 	}
 
 	@Transactional
 	public void save(Usuario obj) {
-		usuarioService.save(obj);
+		usuariorepo.save(obj);
 	}
 
 	@Transactional
 	public void delete(Usuario obj) {
-		usuarioService.delete(obj);
+		usuariorepo.delete(obj);
 	}
 
 }

@@ -1,13 +1,16 @@
 package padm.io.pad_m.controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import padm.io.pad_m.domain.Usuario;
@@ -16,7 +19,7 @@ import padm.io.pad_m.service.UsuarioService;
 @Controller
 @RequestMapping("/")
 public class AppController {
-	//private static final String REDIRECT_STEP1 = "redirect:/login";
+	private static final String REDIRECT_STEP1 = "redirect:/login";
 	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
 	@Autowired
@@ -24,9 +27,11 @@ public class AppController {
 	
 
 	
-	@GetMapping
+	@GetMapping("/index")
 	public ModelAndView index() {	
-		ModelAndView mv = new ModelAndView("index");
+		
+		
+		ModelAndView mv = new ModelAndView("index2");
 		return mv;
 	}
 	
@@ -42,16 +47,26 @@ public class AppController {
 		//mv.addObject("isProducao", isProducao);
 		return mv;
 	}
-	/*
-	@GetMapping("/step1")
-	public ModelAndView step_first(@ModelAttribute("credencial") CredenciaisDTO credencial) {
-		ModelAndView mv = new ModelAndView("frmStep1");
+	
+	@PostMapping("/step1")
+	public ModelAndView step_first(@ModelAttribute("usuario") Usuario user,HttpSession httpSession,RedirectAttributes redirAttr) {
+		
+		
+		Optional<Usuario> usuario = userService.findByNickName(user.getNickname());
+		if(!usuario.isPresent()) {
+			redirAttr.addFlashAttribute("error", "Usuário ou senha inválidos!");
+			return new ModelAndView(REDIRECT_STEP1);
+		}
+	
+		httpSession.setAttribute("username", usuario.get(). getNickname());
+		httpSession.setAttribute("password", usuario.get().getSenha());
+		ModelAndView mv = new ModelAndView("index2");
 		mv.addObject("activePage", "mnuLogin");
-		boolean isProducao = session.isProducao();
-		mv.addObject("isProducao", isProducao);
+		//boolean isProducao = session.isProducao();
+		//mv.addObject("isProducao", isProducao);
 		return mv;
 	}
-	
+	/*
 	@PostMapping("/2factor")
 	public ModelAndView step_second(@Valid @ModelAttribute("credencial") CredenciaisDTO credencial, 
 			 								HttpSession httpSession, RedirectAttributes redirAttr) {
