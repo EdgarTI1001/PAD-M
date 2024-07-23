@@ -3,8 +3,11 @@ package padm.io.pad_m.controller;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import jakarta.servlet.http.HttpSession;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -27,24 +29,16 @@ public class AppController {
 	
 
 	
-	@GetMapping("/index")
-	public ModelAndView index() {	
-		
-		
-		ModelAndView mv = new ModelAndView("index2");
+	@GetMapping()
+	public ModelAndView index(Model model) {
+		ModelAndView mv = new ModelAndView("index");
+		model.addAttribute("activePage", "mnuMeuRegistro");
 		return mv;
 	}
-	
 	@GetMapping("/login")
-	public ModelAndView indexLogin(@ModelAttribute("usuario") Usuario usuario, HttpSession httpSession) {
-		if(usuario.getNickname()==null) {
-			return new ModelAndView("frmLogin");
-		}
+	public ModelAndView setupLogin(Model model) {
 		ModelAndView mv = new ModelAndView("frmLogin");
-		mv.addObject("activePage", "mnuLogin");
-		//boolean isProducao = session.isProducao();
-	//	credencial.setUsername((String)httpSession.getAttribute("username"));
-		//mv.addObject("isProducao", isProducao);
+		//model.addAttribute("isProducao", ambiente.isAmbienteProducao());
 		return mv;
 	}
 	

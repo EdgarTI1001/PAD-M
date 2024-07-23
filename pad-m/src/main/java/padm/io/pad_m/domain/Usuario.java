@@ -6,24 +6,29 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import padm.io.pad_m.enums.Perfil;
+import padm.io.pad_m.domain.enums.Perfil;
 
 @Entity
 @Table(name = "tbusuario")
 public class Usuario {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 
 	private String nome;
@@ -57,13 +62,14 @@ public class Usuario {
 	private String image;
 
 	private int flag;
+	
+	@Transient
+	private boolean isProducao;
 
-	/*
-	 * @ElementCollection(fetch = FetchType.EAGER)
-	 * 
-	 * @CollectionTable(name = "PERFIS") private Set<Integer> perfis = new
-	 * HashSet<>();
-	 */
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	public Usuario() {
 	}
 
@@ -88,9 +94,22 @@ public class Usuario {
 		this.flag = flag;
 	}
 
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	
 	public String getFirstName() {
 		String[] nameparts = nome.split(" ");
 		return nameparts[0];
+	}
+	
+	public boolean isProducao() {
+		return isProducao;
+	}
+
+	public void setProducao(boolean isProducao) {
+		this.isProducao = isProducao;
 	}
 
 	public Integer getId() {

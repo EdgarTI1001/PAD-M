@@ -61,14 +61,14 @@
             <img class="mb-4"  th:src="@{/images/padm.png}" alt="" width="70" height="70">
     		<h1 class="h3 mb-3 fw-normal">PAD-M Área restrita</h1>
     
-              <form th:action="@{/step1}" th:object="${usuario}" method="post">
+              <form th:action="@{/login}" method="post">
               
               <div class="form-floating">
-			      <input type="text" class="form-control" th:field="*{nickname}" placeholder="name@example.com" required autofocus>
+			      <input type="text" class="form-control" name="username" placeholder="name@example.com" required autofocus>
 			      <label for="floatingInput">Usuario</label>
 			    </div>
 			    <div class="form-floating">
-			      <input type="password" class="form-control" th:field="*{senha}" placeholder="Password" required>
+			      <input type="password" class="form-control" name="password" placeholder="Password" required>
 			      <label for="floatingPassword">Senha</label>
 			    </div>
                  <p class="text-danger" th:if="${error}">Erro ao tentar efetuar o login. Verifique suas credenciais!</p> 

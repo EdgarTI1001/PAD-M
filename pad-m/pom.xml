@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.0</version>
+		<version>2.7.11</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>padm.io</groupId>
@@ -52,11 +52,26 @@
 			<optional>true</optional>
 		</dependency>
 	
-		   <dependency>
-        <groupId>com.microsoft.sqlserver</groupId>
-        <artifactId>mssql-jdbc</artifactId>
-        <version>9.2.1.jre8</version>
-    </dependency>
+		<dependency>
+	        <groupId>com.microsoft.sqlserver</groupId>
+	        <artifactId>mssql-jdbc</artifactId>
+	        <version>9.2.1.jre8</version>
+	    </dependency>
+    	
+    	<dependency>
+		    <groupId>nz.net.ultraq.thymeleaf</groupId>
+		    <artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
