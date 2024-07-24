@@ -14,14 +14,12 @@ public class AuthenticationFacade implements IAuthenticationFacade {
 	String profile;
 	
 	@Override
-    public Authentication getAuthentication() {
-		System.out.println("============== TO AAQUI ==================");
+    public Authentication getAuthentication() {		
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
 	@Override
-	public Usuario getUsuario() {
-		System.out.println("===============13");
+	public Usuario getUsuario() {		
 		UserDetailsImpl userDetails = (UserDetailsImpl)this.getAuthentication().getPrincipal();
 		Usuario user = userDetails.getUsuario();
 		return user;

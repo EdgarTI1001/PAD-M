@@ -25,8 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        // APLICA POR DEFAULT 'role user' A TODOS OS USUARIOS AUTENTICADOS
-        System.out.println("=============================456465" );
+        // APLICA POR DEFAULT 'role user' A TODOS OS USUARIOS AUTENTICADOS      
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         for (Perfil p : user.getPerfis()) {
             authorities.add(new SimpleGrantedAuthority(p.getDescricao()));

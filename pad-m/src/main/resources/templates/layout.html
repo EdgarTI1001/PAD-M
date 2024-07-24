@@ -1,39 +1,85 @@
 <!DOCTYPE html>
 <html xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-   <head>
- <meta charset="UTF-8"/>
- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
- <meta name="description" content="Sistema Template" />
- <meta name="author" content="Moacir Viana" />
- <title>PAD-M</title>  
- <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}" />
- <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"> 
- <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"> 
- <link th:href="@{/css/animate.min.css}" rel="stylesheet">
- <link th:href="@{/css/sweetalert2.min.css}" rel="stylesheet">
- <link th:href="@{/css/main.css}" rel="stylesheet" sec:authorize="isAuthenticated()">
- <link th:href="@{/css/login.css}" rel="stylesheet" sec:authorize="!isAuthenticated()">
- <link th:href="@{/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Sistema Template"/>
+    <meta name="author" content="Moacir Viana"/>
+    <title>PAD-M</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet">    
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+    <link th:href="@{/css/animate.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"> 
+    <link th:href="@{/css/sweetalert2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/select2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap-datepicker.min.css}" rel="stylesheet">
+    <link th:href="@{/css/dataTables.bootstrap5.css}" rel="stylesheet">
+    <link th:href="@{/css/main.css}" rel="stylesheet">
+     <link th:href="@{/css/boxicons.min.css}" rel="stylesheet">
 </head>
-<body>
+
+
+
+<body id="body-pd">
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>  </div>
+        <div class="header_img"> <img th:src="@{/images/user1.png}"/> </div> </header> 
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"> 
+            <a th:href="@{/impugnacao}" class="nav_logo"> <i class="fa fa-home" style="font-size:23px;color:white"></i> <span class="nav_logo-name">Pagina Inicial</span> </a>
+            
+             <div class="nav_list" >
+	              <a href="#" class="nav_link active"> <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i><span class="nav_name">Documentos</span> </a>
+	              <a href="#" class="nav_link"> <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Processos</span> </a> 
+	              <a href="#" class="nav_link"> <i class="fa fa-clone" style="font-size:23px;color:white"></i> <span class="nav_name">Formulários</span> </a> 
+	              <a href="#" class="nav_link"> <i class="fa fa-clipboard" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Relatorios</span> </a> 
+	              <a href="#" class="nav_link"> <i class="fa fa-cog" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Opções</span> </a> 
+	              <a href="#" class="nav_link"> <i class="fa fa-address-book" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Cadastros</span> </a> 
+	              <a href="#" class="nav_link"> <i class="fa fa-question-circle-o" style="font-size:23px;color:white" aria-hidden="true"></i><span class="nav_name">Ajuda</span> </a> 
+	              
 
   
+  
+              </div>
+            </div>
+              <a  sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" href="#" class="nav_link"> <i class="fa fa-sign-out" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Sair</span> </a>
+            <div>
+         
+           <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="nav_link"> <i class="fa fa-sign-out" style="font-size:23px;color:white" aria-hidden="true"></i> <span class="nav_name">Login</span> </a>
+   		   </div>
+        </nav>
+    </div>
+   
+    
+    
+    
+
+
 <main class="container">
- <div class="p-0 rounded">
-   <section layout:fragment="content">
-     
-   </section>
- </div>
+    <div class="p-0 rounded">
+        <section layout:fragment="content">
+            <p>Conteúdo será renderizado aqui</p>
+        </section>
+    </div>
 </main>
- <div id="loader" class="loader" style="display:none;"></div>
- <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
- <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-  <script th:src="@{/js/bootstrap.min.js}"></script>
- <script th:src="@{/js/sweetalert.min.js}"></script>
- <script th:src="@{/js/jquery.inputmask.min.js}"></script>
-  <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
-  <script th:src="@{/js/utils.js}"></script> 
- <div layout:fragment="jscript"></div> 
- 
+
+<div id="loader" class="loader" style="display:none;"></div>
+
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.min.js.js}"></script>
+   <!--  <script th:src="@{/js/jquery-1.12.4.min.js}"></script> -->
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script> 
+    <script th:src="@{/js/select2.min.js}"></script>
+    <script th:src="@{/js/sweetalert.min.js}"></script>
+    <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+    <script th:src="@{/js/locales/bootstrap-datepicker.pt-BR.js}"></script>
+    <script th:src="@{/js/utils.js}"></script>
+
+
+<div layout:fragment="jscript"></div>
+
 </body>
 </html>

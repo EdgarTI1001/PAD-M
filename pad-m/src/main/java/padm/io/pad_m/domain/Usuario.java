@@ -66,6 +66,7 @@ public class Usuario {
 	@Transient
 	private boolean isProducao;
 
+	@Transient
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
