@@ -2,10 +2,63 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head></head>
 <body>
- <section layout:fragment="content">
+ <section layout:fragment="content" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
+  <nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+     <i class="fa fa-home" style="font-size:23px;color:gray"></i>  &nbsp;<li class="breadcrumb-item active" aria-current="page">Home</li>
+  </ol>
+</nav>
+  
+  <div class="row">
+  
+  <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">PARA ATENDER</h5>
+            <p> 0 Processos</p>
+       
+      </div>
+      <div class="card-footer bg-transparent border-primary" style="height: 1rem;"></div>
+    </div>
+  </div>
+  
+  <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">EM ESPERA</h5>
+       			<p> 0 Processos</p>
+       
+      </div>
+      <div class="card-footer bg-transparent border-danger" style="height: 1rem;"></div>
+    </div>
+     
+  </div>
+  
+  <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">ATENDIMENTO SETOR</h5>
+       		<p> 0 Processos</p>
+       
+      </div>
+      <div class="card-footer bg-transparent border-warning" style="height: 1rem;"></div>
+    </div>
+  </div>
+  
+  <div class="col-sm-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">ATENDIMENTO SERVIDOR</h5>
+       		<p> 0 Processos</p>
+       
+      </div>
+       <div class="card-footer bg-transparent border-success" style="height: 1rem;"></div>
+    </div>
+  </div>
   
   
-  
+
+</div>
     
  </section>
  

@@ -19,8 +19,7 @@ import padm.io.pad_m.security.UserDetailsServiceImpl;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfigAD implements WebMvcConfigurer{
-	@Autowired
-    private RequestLoggingInterceptor requestLoggingInterceptor;
+	
 	
 	@Autowired
 	CustomAuthenticatorProvider authProvider;
@@ -89,9 +88,6 @@ public class WebSecurityConfigAD implements WebMvcConfigurer{
 	    return new BCryptPasswordEncoder();
 	}
 	
-	  @Override
-	    public void addInterceptors(InterceptorRegistry registry) {
-	        registry.addInterceptor(requestLoggingInterceptor);
-	    }
+	 
 
 }

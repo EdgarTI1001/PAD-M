@@ -23,8 +23,15 @@
 
 <body id="body-pd">
     <header class="header" id="header">
-        <div class="header_toggle"> <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>  </div>
-        <div class="header_img"> <img th:src="@{/images/user1.png}"/> </div> </header> 
+        <div class="header_toggle"> <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>  <b>PAD-M</b></div>
+        <div><span th:with="userName=${#authentication.getPrincipal().getUsername()}, isProducao=${#authentication.getPrincipal().getUsuario().isProducao()}, nome=${#authentication.getPrincipal().getUsuario().getFirstName()}"></span>
+        		    <small th:text="@{(${nome})}"></small>
+        		    <small th:text="@{(${userName})}"></small> 
+        		 <div class="header_img">  <img th:src="@{/images/estevan.jpg}"/> </div> 
+        </div>
+        
+       
+        </header> 
     <div class="l-navbar" id="nav-bar">
         <nav class="nav">
             <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"> 
@@ -57,7 +64,7 @@
     
 
 
-<main class="container">
+<main class="container-full">
     <div class="p-0 rounded">
         <section layout:fragment="content">
             <p>Conteúdo será renderizado aqui</p>
