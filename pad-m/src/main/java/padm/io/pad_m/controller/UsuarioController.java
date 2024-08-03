@@ -1,9 +1,14 @@
 package padm.io.pad_m.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,9 +17,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import padm.io.pad_m.domain.Servidor;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.service.ServidorService;
 import padm.io.pad_m.service.UsuarioService;
 
 @Controller
@@ -26,12 +35,18 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private ServidorService servidorService;
 
+	@Value("${path.upload}")
+	String upload;
+	
 
 
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consultas/usuarios");
+		ModelAndView mv = new ModelAndView("consulta/usuarios");
 		mv.addObject("usuarios", usuarioService.findAll());
 		mv.addObject("activePage", "mnuCandidato");
 		return mv;
@@ -39,7 +54,9 @@ public class UsuarioController {
 
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("usuario") Usuario usuario) {
+		List<Servidor> servidores = servidorService.findAll();
 		model.addAttribute("usuario", usuario);
+		model.addAttribute("servidores", servidores);
 		model.addAttribute("activePage", "mnuCandidato");
 		return "form/frmCadUsuario";
 	}
@@ -48,16 +65,29 @@ public class UsuarioController {
 	public ModelAndView frmEditar(@PathVariable(name = "id") Integer id) {
 		ModelAndView model = new ModelAndView(frmUsuario);
 		Usuario user = usuarioService.findById(id).get();
-		model.addObject("candidato", user);
+		List<Servidor> servidores = servidorService.findAll();
+		model.addObject("servidores", servidores);
+		model.addObject("usuario", user);
 		return model;
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("usuario") Usuario usuario, BindingResult result) {
+	public String saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam("file") MultipartFile file, BindingResult result) {
 		try {			
 			usuario.setPerfilId(1);
+			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
 			usuario.setUltimoacesso(LocalDateTime.now());
+			
+			StringBuilder fileNames = new StringBuilder();
+	        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());
+	        fileNames.append(file.getOriginalFilename());
+	        Files.write(fileNameAndPath, file.getBytes()); 
+	        
+	        usuario.setImage(upload + file.getOriginalFilename());
+	        usuario.setAtivo("1");
+	        
+	        
 			usuarioService.save(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<head></head>
+<body>
+ <section layout:fragment="content">
+ <div class="card">
+		<div class="card-header">			
+			Usuarios
+		</div>
+	<div class="card-body">
+		<table class="table table-hover">
+		<thead>
+			<tr>	
+			<th scope="col">
+				     <a sec:authorize="hasRole('ROLE_USER')"  th:href="@{/usuarios/new}">
+				       <i title="Cadastrar novo USUARIO" class="fa fa-plus-circle" aria-hidden="true"></i>
+				    </a>
+			</th>		 
+			  <th scope="col">Nome</th>
+			  <th scope="col">NickName</th>
+			  <th scope="col">Lotação</th>
+			  <th scope="col">Situação</th>				  		 
+			  <th scope="col"></th>
+			</tr>
+		 </thead>
+		  <tbody>
+				
+			<tr th:each="rs : ${usuarios}" th:id="'tr' + ${rs.id}">		
+				   <td></td>		  
+				   <td th:text="${rs.nome}"></td>
+				   <td th:text="${rs.nickname}"></td>		
+				   <td th:text="${rs.lotacao_id}"></td>		   
+				    <td>
+					  
+			            <div th:if="${rs.ativo == 1}">												   
+			             <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="0">
+							<span id="ele${rs.id}" class="badge bg-success" active="1">Ativo</span>		
+					    </a> 			    
+												   
+				         </div>				   	
+					     <div th:unless="${rs.ativo == 1}">					       					            	   
+					     <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="1">
+							 <span id="'ele' + ${rs.id}" class="badge bg-secondary">Desativado</span>
+					    </a> 	    
+					       						            	   
+					    </div>					 
+			       </td>				
+				   
+				      <td>
+					    <a class="btn btn-sm btn-primary" th:href="@{/usuarios/edit/} + ${rs.id}"  role="button" title="Editar GAZE">
+							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+						</a>	
+						  <a class="btn btn-sm btn-danger" href="#" role="button" th:data-record-id="${rs.id}"  th:data-record-nome="${rs.nickname}" th:id="'del' + ${rs.id}" title="excluir">
+						     <i class="fa fa-trash-o" aria-hidden="true"></i>
+						  </a> 
+						  
+						   &nbsp;  <a  href="#" onclick="verFoto(this)"  th:data-record-id="${rs.id}" th:data-record-nome="${rs.nickname}">				       			
+				       			<i class="fa fa-file-image-o"></i>
+				    	   </a>
+				   </td> 			   	   
+				</tr>
+				
+		 </tbody>
+	</table>
+	</div></div>	
+	
+<!-- MODAL PARA VISUALIZAO DAS IMAGENS -->
+<div class="modal fade" id="imgModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Foto :   <label id="nomeCandidato"></label> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+       <div class="modal-body" style="float: center">
+      
+           <img src="" class="img-thumbnail" id="fotoid">
+      </div>   
+         
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+    
+    
+  </div>
+</div>
+</div>
+</div>
+
+</section>
+<div layout:fragment="jscript">
+ <script>
+ var URL = '[[@{/}]]api/';
+   
+   $("[id*='del']").click(function(event){
+	  	  event.preventDefault();
+	    	var data = $(event.delegateTarget).data();
+	    	var id = data.recordId;
+	  	  var nome =  data.recordNome;
+	  	  console.log(id)
+	  	  swal({
+	  		  title: 'Excluir?',
+	  		  text: "Remover o acesso do Usuario? (" + nome + ")",
+	  		  icon: 'warning',
+	  		  buttons: [true, "Sim Excluir!"]
+	  		}).then((result) => {
+	  		  if (result) {
+	  			  $.ajax({
+	  				  url: URL + "usuarios/delete/" + id,
+	  				  method: "DELETE",
+	  				  statusCode: {
+	  					    403: function(xhr) {
+	  					      	swal("Atenção","Você não tem permissão para realizar essa operação","error");
+	  					    }
+	  					  }
+	  				}).done(function() {
+	  				  $('#tr'+id).remove();		  
+	  				});
+	  		   }
+	  		})
+	  	  });
+   
+   
+   var myModalEl = document.getElementById('imgModal')     
+   myModalEl.addEventListener('show.bs.modal', function (event) {
+    var href = $(event.relatedTarget)
+     var id = href.data('record-id');    
+    
+	    $.getJSON( URL+"/candidatos/"+id, function( json ) {	  	 
+	  	$('#fotoid').attr('src',`data:image/png;base64,${json.foto}` );
+		$('#nomeCandidato').text(json.nome);
+	  	
+  	});
+
+   })
+
+   
+
+   
+</script>
+</div>
+  
+</body>
+</html>
