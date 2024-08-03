@@ -74,18 +74,22 @@ public class UsuarioController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam("file") MultipartFile file, BindingResult result) {
 		try {			
-			usuario.setPerfilId(1);
 			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
-			usuario.setUltimoacesso(LocalDateTime.now());
+			usuario.setUltimoacesso(LocalDateTime.now());			
 			
-			StringBuilder fileNames = new StringBuilder();
-	        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());
-	        fileNames.append(file.getOriginalFilename());
-	        Files.write(fileNameAndPath, file.getBytes()); 
-	        
-	        usuario.setImage(upload + file.getOriginalFilename());
-	        usuario.setAtivo("1");
+			if(!file.isEmpty()) { 
+				StringBuilder fileNames = new StringBuilder();
+		        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());
+		        fileNames.append(file.getOriginalFilename());
+		        Files.write(fileNameAndPath, file.getBytes()); 
+		        
+		        usuario.setImage(file.getOriginalFilename());
+		      
+			};
+		
+			  usuario.setAtivo("S");
+			
 	        
 	        
 			usuarioService.save(usuario);

@@ -32,14 +32,14 @@
 				   <td th:text="${rs.lotacao_id}"></td>		   
 				    <td>
 					  
-			            <div th:if="${rs.ativo == 1}">												   
-			             <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="0">
+			            <div th:if="${rs.ativo == 'S'}">												   
+			             <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="N">
 							<span id="ele${rs.id}" class="badge bg-success" active="1">Ativo</span>		
 					    </a> 			    
 												   
 				         </div>				   	
-					     <div th:unless="${rs.ativo == 1}">					       					            	   
-					     <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="1">
+					     <div th:unless="${rs.ativo == 'S'}">					       					            	   
+					     <a id="" href="#"   class="btn btn-sm" role="button" onclick="ativar(this)"  th:data-record-id="${rs.id}" th:data-record-ativo="S">
 							 <span id="'ele' + ${rs.id}" class="badge bg-secondary">Desativado</span>
 					    </a> 	    
 					       						            	   
@@ -54,9 +54,11 @@
 						     <i class="fa fa-trash-o" aria-hidden="true"></i>
 						  </a> 
 						  
-						   &nbsp;  <a  href="#" onclick="verFoto(this)"  th:data-record-id="${rs.id}" th:data-record-nome="${rs.nickname}">				       			
-				       			<i class="fa fa-file-image-o"></i>
-				    	   </a>
+						   &nbsp;
+				    	        <a  href="#"  th:data-record-id="${rs.id}"  th:data-record-nome="${rs.nickname}"  th:data-record-caminho="${rs.image}" th:id="'visualizar' + ${rs.id}" title="Visualizar">
+						          <i class="fa fa-file-image-o"></i>
+						       </a> 
+						  
 				   </td> 			   	   
 				</tr>
 				
@@ -69,13 +71,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Foto :   <label id="nomeCandidato"></label> </h5>
+        <h5 class="modal-title" id="exampleModalLabel">Foto :   <label id="nomeUsuario"></label> </h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
        <div class="modal-body" style="float: center">
       
-           <img src="" class="img-thumbnail" id="fotoid">
+           <img  class="img-thumbnail" src=" " id="fotoid">
       </div>   
          
       <div class="modal-footer">
@@ -119,23 +121,58 @@
 	  		   }
 	  		})
 	  	  });
-   
-   
-   var myModalEl = document.getElementById('imgModal')     
-   myModalEl.addEventListener('show.bs.modal', function (event) {
-    var href = $(event.relatedTarget)
-     var id = href.data('record-id');    
-    
-	    $.getJSON( URL+"/candidatos/"+id, function( json ) {	  	 
-	  	$('#fotoid').attr('src',`data:image/png;base64,${json.foto}` );
-		$('#nomeCandidato').text(json.nome);
-	  	
-  	});
 
-   })
 
+  
+      ativar = function(handler) { 	 
+    	     var id = handler.getAttribute("data-record-id");  
+    	     var ativo = handler.getAttribute("data-record-ativo");   
+    	     var title ="";    	     
+    	    
+    	     if(ativo == 'N'){
+    	     	title = "Desativar"
+    	     }else{
+    	     	title = "Ativar"
+    	     }
+    	 	swal({
+    	 		  title: title,
+    	 		  text: "Deseja " + title + " esse Usuario?",
+    	 		  icon: 'warning',
+    	 		  buttons: [true, "Sim !"]
+    	 		}).then((result) => {
+    	 		  if (result) {
+    	 		       $.ajax({
+    	 				  url: URL + "usuarios/"+id+"/"+ativo,
+    	 				 // type: 'UPDATE',
+    	 			   }).done(function( data ) {			      
+    	 			       swal(title, "Executado com sucesso!", "success");			       
+    	 			       setTimeout(() => {
+    	 			    	   location.reload()
+    	 			    	 }, 1000);
+    	 			     
+    	 				}).fail(function() {
+    	 					swal(title, "Ocorreu um erro ao executar", "error");
+    	 				});
+    	 		   }
+    	 	})
+      }  
    
-
+   $("[id*='visualizar']").click(function(event){	  
+	  	  event.preventDefault();
+	      var data = $(event.delegateTarget).data();
+	      var id = data.recordId;
+	  	  var nome =  data.recordNome;
+	      var image =  data.recordCaminho;
+	      var imagens = image.split("\\");
+	  	  console.log(imagens[2])
+	  	  var folder = "uploads/";	  	
+	  	  
+	  	 $("#fotoid").append( "<img src='"+ folder + imagens[2] +"'>" );
+	  	$('#imgModal').modal('show');
+		
+	  	  
+	
+	});	 
    
 </script>
 </div>

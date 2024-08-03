@@ -82,6 +82,7 @@
                     
                     <div class="col-12">
                         <button type="submit" id="salvar" class="btn btn-primary btn-sm">Salvar</button>
+                        <button type="button" id="voltar" class="btn btn-success btn-sm">Voltar</button>
                     </div>
                 </form>
             </div>
@@ -123,7 +124,14 @@
                         }
                     });
                 });
-            });
+            });            
+            
+            
+          document.getElementById("voltar").addEventListener("click", () => {
+          	  history.back();
+          });
+            
+            
         </script>
     </div>
 </body>
