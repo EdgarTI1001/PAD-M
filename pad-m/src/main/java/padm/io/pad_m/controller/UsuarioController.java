@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,7 +78,9 @@ public class UsuarioController {
 			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
 			usuario.setUltimoacesso(LocalDateTime.now());			
-			
+			System.out.println(usuario.getServidorId().getId());
+			Optional<Servidor> s = servidorService.findById(usuario.getServidorId().getId());
+			System.out.println(s.get().getNome());
 			if(!file.isEmpty()) { 
 				StringBuilder fileNames = new StringBuilder();
 		        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());

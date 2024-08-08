@@ -27,12 +27,15 @@ import padm.io.pad_m.service.UsuarioService;
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioRestController {
+	
 	@Autowired
 	UsuarioService usuarioService;
 	
 	@Value("${path.upload}")
 	String upload;
 
+	
+	
 	@GetMapping
 	public ResponseEntity<List<Usuario>> findAll() {
 		return ResponseEntity.ok(usuarioService.findAll());
@@ -47,7 +50,11 @@ public class UsuarioRestController {
 	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
-		Optional<Usuario> user = usuarioService.findById(id);
+		Optional<Usuario> user = usuarioService.findById(id);	
+		System.out.println(upload+"\\"+user.get().getImage());
+		File fileToDelete = new File(upload+"\\"+user.get().getImage());
+	      fileToDelete.delete();
+	    
 		usuarioService.delete(user.get());
 		return ResponseEntity.noContent().build();
 	}
