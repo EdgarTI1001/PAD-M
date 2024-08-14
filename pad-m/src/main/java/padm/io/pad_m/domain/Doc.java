@@ -16,20 +16,12 @@ import javax.persistence.Table;
 public class Doc {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "PROC_ID")
-	private Processo proc_id;
 
 	@ManyToOne
 	@JoinColumn(name = "usu_id")
 	private Usuario usu_id;
-
-	@ManyToOne
-	@JoinColumn(name = "set_id")
-	private Setor set_id;
 
 	@Column(name = "NOMDOC")
 	private String nomdoc;
@@ -55,13 +47,12 @@ public class Doc {
 
 	}
 
-	public Doc(Integer id, Processo proc_id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc, String tipodoc,
-			String tamdoc, LocalDateTime data, String obs, int seq, int flag) {
-		super();
+	public Doc(Integer id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc, String tipodoc, String tamdoc,
+			LocalDateTime data, String obs, int seq, int flag) {
+
 		this.id = id;
-		this.proc_id = proc_id;
+
 		this.usu_id = usu_id;
-		this.set_id = set_id;
 		this.nomdoc = nomdoc;
 		this.extdoc = extdoc;
 		this.tipodoc = tipodoc;
@@ -80,28 +71,12 @@ public class Doc {
 		this.id = id;
 	}
 
-	public Processo getProc_id() {
-		return proc_id;
-	}
-
-	public void setProc_id(Processo proc_id) {
-		this.proc_id = proc_id;
-	}
-
 	public Usuario getUsu_id() {
 		return usu_id;
 	}
 
 	public void setUsu_id(Usuario usu_id) {
 		this.usu_id = usu_id;
-	}
-
-	public Setor getSet_id() {
-		return set_id;
-	}
-
-	public void setSet_id(Setor set_id) {
-		this.set_id = set_id;
 	}
 
 	public String getNomdoc() {

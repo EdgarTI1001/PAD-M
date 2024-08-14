@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Processo {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private Integer numproc;
@@ -33,29 +33,19 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "docproc_id")
 	private Doc documento;
+	
+	@ManyToOne
+	@JoinColumn(name = "setcriador_id")
+	private Setor setorcriadorId;
 
 	@ManyToOne
 	@JoinColumn(name = "evento_id")
 	private Evento eventoId;
-
-	@Column(name = "class_id")
-	private int classId;
-
-	private String classificacao;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "fase_id")
 	private Fase faseId;
-
-	private int rotuloId;
-
-	private int usucriadorId;
-
-	@Column(name = "setcriador_id")
-	private int setorcriadorId;
-
-	private LocalDateTime datacriacao;
-
+	
 	@ManyToOne
 	@JoinColumn(name = "interessado_id")
 	private Interessado interessadoId;
@@ -69,6 +59,23 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "sigilo_id")
 	private Sigilo sigiloId;
+
+	@Column(name = "class_id")
+	private int classId;
+
+	private String classificacao;
+
+
+
+	private int rotuloId;
+
+	private int usucriadorId;
+
+	
+
+	private LocalDateTime datacriacao;
+
+	
 
 	private int procapensadoId;
 
@@ -105,12 +112,11 @@ public class Processo {
 
 	public Processo(Integer id, Integer numproc, String tipo, Long ano, String numanoproc, String assunto,
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
-			int usucriadorId, int setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId, Minuta minutaId,
-			int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
+			int usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
+			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
 			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexadoId, String motivoanexo,
 			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
 			int seq, int flag) {
-		super();
 		this.id = id;
 		this.numproc = numproc;
 		this.tipo = tipo;
@@ -227,11 +233,11 @@ public class Processo {
 		this.usucriadorId = usucriadorId;
 	}
 
-	public int getSetorcriadorId() {
+	public Setor getSetorcriadorId() {
 		return setorcriadorId;
 	}
 
-	public void setSetorcriadorId(int setorcriadorId) {
+	public void setSetorcriadorId(Setor setorcriadorId) {
 		this.setorcriadorId = setorcriadorId;
 	}
 
