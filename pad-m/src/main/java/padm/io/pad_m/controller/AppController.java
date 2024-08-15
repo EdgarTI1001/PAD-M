@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +28,18 @@ public class AppController {
 	@Autowired
     private UsuarioService userService;
 	
+	@Value("${path.upload}")
+	String upload;
 
 	
 	@GetMapping()
 	public ModelAndView index(Model model) {
+		System.out.println("===============");
 		ModelAndView mv = new ModelAndView("index");
+		upload += "\\";		
+		String path = upload.substring(0, 11);
+		
+		model.addAttribute("upload", path);
 		model.addAttribute("activePage", "mnuMeuRegistro");
 		return mv;
 	}

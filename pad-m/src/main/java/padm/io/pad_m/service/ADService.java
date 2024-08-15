@@ -13,13 +13,11 @@ public class ADService {
 	@Autowired
 	private UsuarioService usuarioService;
 
-    @SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	public boolean loginActiveDirectory(String username, String password) {
     	//return true;    
 	
 		try {
-			if (!password.equals("")) {
-			//TODO 
+			if (!password.equals("")) {				
 				Optional<Usuario> user = usuarioService.findByNickName(username);  
 				if(user.isEmpty()) {
 					return false;

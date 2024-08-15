@@ -27,7 +27,7 @@ public class ProcessoController {
 
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/servidores");
+		ModelAndView mv = new ModelAndView("consulta/processos");
 		mv.addObject("processos", processoService.findAll());
 		mv.addObject("activePage", "mnuServidor");
 		return mv;

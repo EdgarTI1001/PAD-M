@@ -10,7 +10,7 @@ import padm.io.pad_m.domain.Processo;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 	
-	@Query("SELECT p from Processo p WHERE p.recrutamento.id =:idRec AND r.avaliador IS null ORDER BY r.tarefa.descricao")
-	List<Processo> findAllTafNotAval(@Param("idRec") Long idRec); 
+	@Query("SELECT p from Processo p WHERE p.setorcriadorId.id =:idSetor ORDER BY p.id DESC")
+	List<Processo> findAllBySetor(@Param("idSetor") Integer idSetor); 
 	
 }

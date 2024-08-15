@@ -37,8 +37,7 @@ public class CustomAuthenticatorProvider implements AuthenticationProvider {
         //List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         //authorities.add(new SimpleGrantedAuthority("USER")); 
         
-        if (this.loginAD(username, password)) {
-        	
+        if (this.loginAD(username, password)) {        	
         	UserDetails userDetail = userDetailsService.loadUserByUsername(username);        	
         	//userDetail.getAuthorities().stream().map(x -> Perfil.toEnum(x)).collect(Collectors.t());
             //for (userDetail.getAuthorities())
@@ -56,7 +55,7 @@ public class CustomAuthenticatorProvider implements AuthenticationProvider {
     
     private boolean loginAD(String username, String password) {
 		boolean ret = false;
-		if (Arrays.asList(env.getActiveProfiles()).contains("prod"))
+		if (Arrays.asList(env.getActiveProfiles()).contains("homo"))
 		    ret = adService.loginActiveDirectory(username, password);
 		else
 		  ret = true;

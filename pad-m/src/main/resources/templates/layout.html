@@ -24,12 +24,15 @@
             <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>
             <b>PAD-M</b>
         </div>
-        <div>
+        <div  sec:authorize="isAuthenticated()"
+                  th:with="userName=${#authentication.getPrincipal().getUsername()}, 
+                  			image=${#authentication.getPrincipal().getUsuario().getImage()}, 
+                 			 nome=${#authentication.getPrincipal().getUsuario().getFirstName()}">
             <!-- <span th:with="userName=${#authentication.getPrincipal().getUsername()}, isProducao=${#authentication.getPrincipal().getUsuario().isProducao()}, nome=${#authentication.getPrincipal().getUsuario().getFirstName()}"></span> -->
-            <small th:text="@{(${nome})}"></small>
-            <small th:text="@{(${userName})}"></small>
+                      
+            <small th:text="@{(${userName})}"></small>      
             <div class="header_img">
-                <img th:src="@{/images/estevan.jpg}" alt="User Image"/>
+                <img id ="imagem" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" src="" alt="User Image"/>
             </div>
         </div>
     </header>
@@ -38,14 +41,14 @@
             <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
                 <a th:href="@{/impugnacao}" class="nav_logo">
                     <i class="fa fa-home" style="font-size:23px;color:white"></i>
-                    <span class="nav_logo-name">Pagina Inicial</span>
+                    <span class="nav_logo-name">Pagina Inicial    </span>
                 </a>
                 <div class="nav_list">
-                    <a href="#" class="nav_link active">
+                    <a href="#" class="nav_link active">                    
                         <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
                         <span class="nav_name">Documentos</span>
                     </a>
-                    <a href="#" class="nav_link">
+                    <a href="#" class="nav_link">                   
                         <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Processos</span>
                     </a>
@@ -106,5 +109,18 @@
     <script th:src="@{/js/utils.js}"></script>
 
     <div layout:fragment="jscript"></div>
+    <script type="text/javascript">
+         var URL = '[[@{/}]]api';
+        
+    $.getJSON( URL+"/usuarios/load", function( json ) {	 
+    	
+    	console.log(json)
+	  	//$('#fotoid').attr('src',`data:image/png;base64,${json.foto}` );
+	
+	  	
+  	});
+    
+    	
+    </script>
 </body>
 </html>
