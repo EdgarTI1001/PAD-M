@@ -24,9 +24,15 @@ public class UnidadeLotacaoRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<UnidadeLotacao> findById(@PathVariable("id") Integer id) {		
+	public ResponseEntity<UnidadeLotacao> findById(@PathVariable("id") Integer id) {
 		UnidadeLotacao und = unidadeService.findById(id).get();
 		return ResponseEntity.ok(und);
+	}
+
+	@GetMapping("/orgao/{idOrgao}/localidade/{idLocalidade}")
+	public ResponseEntity<List<UnidadeLotacao>> findAllByIdOrgaoAndIdLocalidade(
+			@PathVariable("idOrgao") Integer idOrgao, @PathVariable("idLocalidade") Integer idLocalidade) {
+		return ResponseEntity.ok(unidadeService.findAllByIdOrgaoAndIdLocalidade(idOrgao, idLocalidade));
 	}
 
 }

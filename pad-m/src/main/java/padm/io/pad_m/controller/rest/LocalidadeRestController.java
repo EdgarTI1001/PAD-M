@@ -24,10 +24,15 @@ public class LocalidadeRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Localidade> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
+	public ResponseEntity<Localidade> findById(@PathVariable("id") Integer id) {		
 		Localidade localidade = localidadeService.findById(id).get();
 		return ResponseEntity.ok(localidade);
+	}
+	
+
+	@GetMapping("/orgao/{idOrgao}")
+	public ResponseEntity<List<Localidade>> findAllByIdOrgao(@PathVariable("idOrgao") Integer idOrgao) {		
+		return ResponseEntity.ok(localidadeService.findAllByIdOrgao(idOrgao));
 	}
 
 }

@@ -19,6 +19,11 @@ public class UnidadeLotacaoService {
 	public List<UnidadeLotacao> findAll() {
 		return unidadeRepository.findAll();
 	}
+	
+	public List<UnidadeLotacao> findAllByIdOrgaoAndIdLocalidade(Integer idOrgao, Integer idLocalidade) {
+		return unidadeRepository.findAllByIdOrgaoAndIdLocalidade(idOrgao,idLocalidade);
+	}
+	
 
 	public Optional<UnidadeLotacao> findById(Integer id) {
 		return unidadeRepository.findById(id);

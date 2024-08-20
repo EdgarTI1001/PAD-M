@@ -24,8 +24,7 @@ public class SetorRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Setor> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
+	public ResponseEntity<Setor> findById(@PathVariable("id") Integer id) {		
 		Setor setor = setorService.findById(id).get();
 		return ResponseEntity.ok(setor);
 	}

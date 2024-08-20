@@ -1,6 +1,7 @@
 package padm.io.pad_m.controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import padm.io.pad_m.domain.Orgao;
 import padm.io.pad_m.domain.Servidor;
+import padm.io.pad_m.domain.Setor;
+import padm.io.pad_m.service.OrgaoService;
 import padm.io.pad_m.service.ServidorService;
+import padm.io.pad_m.service.SetorService;
 
 @Controller
 @RequestMapping("/servidores")
@@ -24,6 +29,12 @@ public class ServidorController {
 
 	@Autowired
 	private ServidorService servidorService;
+	
+	@Autowired
+	private OrgaoService orgaoService;
+	
+	@Autowired
+	private SetorService setorService;
 
 	@GetMapping
 	public ModelAndView findAll() {
@@ -35,7 +46,12 @@ public class ServidorController {
 
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {
-		model.addAttribute("servidor", servidor);		
+		List<Orgao> orgaos = orgaoService.findAll();
+		//List<Setor> setores = setorService.findAll();
+		
+		model.addAttribute("servidor", servidor);	
+		model.addAttribute("orgaos", orgaos);	
+		//model.addAttribute("setores", setores);	
 		return "form/frmServidor";
 	}
 
