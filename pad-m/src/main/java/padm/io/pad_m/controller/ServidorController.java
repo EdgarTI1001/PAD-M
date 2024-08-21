@@ -1,7 +1,9 @@
 package padm.io.pad_m.controller;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,20 +49,19 @@ public class ServidorController {
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {
 		List<Orgao> orgaos = orgaoService.findAll();
-		//List<Setor> setores = setorService.findAll();
 		
 		model.addAttribute("servidor", servidor);	
-		model.addAttribute("orgaos", orgaos);	
-		//model.addAttribute("setores", setores);	
+		model.addAttribute("orgaos", orgaos);
+		
 		return "form/frmServidor";
 	}
 
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("servidor") Servidor servidor, BindingResult result) {
-		try {
-			
+		try {	
+			Optional<Setor> setor = setorService.findById(servidor.getSetorlotacaoId());
+			servidor.setDatacadastro(LocalDateTime.now());				
 			servidorService.save(servidor);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

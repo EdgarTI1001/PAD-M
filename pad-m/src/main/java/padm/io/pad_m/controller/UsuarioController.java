@@ -88,7 +88,7 @@ public class UsuarioController {
 			usuario.setUltimoacesso(LocalDateTime.now());			
 			System.out.println(usuario.getServidorId().getId());
 			Optional<Servidor> s = servidorService.findById(usuario.getServidorId().getId());
-			System.out.println(s.get().getNome());
+		
 			if(!file.isEmpty()) { 
 				StringBuilder fileNames = new StringBuilder();
 		        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());

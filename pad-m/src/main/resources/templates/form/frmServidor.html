@@ -58,8 +58,8 @@
                     </div>                    
                 
                     <div class="col-md-3 mb-3">
-                        <label for="rgorgao" class="form-label">Setor</label>
-                       <select id="setor" class="form-select form-select-sm"> 
+                        <label for="Setor" class="form-label">Setor</label>
+                       <select id="setor" class="form-select form-select-sm"  th:field="*{setorlotacaoId}"> 
 						    <option th:text="${'Selecione o Setor'}" th:value="${'0'}">					       
 							<option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}">		    		  
 						</select>
@@ -150,18 +150,6 @@
 										class="form-control" th:field="*{contratoId}" placeholder="">
                     </div>
 
-                    <div class="col-md-6 mb-3">
-                        <label for="setorpaiId" class="form-label">Setor Pai</label>
-                        <input type="text" id="setorpaiId"
-										class="form-control" th:field="*{setorpaiId}" placeholder="">
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="setorlotacaoId" class="form-label">Setor Lotado</label>
-                        <input type="text" id="setorlotacaoId"
-										class="form-control" th:field="*{setorlotacaoId}"
-										placeholder="">
-                    </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="perfilId" class="form-label">Perfil</label>
@@ -261,6 +249,27 @@
           		}); 
            	
             });
+            
+            $("#unidade").change(function(){
+                 var orgao = $("#orgao").val();
+              	 var localidade = $("#localidade").val();
+              	 var unidade = $("#unidade").val();
+              	 
+              	 $.ajax({
+             		  url: URL + "/setores/orgao/"+orgao+"/localidade/"+localidade+"/unidade/"+unidade,
+             		  method: "GET",
+             		}).done(function(data) {
+             			$('#setor').append($('<option>', {value: 0, text : "Selecione o Setor" }));
+             			$.each( data, function( index, rs ){
+             				$('#setor').append($('<option>', { 
+             			        value: rs.id,
+             			        text : rs.nome 
+             			    }));
+             			});
+             			 $("#loader").hide();
+             		}); 
+              	
+               });
             
             
         </script>

@@ -19,6 +19,10 @@ public class SetorService {
 	public List<Setor> findAll() {
 		return setorRepository.findAll();
 	}
+	
+	public List<Setor> findAllByIdOrgaoAndIdLocalidadeAndUnidade(Integer idOrgao, Integer idLocalidade, Integer idUnidade) {
+		return setorRepository.findAllByIdOrgaoAndIdLocalidadeAndUnidade(idOrgao,idLocalidade,idUnidade);
+	}
 
 	public Optional<Setor> findById(Integer id) {
 		return setorRepository.findById(id);

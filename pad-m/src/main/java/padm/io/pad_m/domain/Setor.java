@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Setor {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
@@ -29,15 +29,13 @@ public class Setor {
 
 	private int unidadelotacaoid;
 
-	private int setorpai;
+	private String nome;
 
 	private String descricao;
 
 	private String segmento;
 
 	private String sigla;
-
-	private int userId;
 
 	private int usercriadorId;
 
@@ -66,19 +64,18 @@ public class Setor {
 	public Setor() {
 	}
 
-	public Setor(Integer id, Orgao orgaoid, Localidade localidadeid, int unidadelotacaoid, int setorpai,
-			String descricao, String segmento, String sigla, int userId, int usercriadorId, LocalDateTime datacriacao,
+	public Setor(Integer id, Orgao orgaoid, Localidade localidadeid, int unidadelotacaoid, String nome,
+			String descricao, String segmento, String sigla, int usercriadorId, LocalDateTime datacriacao,
 			int responsavelId, Atendente atendenteId, int moderadorId, Gestor gestorId, String obs, int seq, int flag,
 			int placed) {
 		this.id = id;
 		this.orgaoid = orgaoid;
 		this.localidadeid = localidadeid;
 		this.unidadelotacaoid = unidadelotacaoid;
-		this.setorpai = setorpai;
+		this.nome = nome;
 		this.descricao = descricao;
 		this.segmento = segmento;
 		this.sigla = sigla;
-		this.userId = userId;
 		this.usercriadorId = usercriadorId;
 		this.datacriacao = datacriacao;
 		this.responsavelId = responsavelId;
@@ -123,14 +120,6 @@ public class Setor {
 		this.unidadelotacaoid = unidadelotacaoid;
 	}
 
-	public int getSetorpai() {
-		return setorpai;
-	}
-
-	public void setSetorpai(int setorpai) {
-		this.setorpai = setorpai;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
@@ -153,14 +142,6 @@ public class Setor {
 
 	public void setSigla(String sigla) {
 		this.sigla = sigla;
-	}
-
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
 	}
 
 	public int getUsercriadorId() {
@@ -243,6 +224,14 @@ public class Setor {
 		this.placed = placed;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -258,16 +247,6 @@ public class Setor {
 			return false;
 		Setor other = (Setor) obj;
 		return Objects.equals(id, other.id);
-	}
-
-	@Override
-	public String toString() {
-		return "Setor [id=" + id + ", orgaoid=" + orgaoid + ", localidadeid=" + localidadeid + ", unidadelotacaoid="
-				+ unidadelotacaoid + ", setorpai=" + setorpai + ", descricao=" + descricao + ", segmento=" + segmento
-				+ ", sigla=" + sigla + ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", datacriacao="
-				+ datacriacao + ", responsavelId=" + responsavelId + ", atendenteId=" + atendenteId + ", moderadorId="
-				+ moderadorId + ", gestorId=" + gestorId + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag
-				+ ", placed=" + placed + "]";
 	}
 
 }

@@ -5,28 +5,41 @@
  <section layout:fragment="content">
  <div class="card">
 		<div class="card-header">			
-					  Candidatos
+					  Servidores
 		</div>
 	<div class="card-body">
 		<table class="table table-hover">
 		<thead>
-			<tr>
-			  <th scope="col">Numero</th>
+			<tr>	
+			<th>
+				     <a sec:authorize="hasRole('ROLE_USER')"  th:href="@{/servidores/new}">
+				       <i title="Cadastrar novo USUARIO" class="fa fa-plus-circle" aria-hidden="true"></i>
+				    </a>
+			</th>		 		 
 			  <th scope="col">Nome</th>
-			  <th scope="col">Nome Urna</th>
-			  <th scope="col">Titulo de Eleitor</th>
-			  <th scope="col">Data Nascimento</th>
-			  <th scope="col">Sexo</th>
-			  <th scope="col">Id Genero</th>
-			  <th scope="col">Cargo</th>
-			  <th scope="col">Zona</th>
-			  <th scope="col">Municipio</th>
-			  <th scope="col">Código Munic</th>
+			  <th scope="col">Nome Reduzino</th>
+			  <th scope="col">Cargo</th>				  
 			  <th scope="col"></th>
 			</tr>
 		 </thead>
 		  <tbody>
-	
+			<tr th:each="rs : ${servidores}" th:id="'tr' + ${rs.id}">		
+				   <td></td>		  
+				   <td th:text="${rs.nome}"></td>
+				   <td th:text="${rs.nomereduzido}"></td>		
+				   <td th:text="${rs.cargofuncao}"></td>						
+				   
+				      <td>
+					    <a class="btn btn-sm btn-primary" th:href="@{/servidores/edit/} + ${rs.id}"  role="button" title="Editar Servidor">
+							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+						</a>	
+						  <a class="btn btn-sm btn-danger" href="#" role="button" th:data-record-id="${rs.id}"  th:data-record-nome="${rs.nomereduzido}" th:id="'del' + ${rs.id}" title="excluir">
+						     <i class="fa fa-trash-o" aria-hidden="true"></i>
+						  </a> 						  
+						 
+						  
+				   </td> 			   	   
+				</tr>
 		 </tbody>
 	</table>
 	</div></div>	
@@ -59,31 +72,32 @@
  <script>
  var URL = '[[@{/}]]api';
    
-   $("[id*='del']").click(function(event){
-	  	  event.preventDefault();
-	  	  var id = $(this).data("id");
-	  	  var nome = $(this).data("nome");
-	  	  swal({
-	  		  title: 'Excluir?',
-	  		  text: "Remover o acesso do Candidato? (" + nome + ")",
-	  		  icon: 'warning',
-	  		  buttons: [true, "Sim Excluir!"]
-	  		}).then((result) => {
-	  		  if (result) {
-	  			  $.ajax({
-	  				  url: URL + "v2/api/candidatos/delete/" + id,
-	  				  method: "DELETE",
-	  				  statusCode: {
-	  					    403: function(xhr) {
-	  					      	swal("Atenção","Você não tem permissão para realizar essa operação","error");
-	  					    }
-	  					  }
-	  				}).done(function() {
-	  				  $('#tr'+id).remove();		  
-	  				});
-	  		   }
-	  		})
-	  	  });
+ $("[id*='del']").click(function(event){
+ 	  event.preventDefault();
+      var data = $(event.delegateTarget).data();
+      var id = data.recordId;
+ 	  var nome =  data.recordNome; 	 
+ 	  swal({
+ 		  title: 'Excluir?',
+ 		  text: "Remover o acesso do Servidor? (" + nome + ")",
+ 		  icon: 'warning',
+ 		  buttons: [true, "Sim Excluir!"]
+ 		}).then((result) => {
+ 		  if (result) {
+ 			  $.ajax({
+ 				  url: URL + "/servidores/delete/" + id,
+ 				  method: "DELETE",
+ 				  statusCode: {
+ 					    403: function(xhr) {
+ 					      	swal("Atenção","Você não tem permissão para realizar essa operação","error");
+ 					    }
+ 					  }
+ 				}).done(function() {
+ 				  $('#tr'+id).remove();		  
+ 				});
+ 		   }
+ 		})
+ 	  });
    
    
    var myModalEl = document.getElementById('imgModal')     
