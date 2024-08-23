@@ -2,8 +2,7 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layout.html}">
 <head>
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 </head>
 <body>
@@ -134,13 +133,13 @@
                     <div class="col-md-6 mb-3">
                         <label for="dataadmissao" class="form-label">Data Admissão</label>
                         <input type="date" id="dataadmissao"
-										class="form-control" th:field="*{dataadmissao}" placeholder="">
+										class="form-control" name="admissao" placeholder="">
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="datadesligamento" class="form-label">Data Desligamento</label>
                         <input type="date" id="datadesligamento"
-										class="form-control" th:field="*{datadesligamento}"
+										class="form-control" name="desligamento"
 										placeholder="">
                     </div>
 
@@ -165,8 +164,8 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="dataexpiracao" class="form-label">Data Expiração</label>
-                        <input type="date" id="dataexpiracao"
-										class="form-control" th:field="*{dataexpiracao}"
+                        <input type="date" id="dataexpiracao" name="expiracao"
+										class="form-control" 
 										placeholder="">
                     </div>                      
 
@@ -186,8 +185,12 @@
 			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
  	   <script
 			src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
  	   <script>
             var URL = '[[@{/}]]';
+           
+       
+            
             $("#loader").show();
             $(document).ready(function() {
                 $("#loader").hide();

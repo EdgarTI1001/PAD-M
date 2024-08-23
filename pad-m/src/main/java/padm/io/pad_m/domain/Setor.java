@@ -43,10 +43,6 @@ public class Setor {
 
 	private int responsavelId;
 
-	@ManyToOne
-	@JoinColumn(name = "atendente_id")
-	private Atendente atendenteId;
-
 	private int moderadorId;
 
 	@ManyToOne
@@ -66,7 +62,7 @@ public class Setor {
 
 	public Setor(Integer id, Orgao orgaoid, Localidade localidadeid, int unidadelotacaoid, String nome,
 			String descricao, String segmento, String sigla, int usercriadorId, LocalDateTime datacriacao,
-			int responsavelId, Atendente atendenteId, int moderadorId, Gestor gestorId, String obs, int seq, int flag,
+			int responsavelId, int moderadorId, Gestor gestorId, String obs, int seq, int flag,
 			int placed) {
 		this.id = id;
 		this.orgaoid = orgaoid;
@@ -78,8 +74,7 @@ public class Setor {
 		this.sigla = sigla;
 		this.usercriadorId = usercriadorId;
 		this.datacriacao = datacriacao;
-		this.responsavelId = responsavelId;
-		this.atendenteId = atendenteId;
+		this.responsavelId = responsavelId;		
 		this.moderadorId = moderadorId;
 		this.gestorId = gestorId;
 		this.obs = obs;
@@ -168,14 +163,7 @@ public class Setor {
 		this.responsavelId = responsavelId;
 	}
 
-	public Atendente getAtendenteId() {
-		return atendenteId;
-	}
-
-	public void setAtendenteId(Atendente atendenteId) {
-		this.atendenteId = atendenteId;
-	}
-
+	
 	public int getModeradorId() {
 		return moderadorId;
 	}

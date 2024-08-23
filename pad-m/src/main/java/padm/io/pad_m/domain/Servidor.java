@@ -1,6 +1,6 @@
 package padm.io.pad_m.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -14,14 +14,14 @@ import javax.persistence.Table;
 public class Servidor {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String nome;
 
 	private String nomereduzido;
 
-	private String cpf;	
+	private String cpf;
 
 	private String rg;
 
@@ -49,9 +49,9 @@ public class Servidor {
 
 	private String email;
 
-	private LocalDateTime dataadmissao;
+	private LocalDate dataadmissao;
 
-	private LocalDateTime datadesligamento;
+	private LocalDate datadesligamento;
 
 	private int contratoId;
 
@@ -59,7 +59,7 @@ public class Servidor {
 
 	private int setorlotacaoId;
 
-	private LocalDateTime datacadastro;
+	private LocalDate datacadastro;
 
 	private int perfilId;
 
@@ -67,11 +67,11 @@ public class Servidor {
 
 	private String certificado;
 
-	private LocalDateTime dataexpiracao;
+	private LocalDate dataexpiracao;
 
-	private LocalDateTime ultimoacesso;
+	private LocalDate ultimoacesso;
 
-	private LocalDateTime datacriacao;
+	private LocalDate datacriacao;
 
 	private String image;
 
@@ -88,17 +88,16 @@ public class Servidor {
 	public Servidor() {
 	}
 
-	public Servidor(Integer id, String nome, String nomereduzido, String cpf,
-			String rg, String rgorgao, String cargofuncao, String endereco, String numero, String bairro,
-			String complemento, String cidade, String cep, String telefone1, String telefone2, String redesocial,
-			String email, LocalDateTime dataadmissao, LocalDateTime datadesligamento, int contratoId, int setorpaiId,
-			int setorlotacaoId, LocalDateTime datacadastro, int perfilId, String hash, String certificado,
-			LocalDateTime dataexpiracao, LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image,
-			int placed, int ativo, String obs, int seq, int flag) {
-		this.id = id;		
+	public Servidor(Integer id, String nome, String nomereduzido, String cpf, String rg, String rgorgao,
+			String cargofuncao, String endereco, String numero, String bairro, String complemento, String cidade,
+			String cep, String telefone1, String telefone2, String redesocial, String email, LocalDate dataadmissao,
+			LocalDate datadesligamento, int contratoId, int setorpaiId, int setorlotacaoId, LocalDate datacadastro,
+			int perfilId, String hash, String certificado, LocalDate dataexpiracao, LocalDate ultimoacesso,
+			LocalDate datacriacao, String image, int placed, int ativo, String obs, int seq, int flag) {
+		this.id = id;
 		this.nome = nome;
 		this.nomereduzido = nomereduzido;
-		this.cpf = cpf;		
+		this.cpf = cpf;
 		this.rg = rg;
 		this.rgorgao = rgorgao;
 		this.cargofuncao = cargofuncao;
@@ -140,8 +139,6 @@ public class Servidor {
 		this.id = id;
 	}
 
-
-
 	public String getNome() {
 		return nome;
 	}
@@ -165,8 +162,6 @@ public class Servidor {
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
-
-	
 
 	public String getRg() {
 		return rg;
@@ -272,22 +267,6 @@ public class Servidor {
 		this.email = email;
 	}
 
-	public LocalDateTime getDataadmissao() {
-		return dataadmissao;
-	}
-
-	public void setDataadmissao(LocalDateTime dataadmissao) {
-		this.dataadmissao = dataadmissao;
-	}
-
-	public LocalDateTime getDatadesligamento() {
-		return datadesligamento;
-	}
-
-	public void setDatadesligamento(LocalDateTime datadesligamento) {
-		this.datadesligamento = datadesligamento;
-	}
-
 	public int getContratoId() {
 		return contratoId;
 	}
@@ -310,14 +289,6 @@ public class Servidor {
 
 	public void setSetorlotacaoId(int setorlotacaoId) {
 		this.setorlotacaoId = setorlotacaoId;
-	}
-
-	public LocalDateTime getDatacadastro() {
-		return datacadastro;
-	}
-
-	public void setDatacadastro(LocalDateTime datacadastro) {
-		this.datacadastro = datacadastro;
 	}
 
 	public int getPerfilId() {
@@ -344,27 +315,51 @@ public class Servidor {
 		this.certificado = certificado;
 	}
 
-	public LocalDateTime getDataexpiracao() {
+	public LocalDate getDataadmissao() {
+		return dataadmissao;
+	}
+
+	public void setDataadmissao(LocalDate dataadmissao) {
+		this.dataadmissao = dataadmissao;
+	}
+
+	public LocalDate getDatadesligamento() {
+		return datadesligamento;
+	}
+
+	public void setDatadesligamento(LocalDate datadesligamento) {
+		this.datadesligamento = datadesligamento;
+	}
+
+	public LocalDate getDatacadastro() {
+		return datacadastro;
+	}
+
+	public void setDatacadastro(LocalDate datacadastro) {
+		this.datacadastro = datacadastro;
+	}
+
+	public LocalDate getDataexpiracao() {
 		return dataexpiracao;
 	}
 
-	public void setDataexpiracao(LocalDateTime dataexpiracao) {
+	public void setDataexpiracao(LocalDate dataexpiracao) {
 		this.dataexpiracao = dataexpiracao;
 	}
 
-	public LocalDateTime getUltimoacesso() {
+	public LocalDate getUltimoacesso() {
 		return ultimoacesso;
 	}
 
-	public void setUltimoacesso(LocalDateTime ultimoacesso) {
+	public void setUltimoacesso(LocalDate ultimoacesso) {
 		this.ultimoacesso = ultimoacesso;
 	}
 
-	public LocalDateTime getDatacriacao() {
+	public LocalDate getDatacriacao() {
 		return datacriacao;
 	}
 
-	public void setDatacriacao(LocalDateTime datacriacao) {
+	public void setDatacriacao(LocalDate datacriacao) {
 		this.datacriacao = datacriacao;
 	}
 
@@ -435,16 +430,16 @@ public class Servidor {
 
 	@Override
 	public String toString() {
-		return "Servidor [id=" + id +  ", nome=" + nome + ", nomereduzido=" + nomereduzido
-				+ ", cpf=" + cpf  + ", rg=" + rg + ", rgorgao=" + rgorgao + ", cargofuncao="
-				+ cargofuncao + ", endereco=" + endereco + ", numero=" + numero + ", bairro=" + bairro
-				+ ", complemento=" + complemento + ", cidade=" + cidade + ", cep=" + cep + ", telefone1=" + telefone1
-				+ ", telefone2=" + telefone2 + ", redesocial=" + redesocial + ", email=" + email + ", dataadmissao="
-				+ dataadmissao + ", datadesligamento=" + datadesligamento + ", contratoId=" + contratoId
-				+ ", setorpaiId=" + setorpaiId + ", setorlotacaoId=" + setorlotacaoId + ", datacadastro=" + datacadastro
-				+ ", perfilId=" + perfilId + ", hash=" + hash + ", certificado=" + certificado + ", dataexpiracao="
-				+ dataexpiracao + ", ultimoacesso=" + ultimoacesso + ", datacriacao=" + datacriacao + ", image=" + image
-				+ ", placed=" + placed + ", ativo=" + ativo + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + "]";
+		return "Servidor [id=" + id + ", nome=" + nome + ", nomereduzido=" + nomereduzido + ", cpf=" + cpf + ", rg="
+				+ rg + ", rgorgao=" + rgorgao + ", cargofuncao=" + cargofuncao + ", endereco=" + endereco + ", numero="
+				+ numero + ", bairro=" + bairro + ", complemento=" + complemento + ", cidade=" + cidade + ", cep=" + cep
+				+ ", telefone1=" + telefone1 + ", telefone2=" + telefone2 + ", redesocial=" + redesocial + ", email="
+				+ email + ", dataadmissao=" + dataadmissao + ", datadesligamento=" + datadesligamento + ", contratoId="
+				+ contratoId + ", setorpaiId=" + setorpaiId + ", setorlotacaoId=" + setorlotacaoId + ", datacadastro="
+				+ datacadastro + ", perfilId=" + perfilId + ", hash=" + hash + ", certificado=" + certificado
+				+ ", dataexpiracao=" + dataexpiracao + ", ultimoacesso=" + ultimoacesso + ", datacriacao=" + datacriacao
+				+ ", image=" + image + ", placed=" + placed + ", ativo=" + ativo + ", obs=" + obs + ", seq=" + seq
+				+ ", flag=" + flag + "]";
 	}
 
 }
