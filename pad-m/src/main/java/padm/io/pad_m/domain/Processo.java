@@ -65,17 +65,11 @@ public class Processo {
 
 	private String classificacao;
 
-
-
 	private int rotuloId;
 
-	private int usucriadorId;
+	private int usucriadorId;	
 
-	
-
-	private LocalDateTime datacriacao;
-
-	
+	private LocalDateTime datacriacao;	
 
 	private int procapensadoId;
 

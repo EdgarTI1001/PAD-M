@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Servidor;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.security.AuthenticationFacade;
@@ -51,9 +52,9 @@ public class ProcessoController {
 	}
 
 	@GetMapping("/new")
-	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {
-		model.addAttribute("servidor", servidor);		
-		return "form/frmServidor";
+	public String frmCadastrar(Model model, @ModelAttribute("processo") Processo processo) {
+		model.addAttribute("servidor", processo);		
+		return "form/frmProcesso";
 	}
 
 	@PostMapping("/save")
