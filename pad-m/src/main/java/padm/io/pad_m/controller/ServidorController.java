@@ -1,9 +1,10 @@
 package padm.io.pad_m.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Orgao;
 import padm.io.pad_m.domain.Servidor;
-import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.service.OrgaoService;
 import padm.io.pad_m.service.ServidorService;
 import padm.io.pad_m.service.SetorService;
@@ -27,14 +28,14 @@ import padm.io.pad_m.service.SetorService;
 @RequestMapping("/servidores")
 public class ServidorController {
 
-	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");	
+	DateTimeFormatter parser = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	@Autowired
 	private ServidorService servidorService;
-	
+
 	@Autowired
 	private OrgaoService orgaoService;
-	
+
 	@Autowired
 	private SetorService setorService;
 
@@ -49,18 +50,27 @@ public class ServidorController {
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {
 		List<Orgao> orgaos = orgaoService.findAll();
-		
-		model.addAttribute("servidor", servidor);	
+
+		model.addAttribute("servidor", servidor);
 		model.addAttribute("orgaos", orgaos);
-		
+
 		return "form/frmServidor";
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("servidor") Servidor servidor, BindingResult result) {
-		try {	
-			Optional<Setor> setor = setorService.findById(servidor.getSetorlotacaoId());
-			servidor.setDatacadastro(LocalDateTime.now());				
+	public String saveObject(@ModelAttribute("servidor") Servidor servidor ,@RequestParam("admissao") String admissao,
+			@RequestParam("desligamento") String desligamento, @RequestParam("expiracao") String expiracao ,BindingResult result) {
+		try {				
+			servidor.setDatacadastro(LocalDate.now());				
+			
+			LocalDate dtadmissao = LocalDate.parse(admissao, parser);		
+			LocalDate dtdesligamento = LocalDate.parse(desligamento, parser);
+			LocalDate dtexpiracao = LocalDate.parse(expiracao, parser);
+			
+			servidor.setDataadmissao(dtadmissao); 
+			servidor.setDatadesligamento(dtdesligamento); 
+			servidor.setDataexpiracao(dtexpiracao);
+			
 			servidorService.save(servidor);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,8 +81,18 @@ public class ServidorController {
 	@GetMapping("/edit/{id}")
 	public ModelAndView frmEditar(@PathVariable(name = "id") Integer id) {
 		ModelAndView model = new ModelAndView("form/frmServidor");
+		List<Orgao> orgaos = orgaoService.findAll();
 		Servidor s = servidorService.findById(id).get();
+		
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		
+		System.out.println(s.getDataadmissao().format(formatters));
 		model.addObject("servidor", s);
+		model.addObject("admissao", s.getDataadmissao().format(formatters));
+		//model.addObject("desligamento", s.getDatadesligamento().format(formatters));
+		//model.addObject("expiracao", s.getDataexpiracao().format(formatters));
+		model.addObject("orgaos", orgaos);
 		return model;
 	}
 }

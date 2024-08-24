@@ -1,6 +1,7 @@
 package padm.io.pad_m.controller;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Servidor;
+import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.ProcessoService;
+import padm.io.pad_m.service.SetorService;
+import padm.io.pad_m.service.UsuarioService;
 
 @Controller
 @RequestMapping("/processos")
@@ -23,12 +28,24 @@ public class ProcessoController {
 	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");	
 
 	@Autowired
+	AuthenticationFacade session;
+	
+	@Autowired
 	private ProcessoService processoService;
+	
+	@Autowired
+	private SetorService setorService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@GetMapping
 	public ModelAndView findAll() {
 		ModelAndView mv = new ModelAndView("consulta/processos");
-		mv.addObject("processos", processoService.findAll());
+		Optional<Usuario> usuario = usuarioService.findById(session.getUsuario().getId());
+		
+		mv.addObject("usuario",usuario.get());
+		mv.addObject("setores", setorService.findAll());
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}

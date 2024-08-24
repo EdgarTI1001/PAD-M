@@ -17,12 +17,19 @@
     <link th:href="@{/css/dataTables.bootstrap5.css}" rel="stylesheet">
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <link th:href="@{/css/boxicons.min.css}" rel="stylesheet">
+    <style type="text/css">
+  	 .breadcrumb {
+			font-size: 12px;
+		}
+    </style>
+
 </head>
 <body id="body-pd">
     <header class="header" id="header">
         <div class="header_toggle">
             <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>
-            <b>PAD-M</b>
+            <b>PAD-M</b>	
+	
         </div>
         <div  sec:authorize="isAuthenticated()"
                   th:with="userName=${#authentication.getPrincipal().getUsername()}, 
@@ -32,7 +39,7 @@
                       
             <small th:text="@{(${userName})}"></small>      
             <div class="header_img">
-                <img id ="imagem" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" src="" alt="User Image"/>
+                <img id ="imagem" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  th:src="@{/images/male.png}" alt="User Image"/>
             </div>
         </div>
     </header>
@@ -44,11 +51,13 @@
                     <span class="nav_logo-name">Pagina Inicial    </span>
                 </a>
                 <div class="nav_list">
+                	
                     <a href="#" class="nav_link active">                    
                         <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
                         <span class="nav_name">Documentos</span>
-                    </a>
-                    <a href="#" class="nav_link">                   
+                    </a>             
+      
+                    <a th:href="@{/processos}" class="nav_link" title="processos">                   
                         <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Processos</span>
                     </a>
