@@ -1,10 +1,10 @@
 package padm.io.pad_m.controller;
 
 import java.time.LocalDate;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,19 +58,33 @@ public class ServidorController {
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("servidor") Servidor servidor ,@RequestParam("admissao") String admissao,
-			@RequestParam("desligamento") String desligamento, @RequestParam("expiracao") String expiracao ,BindingResult result) {
+	public String saveObject(@ModelAttribute("servidor") @Valid Servidor servidor, BindingResult result, Model model, @RequestParam("admissao") String admissao,
+			@RequestParam("desligamento") String desligamento, @RequestParam("expiracao") String expiracao) {
+		
+		if(result.hasErrors()){
+			List<Orgao> orgaos = orgaoService.findAll();
+			model.addAttribute("servidor", servidor);
+			model.addAttribute("orgaos", orgaos);
+			return "form/frmServidor";
+		}
 		try {				
-			servidor.setDatacadastro(LocalDate.now());				
+			servidor.setDatacadastro(LocalDate.now());
 			
-			LocalDate dtadmissao = LocalDate.parse(admissao, parser);		
-			LocalDate dtdesligamento = LocalDate.parse(desligamento, parser);
-			LocalDate dtexpiracao = LocalDate.parse(expiracao, parser);
+			if(!admissao.isBlank()){
+				LocalDate dtadmissao = LocalDate.parse(admissao, parser);
+				servidor.setDataadmissao(dtadmissao);
+			}
+					
+			if(!desligamento.isBlank()){
+				LocalDate dtdesligamento = LocalDate.parse(desligamento, parser);
+				servidor.setDatadesligamento(dtdesligamento); 
+			}
 			
-			servidor.setDataadmissao(dtadmissao); 
-			servidor.setDatadesligamento(dtdesligamento); 
-			servidor.setDataexpiracao(dtexpiracao);
-			
+			if(!expiracao.isBlank()){
+				LocalDate dtexpiracao = LocalDate.parse(expiracao, parser);
+				servidor.setDataexpiracao(dtexpiracao);
+			}
+
 			servidorService.save(servidor);
 		} catch (Exception e) {
 			e.printStackTrace();
