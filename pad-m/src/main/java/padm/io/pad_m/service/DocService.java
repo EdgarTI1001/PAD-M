@@ -1,11 +1,8 @@
 package padm.io.pad_m.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import padm.io.pad_m.domain.Doc;
@@ -13,25 +10,24 @@ import padm.io.pad_m.repository.DocRepository;
 
 @Service
 public class DocService {
-	@Autowired
-	DocRepository docRepository;
 
-	public List<Doc> findAll() {
-		return docRepository.findAll();
-	}
+    @Autowired
+    private DocRepository docRepository;
 
-	public Optional<Doc> findById(Integer id) {
-		return docRepository.findById(id);
-	}
+    public Page<Doc> findAll(Pageable pageable) {
+        return docRepository.findAll(pageable);
+    }
 
-	@Transactional
-	public void save(Doc obj) {
-		docRepository.save(obj);
-	}
+    public Doc findById(Integer id) {
+        return docRepository.findById(id).orElse(null);
+    }
 
-	@Transactional
-	public void delete(Doc obj) {
-		docRepository.delete(obj);
-	}
+    public Doc save(Doc doc) {
+        return docRepository.save(doc);
+    }
+
+    public void deleteById(Integer id) {
+        docRepository.deleteById(id);
+    }
 
 }
