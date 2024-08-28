@@ -17,7 +17,7 @@ public class ClassifService {
 	ClassifRepository classifRepository;
 
 	public List<Classif> findAll() {
-		return classifRepository.findAll();
+		return classifRepository.findAllOrderedByNome();
 	}
 
 	public Optional<Classif> findById(Integer id) {

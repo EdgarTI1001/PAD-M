@@ -24,7 +24,7 @@ public class Processo {
 
 	private String tipo;
 
-	private Long ano;
+	private Integer ano;
 
 	private String numanoproc;
 
@@ -67,7 +67,7 @@ public class Processo {
 
 	private int rotuloId;
 
-	private int usucriadorId;	
+	private Integer usucriadorId;	
 
 	private LocalDateTime datacriacao;	
 
@@ -104,9 +104,9 @@ public class Processo {
 	public Processo() {
 	}
 
-	public Processo(Integer id, Integer numproc, String tipo, Long ano, String numanoproc, String assunto,
+	public Processo(Integer id, Integer numproc, String tipo, Integer ano, String numanoproc, String assunto,
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
-			int usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
+			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
 			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
 			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexadoId, String motivoanexo,
 			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
@@ -171,11 +171,11 @@ public class Processo {
 		this.tipo = tipo;
 	}
 
-	public Long getAno() {
+	public Integer getAno() {
 		return ano;
 	}
 
-	public void setAno(Long ano) {
+	public void setAno(Integer ano) {
 		this.ano = ano;
 	}
 
@@ -219,11 +219,11 @@ public class Processo {
 		this.rotuloId = rotuloId;
 	}
 
-	public int getUsucriadorId() {
+	public Integer getUsucriadorId() {
 		return usucriadorId;
 	}
 
-	public void setUsucriadorId(int usucriadorId) {
+	public void setUsucriadorId(Integer usucriadorId) {
 		this.usucriadorId = usucriadorId;
 	}
 

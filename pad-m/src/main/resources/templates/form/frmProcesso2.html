@@ -43,7 +43,7 @@
         <div class="card">
             <div class="card-header">Cadastro de Processo</div>
             <div class="card-body">
-                <form th:action="@{/processos/passo2}" th:object="${processo}" method="post" class="row g-3" id="frm">
+                <form th:action="@{/processo/save}" th:object="${processo}" method="post" class="row g-3" id="frm">
                     <input type="hidden" th:field="*{id}">
 						
 				 <div class="stepper-wrapper">
@@ -51,44 +51,25 @@
 					    <div class="step-counter">1</div>
 					    <div class="step-name">Criando Processo</div>
 					  </div>
-					  <div class="stepper-item ">
+					  <div class="stepper-item completed">
 					    <div class="step-counter">2</div>
 					    <div class="step-name">Classificação do Processo</div>
 					  </div>
-					  <div class="stepper-item ">
+					  <div class="stepper-item">
 					    <div class="step-counter">3</div>
 					    <div class="step-name">Finalizar</div>
 					  </div>					
-					</div>
-					
-					
-                    <div class="col-6 mb-3">
-                        <label for="nome" class="form-label">Assunto do Processo</label>
-                        <input type="text" id="processo" class="form-control" th:field="*{assunto}" placeholder="Assunto">
-                    </div>                  
+					</div>				
                    
-                     <div class="col-6 mb-3">
-                     	SETOR/USUARIO CRIADOR
-                     <div class="card bg-light"  style="width: 45rem;">
-					  <div class="card-body">
-                     	  <div class="form-check">
-							  <input class="form-check-input" type="radio" th:field="*{usucriadorId}" th:value="${usuario.id}" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${usuario.nome}"></span>							  
-							  </label>
-						</div>
-						
-                         <div class="form-check">
-							  <input class="form-check-input" type="radio" th:field="*{setorcriadorId}" th:value="${setor.id}" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${setor.nome}"></span>							  
-							  </label>
-						</div>
+   
+                    <div class="col-md-6 mb-3">
+                        <label for="cpf" class="form-label">Classificação</label>
+                        <select id="classsificacao" th:errorclass="is-invalid" class="form-select orm-select-sm" th:field="*{classId}">
+		      				 <option th:text="${'Selecione a classificação'}" th:value="${'0'}">	
+		     				 <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}">
+		   				 </select>		    
                     </div>
-                    </div>
-                    </div>
-                     
-                           
+          
 
                     <!-- 
                     <div class="col-md-6 mb-3">
@@ -115,7 +96,13 @@
                     <!-- FASE DESNECESSÁRIO -->
                     
                     <div class="col-md-6 mb-3">
-                           
+                        <label for="interessado" class="form-label">Interessado</label>
+                        <select id="interessado" class="form-select form-select-sm">
+                            <option th:text="${'Selecione o Interessado'}" th:value="${'0'}"></option>
+                            <option value="1">Jones</option>
+                            <option value="2">Sauer</option>
+                            <option value="3">Nero</option>                  
+                        </select>              
                     </div>        
                    
                  
@@ -130,11 +117,7 @@
                     <!-- USUCRIADOR DESNECESSÁRIO??? -->                    
                 
                     <div class="col-12 text-right">
-            
-						  <button type="submit" class="btn btn-primary btn-sm">Avançar</button>
-						
-							
-						
+                        <button type="submit" class="btn btn-primary btn-sm">Salvar</button>
                     </div>
                 </form>
             </div>
