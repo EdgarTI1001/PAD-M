@@ -3,53 +3,53 @@
 <head></head>
 <body>
  <section layout:fragment="content">
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="mb-0">Lista de Documentos</h4>
-            </div>
-            <div class="card-body">
-                <a href="/docs/create" class="btn btn-primary mb-3">Criar Novo Documento</a>
-                
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="doc : ${docPage.content}">
-                            <td th:text="${doc.id}"></td>
-                            <td th:text="${doc.nomdoc}"></td>
-                            <td>
-                                <a th:href="@{/docs/edit/{id}(id=${doc.id})}" class="btn btn-warning btn-sm">Editar</a>
-                                <a th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">Excluir</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="card-footer">
-                <nav aria-label="Page navigation">
-                    <ul class="pagination">
-                        <li class="page-item" th:if="${docPage.hasPrevious()}">
-                            <a class="page-link" th:href="@{/docs(page=${docPage.number - 1})}" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Lista de Documentos</h4>
+        </div>
+        <div class="card-body">
+            <a href="/docs/create" class="btn btn-primary mb-3">Criar Novo Documento</a>
+            
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="doc : ${docPage.content}">
+                        <td th:text="${doc.nomdoc}"></td>
+                        <td>
+                            <a th:href="@{/docs/edit/{id}(id=${doc.id})}" class="btn btn-sm btn-primary"  role="button" title="Editar Documento">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
-                        </li>
-                        <li class="page-item" th:each="i : ${#numbers.sequence(0, docPage.totalPages - 1)}">
-                            <a class="page-link" th:href="@{/docs(page=${i})}" th:text="${i + 1}"></a>
-                        </li>
-                        <li class="page-item" th:if="${docPage.hasNext()}">
-                            <a class="page-link" th:href="@{/docs(page=${docPage.number + 1})}" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
+                            <a th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item" th:if="${docPage.hasPrevious()}">
+                        <a class="page-link" th:href="@{/docs(page=${docPage.number - 1})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, docPage.totalPages - 1)}">
+                        <a class="page-link" th:href="@{/docs(page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li class="page-item" th:if="${docPage.hasNext()}">
+                        <a class="page-link" th:href="@{/docs(page=${docPage.number + 1})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </section>
