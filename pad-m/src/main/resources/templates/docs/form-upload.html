@@ -11,21 +11,6 @@
             <div class="card-body">
                 <form th:action="@{/docs/files/upload}" th:object="${doc}" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}" />
-                    
-                    <div class="mb-3">
-                        <label for="nomeDocumento" class="form-label">Nome</label>
-                        <input type="text" id="nomeDocumento" class="form-control" th:field="*{nomdoc}" />
-                    </div>
-    
-                    <div class="mb-3">
-                        <label for="extensaoDocumento" class="form-label">Extensão</label>
-                        <input type="text" id="extensaoDocumento" class="form-control" th:field="*{extdoc}" />
-                    </div>
-    
-                    <div class="mb-3">
-                        <label for="tipoDocumento" class="form-label">Tipo</label>
-                        <input type="text" id="tipoDocumento" class="form-control" th:field="*{tipodoc}" />
-                    </div>
 
                     <input id="input-file" type="file" name="file" />
     

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
@@ -96,8 +97,25 @@ public class DocController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteDoc(@PathVariable("id") Integer id) {
-        docService.deleteById(id);
+    public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+
+        Doc doc = docService.findById(id);
+
+        try {
+
+            boolean existed = storageService.delete(doc.getNomdoc());
+      
+            if (existed) {
+              redirectAttributes.addFlashAttribute("message", "Arquivo excluido com sucesso! " + doc.getNomdoc());
+              docService.deleteById(id);
+            } else {
+              redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
+            }
+          } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("message",
+                "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+          }
+        
         return "redirect:/docs";
     }
 }
