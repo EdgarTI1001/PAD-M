@@ -19,8 +19,8 @@ public class PadMApplication implements CommandLineRunner {
 	}
 
 	@Override
-  public void run(String... arg) throws Exception {
-    storageService.init();
-  }
+	public void run(String... arg) throws Exception {
+		storageService.init();
+	}
 
 }
