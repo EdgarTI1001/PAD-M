@@ -6,13 +6,13 @@
     <div class="container mt-4">
         <div class="card">
             <div class="card-header">
-                <h4 class="mb-0" th:text="${doc.id == null ? 'Criar Novo Documento' : 'Editar Documento'}"></h4>
+                <h4 class="mb-0" th:text="${doc.id == null ? 'Enviar Novo Documento' : 'Editar Documento'}"></h4>
             </div>
             <div class="card-body">
                 <form th:action="@{/docs/files/upload}" th:object="${doc}" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}" />
 
-                    <input id="input-file" type="file" name="file" />
+                    <input id="input-file" type="file" name="file" /><br><br>
     
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>

@@ -8,13 +8,21 @@ import org.springframework.web.multipart.MultipartFile;
 public interface FilesStorageService {
   public void init();
 
-  public void save(MultipartFile file);
+  public String save(MultipartFile file);
+
+  String save(MultipartFile file, String subDirectory);
 
   public Resource load(String filename);
 
+  Resource load(String filename, String subDirectory);
+
   public boolean delete(String filename);
-  
+
+  boolean delete(String filename, String subDirectory);
+
   public void deleteAll();
 
   public Stream<Path> loadAll();
+
+  Stream<Path> loadAll(String subDirectory);
 }

@@ -68,7 +68,7 @@ public class DocController {
         String message = "";
 
         try {
-            storageService.save(file);
+            String fileNameHash = storageService.save(file, "documentos");
 
             Usuario usuario = authentication.getUsuario();
 
@@ -77,6 +77,7 @@ public class DocController {
             doc.setExtdoc(file.getContentType());
             doc.setUsu_id(usuario);
             doc.setData(LocalDateTime.now());
+            doc.setNomhash(fileNameHash);
             docService.save(doc);
 
             message = "Arquivo enviado com sucesso: " + file.getOriginalFilename();
@@ -103,7 +104,7 @@ public class DocController {
 
         try {
 
-            boolean existed = storageService.delete(doc.getNomdoc());
+            boolean existed = storageService.delete(doc.getNomhash(), "documentos");
       
             if (existed) {
               redirectAttributes.addFlashAttribute("message", "Arquivo excluido com sucesso! " + doc.getNomdoc());

@@ -8,6 +8,7 @@
             <h4 class="mb-0">Lista de Documentos</h4>
         </div>
         <div class="card-body">
+            <a href="/docs/files/new" class="btn btn-primary mb-3">Upload Documento Existente</a>
             <a href="/docs/create" class="btn btn-primary mb-3">Criar Novo Documento</a>
             
             <table class="table table-hover">
@@ -26,6 +27,9 @@
                             </a>
                             <a th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
+                            <a class="btn btn-success btn-sm" onclick="return confirm('Tem certeza que deseja assinar documento?')">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </td>
                     </tr>

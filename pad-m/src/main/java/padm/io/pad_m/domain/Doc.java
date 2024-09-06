@@ -26,6 +26,9 @@ public class Doc {
 	@Column(name = "NOMDOC")
 	private String nomdoc;
 
+	@Column(name = "NOMHASH")
+	private String nomhash;
+
 	@Column(name = "EXTDOC")
 	private String extdoc;
 
@@ -143,4 +146,11 @@ public class Doc {
 		this.flag = flag;
 	}
 
+	public String getNomhash() {
+		return nomhash;
+	}
+
+	public void setNomhash(String nomhash) {
+		this.nomhash = nomhash;
+	}
 }
