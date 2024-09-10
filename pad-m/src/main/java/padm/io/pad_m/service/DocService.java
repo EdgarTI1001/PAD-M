@@ -33,13 +33,13 @@ public class DocService {
         docRepository.deleteById(id);
     }
 
-    public List<Doc> getDocsByUsuario(Usuario usuario) {
-        return docRepository.findByUsu_id(usuario);
+    public List<Doc> findAllDocsByUsuario(Usuario usuario) {
+        return docRepository.findAllDocumentosByUsuario(usuario);
     }
 
-    public List<Doc> getDocsByUsuarioId(Integer usuarioId) {
+    public List<Doc> findAllDocsByUsuarioId(Integer usuarioId) {
         Usuario usuario = new Usuario();
         usuario.setId(usuarioId);
-        return getDocsByUsuario(usuario);
+        return findAllDocsByUsuario(usuario);
     }
 }
