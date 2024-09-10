@@ -1,11 +1,14 @@
 package padm.io.pad_m.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import padm.io.pad_m.domain.Doc;
+import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.repository.DocRepository;
 
 @Service
@@ -30,4 +33,13 @@ public class DocService {
         docRepository.deleteById(id);
     }
 
+    public List<Doc> getDocsByUsuario(Usuario usuario) {
+        return docRepository.findByUsu_id(usuario);
+    }
+
+    public List<Doc> getDocsByUsuarioId(Integer usuarioId) {
+        Usuario usuario = new Usuario();
+        usuario.setId(usuarioId);
+        return getDocsByUsuario(usuario);
+    }
 }
