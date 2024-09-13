@@ -25,7 +25,6 @@ public class ProcessoRestController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Processo> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
 		Processo processo = processoService.findById(id).get();
 		return ResponseEntity.ok(processo);
 	}

@@ -4,62 +4,77 @@
 <body>
  <section layout:fragment="content">
  <nav aria-label="breadcrumb">
-			  <ol class="breadcrumb">
-			    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
-			    <li class="breadcrumb-item"><a href="#">Processos</a></li>
-			    <li class="breadcrumb-item">Criar Novo Processo</li>
-			    
-			  </ol>
-			</nav>
+	  <ol class="breadcrumb">
+	    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
+	    <li class="breadcrumb-item"><a href="#">Processos</a></li>
+	   <!--  <li class="breadcrumb-item">Criar Novo Processo</li> -->
+	    
+	  </ol>
+</nav>
 
- <h5><i class="fa fa-list-alt" aria-hidden="true"></i>	  Informações do Processo</h5> 
+ <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processo</h5>
+			
+<div class="row">
 
- <div class="card bg-light">	
-	<div class="card-body">
-				<div class="stepper-wrapper">
-					  <div class="stepper-item completed">
-					    <div class="step-counter">1</div>
-					    <div class="step-name">Criando Processo</div>
-					  </div>
-					  <div class="stepper-item completed">
-					    <div class="step-counter">2</div>
-					    <div class="step-name">Classificação do Processo</div>
-					  </div>
-					  <div class="stepper-item completed">
-					    <div class="step-counter">3</div>
-					    <div class="step-name">Finalizar</div>
-					  </div>					
-					</div>
+
+<div class="col-md-6">
+<div class="card">
+  <div class="card-body">
+<span class="badge text-bg-secondary">Processos do Usuario</span>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Numero</th>
+      <th scope="col">Ano</th>
+      <th scope="col">Numero/Ano</th>
+      <th scope="col">Descricao</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr> 
+  </tbody>
+</table>
+
+</div>
+
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="card">
+  <div class="card-body">
+<span class="badge text-bg-secondary">Processos do Setor</span>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Numero</th>
+      <th scope="col">Ano</th>
+      <th scope="col">Numero/Ano</th>
+      <th scope="col">Descricao</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr> 
+  </tbody>
+</table>
+</div>
+</div>
+
+
+</div>
+</div>
 					
-					
-					<div class="card bg-light">
-					  <div class="card-body">
-					   Escolha o Setor Criador
-					   <hr>
-					    <div class="form-check">
-							  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${usuario.nome}"  ></span>
-							  
-							  
-							  </label>
-						</div>		
-						
-					   <div class="form-check"  th:each="rs : ${setores}" th:id="'tr' + ${rs.id}">
-							  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${rs.nome}"  ></span>
-							  
-							  
-							  </label>
-						</div>						
 
-					  </div>
-					</div>
-					<br>
-					<button type="button" class="btn btn-primary btn-sm rounded-pill pull-right">Avançar</button>
-	</div>
-	</div>	
 	
 
 

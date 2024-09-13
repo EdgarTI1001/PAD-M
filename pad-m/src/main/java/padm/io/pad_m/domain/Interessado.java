@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Interessado {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
@@ -26,6 +26,10 @@ public class Interessado {
 	@ManyToOne
 	@JoinColumn(name = "usu_id")
 	private Usuario usu_id;
+
+	@ManyToOne
+	@JoinColumn(name = "setor_id")
+	private Setor setor;
 
 	private String interessado;
 
@@ -40,18 +44,35 @@ public class Interessado {
 	public Interessado() {
 
 	}
+	
+	
 
-	public Interessado(Integer id, Processo proc_id, Usuario usu_id, String interessado, LocalDateTime data, String obs,
-			int seq, int flag) {
-		super();
+	public Interessado(Integer id, String interessado) {		
+		this.id = id;
+		this.interessado = interessado;
+	}
+
+
+
+	public Interessado(Integer id, Processo proc_id, Usuario usu_id, Setor setor, String interessado,
+			LocalDateTime data, String obs, int seq, int flag) {
 		this.id = id;
 		this.proc_id = proc_id;
 		this.usu_id = usu_id;
+		this.setor = setor;
 		this.interessado = interessado;
 		this.data = data;
 		this.obs = obs;
 		this.seq = seq;
 		this.flag = flag;
+	}
+
+	public Setor getSetor() {
+		return setor;
+	}
+
+	public void setSetor(Setor setor) {
+		this.setor = setor;
 	}
 
 	public Integer getId() {

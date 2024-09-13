@@ -3,6 +3,7 @@
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             margin-top: 50px;
@@ -40,6 +41,14 @@
 </head>
 <body>
     <section layout:fragment="content">
+     <nav aria-label="breadcrumb">
+		  <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
+		    <li class="breadcrumb-item"><a href="#">Processos</a></li>
+		    <li class="breadcrumb-item">Criar Novo Processo</li> 
+		    
+		  </ol>
+	</nav>
         <div class="card">
             <div class="card-header">Cadastro de Processo</div>
             <div class="card-body">
@@ -64,60 +73,28 @@
 					
                     <div class="col-6 mb-3">
                         <label for="nome" class="form-label">Assunto do Processo</label>
-                        <input type="text" id="processo" class="form-control" th:field="*{assunto}" placeholder="Assunto">
-                    </div>                  
-                   
-                     <div class="col-6 mb-3">
-                     	SETOR/USUARIO CRIADOR
-                     <div class="card bg-light"  style="width: 45rem;">
-					  <div class="card-body">
-                     	  <div class="form-check">
-							  <input class="form-check-input" type="radio" th:field="*{usucriadorId}" th:value="${usuario.id}" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${usuario.nome}"></span>							  
-							  </label>
-						</div>
-						
-                         <div class="form-check">
-							  <input class="form-check-input" type="radio" th:field="*{setorcriadorId}" th:value="${setor.id}" id="flexRadioDefault1">
-							  <label class="form-check-label" for="flexRadioDefault1">
-							  <span  th:text="${setor.nome}"></span>							  
-							  </label>
-						</div>
-                    </div>
-                    </div>
-                    </div>
-                     
-                           
-
-                    <!-- 
-                    <div class="col-md-6 mb-3">
-                        <label for="cpf" class="form-label">Classificação</label>
-                        <select id="classsificacao" th:errorclass="is-invalid" class="form-select orm-select-sm" th:field="*{classId}">
-		      				 <option th:text="${'Selecione a classificação'}" th:value="${'0'}">	
-		     				 <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}">
-		   				 </select>		    
-                    </div>
-                    --> 
+                        <input type="text" id="processo" class="form-control form-control-sm" th:field="*{assunto}" placeholder="Assunto">
+                    </div>  
                     
-                    <!-- 
-                    <div class="col-md-3 mb-3">
-                        <label for="evento" class="form-label">Evento</label>
-                        <select id="evento" class="form-select form-select-sm">
-                            <option th:text="${'Selecione o Evento"}" th:value="${'0'}"></option>
-                            <option value="1">SEDES</option>
-                            <option value="2">STI</option>
-                            <option value="3">SGP</option>                  
-                        </select>              
-                    </div> 
-                    -->   
+                       <div class="col-6 mb-3">
+                        <label for="nome" class="form-label">SETOR/USUARIO CRIADOR</label>
+                       		 <select id="tipo" class="form-select form-select-sm" th:field="*{tipo}" > 
+						       <option th:text="${'Selecione o Tipo'}" th:value="${'0'}">	
+						       <option th:text="${'Setor'}" th:value="${'Setor'}">	
+						       <option th:text="${'Servidor'}" th:value="${'Servidor'}">					      
+		    		  </select>
+                    </div>   
+                   
+                     <div class="col-6 mb-3">                     
+		                     <div class="card"  style="width: 90rem;">                    
+		                    </div>
+                    </div>
+
                     
                     <!-- FASE DESNECESSÁRIO -->
                     
-                    <div class="col-md-6 mb-3">
-                           
-                    </div>        
-                   
+                    <div class="col-md-6 mb-3">                           
+                    </div>                     
                  
                     
                     <!-- SIGILO DESNECESSÁRIO -->
@@ -131,7 +108,7 @@
                 
                     <div class="col-12 text-right">
             
-						  <button type="submit" class="btn btn-primary btn-sm">Avançar</button>
+						  <button type="button" class="btn btn-primary btn-sm rounded-pill buttonload" id="avancar">Avançar &nbsp; &nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i> </button>
 						
 							
 						
@@ -145,8 +122,18 @@
        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>           
         <script>
-            var URL = '[[@{/}]]';
-            $("#classsificacao").select2();
+        $("#loader").show();
+        $(".fa").hide();
+        $( document ).ready(function() {
+        	 $("#loader").hide();
+        });    
+        
+        $('#avancar').on('click',function() {
+            $(this).prop("disabled",true);
+            $(".fa").show();
+            $("#frm").submit();
+        });
+        
         </script>
     </div>
 </body>

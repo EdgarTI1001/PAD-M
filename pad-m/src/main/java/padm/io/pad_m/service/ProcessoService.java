@@ -25,8 +25,8 @@ public class ProcessoService {
 	}
 
 	@Transactional
-	public void save(Processo obj) {
-		processoRepository.save(obj);
+	public Processo save(Processo obj) {
+		return processoRepository.save(obj);
 	}
 
 	@Transactional
