@@ -53,6 +53,7 @@
             <div class="card-body">
                 <form th:action="@{/processos/save}" th:object="${processo}" method="post" class="row g-3" id="frm">                   
                     <input type="hidden" th:field="${processo.assunto}">   
+                    <input type="hidden" th:field="${processo.numanoproc}">   
                     <input type="hidden" th:field="${processo.tipo}">   
                     <input type="hidden" th:field="${processo.setorcriadorId}">   
                     <input type="hidden" th:field="${processo.usucriadorId}">   

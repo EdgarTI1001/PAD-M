@@ -60,7 +60,7 @@
                         <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
                         <span class="nav_name">Documentos</span>
                     </a>             
-      
+      						<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px; background-color: red;">1</span>
                     <a th:href="@{/processos}" class="nav_link" title="processos">                   
                         <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Processos</span>
@@ -128,7 +128,7 @@
         
     $.getJSON( URL+"/usuarios/load", function( json ) {	 
     	
-    	console.log(json)
+    	
 	  	//$('#fotoid').attr('src',`data:image/png;base64,${json.foto}` );
 	
 	  	

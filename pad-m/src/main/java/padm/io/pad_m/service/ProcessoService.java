@@ -24,6 +24,14 @@ public class ProcessoService {
 		return processoRepository.findById(id);
 	}
 
+	public List<Processo> findAllBySetor(Integer id) {
+		return processoRepository.findAllBySetor(id);
+	}
+
+	public List<Processo> findAllByUserCriador(Integer id) {
+		return processoRepository.findAllByUserCriador(id);
+	}
+
 	@Transactional
 	public Processo save(Processo obj) {
 		return processoRepository.save(obj);

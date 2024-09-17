@@ -33,7 +33,7 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "docproc_id")
 	private Doc documento;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "setcriador_id")
 	private Setor setorcriadorId;
@@ -41,11 +41,11 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "evento_id")
 	private Evento eventoId;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "fase_id")
 	private Fase faseId;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "interessado_id")
 	private Interessado interessadoId;
@@ -67,9 +67,9 @@ public class Processo {
 
 	private int rotuloId;
 
-	private Integer usucriadorId;	
+	private Integer usucriadorId;
 
-	private LocalDateTime datacriacao;	
+	private LocalDateTime datacriacao;
 
 	private int procapensadoId;
 
@@ -83,7 +83,7 @@ public class Processo {
 
 	private int procanexado_id;
 
-	private int flaganexadoId;
+	private int flaganexado_id;
 
 	private String motivoanexo;
 
@@ -108,7 +108,7 @@ public class Processo {
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
 			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
 			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
-			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexadoId, String motivoanexo,
+			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexado_id, String motivoanexo,
 			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
 			int seq, int flag) {
 		this.id = id;
@@ -136,7 +136,7 @@ public class Processo {
 		this.procapensoprincId = procapensoprincId;
 		this.motivoapensoprinc = motivoapensoprinc;
 		this.procanexado_id = procanexado_id;
-		this.flaganexadoId = flaganexadoId;
+		this.flaganexado_id = flaganexado_id;
 		this.motivoanexo = motivoanexo;
 		this.procanexoprincId = procanexoprincId;
 		this.flaganexoprincId = flaganexoprincId;
@@ -323,12 +323,12 @@ public class Processo {
 		this.procanexado_id = procanexado_id;
 	}
 
-	public int getFlaganexadoId() {
-		return flaganexadoId;
+	public int getFlaganexado_id() {
+		return flaganexado_id;
 	}
 
-	public void setFlaganexadoId(int flaganexadoId) {
-		this.flaganexadoId = flaganexadoId;
+	public void setFlaganexado_id(int flaganexado_id) {
+		this.flaganexado_id = flaganexado_id;
 	}
 
 	public String getMotivoanexo() {

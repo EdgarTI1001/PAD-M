@@ -27,16 +27,18 @@
       <th scope="col">Numero</th>
       <th scope="col">Ano</th>
       <th scope="col">Numero/Ano</th>
-      <th scope="col">Descricao</th>
+      <th scope="col">Assunto</th>
+      <th scope="col">Classificação</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr> 
+   <tr th:each="rs : ${processosUser}" th:id="'tr' + ${rs.id}">					  
+			   <td th:text="${rs.numproc}"></td>
+			   <td th:text="${rs.ano}"></td>		
+			   <td th:text="${rs.ano}"></td>						
+			   <td th:text="${rs.assunto}"></td>
+			   <td th:text="${rs.classificacao}"></td>				   	   
+		</tr>
   </tbody>
 </table>
 
@@ -55,16 +57,18 @@
       <th scope="col">Numero</th>
       <th scope="col">Ano</th>
       <th scope="col">Numero/Ano</th>
-      <th scope="col">Descricao</th>
+      <th scope="col">Assunto</th>
+      <th scope="col">Classificação</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr> 
+    	<tr th:each="rs : ${processosSetor}" th:id="'tr' + ${rs.id}">					  
+			   <td th:text="${rs.numproc}"></td>
+			   <td th:text="${rs.ano}"></td>		
+			   <td th:text="${rs.ano}"></td>						
+			   <td th:text="${rs.assunto}"></td>
+			   <td th:text="${rs.classificacao}"></td>				   	   
+		</tr>
   </tbody>
 </table>
 </div>
