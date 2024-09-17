@@ -38,6 +38,9 @@ public class Doc {
 	@Column(name = "TAMDOC")
 	private String tamdoc;
 
+	@Column(name = "CONTEUDO")
+	private String conteudo;
+
 	private LocalDateTime data;
 
 	private String obs;
@@ -152,5 +155,13 @@ public class Doc {
 
 	public void setHashdoc(String hashdoc) {
 		this.hashdoc = hashdoc;
+	}
+
+	public String getConteudo() {
+		return conteudo;
+	}
+
+	public void setConteudo(String conteudo) {
+		this.conteudo = conteudo;
 	}
 }

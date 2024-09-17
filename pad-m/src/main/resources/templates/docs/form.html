@@ -33,12 +33,12 @@
                     <input type="hidden" th:field="*{id}" />
                     
                     <div class="mb-3">
-                        <label for="nomeDocumento" class="form-label">Nome</label>
-                        <input type="text" id="nomeDocumento" class="form-control" th:field="*{nomdoc}" />
+                        <label for="nomdoc" class="form-label">Nome</label>
+                        <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" />
                     </div>
     
                     <div class="mb-3">
-                        <textarea></textarea>
+                        <textarea id="conteudo" name="conteudo"></textarea>
                     </div>
     
                     <button type="submit" class="btn btn-primary">Salvar</button>
