@@ -29,7 +29,7 @@
                 <h4 class="mb-0" th:text="${doc.id == null ? 'Criar Novo Documento' : 'Editar Documento'}"></h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/docs/save}" th:object="${doc}" method="post">
+                <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post">
                     <input type="hidden" th:field="*{id}" />
                     
                     <div class="mb-3">

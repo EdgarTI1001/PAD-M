@@ -1,7 +1,11 @@
 package padm.io.pad_m.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.time.LocalDateTime;
 
+import com.itextpdf.html2pdf.HtmlConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -117,6 +121,43 @@ public class DocController {
                 "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
           }
         
+        return "redirect:/docs";
+    }
+
+    @PostMapping("/gerarPdf")
+    public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes) {
+        try {
+            // Verifica se o diretório existe e cria se não existir
+            File diretorio = new File("uploads/documentos");
+            if (!diretorio.exists()) {
+                diretorio.mkdirs();
+            }
+
+            // Cria o arquivo PDF
+            String nomeArquivo = "arquivo_" + System.currentTimeMillis() + ".pdf"; // Nome único para evitar sobrescritas
+            File arquivoPdf = new File(diretorio, nomeArquivo);
+            try (OutputStream outputStream = new FileOutputStream(arquivoPdf)) {
+                HtmlConverter.convertToPdf(doc.getConteudo(), outputStream);
+            }
+
+            Usuario usuario = authentication.getUsuario();
+
+            Doc docNew = new Doc();
+            docNew.setNomdoc(doc.getNomdoc());
+            docNew.setExtdoc("pdf");
+            docNew.setUsu_id(usuario);
+            docNew.setData(LocalDateTime.now());
+            docNew.setHashdoc(nomeArquivo);
+            docService.save(docNew);
+
+            System.out.println("PDF gerado em: " + arquivoPdf.getAbsolutePath());
+            //return "redirect:/sucesso"; // Redireciona para uma página de sucesso ou outra ação desejada
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("message",
+                    "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+        }
+
         return "redirect:/docs";
     }
 }
