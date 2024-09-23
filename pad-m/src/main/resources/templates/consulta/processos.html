@@ -6,13 +6,14 @@
  <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
 	    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
+	      <li class="breadcrumb-item"><a href="#">Home</a></li>
 	    <li class="breadcrumb-item"><a href="#">Processos</a></li>
 	   <!--  <li class="breadcrumb-item">Criar Novo Processo</li> -->
 	    
 	  </ol>
 </nav>
 
- <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processo</h5>
+ <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processos</h5>
 			
 <div class="row">
 
@@ -29,6 +30,7 @@
       <th scope="col">Numero/Ano</th>
       <th scope="col">Assunto</th>
       <th scope="col">Classificação</th>
+      <th scope="col">Tramitar</th> 
     </tr>
   </thead>
   <tbody>
@@ -37,7 +39,12 @@
 			   <td th:text="${rs.ano}"></td>		
 			   <td th:text="${rs.ano}"></td>						
 			   <td th:text="${rs.assunto}"></td>
-			   <td th:text="${rs.classificacao}"></td>				   	   
+			   <td th:text="${rs.classificacao}"></td>	
+			   <td>
+	   			<a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}"  role="button" th:data-record-id="${rs.id}" title="Tramitar Processo">
+				     <i class="fa fa-share" aria-hidden="true"></i>
+				 </a> 
+			   </td>	 			   	   
 		</tr>
   </tbody>
 </table>
