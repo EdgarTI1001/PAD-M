@@ -19,6 +19,35 @@
                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
             });
         });
+
+        function validateForm() {
+            // Sincroniza o conteúdo do TinyMCE com o campo textarea
+            tinymce.triggerSave();
+
+            // Validação do campo conteudo (textarea)
+            var conteudoField = document.getElementById('conteudo');
+            if (!conteudoField.checkValidity()) {
+                conteudoField.setCustomValidity('Por favor, preencha o conteúdo.');
+                conteudoField.reportValidity(); // Exibe a mensagem personalizada
+                return false; // Impede o envio
+            } else {
+                conteudoField.setCustomValidity(''); // Limpa a mensagem caso esteja válido
+            }
+
+            // Validação do campo nomdoc (input)
+            var nomdocField = document.getElementById('nomdoc');
+            if (!nomdocField.checkValidity()) {
+                nomdocField.setCustomValidity('Por favor, preencha o nome do documento.');
+                nomdocField.reportValidity(); // Exibe a mensagem personalizada
+                return false; // Impede o envio
+            } else {
+                nomdocField.setCustomValidity(''); // Limpa a mensagem caso esteja válido
+            }
+
+            // Se todos os campos estão válidos, permite o envio do formulário
+            return true;
+        }
+
     </script>
 </head>
 <body>
@@ -29,12 +58,12 @@
                 <h4 class="mb-0" th:text="${doc.id == null ? 'Criar Novo Documento' : 'Editar Documento'}"></h4>
             </div>
             <div class="card-body">
-                <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post">
+                <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
                     <input type="hidden" th:field="*{id}" />
                     
                     <div class="mb-3">
                         <label for="nomdoc" class="form-label">Nome</label>
-                        <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" />
+                        <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
                     </div>
     
                     <div class="mb-3">

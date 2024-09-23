@@ -148,10 +148,9 @@ public class DocController {
             docNew.setUsu_id(usuario);
             docNew.setData(LocalDateTime.now());
             docNew.setHashdoc(nomeArquivo);
+            docNew.setConteudo(doc.getConteudo());
             docService.save(docNew);
 
-            System.out.println("PDF gerado em: " + arquivoPdf.getAbsolutePath());
-            //return "redirect:/sucesso"; // Redireciona para uma página de sucesso ou outra ação desejada
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("message",

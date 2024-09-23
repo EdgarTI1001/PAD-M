@@ -22,13 +22,16 @@
                     <tr th:each="doc : ${docPage.content}">
                         <td th:text="${doc.nomdoc}"></td>
                         <td>
-                            <a th:href="@{/docs/edit/{id}(id=${doc.id})}" class="btn btn-sm btn-primary"  role="button" title="Editar Documento">
+                            <a th:title="'Editar documento'"  th:href="@{/docs/edit/{id}(id=${doc.id})}" class="btn btn-sm btn-primary"  role="button" title="Editar Documento" th:if="${#strings.isEmpty(doc.conteudo)}">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
-                            <a th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
+                            <a th:title="'Abrir documento'" class="btn btn-warning btn-sm"  th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}"  target="_blank">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                            </a>
+                            <a th:title="'Excluir documento'" th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                             </a>
-                            <a class="btn btn-success btn-sm" onclick="return confirm('Tem certeza que deseja assinar documento?')">
+                            <a th:title="'Assinar documento'" class="btn btn-success btn-sm" onclick="return confirm('Tem certeza que deseja assinar documento?')">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -44,7 +47,8 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item" th:each="i : ${#numbers.sequence(0, docPage.totalPages - 1)}">
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, docPage.totalPages - 1)}"
+                        th:classappend="${i == docPage.number} ? 'active'">
                         <a class="page-link" th:href="@{/docs(page=${i})}" th:text="${i + 1}"></a>
                     </li>
                     <li class="page-item" th:if="${docPage.hasNext()}">
