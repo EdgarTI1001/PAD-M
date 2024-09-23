@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Tramite {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String tipo;
@@ -29,9 +29,9 @@ public class Tramite {
 
 	private int setordestino;
 
-	private LocalDateTime datachegada;
+	private LocalDateTime datachegada; // setar na controller
 
-	private LocalDateTime datasaida;
+	private LocalDateTime datasaida;  // setar na controller
 
 	private LocalDateTime datacheck;
 
@@ -40,12 +40,8 @@ public class Tramite {
 	private Processo procId;
 
 	@ManyToOne
-	@JoinColumn(name = "doc_id")
-	private Doc docId;
-
-	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private Usuario userId;
+	private Usuario userId;  // setar na controller
 
 	private int usercriadorId;
 
@@ -101,7 +97,7 @@ public class Tramite {
 	}
 
 	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
-			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId, Doc docId,
+			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId,
 			Usuario userId, int usercriadorId, int responsavelId, Atendente atendenteId, Moderador moderadorId,
 			Gestor gestorId, String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
 			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
@@ -118,7 +114,6 @@ public class Tramite {
 		this.datasaida = datasaida;
 		this.datacheck = datacheck;
 		this.procId = procId;
-		this.docId = docId;
 		this.userId = userId;
 		this.usercriadorId = usercriadorId;
 		this.responsavelId = responsavelId;
@@ -222,8 +217,6 @@ public class Tramite {
 	public void setUsercriadorId(int usercriadorId) {
 		this.usercriadorId = usercriadorId;
 	}
-
-	
 
 	public int getResponsavelId() {
 		return responsavelId;
@@ -385,14 +378,6 @@ public class Tramite {
 		this.procId = procId;
 	}
 
-	public Doc getDocId() {
-		return docId;
-	}
-
-	public void setDocId(Doc docId) {
-		this.docId = docId;
-	}
-
 	public Usuario getUserId() {
 		return userId;
 	}
@@ -430,7 +415,7 @@ public class Tramite {
 	public String toString() {
 		return "Tramite [id=" + id + ", setororigem=" + setororigem + ", setorcriador=" + setorcriador
 				+ ", localtramite=" + localtramite + ", setordestino=" + setordestino + ", procId=" + procId
-				+ ", docId=" + docId + ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", resposavelId="
+				+ ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", resposavelId="
 				+ responsavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId="
 				+ gestorId + ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId + ", finalidade="
 				+ finalidade + ", obs=" + obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade
