@@ -22,9 +22,12 @@
                     <tr th:each="doc : ${docPage.content}">
                         <td th:text="${doc.nomdoc}"></td>
                         <td>
+                            <!-- 
+                            preciso adequar o editar devido ao natodigital
                             <a th:title="'Editar documento'"  th:href="@{/docs/edit/{id}(id=${doc.id})}" class="btn btn-sm btn-primary"  role="button" title="Editar Documento" th:if="${#strings.isEmpty(doc.conteudo)}">
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
+                            -->
                             <a th:title="'Abrir documento'" class="btn btn-warning btn-sm"  th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}"  target="_blank">
                                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                             </a>
