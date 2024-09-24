@@ -28,7 +28,7 @@
                                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                             </a>
                             -->
-                            <a th:title="'Abrir documento'" class="btn btn-warning btn-sm"  th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}"  target="_blank">
+                            <a th:title="'Abrir documento'" class="btn btn-warning btn-sm"  th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}"  target="_blank"  th:if="${!#strings.isEmpty(doc.hashdoc)}">
                                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                             </a>
                             <a th:title="'Excluir documento'" th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
