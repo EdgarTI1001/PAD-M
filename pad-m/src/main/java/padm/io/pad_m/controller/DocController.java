@@ -68,7 +68,7 @@ public class DocController {
     }
 
     @PostMapping("/files/upload")
-    public String uploadFile(Model model, @RequestParam("file") MultipartFile file) {
+    public String uploadFile(Model model, @RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew) {
 
         String message = "";
 
@@ -78,7 +78,7 @@ public class DocController {
             Usuario usuario = authentication.getUsuario();
 
             Doc doc = new Doc();
-            doc.setNomdoc(file.getOriginalFilename());
+            doc.setNomdoc(docNew.getNomdoc());
             doc.setExtdoc(file.getContentType());
             doc.setUsu_id(usuario);
             doc.setData(LocalDateTime.now());

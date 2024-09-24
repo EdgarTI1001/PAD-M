@@ -12,7 +12,14 @@
                 <form th:action="@{/docs/files/upload}" th:object="${doc}" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}" />
 
-                    <input id="input-file" type="file" name="file" /><br><br>
+                    <div class="mb-3">
+                        <label for="nomdoc" class="form-label">Nome</label>
+                        <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
+                    </div>
+
+                    <div class="mb-3">
+                        <input id="input-file" type="file" name="file" />
+                    </div>
     
                     <button type="submit" class="btn btn-primary">Salvar</button>
                 </form>
