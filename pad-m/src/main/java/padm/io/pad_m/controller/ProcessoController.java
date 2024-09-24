@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,14 +19,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Doc;
+import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.ClassifService;
 import padm.io.pad_m.service.DocService;
+import padm.io.pad_m.service.EventoService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
+import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.service.UsuarioService;
 
 @Controller
@@ -42,6 +43,12 @@ public class ProcessoController {
 
 	@Autowired
 	private ProcessoService processoService;
+	
+	@Autowired
+	private TipoEventoService tipoEventoService;
+	
+	@Autowired
+	private EventoService eventoService;
 
 	@Autowired
 	private DocService documentoService;
@@ -102,7 +109,7 @@ public class ProcessoController {
 
 		processoService.save(processo);
 		model.addAttribute("processo", processo);
-		List<Doc> docs = documentoService.findAllDocsByUsuarioId(18);
+		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
 		model.addAttribute("documentos", docs);
 
 		return "form/frmProcesso3";
@@ -111,8 +118,16 @@ public class ProcessoController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("processo") Processo processo, BindingResult result) {
 		try {
-
+			
 			processoService.save(processo);
+			Evento evento = new Evento();
+			evento.setTipo_id(tipoEventoService.findById(4).get());
+			evento.setProc_id(processo);
+			evento.setDataevento(LocalDateTime.now());
+			evento.setUser_id(session.getUsuario());
+			evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id()).get());
+			evento.setEvento("CRIAÇÃO DE PROCESSO");			
+			eventoService.save(evento);
 
 		} catch (Exception e) {
 			e.printStackTrace();

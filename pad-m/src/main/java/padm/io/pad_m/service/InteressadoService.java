@@ -36,6 +36,10 @@ public class InteressadoService {
 		return interessadoRepository.findAllByIdProcesso(idProcesso);
 	}
 	
+	public Integer totalInteressadoByidUser(Integer idUsser) {
+		return interessadoRepository.totalInteressadoByidUser(idUsser);
+	}
+	
 
 	public Optional<Interessado> findById(Integer id) {
 		return interessadoRepository.findById(id);
