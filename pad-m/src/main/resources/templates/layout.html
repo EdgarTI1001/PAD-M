@@ -18,49 +18,67 @@
     <link th:href="@{/css/main.css}" rel="stylesheet">
     <link th:href="@{/css/boxicons.min.css}" rel="stylesheet">
     <style type="text/css">
-  	 .breadcrumb {
-			font-size: 12px;
-		}
-		.header_img{
-		margin-bottom: 8.5px;
-		}
-		
+        .breadcrumb {
+            font-size: 12px;
+        }
+        .header_img {
+            margin-bottom: 8.5px;
+        }
+        .nav {
+            display: flex;
+            flex-direction: column;
+            height: 100vh; 
+            justify-content: space-between; 
+        }
+        .header_toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        #icon {
+            font-size: 23px; 
+            color: #00537d;
+            margin-right: 8px; /* Espaço entre o ícone e o texto */
+        }
+        b {
+            color: #00537d;
+        }
     </style>
-
 </head>
 <body id="body-pd">
     <header class="header" id="header" style="background-color:#dbe4f0">
-        <div class="header_toggle" >
-            <i class="fa fa-bars" style="font-size:23px;color:black" id="header-toggle"></i>
-            <b>PAD-M</b>	
-	
+        <div class="header_toggle" id="header-toggle">
+            <i class="fa fa-bars" id="icon"></i>
+            <b>PAD-M</b>
         </div>
-        <div  sec:authorize="isAuthenticated()"
-                  th:with="userName=${#authentication.getPrincipal().getUsername()}, 
-                  			image=${#authentication.getPrincipal().getUsuario().getImage()}, 
-                 			 nome=${#authentication.getPrincipal().getUsuario().getFirstName()}">
-            <!-- <span th:with="userName=${#authentication.getPrincipal().getUsername()}, isProducao=${#authentication.getPrincipal().getUsuario().isProducao()}, nome=${#authentication.getPrincipal().getUsuario().getFirstName()}"></span> -->
-                      
-            <small th:text="@{(${userName})}"></small>      
+        <div sec:authorize="isAuthenticated()"
+             th:with="userName=${#authentication.getPrincipal().getUsername()}, 
+                      image=${#authentication.getPrincipal().getUsuario().getImage()}, 
+                      nome=${#authentication.getPrincipal().getUsuario().getFirstName()}"
+             style="display: flex; align-items: center;">
             <div class="header_img">
-                <img id ="imagem" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  th:src="@{/images/male.png}" alt="User Image"/>
+                <img id="imagem" 
+                     sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  
+                     th:src="@{/images/male.png}" 
+                     alt="User Image" 
+                     style="width: 40px; height: 40px;"/>
             </div>
+            <small th:text="${nome}" style="margin-left: 10px;"></small>  
         </div>
     </header>
-    <div class="l-navbar" id="nav-bar">
+    <div class="l-navbar" id="nav-bar" style="background-color: #00537d;">
         <nav class="nav">
             <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
                 <a th:href="@{/impugnacao}" class="nav_logo">
                     <i class="fa fa-home" style="font-size:23px;color:white"></i>
-                    <span class="nav_logo-name">Pagina Inicial    </span>
+                    <span class="nav_logo-name">Pagina Inicial</span>
                 </a>
                 <div class="nav_list">
-                	
-                    <a href="#" class="nav_link active">                    
+                    <a href="@{/docs}" class="nav_link active">                    
                         <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
                         <span class="nav_name">Documentos</span>
                     </a>             
-      						<span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px; background-color: red;">1</span>
+                    <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px; background-color: red;">1</span>
                     <a th:href="@{/processos}" class="nav_link" title="processos">                   
                         <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Processos</span>
@@ -87,19 +105,18 @@
                     </a>
                 </div>
             </div>
-            <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" href="#" class="nav_link">
-                <i class="fa fa-sign-out" style="font-size:23px;color:white" aria-hidden="true"></i>
-                <span class="nav_name">Sair</span>
-            </a>
             <div>
-                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="nav_link">
+                <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" href="#" class="nav_link">
                     <i class="fa fa-sign-out" style="font-size:23px;color:white" aria-hidden="true"></i>
+                    <span class="nav_name">Sair</span>
+                </a>
+                <a sec:authorize="!isAuthenticated()" th:href="@{/login}" class="nav_link">
+                    <i class="fa fa-sign-in" style="font-size:23px;color:white" aria-hidden="true"></i>
                     <span class="nav_name">Login</span>
                 </a>
             </div>
         </nav>
     </div>
-
     <main class="container-full">
         <div class="p-0 rounded">
             <section layout:fragment="content">
@@ -107,34 +124,37 @@
             </section>
         </div>
     </main>
-	
+    
     <div id="loader" class="loader" style="display:none;"></div>
 
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <!-- <script th:src="@{/js/jquery-1.12.4.min.js}"></script> -->
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script> 
     <script th:src="@{/js/select2.min.js}"></script>
     <script th:src="@{/js/sweetalert.min.js}"></script>
     <script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
-    <script th:src="@{/js/select2.min.js}"></script>
     <script th:src="@{/js/locales/bootstrap-datepicker.pt-BR.js}"></script>
     <script th:src="@{/js/utils.js}"></script>
 
     <div layout:fragment="jscript"></div>
     <script type="text/javascript">
-         var URL = '[[@{/}]]api';
-        
-    $.getJSON( URL+"/usuarios/load", function( json ) {	 
-    	
-    	
-	  	//$('#fotoid').attr('src',`data:image/png;base64,${json.foto}` );
-	
-	  	
-  	});
-    
-    	
+        var URL = '[[@{/}]]api';
+        $.getJSON(URL + "/usuarios/load", function(json) {     
+            //$('#fotoid').attr('src',`data:image/png;base64,${json.foto}`);
+        });
+
+        // Script para alternar ícones
+        const toggle = document.getElementById('header-toggle');
+        const icon = document.getElementById('icon');
+
+        toggle.addEventListener('click', () => {
+            if (icon.classList.contains('fa-bars')) {
+                icon.className = 'fa fa-ellipsis-v'; 
+            } else {
+                icon.className = 'fa fa-bars'; 
+            }
+        });
     </script>
 </body>
 </html>
