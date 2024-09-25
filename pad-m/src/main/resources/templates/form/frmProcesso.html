@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">   
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">   
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+          <script>
+            $("#loader").show();
+            $(".fa").hide();
+            $(document).ready(function() {
+                $("#loader").hide();
+            });    
+            
+            $('#avancar').on('click', function() {
+                var assunto = $("#assunto").val();
+                var tipo = $("#tipo").val();
+                if (assunto == "" || tipo == '0') { 
+                    swal("Erro", "Assunto/Tipo não pode(m) ficar vazio(s)", "error");    
+                } else {
+                    $(this).prop("disabled", true);
+                    $(".fa").show();
+                    $("#frm").submit();
+                }
+            });
+        </script>
     <style>
         body {
             margin-top: 50px;
             display: flex;
             justify-content: center;
-            align-items: center;
-            height: 70vh;
+            align-items: center; 
+            height: 70vh; 
             background-color: #f8f9fa;
         }
         .card {
@@ -21,7 +43,7 @@
             overflow: hidden; 
         }
         .card-header {
-            background-color: #007bff;
+            background-color: #00537d;
             color: white;
             font-weight: bold;
             text-align: center;
@@ -41,100 +63,63 @@
 </head>
 <body>
     <section layout:fragment="content">
-     <nav aria-label="breadcrumb">
-		  <ol class="breadcrumb">
-		    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
-		    <li class="breadcrumb-item"><a href="#">Processos</a></li>
-		    <li class="breadcrumb-item">Criar Novo Processo</li> 
-		    
-		  </ol>
-	</nav>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#"><i class="bi bi-house-fill" style="color: black;"></i></a></li>                
+                <li class="breadcrumb-item"><a href="${/processos}">Processos</a></li>
+            </ol>
+        </nav>
         <div class="card">
             <div class="card-header">Cadastro de Processo</div>
             <div class="card-body">
                 <form th:action="@{/processos/passo2}" th:object="${processo}" method="post" class="row g-3" id="frm">
                     <input type="hidden" th:field="*{id}">
-						
-				 <div class="stepper-wrapper">
-					  <div class="stepper-item completed">
-					    <div class="step-counter">1</div>
-					    <div class="step-name">Criando Processo</div>
-					  </div>
-					  <div class="stepper-item ">
-					    <div class="step-counter">2</div>
-					    <div class="step-name">Classificação do Processo</div>
-					  </div>
-					  <div class="stepper-item ">
-					    <div class="step-counter">3</div>
-					    <div class="step-name">Finalizar</div>
-					  </div>					
-					</div>
-					
-					
+                    
+                    <div class="mb-4 p-3">    
+                        <div class="stepper-wrapper">
+                            <div class="stepper-item completed">
+                                <div class="step-counter">1</div>
+                                <div class="step-name">Criando Processo</div>
+                            </div>
+                            <div class="stepper-item ">
+                                <div class="step-counter">2</div>
+                                <div class="step-name">Classificação do Processo</div>
+                            </div>
+                            <div class="stepper-item ">
+                                <div class="step-counter">3</div>
+                                <div class="step-name">Finalizar</div>
+                            </div>                    
+                        </div>
+                    </div>
+                    
                     <div class="col-6 mb-3">
-                        <label for="nome" class="form-label">Assunto do Processo</label>
-                        <input type="text" id="processo" class="form-control form-control-sm" th:field="*{assunto}" placeholder="Assunto">
+                        <label for="assunto" class="form-label">Assunto do Processo</label>
+                        <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{assunto}" placeholder="Assunto">
                     </div>  
                     
-                       <div class="col-6 mb-3">
-                        <label for="nome" class="form-label">SETOR/USUARIO CRIADOR</label>
-                       		 <select id="tipo" class="form-select form-select-sm" th:field="*{tipo}" > 
-						       <option th:text="${'Selecione o Tipo'}" th:value="${'0'}">	
-						       <option th:text="${'Setor'}" th:value="${'Setor'}">	
-						       <option th:text="${'Servidor'}" th:value="${'Servidor'}">					      
-		    		  </select>
+                    <div class="col-6 mb-3">
+                        <label for="tipo" class="form-label">TIPO DE PROCESSO</label>
+                        <select id="tipo" class="form-select form-select-sm" th:field="*{tipo}"> 
+                            <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
+                            <option th:text="${'Setor'}" th:value="${'Setor'}"></option>
+                            <option th:text="${'Servidor'}" th:value="${'Servidor'}"></option>         
+                        </select>
                     </div>   
-                   
-                     <div class="col-6 mb-3">                     
-		                     <div class="card"  style="width: 90rem;">                    
-		                    </div>
-                    </div>
+                    
+                    <div class="col-6 mb-3">                     
+                        <div class="card" style="width: 90rem; color: #00537d;">                    
+                        </div>
+                    </div>                                      
 
-                    
-                    <!-- FASE DESNECESSÁRIO -->
-                    
-                    <div class="col-md-6 mb-3">                           
-                    </div>                     
-                 
-                    
-                    <!-- SIGILO DESNECESSÁRIO -->
-                    
-                    <!-- CLASS ID DESNECESSÁRIO??? -->
-           
-                    
-                    <!-- RÓTULOID DESNECESSÁRIO??? -->
-                    
-                    <!-- USUCRIADOR DESNECESSÁRIO??? -->                    
-                
-                    <div class="col-12 text-right">
-            
-						  <button type="button" class="btn btn-primary btn-sm rounded-pill buttonload" id="avancar">Avançar &nbsp; &nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i> </button>
-						
-							
-						
+                       <div class="col-12 text-end">
+                        <button type="button" class="btn btn-primary btn-sm rounded-pill buttonload" id="avancar"> 
+                            Avançar&nbsp;&nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i> 
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </section>
 
-    <div layout:fragment="jscript">
-       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>           
-        <script>
-        $("#loader").show();
-        $(".fa").hide();
-        $( document ).ready(function() {
-        	 $("#loader").hide();
-        });    
-        
-        $('#avancar').on('click',function() {
-            $(this).prop("disabled",true);
-            $(".fa").show();
-            $("#frm").submit();
-        });
-        
-        </script>
-    </div>
 </body>
 </html>

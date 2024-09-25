@@ -13,5 +13,8 @@ public interface InteressadoRepository extends JpaRepository<Interessado, Intege
 	@Query(" SELECT i FROM Interessado i WHERE i.proc_id.id =:idProcesso ORDER BY i.interessado")
 	List<Interessado> findAllByIdProcesso(@Param("idProcesso") Integer idProcesso);
 	
+	@Query(" SELECT count(i) FROM Interessado i WHERE i.usu_id.id =:idUsuario")
+	Integer totalInteressadoByidUser(@Param("idUsuario") Integer idUsuario);
+	
 	
 }
