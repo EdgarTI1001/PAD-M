@@ -78,6 +78,12 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                    <div th:if="${alertMessage}"
+                         th:classappend="'alert-' + ${alertMessage.type}"
+                         class="alert alert-dismissible fade" role="alert">
+                        <span th:text="${alertMessage.message}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                     <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
                         <input type="hidden" th:field="*{id}" />
                         

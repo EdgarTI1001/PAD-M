@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.multipart.MultipartFile;
 
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
 import padm.io.pad_m.security.IAuthenticationFacade;
 import padm.io.pad_m.service.DocService;
+import padm.io.pad_m.utils.AlertMessage;
 
 @Controller
 @RequestMapping("/docs")
@@ -68,9 +68,9 @@ public class DocController {
     }
 
     @PostMapping("/files/upload")
-    public String uploadFile(Model model, @RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew) {
+    public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew) {
 
-        String message = "";
+        AlertMessage alertMessage;
 
         try {
             String fileNameHash = storageService.save(file, "documentos");
@@ -85,13 +85,13 @@ public class DocController {
             doc.setHashdoc(fileNameHash);
             docService.save(doc);
 
-            message = "Arquivo enviado com sucesso: " + file.getOriginalFilename();
-            model.addAttribute("message", message);
+            alertMessage = new AlertMessage("success", "Arquivo enviado com sucesso: " + file.getOriginalFilename());
         } catch (Exception e) {
-            message = "Não foi possível fazer upload do arquivo: " + file.getOriginalFilename() + ". Error: " + e.getMessage();
-            model.addAttribute("message", message);
+            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + file.getOriginalFilename() + ". Error: " + e.getMessage());
         }
 
+        //model.addAttribute("alertMessage", alertMessage);
+        redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
         return "redirect:/docs";
     }
 
@@ -105,6 +105,8 @@ public class DocController {
     @GetMapping("/delete/{id}")
     public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 
+        AlertMessage alertMessage;
+
         Doc doc = docService.findById(id);
 
         try {
@@ -112,21 +114,25 @@ public class DocController {
             boolean existed = storageService.delete(doc.getHashdoc(), "documentos");
       
             if (existed) {
-              redirectAttributes.addFlashAttribute("message", "Arquivo excluido com sucesso! " + doc.getNomdoc());
+                alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
               docService.deleteById(id);
             } else {
               redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
+                alertMessage = new AlertMessage("danger", "Arquivo não existe!");
             }
           } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message",
-                "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
           }
-        
+
+        redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
         return "redirect:/docs";
     }
 
     @PostMapping("/gerarPdf")
     public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes) {
+
+        AlertMessage alertMessage;
+
         try {
 
             // Gerar nome único para o arquivo PDF
@@ -200,11 +206,14 @@ public class DocController {
             docNew.setConteudo(doc.getConteudo());
             docService.save(docNew);
 
+            alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
+
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message",
-                    "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
         }
+
+        redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 
         return "redirect:/docs";
     }
