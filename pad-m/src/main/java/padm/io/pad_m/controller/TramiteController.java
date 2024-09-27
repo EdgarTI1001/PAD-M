@@ -1,5 +1,6 @@
 package padm.io.pad_m.controller;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import padm.io.pad_m.domain.Processo;
-import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Tramite;
+import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
+import padm.io.pad_m.service.SigiloService;
 import padm.io.pad_m.service.TramiteService;
+import padm.io.pad_m.service.UsuarioService;
 
 @Controller
 @RequestMapping("/tramite")
@@ -33,7 +35,16 @@ public class TramiteController {
 	private TramiteService tramiteService;
 	
 	@Autowired
+	private SigiloService sigiloService;
+	
+	@Autowired
 	private SetorService setorService;
+	
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	@Autowired
+	AuthenticationFacade session;
 	
 	@GetMapping
 	public ModelAndView findAll() {
@@ -43,17 +54,29 @@ public class TramiteController {
 	}
 
 	@GetMapping("/new/{idProcesso}")
-	public String frmCadastrar(Model model,@PathVariable("idProcesso") Integer idProcesso, @ModelAttribute("tramite") Tramite tramite) {		
+	public String frmCadastrar(Model model,@PathVariable("idProcesso") Integer idProcesso, @ModelAttribute("tramite") Tramite tramite) {
+		
 		model.addAttribute("processo", processoService.findById(idProcesso).get());		
-		Processo p = processoService.findById(idProcesso).get();		
-		model.addAttribute("setores", setorService.findAll());		
+		
+		model.addAttribute("setores", setorService.findAll());	
+		model.addAttribute("usuarios", usuarioService.findAll());	
 		model.addAttribute("tramite", tramite);
 		return "form/frmTramite";
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("setor") Setor setor, BindingResult result) {
+	public String saveObject(@ModelAttribute("tramite") Tramite tramite, BindingResult result) {
 		try {
+			System.out.println("=======================================");
+			tramite.setDatasaida(LocalDateTime.now());
+			tramite.setDatarecebimento(LocalDateTime.now());
+			tramite.setSeq(1);
+			tramite.setPlaced(1);
+			tramite.setUserId(session.getUsuario());
+			tramite.setSetororigem(session.getUsuario().getLotacao_id());
+			tramite.setSigiloId(sigiloService.findById(1).get());
+			System.out.println(tramite.toString());
+			tramiteService.save(tramite);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

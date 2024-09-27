@@ -31,7 +31,7 @@ public class Tramite {
 
 	private LocalDateTime datachegada; // setar na controller
 
-	private LocalDateTime datasaida;  // setar na controller
+	private LocalDateTime datasaida; // setar na controller
 
 	private LocalDateTime datacheck;
 
@@ -41,7 +41,7 @@ public class Tramite {
 
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private Usuario userId;  // setar na controller
+	private Usuario userId; // setar na controller
 
 	private int usercriadorId;
 
@@ -413,13 +413,16 @@ public class Tramite {
 
 	@Override
 	public String toString() {
-		return "Tramite [id=" + id + ", setororigem=" + setororigem + ", setorcriador=" + setorcriador
-				+ ", localtramite=" + localtramite + ", setordestino=" + setordestino + ", procId=" + procId
-				+ ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", resposavelId="
-				+ responsavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId="
-				+ gestorId + ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId + ", finalidade="
-				+ finalidade + ", obs=" + obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade
-				+ ", recebimento=" + recebimento + ", espera=" + espera + ", seq=" + seq + ", flag=" + flag
+		return "Tramite [id=" + id + ", tipo=" + tipo + ", setororigem=" + setororigem + ", setorcriador="
+				+ setorcriador + ", localtramite=" + localtramite + ", setordestino=" + setordestino + ", datachegada="
+				+ datachegada + ", datasaida=" + datasaida + ", datacheck=" + datacheck + ", procId=" + procId
+				+ ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", responsavelId=" + responsavelId
+				+ ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId=" + gestorId
+				+ ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId + ", finalidade=" + finalidade
+				+ ", datadesarquivamento=" + datadesarquivamento + ", dataarquivamento=" + dataarquivamento + ", obs="
+				+ obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade + ", recebimento=" + recebimento
+				+ ", datarecebimento=" + datarecebimento + ", espera=" + espera + ", datainicioespera="
+				+ datainicioespera + ", datafimespera=" + datafimespera + ", seq=" + seq + ", flag=" + flag
 				+ ", placed=" + placed + "]";
 	}
 

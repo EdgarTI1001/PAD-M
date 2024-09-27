@@ -25,7 +25,13 @@ public class TramiteService {
 
 	@Transactional
 	public void save(Tramite obj) {
-		tramiteService.save(obj);
+		try {
+			tramiteService.save(obj);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			
+		}
+		
 	}
 
 	@Transactional
