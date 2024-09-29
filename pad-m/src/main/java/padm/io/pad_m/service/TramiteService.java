@@ -9,34 +9,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import padm.io.pad_m.domain.Tramite;
+import padm.io.pad_m.repository.TramiteRepository;
 
 @Service
 public class TramiteService {
 	@Autowired
-	TramiteService tramiteService;
+	TramiteRepository tramiteRepo;
 
 	public List<Tramite> findAll() {
-		return tramiteService.findAll();
+		return tramiteRepo.findAll();
 	}
 
 	public Optional<Tramite> findById(Integer id) {
-		return tramiteService.findById(id);
+		return tramiteRepo.findById(id);
 	}
 
 	@Transactional
 	public void save(Tramite obj) {
-		try {
-			tramiteService.save(obj);
-		} catch (Exception e) {
-			//e.printStackTrace();
-			
-		}
-		
+		tramiteRepo.save(obj);
 	}
 
 	@Transactional
 	public void delete(Tramite obj) {
-		tramiteService.delete(obj);
+		tramiteRepo.delete(obj);
 	}
 
 }

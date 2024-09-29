@@ -16,6 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Tramite;
 import padm.io.pad_m.security.AuthenticationFacade;
+import padm.io.pad_m.service.AtendenteService;
+import padm.io.pad_m.service.FinalidadeService;
+import padm.io.pad_m.service.GestorService;
+import padm.io.pad_m.service.ModeradorService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
@@ -30,6 +34,18 @@ public class TramiteController {
 
 	@Autowired
 	private ProcessoService processoService; 
+	
+	@Autowired
+	private FinalidadeService finalidadeService; 
+	
+	@Autowired
+	private ModeradorService moderadorService; 
+	
+	@Autowired
+	private GestorService gestorService; 
+	
+	@Autowired
+	private AtendenteService atendenteService; 
 	
 	@Autowired
 	private TramiteService tramiteService;
@@ -67,20 +83,49 @@ public class TramiteController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("tramite") Tramite tramite, BindingResult result) {
 		try {
-			System.out.println("=======================================");
-			tramite.setDatasaida(LocalDateTime.now());
-			tramite.setDatarecebimento(LocalDateTime.now());
-			tramite.setSeq(1);
-			tramite.setPlaced(1);
-			tramite.setUserId(session.getUsuario());
+			tramite.setTipo("TIPO");
 			tramite.setSetororigem(session.getUsuario().getLotacao_id());
+			tramite.setSetorcriador(session.getUsuario().getLotacao_id());			
+			tramite.setLocaltramite(1);
+			
+			tramite.setDatachegada(LocalDateTime.now());			
+			tramite.setDatasaida(null);
+			tramite.setDatacheck(LocalDateTime.now());		
+			
+			tramite.setUserId(session.getUsuario());
+			tramite.setUsercriadorId(session.getUsuario().getId());
+			tramite.setResponsavelId(session.getUsuario().getId());
+			
+			tramite.setAtendenteId(atendenteService.findById(1).get());
+			tramite.setModeradorId(moderadorService.findById(1).get());
+			tramite.setGestorId(gestorService.findById(1).get());
+			
+			tramite.setTramitacao("TRAMITACAO");
+			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
+			tramite.setFinalidade("Finalidade");
+			
+			tramite.setDataarquivamento(null);
+			tramite.setDatadesarquivamento(null);
 			tramite.setSigiloId(sigiloService.findById(1).get());
-			System.out.println(tramite.toString());
+			
+			tramite.setVisibilidade("Publico");
+			tramite.setRecebimento(1);
+			tramite.setDatarecebimento(LocalDateTime.now());		
+				
+			tramite.setEspera(1);
+			tramite.setDatainicioespera(LocalDateTime.now());
+			tramite.setDatafimespera(null);
+			
+			tramite.setSeq(1);
+			tramite.setFlag(1);
+			tramite.setPlaced(1);
+
 			tramiteService.save(tramite);
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 		}
-		return "redirect:/setores";
+		return "redirect:/tramite";
 	}
 
 	@GetMapping("/edit/{id}")
