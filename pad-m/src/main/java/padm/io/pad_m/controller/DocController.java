@@ -105,24 +105,31 @@ public class DocController {
     @GetMapping("/delete/{id}")
     public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 
-        AlertMessage alertMessage;
+        AlertMessage alertMessage = null;
 
         Doc doc = docService.findById(id);
 
-        try {
+        if(doc != null && doc.getHashdoc() != null){
+            try {
 
-            boolean existed = storageService.delete(doc.getHashdoc(), "documentos");
-      
-            if (existed) {
-                alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
-              docService.deleteById(id);
-            } else {
-              redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
-                alertMessage = new AlertMessage("danger", "Arquivo não existe!");
+                boolean existed = storageService.delete(doc.getHashdoc(), "documentos");
+
+                if (existed) {
+                    alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
+                    //docService.deleteById(id);
+                } else {
+                    redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
+                    alertMessage = new AlertMessage("danger", "Arquivo não existe!");
+                }
+            } catch (Exception e) {
+                alertMessage = new AlertMessage("danger", "Não foi possível excluir arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
             }
-          } catch (Exception e) {
-            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
-          }
+        }
+
+        if(doc != null){
+            docService.deleteById(id);
+            alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
+        }
 
         redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
         return "redirect:/docs";
@@ -131,87 +138,108 @@ public class DocController {
     @PostMapping("/gerarPdf")
     public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes) {
 
-        AlertMessage alertMessage;
+        AlertMessage alertMessage = null;
 
-        try {
+        if(doc != null && doc.getFlag() == 0){
+            try {
 
-            // Gerar nome único para o arquivo PDF
-            String nomeArquivo = "arquivo_" + System.currentTimeMillis() + ".pdf";
+                // Gerar nome único para o arquivo PDF
+                String nomeArquivo = "arquivo_" + System.currentTimeMillis() + ".pdf";
 
-            // Criar um arquivo temporário para o PDF
-            File tempPdfFile = File.createTempFile("temp", ".pdf");
+                // Criar um arquivo temporário para o PDF
+                File tempPdfFile = File.createTempFile("temp", ".pdf");
 
-            // Converter o conteúdo HTML em PDF e salvar no arquivo temporário
-            try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
-                HtmlConverter.convertToPdf(doc.getConteudo(), outputStream);
+                // Converter o conteúdo HTML em PDF e salvar no arquivo temporário
+                try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
+                    HtmlConverter.convertToPdf(doc.getConteudo(), outputStream);
+                }
+
+                // Criar um InputStream do arquivo temporário
+                InputStream inputStream = new FileInputStream(tempPdfFile);
+
+                // Implementar MultipartFile manualmente
+                MultipartFile multipartFile = new MultipartFile() {
+                    @Override
+                    public String getName() {
+                        return "file";
+                    }
+
+                    @Override
+                    public String getOriginalFilename() {
+                        return nomeArquivo;
+                    }
+
+                    @Override
+                    public String getContentType() {
+                        return "application/pdf";
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return tempPdfFile.length() == 0;
+                    }
+
+                    @Override
+                    public long getSize() {
+                        return tempPdfFile.length();
+                    }
+
+                    @Override
+                    public byte[] getBytes() throws IOException {
+                        return Files.readAllBytes(tempPdfFile.toPath());
+                    }
+
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return new FileInputStream(tempPdfFile);
+                    }
+
+                    @Override
+                    public void transferTo(File dest) throws IOException, IllegalStateException {
+                        Files.copy(tempPdfFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                    }
+                };
+
+                // Usar o método existente save para salvar o arquivo
+                String fileNameHash = storageService.save(multipartFile, "documentos");
+
+                Usuario usuario = authentication.getUsuario();
+
+                Doc docNew = new Doc();
+                docNew.setId(doc.getId() == null ? null : doc.getId());
+                docNew.setNomdoc(doc.getNomdoc());
+                docNew.setExtdoc("pdf");
+                docNew.setUsu_id(usuario);
+                docNew.setData(LocalDateTime.now());
+                docNew.setHashdoc(fileNameHash);
+                docNew.setConteudo(doc.getConteudo());
+                docNew.setFlag(0);
+                docService.save(docNew);
+
+                alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
             }
-
-            // Criar um InputStream do arquivo temporário
-            InputStream inputStream = new FileInputStream(tempPdfFile);
-
-            // Implementar MultipartFile manualmente
-            MultipartFile multipartFile = new MultipartFile() {
-                @Override
-                public String getName() {
-                    return "file";
-                }
-
-                @Override
-                public String getOriginalFilename() {
-                    return nomeArquivo;
-                }
-
-                @Override
-                public String getContentType() {
-                    return "application/pdf";
-                }
-
-                @Override
-                public boolean isEmpty() {
-                    return tempPdfFile.length() == 0;
-                }
-
-                @Override
-                public long getSize() {
-                    return tempPdfFile.length();
-                }
-
-                @Override
-                public byte[] getBytes() throws IOException {
-                    return Files.readAllBytes(tempPdfFile.toPath());
-                }
-
-                @Override
-                public InputStream getInputStream() throws IOException {
-                    return new FileInputStream(tempPdfFile);
-                }
-
-                @Override
-                public void transferTo(File dest) throws IOException, IllegalStateException {
-                    Files.copy(tempPdfFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                }
-            };
-
-            // Usar o método existente save para salvar o arquivo
-            String fileNameHash = storageService.save(multipartFile, "documentos");
-
+        } else if(doc != null && doc.getFlag() == 1){
             Usuario usuario = authentication.getUsuario();
 
             Doc docNew = new Doc();
+            docNew.setId(doc.getId() == null ? null : doc.getId());
             docNew.setNomdoc(doc.getNomdoc());
-            docNew.setExtdoc("pdf");
+            docNew.setExtdoc(null);
             docNew.setUsu_id(usuario);
             docNew.setData(LocalDateTime.now());
-            docNew.setHashdoc(fileNameHash);
+            docNew.setHashdoc(null);
             docNew.setConteudo(doc.getConteudo());
+            docNew.setFlag(1);
             docService.save(docNew);
-
-            alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+            alertMessage = new AlertMessage("success", "Rascunho salvo com sucesso!");
+        }else{
+            alertMessage = new AlertMessage("danger", "Erro ao salvar arquivo!");
         }
+
 
         redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 

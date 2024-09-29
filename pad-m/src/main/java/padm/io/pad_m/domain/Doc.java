@@ -47,6 +47,7 @@ public class Doc {
 
 	private int seq;
 
+	@Column(name = "FLAG")
 	private int flag;
 
 	public Doc() {
