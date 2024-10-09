@@ -44,13 +44,18 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
+                                    <th scope="col">Tamanho</th>
                                     <th scope="col"></th>
                                     <th scope="col">Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="doc : ${docPage.content}">
-                                    <td th:text="${doc.nomdoc}"></td>
+                                    <td th:if="${#strings.isEmpty(doc.hashdoc)}" th:text="${doc.nomdoc}"></td>
+                                    <td th:if="${!#strings.isEmpty(doc.hashdoc)}">
+                                        <a th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}" th:text="${doc.nomdoc}" target="_blank"></a>
+                                    </td>
+                                    <td th:text="${doc.tamdoc}"></td>
                                     <td><span class="badge text-bg-secondary" th:if="${doc.flag == 1}">Rascunho</span></td>
                                     <td>
 

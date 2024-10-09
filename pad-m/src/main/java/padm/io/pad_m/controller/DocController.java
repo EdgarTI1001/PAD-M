@@ -27,6 +27,7 @@ import padm.io.pad_m.fileserver.FilesStorageService;
 import padm.io.pad_m.security.IAuthenticationFacade;
 import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.utils.AlertMessage;
+import padm.io.pad_m.utils.FileSizeUtil;
 
 @Controller
 @RequestMapping("/docs")
@@ -83,6 +84,9 @@ public class DocController {
             doc.setUsu_id(usuario);
             doc.setData(LocalDateTime.now());
             doc.setHashdoc(fileNameHash);
+            if(!file.isEmpty()){
+                doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
+            }
             docService.save(doc);
 
             alertMessage = new AlertMessage("success", "Arquivo enviado com sucesso: " + file.getOriginalFilename());
@@ -214,6 +218,9 @@ public class DocController {
                 docNew.setHashdoc(fileNameHash);
                 docNew.setConteudo(doc.getConteudo());
                 docNew.setFlag(0);
+                if(!multipartFile.isEmpty()){
+                    docNew.setTamdoc(FileSizeUtil.formatFileSize(multipartFile.getSize()));
+                }
                 docService.save(docNew);
 
                 alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
