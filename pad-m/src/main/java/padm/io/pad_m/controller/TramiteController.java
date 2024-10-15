@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Tramite;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.AtendenteService;
+import padm.io.pad_m.service.EventoService;
 import padm.io.pad_m.service.FinalidadeService;
 import padm.io.pad_m.service.GestorService;
 import padm.io.pad_m.service.ModeradorService;
@@ -54,6 +56,9 @@ public class TramiteController {
 	private SigiloService sigiloService;
 	
 	@Autowired
+	private EventoService eventoService;
+	
+	@Autowired
 	private SetorService setorService;
 	
 	@Autowired
@@ -83,10 +88,17 @@ public class TramiteController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("tramite") Tramite tramite, BindingResult result) {
 		try {
+			
+			Evento evento = eventoService.findTopByOrderByIdDesc(); 
+			evento.setDatasaida(LocalDateTime.now());
+			evento.setDatatermino(LocalDateTime.now());
+			eventoService.save(evento);
+			
 			tramite.setTipo("TIPO");
+			
 			tramite.setSetororigem(session.getUsuario().getLotacao_id());
-			tramite.setSetorcriador(session.getUsuario().getLotacao_id());			
-			tramite.setLocaltramite(1);
+			tramite.setSetorcriador(tramite.getProcId().getSetorcriadorId().getId());			
+			tramite.setLocaltramite(session.getUsuario().getLotacao_id());
 			
 			tramite.setDatachegada(LocalDateTime.now());			
 			tramite.setDatasaida(null);
@@ -102,7 +114,7 @@ public class TramiteController {
 			
 			tramite.setTramitacao("TRAMITACAO");
 			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
-			tramite.setFinalidade("Finalidade");
+			
 			
 			tramite.setDataarquivamento(null);
 			tramite.setDatadesarquivamento(null);
@@ -121,11 +133,24 @@ public class TramiteController {
 			tramite.setPlaced(1);
 
 			tramiteService.save(tramite);
+			
+			Evento novoEvento = new Evento();
+			novoEvento.setDatachegada(LocalDateTime.now());
+			novoEvento.setDataevento(LocalDateTime.now());
+			novoEvento.setDatainicio(LocalDateTime.now());
+			novoEvento.setProc_id(processoService.findById(tramite.getProcId().getId()).get());
+			novoEvento.setDoc_id(tramite.getProcId().getDocumento());
+			novoEvento.setTipo_id(eventoService.findById(1).get().getTipo_id());
+			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + " Enviou Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
+					+ "para " + tramite.getSetordestino() + " Em " + LocalDateTime.now());
+			
+			eventoService.save(novoEvento);
+			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 		}
-		return "redirect:/tramite";
+		return "redirect:/processos";
 	}
 
 	@GetMapping("/edit/{id}")
@@ -133,4 +158,8 @@ public class TramiteController {
 		ModelAndView model = new ModelAndView("form/frmSetor");
 		return model;
 	}
+	
+	
+	
+	
 }

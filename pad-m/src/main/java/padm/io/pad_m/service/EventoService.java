@@ -13,6 +13,7 @@ import padm.io.pad_m.repository.EventoRepository;
 
 @Service
 public class EventoService {
+
 	@Autowired
 	EventoRepository eventoRepository;
 
@@ -22,6 +23,14 @@ public class EventoService {
 
 	public Optional<Evento> findById(Integer id) {
 		return eventoRepository.findById(id);
+	}
+
+	public Optional<List<Evento>> findAllByIdProcesso(Integer id) {
+		return eventoRepository.findAllByIdProcesso(id);
+	}
+	
+	public Evento findTopByOrderByIdDesc() {
+		return eventoRepository.findTopByOrderByIdDesc();
 	}
 
 	@Transactional

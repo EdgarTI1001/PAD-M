@@ -44,6 +44,7 @@
             <div class="card-body">
                 <form th:action="@{/processos/save}" th:object="${processo}" method="post" class="row g-3" id="frm">                   
                     <input type="hidden" th:field="${processo.assunto}">   
+                    <input type="hidden" th:field="${processo.numproc}"> 
                     <input type="hidden" th:field="${processo.numanoproc}">   
                     <input type="hidden" th:field="${processo.tipo}">   
                     <input type="hidden" th:field="${processo.setorcriadorId}">   
@@ -135,8 +136,7 @@
             function getDocumentos(processo) { 
                 var table = "";
                 $('#tbdocumentos').empty();
-                $.getJSON(URL + "/processosDocumentos/getAllByProcessos/" + processo, function(data) {    
-                    console.log(data);
+                $.getJSON(URL + "/processosDocumentos/getAllByProcessos/" + processo, function(data) {                      
                     $.each(data, function(index, value) {
                         table += '<tr id="tr' + value.id + '">';
                         table += '<th>';

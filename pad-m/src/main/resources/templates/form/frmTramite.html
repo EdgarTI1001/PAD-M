@@ -76,8 +76,8 @@
                     </div>  
                     
                     <div class="col-6 mb-3">
-                        <label for="tipo" class="form-label">Observação</label>
-                        <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{obs}" placeholder="Observação">
+                        <label for="tipo" class="form-label">Finalidade</label>
+                        <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{finalidade}" placeholder="Observação">
                     </div>   
                     
                     <div class="col-6 mb-3">                     
@@ -116,6 +116,7 @@
               }).then((result) => {
                   if (result) {
                       var frm = $("#frm").submit();
+                      swal("Sucesso", "Resgistro salvo com sucesso", "success");	
                   }
               })
           });

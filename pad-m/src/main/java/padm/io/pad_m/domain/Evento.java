@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "tbevento")
 public class Evento {
@@ -36,10 +38,13 @@ public class Evento {
 	@JoinColumn(name = "doc_id")
 	private Doc doc_id;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime dataevento;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime datainicio;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime datatermino;
 
 	@ManyToOne
@@ -85,8 +90,10 @@ public class Evento {
 
 	private LocalDateTime datausurec;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime datachegada;
 
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime datasaida;
 
 	@ManyToOne

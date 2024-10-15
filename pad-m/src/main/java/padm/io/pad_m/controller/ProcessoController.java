@@ -67,7 +67,7 @@ public class ProcessoController {
 		ModelAndView mv = new ModelAndView("consulta/processos");
 		Optional<Usuario> usuario = usuarioService.findById(session.getUsuario().getId());
 		List<Processo> processosSetor =  processoService.findAllBySetor(session.getUsuario().getLotacao_id());
-		List<Processo> processosUser =  processoService.findAllBySetor(session.getUsuario().getId());
+		List<Processo> processosUser =  processoService.findAllByUserCriador(session.getUsuario().getId());
 		mv.addObject("usuario", usuario.get());
 		mv.addObject("processosSetor",processosSetor);
 		mv.addObject("processosUser",processosUser);
@@ -106,12 +106,10 @@ public class ProcessoController {
 	@PostMapping("/finalizar")
 	public String frmCadastrarProcessoFinalizar(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
 			@ModelAttribute("processo") Processo processo) {
-
 		processoService.save(processo);
 		model.addAttribute("processo", processo);
 		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
 		model.addAttribute("documentos", docs);
-
 		return "form/frmProcesso3";
 	}
 
@@ -123,10 +121,14 @@ public class ProcessoController {
 			Evento evento = new Evento();
 			evento.setTipo_id(tipoEventoService.findById(4).get());
 			evento.setProc_id(processo);
+			evento.setDoc_id(processo.getDocumento());
 			evento.setDataevento(LocalDateTime.now());
+			evento.setDatainicio(LocalDateTime.now());
 			evento.setUser_id(session.getUsuario());
 			evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id()).get());
-			evento.setEvento("CRIAÇÃO DE PROCESSO");			
+			evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + LocalDateTime.now() );
+			evento.setFlag(1);
+			evento.setPlaced(1);
 			eventoService.save(evento);
 
 		} catch (Exception e) {

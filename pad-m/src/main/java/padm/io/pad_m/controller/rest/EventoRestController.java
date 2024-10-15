@@ -24,10 +24,17 @@ public class EventoRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Evento> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
+	public ResponseEntity<Evento> findById(@PathVariable("id") Integer id) {		
 		Evento evento = eventoService.findById(id).get();
 		return ResponseEntity.ok(evento);
 	}
+	
+	@GetMapping("/processo/{idProcesso}")
+	public ResponseEntity<List<Evento>> idProcesso(@PathVariable("idProcesso") Integer idProcesso) {		
+		List<Evento> evento = eventoService.findAllByIdProcesso(idProcesso).get();
+		return ResponseEntity.ok(evento);
+	}
+	
+	
 
 }
