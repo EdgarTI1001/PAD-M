@@ -54,6 +54,7 @@ public class WebSecurityConfigAD implements WebMvcConfigurer{
 	        		  ).formLogin(
 	        				  formLogin -> formLogin
 	                          .loginPage("/login")
+									  .failureUrl("/login?error=true")  // Redireciona em caso de erro
 	                          .permitAll()
 	                    ).logout(logout -> logout.logoutSuccessUrl("/").permitAll().logoutUrl("/logout") );
 	         return http.build();

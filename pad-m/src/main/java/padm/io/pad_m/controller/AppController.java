@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,9 +41,12 @@ public class AppController {
 		return mv;
 	}
 	@GetMapping("/login")
-	public ModelAndView setupLogin(Model model) {
+	public ModelAndView setupLogin(@RequestParam(value = "error", required = false) String error, Model model) {
+
 		ModelAndView mv = new ModelAndView("frmLogin");
-		//model.addAttribute("isProducao", ambiente.isAmbienteProducao());
+		if (error != null) {
+			mv.addObject("error", error); // Adiciona a mensagem de erro na view
+		}
 		return mv;
 	}
 	
