@@ -29,8 +29,8 @@ public class EventoService {
 		return eventoRepository.findAllByIdProcesso(id);
 	}
 	
-	public Evento findTopByOrderByIdDesc() {
-		return eventoRepository.findTopByOrderByIdDesc();
+	public Evento findFirstByProcessoId(Integer proc_id) {
+		return eventoRepository.findFirstByProcessoId(proc_id);
 	}
 
 	@Transactional

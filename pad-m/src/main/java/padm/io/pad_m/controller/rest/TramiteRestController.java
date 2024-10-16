@@ -24,10 +24,16 @@ public class TramiteRestController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Tramite> findById(@PathVariable("id") Integer id) {
-		System.out.println("=======================");
+	public ResponseEntity<Tramite> findById(@PathVariable("id") Integer id) {	
 		Tramite tramite = tramiteService.findById(id).get();
 		return ResponseEntity.ok(tramite);
 	}
+	
+	@GetMapping("/processo/{idProcesso}")
+	public ResponseEntity<Tramite> findFirstByProcessoId(@PathVariable("idProcesso") Integer idProcesso) {	
+		Tramite tramite = tramiteService.findFirstByProcessoId(idProcesso);
+		return ResponseEntity.ok(tramite);
+	}
+	
 
 }

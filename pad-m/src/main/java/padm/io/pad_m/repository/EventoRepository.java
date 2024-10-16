@@ -14,6 +14,7 @@ public interface EventoRepository extends JpaRepository<Evento, Integer> {
 	@Query(value="SELECT e FROM Evento e WHERE e.proc_id.id =:idProcesso ORDER BY e.id DESC")
 	Optional<List<Evento>> findAllByIdProcesso(@Param("idProcesso") Integer idProcesso );
 	
-	Evento findTopByOrderByIdDesc(); //Retorna o primeiro Elemnto da Lista
+	@Query(value = "SELECT TOP 1 * FROM tbevento WHERE proc_id =:idProcesso ORDER BY id DESC ", nativeQuery = true)
+	Evento findFirstByProcessoId(@Param("idProcesso") Integer idProcesso);
 	
 }

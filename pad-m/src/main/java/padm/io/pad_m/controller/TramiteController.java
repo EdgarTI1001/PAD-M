@@ -2,6 +2,7 @@ package padm.io.pad_m.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Evento;
+import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Tramite;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.AtendenteService;
@@ -25,6 +27,7 @@ import padm.io.pad_m.service.ModeradorService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
+import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.service.TramiteService;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -36,6 +39,9 @@ public class TramiteController {
 
 	@Autowired
 	private ProcessoService processoService; 
+	
+	@Autowired
+	private TipoEventoService tipoEventoService; 
 	
 	@Autowired
 	private FinalidadeService finalidadeService; 
@@ -69,8 +75,7 @@ public class TramiteController {
 	
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/tramites");
-		
+		ModelAndView mv = new ModelAndView("consulta/tramites");		
 		return mv;
 	}
 
@@ -88,8 +93,8 @@ public class TramiteController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("tramite") Tramite tramite, BindingResult result) {
 		try {
-			
-			Evento evento = eventoService.findTopByOrderByIdDesc(); 
+			Optional<Setor> setor =  setorService.findById(tramite.getSetordestino());
+			Evento evento = eventoService.findFirstByProcessoId(tramite.getProcId().getId()); 
 			evento.setDatasaida(LocalDateTime.now());
 			evento.setDatatermino(LocalDateTime.now());
 			eventoService.save(evento);
@@ -112,7 +117,8 @@ public class TramiteController {
 			tramite.setModeradorId(moderadorService.findById(1).get());
 			tramite.setGestorId(gestorService.findById(1).get());
 			
-			tramite.setTramitacao("TRAMITACAO");
+			tramite.setTramitacao("Processo: " +tramite.getProcId().getNumanoproc() + " - " + tramite.getProcId().getAssunto() + " Recebido no Setor " + 
+					setor.get().getNome() + " Em " + LocalDateTime.now());
 			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
 			
 			
@@ -135,14 +141,16 @@ public class TramiteController {
 			tramiteService.save(tramite);
 			
 			Evento novoEvento = new Evento();
+			
+		
 			novoEvento.setDatachegada(LocalDateTime.now());
 			novoEvento.setDataevento(LocalDateTime.now());
 			novoEvento.setDatainicio(LocalDateTime.now());
 			novoEvento.setProc_id(processoService.findById(tramite.getProcId().getId()).get());
 			novoEvento.setDoc_id(tramite.getProcId().getDocumento());
-			novoEvento.setTipo_id(eventoService.findById(1).get().getTipo_id());
+			novoEvento.setTipo_id(tipoEventoService.findById(1).get());
 			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + " Enviou Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
-					+ "para " + tramite.getSetordestino() + " Em " + LocalDateTime.now());
+					+ " para o Setor " + setor.get().getNome()  + " Em " + LocalDateTime.now());
 			
 			eventoService.save(novoEvento);
 			

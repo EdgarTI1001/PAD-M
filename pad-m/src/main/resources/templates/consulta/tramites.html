@@ -145,20 +145,35 @@
         </nav>
         <div class="row">
             <div class="col-md-6">
-                <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processos</h5>
+                <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Tramites</h5>
             </div>
             <div class="col-md-6 text-end">
                 <h5>
                     <a class="btn btn-sm btn-primary" th:href="@{/processos/new/}" role="button" style="border-radius: 10px;" title="Cadastrar Processo">
-                        <i class="bi bi-plus"></i> Novo Processo
+                        <i class="bi bi-plus"></i> Novo Tramite
                     </a>
                 </h5>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+          <div class="col-md-6">
+       		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="tipoProcesso">
+			  <option selected>Selecione o Tipo</option>
+			  <option value="Servidor">Servidor</option>
+			  <option value="Setor">Setor</option>			
+			</select>
+			</div>
+			
+		   <div class="col-md-6">
+       		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="idProcesso">
+			  <option selected>Selecione o Processo</option>			 
+			</select>
+			</div>
+			
+			
+            <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Processos do Usuario</span></div>
+                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Processos do Processo</span></div>
                     <div class="card-body">
                        
                         <table class="table">
@@ -173,56 +188,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="rs : ${processosUser}" th:id="'tr' + ${rs.id}">
-                                    <td th:text="${rs.numproc}"></td>
-                                    <td th:text="${rs.ano}"></td>
-                                    <td th:text="${rs.numanoproc}"></td>
-                                    <td>
-                                    
-                           			 <a  href="#"  th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}"  th:id="'tramite' + ${rs.id}" title="excluir">
-						   				 <span th:text="${rs.assunto}"></span>
-						  			</a> 
-                                    
-                                    </td>
-                                    <td th:text="${rs.classificacao}"></td>
-                                    <td>
-                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:data-record-id="${rs.id}" title="Tramitar Processo">
-                                            <i class="fa fa-share" aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">                    
-                    <div class="card-header" style="background-color: #00537d;"> <span class="badge text-bg-secondary"><i class="bi bi-people"></i> Processos do Setor</span></div>
-                     <div class="card-body">                      
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">Ano</th>
-                                    <th scope="col">Numero/Ano</th>
-                                    <th scope="col">Assunto</th>
-                                    <th scope="col">Classificação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="rs : ${processosSetor}" th:id="'tr' + ${rs.id}">
-                                    <td th:text="${rs.numproc}"></td>
-                                    <td th:text="${rs.ano}"></td>
-                                    <td th:text="${rs.numanoproc}"></td>
-                                    <td th:text="${rs.assunto}"></td>
-                                    <td th:text="${rs.classificacao}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+
         </div>
         
 
@@ -274,7 +246,7 @@
                });
   
                $("[id*='tramite']").click(function(event){
-         	  	  event.preventDefault();
+         	  	    event.preventDefault();
          	      	var data = $(event.delegateTarget).data();
          	    	var id = data.recordId;
          	  	    var numano =  data.recordNumano;
@@ -301,29 +273,9 @@
  
          	  	  }); 
                
-               
-             function isProcessoNaUnidade(){
-            	 /*
-             	 $.ajax({
-             		  url: URL + "/tramites/processo/"+id,
-             		  method: "GET",
-             		}).done(function(data) {  
-             			//console.log(data)
-             			ul = '<ul class="timeline">';
-             			$.each( data, function( index, rs ){
-             				console.log(rs)
-             					ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+
-                 						 '<h3>'+rs.tipo_id.evento+'</h3>'+
-                 						 '<p>'+rs.evento+'</p>'+
-             						 '</li>';
-             			});                     			
-             			ul += '</ul>';
-             			
-             			$("#eventos").append(ul)
-            	  	    $('#staticBackdrop').modal('show');
-             		});
-            	 */
-             }
+               $("#tipoProcesso").change(function(){
+            	   
+            	});
             
         </script>
     </div>
