@@ -106,7 +106,7 @@
                 </div>
             </div>
             <div>
-                <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" href="#" class="nav_link">
+                <a sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:href="@{/logout}" class="nav_link">
                     <i class="fa fa-sign-out" style="font-size:23px;color:white" aria-hidden="true"></i>
                     <span class="nav_name">Sair</span>
                 </a>
