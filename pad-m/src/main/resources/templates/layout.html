@@ -69,12 +69,12 @@
     <div class="l-navbar" id="nav-bar" style="background-color: #00537d;">
         <nav class="nav">
             <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
-                <a th:href="@{/impugnacao}" class="nav_logo">
+                <a th:href="@{/}" class="nav_logo">
                     <i class="fa fa-home" style="font-size:23px;color:white"></i>
                     <span class="nav_logo-name">Pagina Inicial</span>
                 </a>
                 <div class="nav_list">
-                    <a href="@{/docs}" class="nav_link active">                    
+                    <a th:href="@{/docs}" class="nav_link active">                    
                         <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
                         <span class="nav_name">Documentos</span>
                     </a>             
