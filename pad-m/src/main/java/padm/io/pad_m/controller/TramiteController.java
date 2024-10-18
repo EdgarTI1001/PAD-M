@@ -74,8 +74,8 @@ public class TramiteController {
 	AuthenticationFacade session;
 	
 	@GetMapping
-	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/tramites");		
+	public ModelAndView findAll() {		
+		ModelAndView mv = new ModelAndView("consulta/tramites");	
 		return mv;
 	}
 

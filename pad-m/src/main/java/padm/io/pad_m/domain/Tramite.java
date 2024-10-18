@@ -1,6 +1,7 @@
 package padm.io.pad_m.domain;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "tbtramite")
@@ -92,6 +94,9 @@ public class Tramite {
 	private int flag;
 
 	private int placed;
+
+	@Transient
+	private long totalDias;
 
 	public Tramite() {
 	}
@@ -392,6 +397,19 @@ public class Tramite {
 
 	public void setAtendenteId(Atendente atendenteId) {
 		this.atendenteId = atendenteId;
+	}
+
+	public long getTotalDias() {
+		if(this.datasaida != null) { 		
+			return ChronoUnit.DAYS.between(this.datachegada, this.datasaida);
+		}else
+			return ChronoUnit.DAYS.between(this.datachegada, LocalDateTime.now());
+		
+		
+	}
+
+	public void setTotalDias(long totalDias) {
+		this.totalDias = totalDias;
 	}
 
 	@Override

@@ -23,6 +23,12 @@ public class TramiteService {
 	public List<Tramite> findAll() {
 		return tramiteRepo.findAll();
 	}
+	
+
+	public List<Tramite> findAllByIdProcesso(Integer idProcesso) {
+		return tramiteRepo.findAllByIdProcesso(idProcesso);
+	}
+
 
 	public Optional<Tramite> findById(Integer id) {
 		return tramiteRepo.findById(id);

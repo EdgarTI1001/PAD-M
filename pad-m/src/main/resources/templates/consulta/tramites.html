@@ -156,38 +156,39 @@
             </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-6">         
        		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="tipoProcesso">
-			  <option selected>Selecione o Tipo</option>
+			  <option selected>Selecione o Tipo do Processo</option>
 			  <option value="Servidor">Servidor</option>
 			  <option value="Setor">Setor</option>			
 			</select>
 			</div>
 			
-		   <div class="col-md-6">
-       		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="idProcesso">
-			  <option selected>Selecione o Processo</option>			 
-			</select>
-			</div>
-			
+	       <div class="col-md-6">         
+	       		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="processos">
+				  <option selected>Selecione o  Processo</option>			 
+				</select>
+			</div>	
+					
 			
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Processos do Processo</span></div>
+                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Tramite do Processo</span></div>
                     <div class="card-body">
                        
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">Ano</th>
-                                    <th scope="col">Numero/Ano</th>
-                                    <th scope="col">Assunto</th>
-                                    <th scope="col">Classificação</th>
-                                    <th scope="col">Tramitar</th>
+                                    <th scope="col">Criador</th>
+                                    <th scope="col">Origem</th>
+                                    <th scope="col">Destino</th>
+                                    <th scope="col">Finalidade</th>
+                                    <th scope="col">Chegada</th>
+                                    <th scope="col">Saida</th>
+                                    <th scope="col">Total Dias</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tramitesDoProcesso">
                 
                             </tbody>
                         </table>
@@ -273,10 +274,61 @@
  
          	  	  }); 
                
+               
                $("#tipoProcesso").change(function(){
-            	   
+            	  var tipoProcesso = $("#tipoProcesso").val();    
+            	
+            	  $("#loader").show();
+          		  getProcessos(tipoProcesso);          	 	 
             	});
-            
+               
+               $("#processos").change(function(){
+             	  var processo = $("#processos").val();            	
+             	  $("#loader").show();
+           		  getTramitesDoProcesso(processo);          	 	 
+             	});
+                
+               
+               
+		        function getProcessos(tipo){
+		        	  $("#processos option").remove();
+		        	 $.ajax({
+		        		  url: URL + "/processos/usuario/tipo/"+tipo,
+		        		  method: "GET",
+		        		}).done(function(data) {  
+		        			$('#processos').append($('<option>', {value: 0, text : "Selecione o Processo" }));
+		        			$.each( data, function( index, rs ){            					
+		        					$('#processos').append($('<option>', { 
+		              			        value: rs.id,
+		              			        text : rs.numanoproc + " - " + rs.assunto
+		              			    }));
+		        			});                     			
+		        			 $("#loader").hide();
+		        		});
+		        }
+		        
+		        function getTramitesDoProcesso(processo){
+		        	   var table = "";
+		        	  $("#tramitesDoProcesso").empty();
+		        	 $.ajax({
+		        		  url: URL + "/tramites/processo/all/"+processo,
+		        		  method: "GET",
+		        		}).done(function(data) { 	        			
+		        			$.each( data, function( index, value ){  		        				
+		        				 table += '<tr id="tr' + value.id + '">';
+		        				 table += '<th>' + value.usercriadorId + '</th>';	    
+		        				 table += '<th>' + value.setororigem + '</th>';	    
+		                         table += '<th>' + value.setordestino + '</th>';	    
+		                         table += '<th>' + value.finalidade + '</th>';	  
+		                         table += '<th>' +  formatarData(value.datachegada)  + '</th>';	  
+		                         table += '<th>' + (value.datasaida ? formatarData(value.datasaida) : "-")  + '</th>';	 
+		                         table += '<th>' + value.totalDias + '</th>';	 	                        
+		                         table += '</tr>';
+		        			});
+		        			 $('#tramitesDoProcesso').append(table);
+		        			 $("#loader").hide();
+		        		});
+		        }
         </script>
     </div>
 </body>

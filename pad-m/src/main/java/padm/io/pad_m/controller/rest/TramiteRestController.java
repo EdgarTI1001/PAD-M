@@ -35,5 +35,13 @@ public class TramiteRestController {
 		return ResponseEntity.ok(tramite);
 	}
 	
+	
+	@GetMapping("/processo/all/{idProcesso}")
+	public ResponseEntity<List<Tramite>> findAllByIdProcesso(@PathVariable("idProcesso") Integer idProcesso) {	
+		List<Tramite> tramites = tramiteService.findAllByIdProcesso(idProcesso);
+		return ResponseEntity.ok(tramites);
+	}
+	
+	
 
 }
