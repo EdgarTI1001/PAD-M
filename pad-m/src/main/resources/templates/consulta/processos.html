@@ -245,7 +245,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Eventos do Processo</h6>
+                    <h6 class="card-title"><b>Eventos do Processo</b></h6>
                     <div id="eventos">
                 
                     </div>
@@ -280,7 +280,7 @@
          	  	    var numano =  data.recordNumano;
          	  	  	var ul = "";
          	  	    $("#nprocesso").text(numano);  
-						
+         	  		 $("#loader").show();  
          	  	 	 $.ajax({
                   		  url: URL + "/eventos/processo/"+id,
                   		  method: "GET",
@@ -297,6 +297,7 @@
                   			
                   			$("#eventos").append(ul)
                  	  	    $('#staticBackdrop').modal('show');
+                  			 $("#loader").hide(); 
                   		});
  
          	  	  }); 

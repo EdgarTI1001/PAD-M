@@ -40,7 +40,7 @@
                         <label for="servidor" class="form-label">Lotação</label>
                        <select id="lotacat" class="form-select form-select-sm" th:field="*{lotacao_id}" > 
 						       <option th:text="${'Selecione a Lotação'}" th:value="${'0'}">	
-						      <option th:each="unidade : ${unidades}" th:text="${unidade.nome}" th:value="${unidade.id}">		    
+						      <option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}">		    
 		    		  </select>		      
                     </div>                   
                

@@ -171,7 +171,7 @@
 			</div>	
 					
 			
-            <div class="col-md-12">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Tramite do Processo</span></div>
                     <div class="card-body">
@@ -189,6 +189,29 @@
                                 </tr>
                             </thead>
                             <tbody id="tramitesDoProcesso">
+                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+              <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo</span></div>
+                    <div class="card-body">
+                       
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nome</th>
+                                    <th scope="col">Extensao</th>
+                                    <th scope="col">Tamanho</th>
+                                    <th scope="col">Data</th>  
+                                    <th scope="col"></th>                                    
+                                </tr>
+                            </thead>
+                            <tbody id="documentosDoProcesso">
                 
                             </tbody>
                         </table>
@@ -285,7 +308,8 @@
                $("#processos").change(function(){
              	  var processo = $("#processos").val();            	
              	  $("#loader").show();
-           		  getTramitesDoProcesso(processo);          	 	 
+           		  getTramitesDoProcesso(processo);   
+           	      getDocumentosDoProcesso(processo);
              	});
                 
                
@@ -295,7 +319,7 @@
 		        	 $.ajax({
 		        		  url: URL + "/processos/usuario/tipo/"+tipo,
 		        		  method: "GET",
-		        		}).done(function(data) {  
+		        		}).done(function(data) {  		        			
 		        			$('#processos').append($('<option>', {value: 0, text : "Selecione o Processo" }));
 		        			$.each( data, function( index, rs ){            					
 		        					$('#processos').append($('<option>', { 
@@ -308,7 +332,7 @@
 		        }
 		        
 		        function getTramitesDoProcesso(processo){
-		        	   var table = "";
+		        	  var table = "";
 		        	  $("#tramitesDoProcesso").empty();
 		        	 $.ajax({
 		        		  url: URL + "/tramites/processo/all/"+processo,
@@ -317,10 +341,10 @@
 		        			$.each( data, function( index, value ){  		        				
 		        				 table += '<tr id="tr' + value.id + '">';
 		        				 table += '<th>' + value.usercriadorId + '</th>';	    
-		        				 table += '<th>' + value.setororigem + '</th>';	    
+		        				 table += '<th>' + value.setororigem  + '</th>';	    
 		                         table += '<th>' + value.setordestino + '</th>';	    
 		                         table += '<th>' + value.finalidade + '</th>';	  
-		                         table += '<th>' +  formatarData(value.datachegada)  + '</th>';	  
+		                         table += '<th>' + formatarData(value.datachegada)  + '</th>';	  
 		                         table += '<th>' + (value.datasaida ? formatarData(value.datasaida) : "-")  + '</th>';	 
 		                         table += '<th>' + value.totalDias + '</th>';	 	                        
 		                         table += '</tr>';
@@ -329,6 +353,30 @@
 		        			 $("#loader").hide();
 		        		});
 		        }
+		       
+		        function getDocumentosDoProcesso(processo){ 
+		        	var table = "";
+		        	  $("#documentosDoProcesso").empty();
+		        	 $.ajax({
+		        		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
+		        		  method: "GET",
+		        		}).done(function(data) { 			
+		        			
+		        			$.each( data, function( index, value ){  		        				
+		        				 table += '<tr id="tr' + value.id + '">';
+		        				 table += '<th>' + value.documento.nomdoc + '</th>';	    
+		        				 table += '<th>' + value.documento.extdoc  + '</th>';	    
+		                         table += '<th>' + value.documento.tamdoc + '</th>';			                         
+		                         table += '<th>' + formatarData(value.datacad)  + '</th>';	                        	                        
+		                         table += '</tr>';
+		        			});
+		        			
+		        			 $('#documentosDoProcesso').append(table);
+		        			 $("#loader").hide();
+		        		});
+		        	
+		        }
+		       
         </script>
     </div>
 </body>

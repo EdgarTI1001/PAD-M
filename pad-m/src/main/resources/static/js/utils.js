@@ -4,6 +4,23 @@
 
 
 
+async function getData(idSetor) {
+    try {
+        const response = await fetch( URL + "/setores/"+idSetor);
+        if (!response.ok) {
+            throw new Error("Network response was not ok " + response.statusText);
+        }
+        const data = await response.json();
+		$.each(data, function(index, item) {
+		           // Process each item in the array
+		           console.log("Index: " + item.nome);
+		           // You can access properties like item.id, item.name, etc.
+		       });
+    } catch (error) {
+        console.error("There has been a problem with your fetch operation:", error);
+    }
+}
+
 function formatarData(data) {	
 	const dataAtual = new Date(data);
     const dia = String(dataAtual.getDate()).padStart(2, '0');

@@ -5,17 +5,25 @@
  <section layout:fragment="content">
  <div class="card">
 		<div class="card-header">			
-			Usuarios
+			        <div class="row">
+            <div class="col-md-6">
+                <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Usuarios</h5>
+            </div>
+            <div class="col-md-6 text-end">
+                <h5>
+                    <a class="btn btn-sm btn-primary" th:href="@{/usuarios/new}" role="button" style="border-radius: 10px;" title="Cadastrar Processo">
+                        <i title="Cadastrar novo USUARIO" class="fa fa-plus-circle" aria-hidden="true"></i> Novo Usuario
+                    </a>
+                </h5>
+            </div>
+        </div>
 		</div>
+		
+	
 	<div class="card-body">
 		<table class="table table-hover">
 		<thead>
-			<tr>	
-			<th scope="col">
-				     <a sec:authorize="hasRole('ROLE_USER')"  th:href="@{/usuarios/new}">
-				       <i title="Cadastrar novo USUARIO" class="fa fa-plus-circle" aria-hidden="true"></i>
-				    </a>
-			</th>		 
+			<tr>				 
 			  <th scope="col">Nome</th>
 			  <th scope="col">NickName</th>
 			  <th scope="col">Lotação</th>
@@ -25,8 +33,7 @@
 		 </thead>
 		  <tbody>
 				
-			<tr th:each="rs : ${usuarios}" th:id="'tr' + ${rs.id}">		
-				   <td></td>		  
+			<tr th:each="rs : ${usuarios}" th:id="'tr' + ${rs.id}">						   	  
 				   <td th:text="${rs.nome}"></td>
 				   <td th:text="${rs.nickname}"></td>		
 				   <td th:text="${rs.lotacao_id}"></td>		   
@@ -140,9 +147,10 @@
     	 		  icon: 'warning',
     	 		  buttons: [true, "Sim !"]
     	 		}).then((result) => {
+    	 			 $("#loader").show();
     	 		  if (result) {
     	 		       $.ajax({
-    	 				  url: URL + "usuarios/"+id+"/"+ativo,
+    	 				  url: URL + "/usuarios/"+id+"/"+ativo,
     	 				 // type: 'UPDATE',
     	 			   }).done(function( data ) {			      
     	 			       swal(title, "Executado com sucesso!", "success");			       
@@ -150,7 +158,7 @@
     	 			    	   location.reload()
     	 			    	 }, 1000);
     	 			     
-    	 				}).fail(function() {
+    	 				}).fail(function(data) {    	 					
     	 					swal(title, "Ocorreu um erro ao executar", "error");
     	 				});
     	 		   }

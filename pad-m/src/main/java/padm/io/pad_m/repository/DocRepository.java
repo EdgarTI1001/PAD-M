@@ -13,4 +13,5 @@ public interface DocRepository extends JpaRepository<Doc, Integer> {
 
     @Query("SELECT d FROM Doc d WHERE d.usu_id = :usuario")
     List<Doc> findAllDocumentosByUsuario(@Param("usuario") Usuario usuario);
+    
 }

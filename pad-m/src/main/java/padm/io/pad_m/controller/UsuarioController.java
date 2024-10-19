@@ -23,9 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Servidor;
-import padm.io.pad_m.domain.UnidadeLotacao;
+import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.service.ServidorService;
+import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.UnidadeLotacaoService;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -44,6 +45,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UnidadeLotacaoService unidadeService;
+	
+	@Autowired
+	private SetorService setorService;
 
 	
 	@Value("${path.upload}")
@@ -62,10 +66,10 @@ public class UsuarioController {
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("usuario") Usuario usuario) {
 		List<Servidor> servidores = servidorService.findAll();
-		List<UnidadeLotacao> unidades = unidadeService.findAll();
+		List<Setor> setores = setorService.findAll();
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("servidores", servidores);
-		model.addAttribute("unidades", unidades);
+		model.addAttribute("setores", setores);
 		model.addAttribute("activePage", "mnuCandidato");
 		return "form/frmCadUsuario";
 	}
