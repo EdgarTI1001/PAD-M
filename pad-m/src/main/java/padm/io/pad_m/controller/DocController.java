@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import com.itextpdf.html2pdf.HtmlConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,10 +74,24 @@ public class DocController {
     public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew) {
         AlertMessage alertMessage;
         final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
+        final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList(
+                "image/png",
+                "image/jpeg",
+                "video/mp4",
+                "application/pdf",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+                "application/msword" // .doc
+        );
 
+        // Verifica o tamanho do arquivo
         if (file.getSize() > MAX_FILE_SIZE) {
             alertMessage = new AlertMessage("danger", "O arquivo excede o limite de 10 MB.");
-        } else {
+        }
+        // Verifica o tipo do arquivo
+        else if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
+            alertMessage = new AlertMessage("danger", "Tipo de arquivo não permitido. Somente PNG, JPG, MP4, PDF, DOC e DOCX são aceitos.");
+        }
+        else {
             try {
                 String fileNameHash = storageService.save(file, "documentos");
                 Usuario usuario = authentication.getUsuario();
