@@ -64,7 +64,11 @@
                                         </a>
 
                                         <a th:title="'Abrir documento'" class="btn btn-warning btn-sm" th:href="@{'/uploads/documentos/' + ${doc.hashdoc}}" target="_blank" th:if="${!#strings.isEmpty(doc.hashdoc)}">
-                                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                                            <i class="fa fa-file-pdf-o" th:if="${doc.extdoc == 'application/pdf'|| doc.extdoc == 'pdf'}" aria-hidden="true"></i>
+                                            <i class="fa fa-file-word-o" th:if="${doc.extdoc == 'application/msword' || doc.extdoc == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'}" aria-hidden="true"></i>
+                                            <i class="fa fa-file-image-o" th:if="${doc.extdoc == 'image/png' || doc.extdoc == 'image/jpeg'}" aria-hidden="true"></i>
+                                            <i class="fa fa-file-video-o" th:if="${doc.extdoc == 'video/mp4'}" aria-hidden="true"></i>
+                                            <i class="fa fa-file-o" th:if="${doc.extdoc != 'application/pdf' && doc.extdoc != 'application/msword' && doc.extdoc != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && doc.extdoc != 'image/png' && doc.extdoc != 'image/jpeg' && doc.extdoc != 'video/mp4' && doc.extdoc != 'pdf'}" aria-hidden="true"></i>
                                         </a>
                                         <a th:title="'Excluir documento'" th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
