@@ -70,31 +70,34 @@ public class DocController {
 
     @PostMapping("/files/upload")
     public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew) {
-
         AlertMessage alertMessage;
+        final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
 
-        try {
-            String fileNameHash = storageService.save(file, "documentos");
+        if (file.getSize() > MAX_FILE_SIZE) {
+            alertMessage = new AlertMessage("danger", "O arquivo excede o limite de 10 MB.");
+        } else {
+            try {
+                String fileNameHash = storageService.save(file, "documentos");
+                Usuario usuario = authentication.getUsuario();
 
-            Usuario usuario = authentication.getUsuario();
+                Doc doc = new Doc();
+                doc.setNomdoc(docNew.getNomdoc());
+                doc.setExtdoc(file.getContentType());
+                doc.setUsu_id(usuario);
+                doc.setData(LocalDateTime.now());
+                doc.setHashdoc(fileNameHash);
 
-            Doc doc = new Doc();
-            doc.setNomdoc(docNew.getNomdoc());
-            doc.setExtdoc(file.getContentType());
-            doc.setUsu_id(usuario);
-            doc.setData(LocalDateTime.now());
-            doc.setHashdoc(fileNameHash);
-            if(!file.isEmpty()){
-                doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
+                if (!file.isEmpty()) {
+                    doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
+                }
+                docService.save(doc);
+
+                alertMessage = new AlertMessage("success", "Arquivo enviado com sucesso: " + file.getOriginalFilename());
+            } catch (Exception e) {
+                alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + file.getOriginalFilename() + ". Error: " + e.getMessage());
             }
-            docService.save(doc);
-
-            alertMessage = new AlertMessage("success", "Arquivo enviado com sucesso: " + file.getOriginalFilename());
-        } catch (Exception e) {
-            alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: " + file.getOriginalFilename() + ". Error: " + e.getMessage());
         }
 
-        //model.addAttribute("alertMessage", alertMessage);
         redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
         return "redirect:/docs";
     }
