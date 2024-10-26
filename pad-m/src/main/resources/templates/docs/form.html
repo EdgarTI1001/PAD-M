@@ -7,6 +7,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             tinymce.init({
                 selector: 'textarea',
+                language: 'pt_BR',
+                browser_spellcheck: true, // Ativa o corretor do navegador
+                contextmenu: false, // Evita o menu de contexto personalizado para permitir o do navegador
                 license_key: 'gpl',
                 plugins: [
                     'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
