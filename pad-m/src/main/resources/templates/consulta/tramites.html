@@ -337,16 +337,16 @@
 		        	 $.ajax({
 		        		  url: URL + "/tramites/processo/all/"+processo,
 		        		  method: "GET",
-		        		}).done(function(data) { 	        			
+		        		}).done(function(data) { 		        			
 		        			$.each( data, function( index, value ){  		        				
 		        				 table += '<tr id="tr' + value.id + '">';
-		        				 table += '<th>' + value.usercriadorId + '</th>';	    
-		        				 table += '<th>' + value.setororigem  + '</th>';	    
-		                         table += '<th>' + value.setordestino + '</th>';	    
-		                         table += '<th>' + value.finalidade + '</th>';	  
-		                         table += '<th>' + formatarData(value.datachegada)  + '</th>';	  
-		                         table += '<th>' + (value.datasaida ? formatarData(value.datasaida) : "-")  + '</th>';	 
-		                         table += '<th>' + value.totalDias + '</th>';	 	                        
+		        				 table += '<td>' + value.setorcriador.nome + '</td>';	    
+		        				 table += '<td>' + value.setororigem.nome  + '</td>';	    
+		                         table += '<td>' + value.setordestino.nome + '</td>';	    
+		                         table += '<td>' + value.finalidade + '</td>';	  
+		                         table += '<td>' + formatarData(value.datachegada)  + '</td>';	  
+		                         table += '<td>' + (value.datasaida ? formatarData(value.datasaida) : "-")  + '</td>';	 
+		                         table += '<td>' + value.totalDias + '</td>';	 	                        
 		                         table += '</tr>';
 		        			});
 		        			 $('#tramitesDoProcesso').append(table);

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,13 +24,19 @@ public class Tramite {
 
 	private String tipo;
 
-	private int setororigem;
+	@ManyToOne
+	@JoinColumn(name = "setororigem")
+	private Setor setororigem;
 
-	private int setorcriador;
+	@ManyToOne
+	@JoinColumn(name = "setorcriador")
+	private Setor setorcriador;
 
 	private int localtramite;
 
-	private int setordestino;
+	@ManyToOne
+	@JoinColumn(name = "setordestino")
+	private Setor setordestino;
 
 	private LocalDateTime datachegada; // setar na controller
 
@@ -46,6 +53,10 @@ public class Tramite {
 	private Usuario userId; // setar na controller
 
 	private int usercriadorId;
+
+	@Column(name = "qtddiasresposta")
+	private Integer qtdDiasResposta;// Quantidade de dias que o ususario espera uma resposta de um processo
+									// tramitado
 
 	private int responsavelId;
 
@@ -101,14 +112,14 @@ public class Tramite {
 	public Tramite() {
 	}
 
-	public Tramite(Integer id, String tipo, int setororigem, int setorcriador, int localtramite, int setordestino,
+	public Tramite(Integer id, String tipo, Setor setororigem, Setor setorcriador, int localtramite, Setor setordestino,
 			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId,
-			Usuario userId, int usercriadorId, int responsavelId, Atendente atendenteId, Moderador moderadorId,
-			Gestor gestorId, String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
-			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
-			LocalDateTime datarecebimento, int espera, LocalDateTime datainicioespera, LocalDateTime datafimespera,
-			int seq, int flag, int placed) {
-		super();
+			Usuario userId, int usercriadorId, Integer qtdDiasResposta, int responsavelId, Atendente atendenteId,
+			Moderador moderadorId, Gestor gestorId, String tramitacao, int finalidadeId, String finalidade,
+			LocalDateTime datadesarquivamento, LocalDateTime dataarquivamento, String obs, Sigilo sigiloId,
+			String visibilidade, int recebimento, LocalDateTime datarecebimento, int espera,
+			LocalDateTime datainicioespera, LocalDateTime datafimespera, int seq, int flag, int placed,
+			long totalDias) {
 		this.id = id;
 		this.tipo = tipo;
 		this.setororigem = setororigem;
@@ -121,6 +132,7 @@ public class Tramite {
 		this.procId = procId;
 		this.userId = userId;
 		this.usercriadorId = usercriadorId;
+		this.qtdDiasResposta = qtdDiasResposta;
 		this.responsavelId = responsavelId;
 		this.atendenteId = atendenteId;
 		this.moderadorId = moderadorId;
@@ -141,6 +153,7 @@ public class Tramite {
 		this.seq = seq;
 		this.flag = flag;
 		this.placed = placed;
+		this.totalDias = totalDias;
 	}
 
 	public Integer getId() {
@@ -159,20 +172,28 @@ public class Tramite {
 		this.tipo = tipo;
 	}
 
-	public int getSetororigem() {
+	public Setor getSetororigem() {
 		return setororigem;
 	}
 
-	public void setSetororigem(int setororigem) {
+	public void setSetororigem(Setor setororigem) {
 		this.setororigem = setororigem;
 	}
 
-	public int getSetorcriador() {
+	public Setor getSetorcriador() {
 		return setorcriador;
 	}
 
-	public void setSetorcriador(int setorcriador) {
+	public void setSetorcriador(Setor setorcriador) {
 		this.setorcriador = setorcriador;
+	}
+
+	public Setor getSetordestino() {
+		return setordestino;
+	}
+
+	public void setSetordestino(Setor setordestino) {
+		this.setordestino = setordestino;
 	}
 
 	public int getLocaltramite() {
@@ -181,14 +202,6 @@ public class Tramite {
 
 	public void setLocaltramite(int localtramite) {
 		this.localtramite = localtramite;
-	}
-
-	public int getSetordestino() {
-		return setordestino;
-	}
-
-	public void setSetordestino(int setordestino) {
-		this.setordestino = setordestino;
 	}
 
 	public LocalDateTime getDatachegada() {
@@ -400,12 +413,19 @@ public class Tramite {
 	}
 
 	public long getTotalDias() {
-		if(this.datasaida != null) { 		
+		if (this.datasaida != null) {
 			return ChronoUnit.DAYS.between(this.datachegada, this.datasaida);
-		}else
+		} else
 			return ChronoUnit.DAYS.between(this.datachegada, LocalDateTime.now());
-		
-		
+
+	}
+
+	public Integer getQtdDiasResposta() {
+		return qtdDiasResposta;
+	}
+
+	public void setQtdDiasResposta(Integer qtdDiasResposta) {
+		this.qtdDiasResposta = qtdDiasResposta;
 	}
 
 	public void setTotalDias(long totalDias) {
@@ -434,14 +454,14 @@ public class Tramite {
 		return "Tramite [id=" + id + ", tipo=" + tipo + ", setororigem=" + setororigem + ", setorcriador="
 				+ setorcriador + ", localtramite=" + localtramite + ", setordestino=" + setordestino + ", datachegada="
 				+ datachegada + ", datasaida=" + datasaida + ", datacheck=" + datacheck + ", procId=" + procId
-				+ ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", responsavelId=" + responsavelId
-				+ ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId + ", gestorId=" + gestorId
-				+ ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId + ", finalidade=" + finalidade
-				+ ", datadesarquivamento=" + datadesarquivamento + ", dataarquivamento=" + dataarquivamento + ", obs="
-				+ obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade + ", recebimento=" + recebimento
-				+ ", datarecebimento=" + datarecebimento + ", espera=" + espera + ", datainicioespera="
-				+ datainicioespera + ", datafimespera=" + datafimespera + ", seq=" + seq + ", flag=" + flag
-				+ ", placed=" + placed + "]";
+				+ ", userId=" + userId + ", usercriadorId=" + usercriadorId + ", qtdDiasResposta=" + qtdDiasResposta
+				+ ", responsavelId=" + responsavelId + ", atendenteId=" + atendenteId + ", moderadorId=" + moderadorId
+				+ ", gestorId=" + gestorId + ", tramitacao=" + tramitacao + ", finalidadeId=" + finalidadeId
+				+ ", finalidade=" + finalidade + ", datadesarquivamento=" + datadesarquivamento + ", dataarquivamento="
+				+ dataarquivamento + ", obs=" + obs + ", sigiloId=" + sigiloId + ", visibilidade=" + visibilidade
+				+ ", recebimento=" + recebimento + ", datarecebimento=" + datarecebimento + ", espera=" + espera
+				+ ", datainicioespera=" + datainicioespera + ", datafimespera=" + datafimespera + ", seq=" + seq
+				+ ", flag=" + flag + ", placed=" + placed + ", totalDias=" + totalDias + "]";
 	}
 
 }

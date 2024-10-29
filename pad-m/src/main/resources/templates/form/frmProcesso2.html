@@ -79,7 +79,16 @@
                             <option th:text="${'Selecione a classificação'}" th:value="${'0'}"></option>
                             <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}"></option>
                         </select>		    
+                    </div>   
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="cpf" class="form-label">Visibilidade</label>
+                        <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
+                            <option th:text="${'Selecione a Visibilidade'}" th:value="${'0'}"></option>
+                            <option th:each="v : ${visibilidades}" th:text="${v.visibilidade}" th:value="${v.id}"></option>
+                        </select>		    
                     </div>         
+                          
                     
                     <!-- FASE DESNECESSÁRIO -->
                     

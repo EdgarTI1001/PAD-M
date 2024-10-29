@@ -20,7 +20,7 @@ public class Processo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private Integer numproc;
+	private String numproc;
 
 	private String tipo;
 
@@ -104,7 +104,7 @@ public class Processo {
 	public Processo() {
 	}
 
-	public Processo(Integer id, Integer numproc, String tipo, Integer ano, String numanoproc, String assunto,
+	public Processo(Integer id, String numproc, String tipo, Integer ano, String numanoproc, String assunto,
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
 			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
 			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
@@ -155,11 +155,11 @@ public class Processo {
 		this.id = id;
 	}
 
-	public Integer getNumproc() {
+	public String getNumproc() {
 		return numproc;
 	}
 
-	public void setNumproc(Integer numproc) {
+	public void setNumproc(String numproc) {
 		this.numproc = numproc;
 	}
 

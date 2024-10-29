@@ -93,7 +93,7 @@ public class TramiteController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("tramite") Tramite tramite, BindingResult result) {
 		try {
-			Optional<Setor> setor =  setorService.findById(tramite.getSetordestino());
+			Optional<Setor> setor =  setorService.findById(tramite.getSetordestino().getId());
 			Evento evento = eventoService.findFirstByProcessoId(tramite.getProcId().getId()); 
 			evento.setDatasaida(LocalDateTime.now());
 			evento.setDatatermino(LocalDateTime.now());
@@ -101,8 +101,8 @@ public class TramiteController {
 			
 			tramite.setTipo("TIPO");
 			
-			tramite.setSetororigem(session.getUsuario().getLotacao_id());
-			tramite.setSetorcriador(tramite.getProcId().getSetorcriadorId().getId());			
+			tramite.setSetororigem(setorService.findById(session.getUsuario().getLotacao_id()).get() ); 
+			tramite.setSetorcriador(setorService.findById( tramite.getProcId().getSetorcriadorId().getId()).get());			
 			tramite.setLocaltramite(session.getUsuario().getLotacao_id());
 			
 			tramite.setDatachegada(LocalDateTime.now());			

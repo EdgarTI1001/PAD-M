@@ -66,7 +66,7 @@
                          <span class="badge bg-secondary" th:text="${processo.numanoproc} + ' - ' +    ${processo.assunto}"></span>
                     </div>   
           
-                    <div class="col-6 mb-3">
+                    <div class="col-4 mb-3">
                         <label for="destino" class="form-label">Destino do Processo</label>
                            <select id="destino" class="form-select form-select-sm" th:field="*{setordestino}"> 
                             <option th:text="${'Selecione o Destino'}" th:value="${'0'}"></option>
@@ -75,10 +75,16 @@
                         </select>                      
                     </div>  
                     
-                    <div class="col-6 mb-3">
+                    <div class="col-4 mb-3">
                         <label for="tipo" class="form-label">Finalidade</label>
-                        <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{finalidade}" placeholder="Observação">
+                        <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{finalidade}" placeholder="Finalidade">
                     </div>   
+                    
+                     <div class="col-4 mb-3">
+                        <label for="tipo" class="form-label">Responder Quantos dias </label>
+                        <input type="text" id="assunto" class="form-control form-control-sm" title="Quantidade de dias para uma resposta" th:field="*{qtdDiasResposta}" placeholder="Quantidade Dias">
+                    </div>   
+                    
                     
                     <div class="col-6 mb-3">                     
                         <div class="card" style="width: 90rem; color: #00537d;">                    
@@ -99,8 +105,7 @@
       <script>
       var URL = '[[@{/}]]';  
       $("#idproc").hide();  
-      $("#idProcesso").val($("#idproc").text())
-      $("#loader").show();
+      $("#idProcesso").val($("#idproc").text());     
       $("#destino").select2();
       $(document).ready(function() {
           $("#loader").hide();
@@ -115,6 +120,7 @@
                   buttons: [true, "Sim!"]
               }).then((result) => {
                   if (result) {
+                	  $("#loader").show();
                       var frm = $("#frm").submit();
                       swal("Sucesso", "Resgistro salvo com sucesso", "success");	
                   }

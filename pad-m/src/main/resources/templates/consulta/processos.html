@@ -186,7 +186,7 @@
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
-                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:data-record-id="${rs.id}" title="Tramitar Processo">
+                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" id="tramitarProcesso" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
                                     </td>
@@ -268,11 +268,10 @@
     <div layout:fragment="jscript">
         <script>
             var URL = '[[@{/}]]api';
-        	//$('#modalTramite').modal('hide');
- 			   $( document ).ready(function() {
-
-               });
-  
+            
+            $("#tramitarProcesso").click(function(event){
+            	 $("#loader").show(); 
+            });
                $("[id*='tramite']").click(function(event){
          	  	  event.preventDefault();
          	      	var data = $(event.delegateTarget).data();

@@ -29,6 +29,7 @@ import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.service.EventoService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
+import padm.io.pad_m.service.SigiloService;
 import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -61,6 +62,9 @@ public class ProcessoController {
 
 	@Autowired
 	private ClassifService classifService;
+	
+	@Autowired
+	private SigiloService sigiloService;
 
 	@GetMapping
 	public ModelAndView findAll() {
@@ -93,13 +97,29 @@ public class ProcessoController {
 		int ano = Year.now().getValue();
 		processo.setAno(ano);
 		processoService.save(processo);
-		processo.setNumproc(processo.getId());
-		processo.setNumanoproc(processo.getId() + "/" + ano);
+		
+		processo.setNumproc("000"+processo.getId());
+		processo.setNumanoproc("000"+processo.getId() + "/" + ano);
 
+
+		Evento evento = new Evento();
+		evento.setTipo_id(tipoEventoService.findById(4).get());
+		evento.setProc_id(processo);
+		evento.setDoc_id(processo.getDocumento());
+		evento.setDataevento(LocalDateTime.now());
+		evento.setDatainicio(LocalDateTime.now());
+		evento.setUser_id(session.getUsuario());
+		evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id()).get());
+		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + LocalDateTime.now() );
+		evento.setFlag(1);
+		evento.setPlaced(1);
+		eventoService.save(evento);
+		
 		model.addAttribute("processo", processo);
 		model.addAttribute("setores", setorService.findAll());
 		model.addAttribute("usuarios", usuarioService.findAll());
 		model.addAttribute("classificacoes", classifService.findAll());
+		model.addAttribute("visibilidades", sigiloService.findAll());
 		return "form/frmProcesso2";
 	}
 
@@ -117,19 +137,7 @@ public class ProcessoController {
 	public String saveObject(@ModelAttribute("processo") Processo processo, BindingResult result) {
 		try {
 			
-			processoService.save(processo);
-			Evento evento = new Evento();
-			evento.setTipo_id(tipoEventoService.findById(4).get());
-			evento.setProc_id(processo);
-			evento.setDoc_id(processo.getDocumento());
-			evento.setDataevento(LocalDateTime.now());
-			evento.setDatainicio(LocalDateTime.now());
-			evento.setUser_id(session.getUsuario());
-			evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id()).get());
-			evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + LocalDateTime.now() );
-			evento.setFlag(1);
-			evento.setPlaced(1);
-			eventoService.save(evento);
+			processoService.save(processo);		
 
 		} catch (Exception e) {
 			e.printStackTrace();
