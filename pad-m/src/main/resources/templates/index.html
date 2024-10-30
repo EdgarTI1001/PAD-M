@@ -121,6 +121,10 @@
                         </div>
                         <hr></hr>
                         <p></p>
+                        <ul class="list-group"  th:each="rs : ${vencidos}">
+                        	 <li class="list-group-item list-group-item-danger" th:text="${rs.tramitacao}"></li>
+						</ul>
+
                     </div>
                     
                     <div class="card-footer p-0">

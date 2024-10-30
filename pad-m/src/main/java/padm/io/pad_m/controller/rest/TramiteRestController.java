@@ -43,5 +43,12 @@ public class TramiteRestController {
 	}
 	
 	
+	@GetMapping("/processo/all/vencidosBySetor{idSetor}")
+	public ResponseEntity<List<Tramite>> findAllTramitesVencidos(@PathVariable("idSetor") Integer idSetor) {	
+		List<Tramite> tramites = tramiteService.findAllTramitesVencidos(idSetor);
+		return ResponseEntity.ok(tramites);
+	}
+	
+	
 
 }

@@ -107,7 +107,8 @@ public class TramiteController {
 			
 			tramite.setDatachegada(LocalDateTime.now());			
 			tramite.setDatasaida(null);
-			tramite.setDatacheck(LocalDateTime.now());		
+			tramite.setDatacheck(LocalDateTime.now());	
+			tramite.setDatavencimentoresposta(LocalDateTime.now().plusDays(tramite.getQtdDiasResposta())); 
 			
 			tramite.setUserId(session.getUsuario());
 			tramite.setUsercriadorId(session.getUsuario().getId());
@@ -116,6 +117,7 @@ public class TramiteController {
 			tramite.setAtendenteId(atendenteService.findById(1).get());
 			tramite.setModeradorId(moderadorService.findById(1).get());
 			tramite.setGestorId(gestorService.findById(1).get());
+			
 			
 			tramite.setTramitacao("Processo: " +tramite.getProcId().getNumanoproc() + " - " + tramite.getProcId().getAssunto() + " Recebido no Setor " + 
 					setor.get().getNome() + " Em " + LocalDateTime.now());

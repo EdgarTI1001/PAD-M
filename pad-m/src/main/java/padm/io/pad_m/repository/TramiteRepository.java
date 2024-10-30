@@ -19,4 +19,7 @@ public interface TramiteRepository extends JpaRepository<Tramite, Integer> {
 	@Query(value = "SELECT * FROM tbtramite WHERE proc_id = :idProcesso ORDER BY id DESC", nativeQuery = true)
 	List<Tramite> findAllByIdProcesso(@Param("idProcesso") Integer idProcesso);
 	
+	@Query("SELECT t FROM Tramite t WHERE t.datavencimentoresposta < CURRENT_DATE() AND t.setordestino.id =:idSetor AND t.datasaida IS NULL ")
+    List<Tramite> findAllTramitesVencidos(@Param("idSetor") Integer idSetor);
+	
 }

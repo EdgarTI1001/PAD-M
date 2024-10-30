@@ -44,6 +44,8 @@ public class Tramite {
 
 	private LocalDateTime datacheck;
 
+	private LocalDateTime datavencimentoresposta;
+
 	@ManyToOne
 	@JoinColumn(name = "proc_id")
 	private Processo procId;
@@ -113,13 +115,13 @@ public class Tramite {
 	}
 
 	public Tramite(Integer id, String tipo, Setor setororigem, Setor setorcriador, int localtramite, Setor setordestino,
-			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck, Processo procId,
-			Usuario userId, int usercriadorId, Integer qtdDiasResposta, int responsavelId, Atendente atendenteId,
-			Moderador moderadorId, Gestor gestorId, String tramitacao, int finalidadeId, String finalidade,
-			LocalDateTime datadesarquivamento, LocalDateTime dataarquivamento, String obs, Sigilo sigiloId,
-			String visibilidade, int recebimento, LocalDateTime datarecebimento, int espera,
-			LocalDateTime datainicioespera, LocalDateTime datafimespera, int seq, int flag, int placed,
-			long totalDias) {
+			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck,
+			LocalDateTime datavencimentoresposta, Processo procId, Usuario userId, int usercriadorId,
+			Integer qtdDiasResposta, int responsavelId, Atendente atendenteId, Moderador moderadorId, Gestor gestorId,
+			String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
+			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
+			LocalDateTime datarecebimento, int espera, LocalDateTime datainicioespera, LocalDateTime datafimespera,
+			int seq, int flag, int placed, long totalDias) {
 		this.id = id;
 		this.tipo = tipo;
 		this.setororigem = setororigem;
@@ -129,6 +131,7 @@ public class Tramite {
 		this.datachegada = datachegada;
 		this.datasaida = datasaida;
 		this.datacheck = datacheck;
+		this.datavencimentoresposta = datavencimentoresposta;
 		this.procId = procId;
 		this.userId = userId;
 		this.usercriadorId = usercriadorId;
@@ -430,6 +433,14 @@ public class Tramite {
 
 	public void setTotalDias(long totalDias) {
 		this.totalDias = totalDias;
+	}
+
+	public LocalDateTime getDatavencimentoresposta() {
+		return datavencimentoresposta;
+	}
+
+	public void setDatavencimentoresposta(LocalDateTime datavencimentoresposta) {
+		this.datavencimentoresposta = datavencimentoresposta;
 	}
 
 	@Override
