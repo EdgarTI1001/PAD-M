@@ -75,13 +75,13 @@
                         <input type="text" id="assunto" class="form-control form-control-sm" th:field="*{assunto}" placeholder="Assunto">
                     </div>  
                     
-                    <div class="col-6 mb-3">
+                    <div class="col-6 mb-3">                       
                         <label for="tipo" class="form-label">TIPO DE PROCESSO</label>
-                        <select id="tipo" class="form-select form-select-sm" th:field="*{tipo}"> 
-                            <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
-                            <option th:text="${'Setor'}" th:value="${'Setor'}"></option>
-                            <option th:text="${'Servidor'}" th:value="${'Servidor'}"></option>         
-                        </select>
+                         <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipo}">
+                            <option th:text="${'Selecione o Tipo do Processo'}" th:value="${'0'}"></option>
+                            <option th:each="tipo : ${tipos}" th:text="${tipo.descricao}" th:value="${tipo.id}"></option>
+                        </select>	
+                        
                     </div>   
                     
                     <div class="col-6 mb-3">                     

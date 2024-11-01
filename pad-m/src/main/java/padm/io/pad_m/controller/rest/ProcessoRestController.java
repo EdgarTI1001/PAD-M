@@ -34,17 +34,9 @@ public class ProcessoRestController {
 		return ResponseEntity.ok(processo);
 	}
 	
-	@GetMapping("/usuario/tipo/{tipoProcesso}")
-	public ResponseEntity<List<Processo>> findAllByUserCriador(@PathVariable("tipoProcesso") String tipoProcesso) {		
-		List<Processo> processos = new ArrayList<Processo>();
-		
-		if(tipoProcesso.equals("Servidor")){ 		
-			processos = processoService.findAllByUserCriador(session.getUsuario().getId());
-		}else{
-			processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id());
-		}
-		
-		return ResponseEntity.ok(processos);
+	@GetMapping("/usuario/tipo/{idTipo}")
+	public ResponseEntity<List<Processo>> findAllByUserCriador(@PathVariable("idTipo") Integer idTipo) {		
+		return ResponseEntity.ok(processoService.findAllByTipo(idTipo));
 	}
 	
 	

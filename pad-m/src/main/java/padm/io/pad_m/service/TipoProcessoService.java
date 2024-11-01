@@ -10,32 +10,29 @@ import org.springframework.stereotype.Service;
 
 import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.TipoProcesso;
+import padm.io.pad_m.repository.TipoProcessoRepository;
 
 @Service
 public class TipoProcessoService {
 	@Autowired
-	TipoProcessoService tipoProcessoService;
+	TipoProcessoRepository tipoProcessoRepo;
 
 	public List<TipoProcesso> findAll() {
-		return tipoProcessoService.findAll();
+		return tipoProcessoRepo.findAll();
 	}
 
 	public Optional<TipoProcesso> findById(Integer id) {
-		return tipoProcessoService.findById(id);
-	}
-
-	public List<TipoProcesso> findAllBySetor(Integer id) {
-		return tipoProcessoService.findAllBySetor(id);
+		return tipoProcessoRepo.findById(id);
 	}
 
 	@Transactional
 	public TipoProcesso save(TipoProcesso obj) {
-		return tipoProcessoService.save(obj);
+		return tipoProcessoRepo.save(obj);
 	}
 
 	@Transactional
 	public void delete(TipoProcesso obj) {
-		tipoProcessoService.delete(obj);
+		tipoProcessoRepo.delete(obj);
 	}
 
 }

@@ -141,6 +141,7 @@
                 <li class="breadcrumb-item"><a href="#"><i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item"><a href="#">Processos</a></li>
+                <li class="breadcrumb-item"><a href="#">Tramites</a></li>
             </ol>
         </nav>
         <div class="row">
@@ -156,12 +157,12 @@
             </div>
         </div>
         <div class="row">
-          <div class="col-md-6">         
-       		<select class="form-select form-select-sm mb-3" aria-label=".form-select-sm" id="tipoProcesso">
-			  <option selected>Selecione o Tipo do Processo</option>
-			  <option value="Servidor">Servidor</option>
-			  <option value="Setor">Setor</option>			
-			</select>
+          <div class="col-md-6"> 		
+			<select  class="form-select form-select-sm" id="tipoProcesso">
+                   <option th:text="${'Selecione o Tipo do Processo'}" th:value="${'0'}"></option>
+                   <option th:each="tipo : ${tipos}" th:text="${tipo.descricao}" th:value="${tipo.id}"></option>
+             </select>
+                        
 			</div>
 			
 	       <div class="col-md-6">         
@@ -268,7 +269,7 @@
  			   $( document ).ready(function() {
 
                });
-  
+  				/*
                $("[id*='tramite']").click(function(event){
          	  	    event.preventDefault();
          	      	var data = $(event.delegateTarget).data();
@@ -296,7 +297,7 @@
                   		});
  
          	  	  }); 
-               
+               */
                
                $("#tipoProcesso").change(function(){
             	  var tipoProcesso = $("#tipoProcesso").val();    
@@ -314,7 +315,7 @@
                 
                
                
-		        function getProcessos(tipo){
+		        function getProcessos(tipo){		        	
 		        	  $("#processos option").remove();
 		        	 $.ajax({
 		        		  url: URL + "/processos/usuario/tipo/"+tipo,

@@ -22,7 +22,9 @@ public class Processo {
 
 	private String numproc;
 
-	private String tipo;
+	@ManyToOne
+	@JoinColumn(name = "tipo")
+	private TipoProcesso tipo;
 
 	private Integer ano;
 
@@ -104,7 +106,7 @@ public class Processo {
 	public Processo() {
 	}
 
-	public Processo(Integer id, String numproc, String tipo, Integer ano, String numanoproc, String assunto,
+	public Processo(Integer id, String numproc, TipoProcesso tipo, Integer ano, String numanoproc, String assunto,
 			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
 			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
 			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
@@ -163,11 +165,11 @@ public class Processo {
 		this.numproc = numproc;
 	}
 
-	public String getTipo() {
+	public TipoProcesso getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoProcesso tipo) {
 		this.tipo = tipo;
 	}
 

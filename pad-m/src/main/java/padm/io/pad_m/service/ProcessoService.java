@@ -32,6 +32,10 @@ public class ProcessoService {
 		return processoRepository.findAllByUserCriador(id);
 	}
 
+	public List<Processo> findAllByTipo(Integer id) {
+		return processoRepository.findAllByTipo(id);
+	}
+
 	@Transactional
 	public Processo save(Processo obj) {
 		return processoRepository.save(obj);

@@ -31,6 +31,7 @@ import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
 import padm.io.pad_m.service.TipoEventoService;
+import padm.io.pad_m.service.TipoProcessoService;
 import padm.io.pad_m.service.UsuarioService;
 
 @Controller
@@ -47,6 +48,9 @@ public class ProcessoController {
 	
 	@Autowired
 	private TipoEventoService tipoEventoService;
+	
+	@Autowired
+	private TipoProcessoService tipoProcessoService;
 	
 	@Autowired
 	private EventoService eventoService;
@@ -82,6 +86,7 @@ public class ProcessoController {
 
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("processo") Processo processo) {
+		model.addAttribute("tipos", tipoProcessoService.findAll());
 		model.addAttribute("processo", processo);
 		return "form/frmProcesso";
 	}
@@ -94,6 +99,7 @@ public class ProcessoController {
 		processo.setUsucriadorId(usuario.get().getId());
 		processo.setSetorcriadorId(setor.get());
 		processo.setDatacriacao(LocalDateTime.now());
+		processo.setFlaganexoprincId(0);
 		int ano = Year.now().getValue();
 		processo.setAno(ano);
 		processoService.save(processo);

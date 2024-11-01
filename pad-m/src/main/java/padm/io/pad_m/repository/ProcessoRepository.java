@@ -16,6 +16,9 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 
 	@Query("SELECT p from Processo p WHERE p.usucriadorId =:idUser AND p.tipo = 'Servidor' ORDER BY p.id DESC")
 	List<Processo> findAllByUserCriador(@Param("idUser") Integer idUser);
+	
+	@Query("SELECT p from Processo p WHERE p.tipo.id =:idTipo ORDER BY p.id DESC")
+	List<Processo> findAllByTipo(@Param("idTipo") Integer idTipo);
 
 
 }

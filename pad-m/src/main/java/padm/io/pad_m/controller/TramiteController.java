@@ -28,6 +28,7 @@ import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
 import padm.io.pad_m.service.TipoEventoService;
+import padm.io.pad_m.service.TipoProcessoService;
 import padm.io.pad_m.service.TramiteService;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -71,11 +72,15 @@ public class TramiteController {
 	private UsuarioService usuarioService;
 	
 	@Autowired
+	private TipoProcessoService tipoProcessoService;
+	
+	@Autowired
 	AuthenticationFacade session;
 	
 	@GetMapping
 	public ModelAndView findAll() {		
-		ModelAndView mv = new ModelAndView("consulta/tramites");	
+		ModelAndView mv = new ModelAndView("consulta/tramites");
+		mv.addObject("tipos", tipoProcessoService.findAll());
 		return mv;
 	}
 
@@ -120,7 +125,7 @@ public class TramiteController {
 			
 			
 			tramite.setTramitacao("Processo: " +tramite.getProcId().getNumanoproc() + " - " + tramite.getProcId().getAssunto() + " Recebido no Setor " + 
-					setor.get().getNome() + " Em " + LocalDateTime.now());
+					setor.get().getNome() + " Em " + parser.format(LocalDateTime.now()) );
 			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
 			
 			
