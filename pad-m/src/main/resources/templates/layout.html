@@ -43,6 +43,21 @@
         b {
             color: #00537d;
         }
+        /* Estilos para a sidebar expandida */
+        .l-navbar {
+            width: 70px;
+            transition: width 0.3s ease;
+        }
+        .l-navbar.expanded {
+            width: 250px;
+        }
+        .nav_name {
+            display: none;
+        }
+        .l-navbar.expanded .nav_name {
+            display: inline; /* Exibe os nomes quando a sidebar está expandida */
+            color: white;
+        }
     </style>
 </head>
 <body id="body-pd">
@@ -54,8 +69,7 @@
         <div sec:authorize="isAuthenticated()"
              th:with="userName=${#authentication.getPrincipal().getUsername()}, 
                       image=${#authentication.getPrincipal().getUsuario().getImage()}, 
-                      nome=${#authentication.getPrincipal().getUsuario().getFirstName()}"
-             style="display: flex; align-items: center;">
+                      nome=${#authentication.getPrincipal().getUsuario().getFirstName()}">
             <div class="header_img">
                 <img id="imagem" 
                      sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  
@@ -66,6 +80,8 @@
             <small th:text="${nome}" style="margin-left: 10px;"></small>  
         </div>
     </header>
+
+    <!-- Sidebar -->
     <div class="l-navbar" id="nav-bar" style="background-color: #00537d;">
         <nav class="nav">
             <div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
@@ -95,10 +111,11 @@
                         <i class="fa fa-cog" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Opções</span>
                     </a>
-                    <a href="#" class="nav_link">
-                        <i class="fa fa-address-book" style="font-size:23px;color:white" aria-hidden="true"></i>
-                        <span class="nav_name">Cadastros</span>
-                    </a>
+	                 <a th:href="@{/usuarios}"class="nav_link" title="usuarios">	                 
+					    <i class="fa fa-user-plus" style="font-size:23px;color:white" aria-hidden="true"></i>
+					    <span class="nav_name">Cadastro de Usuários</span>
+					</a>
+
                     <a href="#" class="nav_link">
                         <i class="fa fa-question-circle-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Ajuda</span>
@@ -117,6 +134,8 @@
             </div>
         </nav>
     </div>
+
+    <!-- Main Content -->
     <main class="container-full">
         <div class="p-0 rounded">
             <section layout:fragment="content">
@@ -125,8 +144,10 @@
         </div>
     </main>
     
+    <!-- Loader -->
     <div id="loader" class="loader" style="display:none;"></div>
 
+    <!-- Scripts -->
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
@@ -137,22 +158,18 @@
     <script th:src="@{/js/locales/bootstrap-datepicker.pt-BR.js}"></script>
     <script th:src="@{/js/utils.js}"></script>
 
-    <div layout:fragment="jscript"></div>
+    <!-- Custom Script for Sidebar Toggle -->
     <script type="text/javascript">
-        var URL = '[[@{/}]]api';
-        $.getJSON(URL + "/usuarios/load", function(json) {     
-            //$('#fotoid').attr('src',`data:image/png;base64,${json.foto}`);
-        });
-
-        // Script para alternar ícones
         const toggle = document.getElementById('header-toggle');
         const icon = document.getElementById('icon');
+        const navBar = document.getElementById('nav-bar');
 
         toggle.addEventListener('click', () => {
+            navBar.classList.toggle('expanded');
             if (icon.classList.contains('fa-bars')) {
-                icon.className = 'fa fa-ellipsis-v'; 
+                icon.className = 'fa fa-ellipsis-v';
             } else {
-                icon.className = 'fa fa-bars'; 
+                icon.className = 'fa fa-bars';
             }
         });
     </script>
