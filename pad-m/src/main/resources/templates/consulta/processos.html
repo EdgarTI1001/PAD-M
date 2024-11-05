@@ -156,11 +156,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Processos do Usuario</span></div>
                     <div class="card-body">
-                       
+                        <button type="button" class="btn btn-secondary" id="teste123">Fechar</button>    
                         <table class="table">
                             <thead>
                                 <tr>
@@ -179,14 +179,14 @@
                                     <td th:text="${rs.numanoproc}"></td>
                                     <td>
                                     
-                           			 <a  href="#"  th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}"  th:id="'tramite' + ${rs.id}" title="excluir">
+                           			 <a  href="#"  th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}"  th:id="'tramite' + ${rs.id}" title="Ver Eventos do Processso">
 						   				 <span th:text="${rs.assunto}"></span>
 						  			</a> 
                                     
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
-                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" id="tramitarProcesso" th:data-record-id="${rs.id}" title="Tramitar Processo">
+                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button"   th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
                                     </td>
@@ -196,33 +196,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">                    
-                    <div class="card-header" style="background-color: #00537d;"> <span class="badge text-bg-secondary"><i class="bi bi-people"></i> Processos do Setor</span></div>
-                     <div class="card-body">                      
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Numero</th>
-                                    <th scope="col">Ano</th>
-                                    <th scope="col">Numero/Ano</th>
-                                    <th scope="col">Assunto</th>
-                                    <th scope="col">Classificação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="rs : ${processosSetor}" th:id="'tr' + ${rs.id}">
-                                    <td th:text="${rs.numproc}"></td>
-                                    <td th:text="${rs.ano}"></td>
-                                    <td th:text="${rs.numanoproc}"></td>
-                                    <td th:text="${rs.assunto}"></td>
-                                    <td th:text="${rs.classificacao}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+
+            
         </div>
         
 
@@ -267,13 +242,16 @@
     </section>
     <div layout:fragment="jscript">
         <script>
-            var URL = '[[@{/}]]api';
-            
-            $("#tramitarProcesso").click(function(event){
+            var URL = '[[@{/}]]api';         
+            alert("Clicou")
+            $("[id*='tramitarProcesso']").click(function(event){
             	 $("#loader").show(); 
             });
+            
                $("[id*='tramite']").click(function(event){
-         	  	  event.preventDefault();
+            	  
+            	   console.log("ASquio")
+         	  	    event.preventDefault();
          	      	var data = $(event.delegateTarget).data();
          	    	var id = data.recordId;
          	  	    var numano =  data.recordNumano;
