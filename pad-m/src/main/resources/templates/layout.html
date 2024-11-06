@@ -38,12 +38,12 @@
         #icon {
             font-size: 23px; 
             color: #00537d;
-            margin-right: 8px; /* Espaço entre o ícone e o texto */
+            margin-right: 8px; 
         }
         b {
             color: #00537d;
         }
-        /* Estilos para a sidebar expandida */
+      
         .l-navbar {
             width: 70px;
             transition: width 0.3s ease;
@@ -55,7 +55,7 @@
             display: none;
         }
         .l-navbar.expanded .nav_name {
-            display: inline; /* Exibe os nomes quando a sidebar está expandida */
+            display: inline; 
             color: white;
         }
     </style>
@@ -116,7 +116,7 @@
 					    <span class="nav_name">Cadastro de Usuários</span>
 					</a>
 
-                    <a href="#" class="nav_link">
+                    <a  th:href="helps" class="nav_link">
                         <i class="fa fa-question-circle-o" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Ajuda</span>
                     </a>
