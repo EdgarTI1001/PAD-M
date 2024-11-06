@@ -99,7 +99,7 @@
                        <label for="interessado" class="form-label">Setor</label>
                        <select id="setor" class="form-select form-select-sm"> 
                            <option th:text="${'Selecione o Setor'}" th:value="${'0'}"></option>	
-                           <option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}"></option>		       	
+                           <option th:each="setor : ${setorUsuario}" th:text="${setor.nome}" th:value="${setor.id}"></option>		       	
                        </select>          
                     </div>  
                     

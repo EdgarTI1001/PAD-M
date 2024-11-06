@@ -62,7 +62,7 @@
                                     <tr th:each="rs : ${usuarios}" th:id="'tr' + ${rs.id}">
                                         <td th:text="${rs.nome}"></td>
                                         <td th:text="${rs.nickname}"></td>
-                                        <td th:text="${rs.lotacao_id}"></td>
+                                        <td th:text="${rs.lotacao_id.nome}"></td>
                                         <td>
                                             <div th:if="${rs.ativo == 'S'}">
                                                 <a href="#" class="btn btn-sm" role="button" onclick="ativar(this)" th:data-record-id="${rs.id}" th:data-record-ativo="N">

@@ -69,7 +69,8 @@
         <div sec:authorize="isAuthenticated()"
              th:with="userName=${#authentication.getPrincipal().getUsername()}, 
                       image=${#authentication.getPrincipal().getUsuario().getImage()}, 
-                      nome=${#authentication.getPrincipal().getUsuario().getFirstName()}">
+                      nome=${#authentication.getPrincipal().getUsuario().getFirstName()},
+                      sigla=${#authentication.getPrincipal().getUsuario().getLotacao_id().getSigla()}">
             <div class="header_img">
                 <img id="imagem" 
                      sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  
@@ -77,7 +78,7 @@
                      alt="User Image" 
                      style="width: 40px; height: 40px;"/>
             </div>
-            <small th:text="${nome}" style="margin-left: 10px;"></small>  
+           <b> <small th:text="${nome}" style="margin-left: 10px;"></small>  -   <small th:text="${sigla}" style="margin-left: 10px;"></small>  </b>
         </div>
     </header>
 

@@ -106,9 +106,9 @@ public class TramiteController {
 			
 			tramite.setTipo("TIPO");
 			
-			tramite.setSetororigem(setorService.findById(session.getUsuario().getLotacao_id()).get() ); 
+			tramite.setSetororigem(setorService.findById(session.getUsuario().getLotacao_id().getId()).get() ); 
 			tramite.setSetorcriador(setorService.findById( tramite.getProcId().getSetorcriadorId().getId()).get());			
-			tramite.setLocaltramite(session.getUsuario().getLotacao_id());
+			tramite.setLocaltramite(session.getUsuario().getLotacao_id().getId());
 			
 			tramite.setDatachegada(LocalDateTime.now());			
 			tramite.setDatasaida(null);

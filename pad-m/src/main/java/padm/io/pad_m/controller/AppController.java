@@ -46,7 +46,7 @@ public class AppController {
 		upload += "\\";
 		String path = upload.substring(0, 11);		
 		model.addAttribute("upload", path);
-		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id()));
+		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id().getId()));
 		model.addAttribute("activePage", "mnuMeuRegistro");
 		return mv;
 	}

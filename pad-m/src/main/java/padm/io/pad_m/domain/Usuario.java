@@ -46,7 +46,9 @@ public class Usuario {
 
 	private int perfilId;
 
-	private int lotacao_id;
+	@ManyToOne
+	@JoinColumn(name = "lotacao_id")
+	private Setor lotacao_id;
 
 	private String ativo;
 
@@ -74,7 +76,7 @@ public class Usuario {
 	}
 
 	public Usuario(Integer id, String nome, String cpf, String nickname, Servidor servidorId, String senha,
-			int perfilId, int lotacao_id, String ativo, String certificado, LocalDateTime dataexpiracao,
+			int perfilId, Setor lotacao_id, String ativo, String certificado, LocalDateTime dataexpiracao,
 			LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image, int flag) {
 		super();
 		this.id = id;
@@ -216,11 +218,11 @@ public class Usuario {
 		this.cpf = cpf;
 	}
 
-	public int getLotacao_id() {
+	public Setor getLotacao_id() {
 		return lotacao_id;
 	}
 
-	public void setLotacao_id(int lotacao_id) {
+	public void setLotacao_id(Setor lotacao_id) {
 		this.lotacao_id = lotacao_id;
 	}
 

@@ -94,7 +94,7 @@ public class ProcessoController {
 	@PostMapping("/passo2")
 	public String frmCadastrarProcessoPasso2(Model model, @ModelAttribute("processo") Processo processo) {
 		Optional<Usuario> usuario = usuarioService.findById(session.getUsuario().getId());
-		Optional<Setor> setor = setorService.findById(usuario.get().getLotacao_id());
+		Optional<Setor> setor = setorService.findById(usuario.get().getLotacao_id().getId());
 
 		processo.setUsucriadorId(usuario.get().getId());
 		processo.setSetorcriadorId(setor.get());
@@ -115,7 +115,7 @@ public class ProcessoController {
 		evento.setDataevento(LocalDateTime.now());
 		evento.setDatainicio(LocalDateTime.now());
 		evento.setUser_id(session.getUsuario());
-		evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id()).get());
+		evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id().getId()).get());
 		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + LocalDateTime.now() );
 		evento.setFlag(1);
 		evento.setPlaced(1);
