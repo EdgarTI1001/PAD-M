@@ -73,13 +73,13 @@ public class ProcessoController {
 	@GetMapping
 	public ModelAndView findAll() {
 		ModelAndView mv = new ModelAndView("consulta/processos");
-		Optional<Usuario> usuario = usuarioService.findById(session.getUsuario().getId());
-		List<Processo> processosSetor =  processoService.findAllBySetor(session.getUsuario().getLotacao_id());
-		List<Processo> processosUser =  processoService.findAllByUserCriador(session.getUsuario().getId());
-		mv.addObject("usuario", usuario.get());
-		mv.addObject("processosSetor",processosSetor);
-		mv.addObject("processosUser",processosUser);
-		mv.addObject("setor", setorService.findById(usuario.get().getLotacao_id()));
+		
+		
+		System.out.println(session.getUsuario().getLotacao_id());
+		List<Processo> processosUser =  processoService.findAllBySetor(session.getUsuario().getId());
+		System.out.println(processosUser.size());
+			
+		mv.addObject("processos", processoService.findAllBySetor(session.getUsuario().getId()));		
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}

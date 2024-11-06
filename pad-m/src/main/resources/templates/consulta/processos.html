@@ -173,7 +173,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="rs : ${processosUser}" th:id="'tr' + ${rs.id}">
+                                <tr th:each="rs : ${processos}" th:id="'tr' + ${rs.id}"> 
                                     <td th:text="${rs.numproc}"></td>
                                     <td th:text="${rs.ano}"></td>
                                     <td th:text="${rs.numanoproc}"></td>
@@ -241,16 +241,14 @@
         
     </section>
     <div layout:fragment="jscript">
-        <script>
+      <script type="text/javascript">
             var URL = '[[@{/}]]api';         
-            alert("Clicou")
+           
             $("[id*='tramitarProcesso']").click(function(event){
             	 $("#loader").show(); 
             });
             
-               $("[id*='tramite']").click(function(event){
-            	  
-            	   console.log("ASquio")
+               $("[id*='tramite']").click(function(event){           	  
          	  	    event.preventDefault();
          	      	var data = $(event.delegateTarget).data();
          	    	var id = data.recordId;

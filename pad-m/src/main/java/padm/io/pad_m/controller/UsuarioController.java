@@ -89,8 +89,8 @@ public class UsuarioController {
 		try {			
 			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
-			usuario.setUltimoacesso(LocalDateTime.now());			
-			System.out.println(usuario.getServidorId().getId());
+			usuario.setUltimoacesso(LocalDateTime.now());
+			
 			Optional<Servidor> s = servidorService.findById(usuario.getServidorId().getId());
 		
 			if(!file.isEmpty()) { 

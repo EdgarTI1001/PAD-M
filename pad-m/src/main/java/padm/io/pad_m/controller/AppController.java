@@ -44,8 +44,7 @@ public class AppController {
 	public ModelAndView index(Model model) {
 		ModelAndView mv = new ModelAndView("index");
 		upload += "\\";
-		String path = upload.substring(0, 11);
-		System.out.println("=================" + session.getUsuario().getLotacao_id());
+		String path = upload.substring(0, 11);		
 		model.addAttribute("upload", path);
 		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id()));
 		model.addAttribute("activePage", "mnuMeuRegistro");
