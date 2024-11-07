@@ -72,14 +72,8 @@ public class ProcessoController {
 
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/processos");
-		
-		
-		System.out.println(session.getUsuario().getLotacao_id());
-		List<Processo> processosUser =  processoService.findAllBySetor(session.getUsuario().getId());
-		System.out.println(processosUser.size());
-			
-		mv.addObject("processos", processoService.findAllBySetor(session.getUsuario().getId()));		
+		ModelAndView mv = new ModelAndView("consulta/processos");			
+		mv.addObject("processos", processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId()));		
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}
@@ -116,7 +110,8 @@ public class ProcessoController {
 		evento.setDatainicio(LocalDateTime.now());
 		evento.setUser_id(session.getUsuario());
 		evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id().getId()).get());
-		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + LocalDateTime.now() );
+		String dataFormatada = LocalDateTime.now().format(parser);
+		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + dataFormatada );
 		evento.setFlag(1);
 		evento.setPlaced(1);
 		eventoService.save(evento);
