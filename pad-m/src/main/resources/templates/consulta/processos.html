@@ -155,6 +155,18 @@
                 </h5>
             </div>
         </div>
+       
+          <div class="row mb-1">
+            <div class="col-md-6">
+                <form action=""  method="get" class="row g-3" id="frm">
+                 <select id="tipagem"  class="form-select form-select-sm" name="tipagem">           			
+           			 <option th:text="${'Tramitados no Setor'}" th:value="${'1'}"></option>  
+           			 <option th:text="${'Não Tramitados no Setor'}" th:value="${'2'}"></option>                      
+       			 </select>	
+       			 </form>
+            </div>      
+        </div>       
+       
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -272,13 +284,16 @@
                   			
                   			$("#eventos").append(ul)
                  	  	    $('#staticBackdrop').modal('show');
-                  			 $("#loader").hide(); 
+                  			$("#loader").hide(); 
                   		});
  
-         	  	  }); 
-               
+         	  	  });               
 
-            
+	             $("#tipagem").change(function(){
+	            	 $("#loader").show(); 
+	            	 $("#frm").submit();
+	          	 });
+ 
         </script>
     </div>
 </body>

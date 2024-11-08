@@ -10,8 +10,11 @@ import padm.io.pad_m.domain.Processo;
 
 public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 
-	@Query("SELECT p from Processo p WHERE p.id IN ( SELECT t.procId.id FROM Tramite t WHERE t.datasaida IS NULL AND t.setordestino.id =:idSetor ) OR p.setorcriadorId.id =:idSetor ORDER BY p.id DESC ")
+	@Query("SELECT p from Processo p WHERE p.id NOT IN ( SELECT t.procId.id FROM Tramite t WHERE t.datasaida IS NULL AND t.setordestino.id =:idSetor ) AND p.setorcriadorId.id =:idSetor ORDER BY p.id DESC ")
 	List<Processo> findAllBySetor(@Param("idSetor") Integer idSetor);	
+	
+	@Query("SELECT p from Processo p WHERE p.id IN ( SELECT t.procId.id FROM Tramite t WHERE t.datasaida IS NULL AND t.setordestino.id =:idSetor ) AND p.setorcriadorId.id =:idSetor ORDER BY p.id DESC ")
+	List<Processo> findAllTramitadosBySetor(@Param("idSetor") Integer idSetor);	
 
 	@Query("SELECT p from Processo p WHERE p.usucriadorId =:idUser ORDER BY p.id DESC")
 	List<Processo> findAllByUserCriador(@Param("idUser") Integer idUser);
