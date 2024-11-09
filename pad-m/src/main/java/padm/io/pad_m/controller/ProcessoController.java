@@ -3,6 +3,7 @@ package padm.io.pad_m.controller;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,9 +72,20 @@ public class ProcessoController {
 	private SigiloService sigiloService;
 
 	@GetMapping
-	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/processos");			
-		mv.addObject("processos", processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId()));		
+	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
+		ModelAndView mv = new ModelAndView("consulta/processos");		
+		List<Processo> processos = new ArrayList<Processo>();
+		if(tipagem.isPresent()){
+			
+			System.out.println(tipagem.get());
+			System.out.println("Setor ==== " + session.getUsuario().getLotacao_id().getId());
+			if(tipagem.get() == 1){
+				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());				
+			}else if(tipagem.get() == 2){ 
+				processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());				
+			}
+		}
+		mv.addObject("processos", processos);		
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}

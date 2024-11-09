@@ -177,6 +177,18 @@
                 <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processos</h5>
             </div>
         </div>
+       
+          <div class="row mb-1">
+            <div class="col-md-6">
+                <form action=""  method="get" class="row g-3" id="frm">
+                 <select id="tipagem"  class="form-select form-select-sm" name="tipagem">           			
+           			 <option th:text="${'Tramitados no Setor'}" th:value="${'1'}"></option>  
+           			 <option th:text="${'Não Tramitados no Setor'}" th:value="${'2'}"></option>                      
+       			 </select>	
+       			 </form>
+            </div>      
+        </div>       
+       
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center">
                 <div class="card">
@@ -261,31 +273,6 @@
                 $("#loader").show(); 
             });
 
-            $("[id*='tramite']").click(function(event){           	   
-                event.preventDefault();
-                var data = $(event.delegateTarget).data();
-                var id = data.recordId;
-                var numano =  data.recordNumano;
-                var ul = "";
-                $("#nprocesso").text(numano);  
-                $("#loader").show();  
-                $.ajax({
-                    url: URL + "/eventos/processo/"+id,
-                    method: "GET",
-                }).done(function(data) {  
-                    ul = '<ul class="timeline">';
-                    $.each( data, function( index, rs ){                  				
-                        ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+ 
-                               '<h5>'+rs.tipo_id.evento+'</h5>'+ 
-                               '<p style="font-size:11px;">'+rs.evento+'</p>'+ 
-                               '</li>'; 
-                    });                     			
-                    ul += '</ul>';
-                    $("#eventos").append(ul)
-                    $('#staticBackdrop').modal('show');
-                    $("#loader").hide(); 
-                });
-            }); 
         </script>
     </div>
 </body>
