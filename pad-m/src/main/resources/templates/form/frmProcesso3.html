@@ -1,61 +1,151 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Processo</title>
+
+    <!-- Bootstrap e ícones -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
     <style>
         body {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 70vh;
+            margin: 0;
+            padding: 0;
             background-color: #f8f9fa;
+            min-height: 100vh;
         }
+
         .card {
-            width: 150%;
+            width: 100%;
             max-width: 1500px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
-            overflow: hidden; 
+            overflow: hidden;
+            margin-top: 20px;
+            margin-left: auto;
+            margin-right: auto;
         }
+
         .card-header {
             background-color: #00537d;
             color: white;
             font-weight: bold;
             text-align: center;
         }
+
         .form-label {
             font-weight: 600;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #004085;
         }
+
+        .spinner {
+            margin-left: 10px;
+            display: none;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 15px;
+        }
+
+        .stepper-wrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stepper-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stepper-item .step-counter {
+            display: block;
+            background-color: #00537d;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin: 0 auto;
+        }
+
+        .stepper-item.completed .step-counter {
+            background-color: #28a745;
+        }
+
+        .stepper-item .step-name {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* Modal */
+        .breadcrumb-item a {
+            color: black;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
+
 <body>
-    <section layout:fragment="content">   
+    <section layout:fragment="content">
+        <br>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a th:href="@{/processos}">
+                        <i class="bi bi-house-fill" style="color: black;"></i>
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="#" data-toggle="modal" data-target="#helpModal">
+                        <i class="bi bi-question-circle" style="color: black;"></i>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+
         <div class="card">
             <div class="card-header">Cadastro de Processo</div>
             <div class="card-body">
-                <form th:action="@{/processos/save}" th:object="${processo}" method="post" class="row g-3" id="frm">                   
-                    <input type="hidden" th:field="${processo.assunto}">   
-                    <input type="hidden" th:field="${processo.numproc}"> 
-                    <input type="hidden" th:field="${processo.numanoproc}">   
-                    <input type="hidden" th:field="${processo.tipo}">   
-                    <input type="hidden" th:field="${processo.setorcriadorId}">   
-                    <input type="hidden" th:field="${processo.usucriadorId}">   
-                    <input type="hidden" th:field="${processo.ano}">   
+                <form th:action="@{/processos/save}" th:object="${processo}" method="post" class="row g-3" id="frm">
+                    <!-- Campos ocultos -->
+                    <input type="hidden" th:field="${processo.assunto}">
+                    <input type="hidden" th:field="${processo.numproc}">
+                    <input type="hidden" th:field="${processo.numanoproc}">
+                    <input type="hidden" th:field="${processo.tipo}">
+                    <input type="hidden" th:field="${processo.setorcriadorId}">
+                    <input type="hidden" th:field="${processo.usucriadorId}">
+                    <input type="hidden" th:field="${processo.ano}">
                     <input type="hidden" th:field="${processo.classificacao}">
-                    <input type="hidden" th:field="${processo.classId}">    
-                    <input type="hidden" id="processo" th:field="${processo.id}">        
-                    <input type="hidden" id="classif" th:field="${processo.classificacao}">    
+                    <input type="hidden" th:field="${processo.classId}">
+                    <input type="hidden" id="processo" th:field="${processo.id}">
+                    <input type="hidden" id="classif" th:field="${processo.classificacao}">
 
-                    <div class="mb-4 p-3">    
+                    <!-- Etapas do Processo -->
+                    <div class="mb-4 p-3">
                         <div class="stepper-wrapper">
                             <div class="stepper-item completed">
                                 <div class="step-counter">1</div>
@@ -68,44 +158,40 @@
                             <div class="stepper-item completed">
                                 <div class="step-counter">3</div>
                                 <div class="step-name">Finalizar</div>
-                            </div>                    
+                            </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Formulário -->
                     <div class="col-6 mb-3">
                         <label for="documento" class="form-label">Anexar Documento</label>
-                        <select id="documento" class="form-select form-select-sm"> 
+                        <select id="documento" class="form-select form-select-sm">
                             <option th:text="${'Selecione o Documento'}" th:value="${'0'}"></option>
-                            <option th:each="doc : ${documentos}" th:text="${doc.nomdoc}" th:value="${doc.id}"></option>      
+                            <option th:each="doc : ${documentos}" th:text="${doc.nomdoc}" th:value="${doc.id}"></option>
                         </select>
-                    </div>  
-                    
+                    </div>
+
                     <div class="col-6 mb-3">
                         <label for="observacao" class="form-label">Observação do Processo</label>
                         <input type="text" id="obs" class="form-control form-control-sm" th:field="*{obs}" placeholder="Observação">
-                    </div>  
-
-                    <div class="col-6 mb-3">                     
-                        <div class="card" style="width: 90rem;">                    
-                        </div>
                     </div>
 
-                    <div class="col-md-6 mb-3"></div>                     
-
-                    <div class="col-12 text-right">
+                    <!-- Botão de Envio -->
+                    <div class="col-12 form-footer">
                         <button type="button" class="btn btn-primary btn-sm rounded-pill buttonload" id="salvar">
-                            Salvar &nbsp; &nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i>
+                            Salvar 
                         </button>
                     </div>
                 </form>
-                
+
+                <!-- Documentos anexados -->
                 <br>
                 <label>Documentos</label>
                 <table class="table">
-                    <thead>                    
+                    <thead>
                         <tr>
-                            <th>Nome</th>     
-                            <th></th>     
+                            <th>Nome</th>
+                            <th>Ações</th>
                         </tr>
                     </thead>
                     <tbody id="tbdocumentos"></tbody>
@@ -114,93 +200,64 @@
         </div>
     </section>
 
-    <div layout:fragment="jscript">        
-        <script>
-            $("#loader").show();
-            $(".fa").hide();
-            var URL = '[[@{/}]]api';       
-            $(document).ready(function() {
-                $("#loader").hide();
-            });    
-            
-            $('#salvar').on('click', function() {
-                $(this).prop("disabled", true);
-                $(".fa").show();
-                $("#frm").submit();
-            });
-
-            $("#documento").change(function(){ 
-                $("#loader").show();
-                addDocumeento();
-            });
-
-            function getDocumentos(processo) { 
-                var table = "";
-                $('#tbdocumentos').empty();
-                $.getJSON(URL + "/processosDocumentos/getAllByProcessos/" + processo, function(data) {                      
-                    $.each(data, function(index, value) {
-                        table += '<tr id="tr' + value.id + '">';
-                        table += '<th>';
-                        table += value.documento.nomdoc;
-                        table += '</th>';                 
-                        table += '<th> <a class="btn btn-sm btn-danger" href="#" role="button" data-record-id="' + value.id + '" data-record-nome="' + value.nomdoc + '" title="excluir" onclick="excluirDocumento(this)"> <i class="fa fa-trash-o" aria-hidden="true"></i> </a> </th>';
-                        table += '</tr>';
-                    });  
-                    
-                    $('#tbdocumentos').append(table);
-                    $("#loader").hide();
-                });     
-            }
-            
-            function addDocumeento() {         
-                var nomeDocumento = $('#documento').find(":selected").text();
-                var processo = $("#processo").val();  
-                var documento = $("#documento").val();  
-                $.post(URL + "/processosDocumentos/save", {
-                    idProcesso: processo,
-                    idDocumento: documento,
-                    idUsuario: 0
-                }, function(data, status) {
-                    if (status == "success") { 
-                        getDocumentos(processo);
-                        $("#loader").hide();
-                    } else {
-                        swal("Erro", "Erro ao adicionar", "error");    
-                    }
-                });
-            }
-
-            excluirDocumento = function(handler) {
-                event.stopPropagation();
-                var idProcDoc = handler.getAttribute("data-record-id"); 
-                var nome = handler.getAttribute("data-record-nome"); 
-
-                swal({
-                    title: 'Excluir?',
-                    text: "Deseja Deletar novo Interessado?",
-                    icon: 'warning',
-                    buttons: [true, "Sim!"]
-                }).then((result) => {
-                    if (result) {
-                        $("#loader").show();
-                        $.ajax({
-                            url: URL + "/processosDocumentos/delete/" + idProcDoc,
-                            type: 'DELETE',
-                            success: function(result) {
-                                if (result == 1) {
-                                    swal("Sucesso", "Procedimento Realizado", "success"); 
-                                    $("#tr" + idProcDoc).fadeOut();
-                                    $("#loader").hide();
-                                } else {
-                                    swal("Erro", "Erro ao Deletar", "error");    
-                                }
-                                $("#loader").hide();
-                            }
-                        });
-                    }
-                });
-            }
-        </script>
+    <!-- Modal de Ajuda -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">teste de texto</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        
+        $("#loader").show();
+        $(".fa").hide();
+
+        $(document).ready(function() {
+            $("#loader").hide();
+        });
+
+        
+        $('#salvar').on('click', function() {
+            $(this).prop("disabled", true);
+            $(".fa").show();
+            $("#frm").submit();
+        });
+
+        
+        $("#documento").change(function() {
+            $("#loader").show();
+            addDocumeento();
+        });
+
+  
+        function getDocumentos(processo) {
+            var table = "";
+            $('#tbdocumentos').empty();
+            $.getJSON(URL + "/processosDocumentos/getAllByProcessos/" + processo, function(data) {
+                $.each(data, function(index, value) {
+                    table += '<tr id="tr' + value.id + '">';
+                    table += '<td>' + value.documento + '</td>';
+                    table += '<td><a href="#" onclick="delDoc(' + value.id + ')">Excluir</a></td>';
+                    table += '</tr>';
+                });
+                $("#tbdocumentos").html(table);
+            });
+            $("#loader").hide();
+        }
+    </script>
 </body>
 </html>
