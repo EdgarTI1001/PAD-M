@@ -13,124 +13,153 @@
             margin-bottom: 20px;
         }
         .card:hover {
-            transform: scale(1.05);
+            transform: scale(1.01);
         }
-        
-        body{margin-top:20px;}
-.timeline {
-    border-left: 3px solid #727cf5;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
-    background: rgba(114, 124, 245, 0.09);
-    margin: 0 auto;
-    letter-spacing: 0.2px;
-    position: relative;
-    line-height: 1.4em;
-    font-size: 1.03em;
-    padding: 50px;
-    list-style: none;
-    text-align: left;
-    max-width: 40%;
-}
 
-@media (max-width: 767px) {
-    .timeline {
-        max-width: 98%;
-        padding: 25px;
-    }
-}
+        body { margin-top: 20px; }
 
-.timeline h1 {
-    font-weight: 300;
-    font-size: 1.4em;
-}
+        .timeline {
+            border-left: 3px solid #727cf5;
+            border-bottom-right-radius: 4px;
+            border-top-right-radius: 4px;
+            background: rgba(114, 124, 245, 0.09);
+            margin: 0 auto;
+            letter-spacing: 0.2px;
+            position: relative;
+            line-height: 1.4em;
+            font-size: 1.03em;
+            padding: 50px;
+            list-style: none;
+            text-align: left;
+            max-width: 40%;
+        }
 
-.timeline h2,
-.timeline h3 {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 10px;
-}
+        @media (max-width: 767px) {
+            .timeline {
+                max-width: 98%;
+                padding: 25px;
+            }
+        }
 
-.timeline .event {
-    border-bottom: 1px dashed #e8ebf1;
-    padding-bottom: 25px;
-    margin-bottom: 25px;
-    position: relative;
-}
+        .timeline h1 {
+            font-weight: 300;
+            font-size: 1.4em;
+        }
 
-@media (max-width: 767px) {
-    .timeline .event {
-        padding-top: 30px;
-    }
-}
+        .timeline h2,
+        .timeline h3 {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
 
-.timeline .event:last-of-type {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border: none;
-}
+        .timeline .event {
+            border-bottom: 1px dashed #e8ebf1;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+            position: relative;
+        }
 
-.timeline .event:before,
-.timeline .event:after {
-    position: absolute;
-    display: block;
-    top: 0;
-}
+        @media (max-width: 767px) {
+            .timeline .event {
+                padding-top: 30px;
+            }
+        }
 
-.timeline .event:before {
-    left: -207px;
-    content: attr(data-date);
-    text-align: right;
-    font-weight: 100;
-    font-size: 0.9em;
-    min-width: 120px;
-}
+        .timeline .event:last-of-type {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border: none;
+        }
 
-@media (max-width: 767px) {
-    .timeline .event:before {
-        left: 0px;
-        text-align: left;
-    }
-}
+        .timeline .event:before,
+        .timeline .event:after {
+            position: absolute;
+            display: block;
+            top: 0;
+        }
 
-.timeline .event:after {
-    -webkit-box-shadow: 0 0 0 3px #727cf5;
-    box-shadow: 0 0 0 3px #727cf5;
-    left: -55.8px;
-    background: #fff;
-    border-radius: 50%;
-    height: 9px;
-    width: 9px;
-    content: "";
-    top: 5px;
-}
+        .timeline .event:before {
+            left: -207px;
+            content: attr(data-date);
+            text-align: right;
+            font-weight: 100;
+            font-size: 0.9em;
+            min-width: 120px;
+        }
 
-@media (max-width: 767px) {
-    .timeline .event:after {
-        left: -31.8px;
-    }
-}
+        @media (max-width: 767px) {
+            .timeline .event:before {
+                left: 0px;
+                text-align: left;
+            }
+        }
 
-.rtl .timeline {
-    border-left: 0;
-    text-align: right;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 4px;
-    border-top-left-radius: 4px;
-    border-right: 3px solid #727cf5;
-}
+        .timeline .event:after {
+            -webkit-box-shadow: 0 0 0 3px #727cf5;
+            box-shadow: 0 0 0 3px #727cf5;
+            left: -55.8px;
+            background: #fff;
+            border-radius: 50%;
+            height: 9px;
+            width: 9px;
+            content: "";
+            top: 5px;
+        }
 
-.rtl .timeline .event::before {
-    left: 0;
-    right: -170px;
-}
+        @media (max-width: 767px) {
+            .timeline .event:after {
+                left: -31.8px;
+            }
+        }
 
-.rtl .timeline .event::after {
-    left: 0;
-    right: -55.8px;
-}
+        .rtl .timeline {
+            border-left: 0;
+            text-align: right;
+            border-bottom-right-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: 4px;
+            border-top-left-radius: 4px;
+            border-right: 3px solid #727cf5;
+        }
+
+        .rtl .timeline .event::before {
+            left: 0;
+            right: -170px;
+        }
+
+        .rtl .timeline .event::after {
+            left: 0;
+            right: -55.8px;
+        }
+
+     
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-container h5 {
+            margin: 0;
+        }
+
+        .header-container .btn {
+            border-radius: 15px; 
+            font-size: 14px;
+            padding: 8px 16px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+            transition: all 0.3s ease; 
+        }
+
+        .header-container .btn:hover {
+            background-color: #e0a800; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+        }
+
+        .breadcrumb {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -144,29 +173,30 @@
             </ol>
         </nav>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12 header-container">
                 <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processos</h5>
-            </div>
-            <div class="col-md-6 text-end">
-                <h5>
-                    <a class="btn btn-sm btn-primary" th:href="@{/processos/new/}" role="button" style="border-radius: 10px;" title="Cadastrar Processo">
-                        <i class="bi bi-plus"></i> Novo Processo
-                    </a>
-                </h5>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 d-flex justify-content-center">
                 <div class="card">
-                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Processos do Usuario</span></div>
+                    <div class="card-header" style="background-color: #00537d;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge text-bg-secondary">
+                                <i class="bi bi-person"></i> Processos do Usuário
+                            </span>
+                            <a class="btn btn-sm btn-warning" th:href="@{/processos/new/}" role="button" title="Cadastrar Processo">
+                                <i class="bi bi-file-earmark-plus"></i> Novo Processo
+                            </a>
+                        </div>
+                    </div>
                     <div class="card-body">
-                       
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Numero</th>
+                                    <th scope="col">Número</th>
                                     <th scope="col">Ano</th>
-                                    <th scope="col">Numero/Ano</th>
+                                    <th scope="col">Número/Ano</th>
                                     <th scope="col">Assunto</th>
                                     <th scope="col">Classificação</th>
                                     <th scope="col">Tramitar</th>
@@ -178,15 +208,13 @@
                                     <td th:text="${rs.ano}"></td>
                                     <td th:text="${rs.numanoproc}"></td>
                                     <td>
-                                    
-                           			 <a  href="#"  th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}"  th:id="'tramite' + ${rs.id}" title="Ver Eventos do Processso">
-						   				 <span th:text="${rs.assunto}"></span>
-						  			</a> 
-                                    
+                                        <a href="#" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Ver Eventos do Processo">
+                                            <span th:text="${rs.assunto}"></span>
+                                        </a> 
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
-                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button"   th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
+                                        <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
                                     </td>
@@ -196,89 +224,68 @@
                     </div>
                 </div>
             </div>
-
-            
         </div>
-        
-
-      
-
-  
-  <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Processo N<span id="nprocesso"></span></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-      
-      
-      			       
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title"><b>Eventos do Processo</b></h6>
-                    <div id="eventos">
-                
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Processo N<span id="nprocesso"></span></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><b>Eventos do Processo</b></h6>
+                                        <div id="eventos"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>       
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-      
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>       
-      </div>
-    </div>
-  </div>
-</div>
-
-        
     </section>
+
     <div layout:fragment="jscript">
-      <script type="text/javascript">
+        <script type="text/javascript">
             var URL = '[[@{/}]]api';         
            
             $("[id*='tramitarProcesso']").click(function(event){
-            	 $("#loader").show(); 
+                $("#loader").show(); 
             });
-            
-               $("[id*='tramite']").click(function(event){           	  
-         	  	    event.preventDefault();
-         	      	var data = $(event.delegateTarget).data();
-         	    	var id = data.recordId;
-         	  	    var numano =  data.recordNumano;
-         	  	  	var ul = "";
-         	  	    $("#nprocesso").text(numano);  
-         	  		 $("#loader").show();  
-         	  	 	 $.ajax({
-                  		  url: URL + "/eventos/processo/"+id,
-                  		  method: "GET",
-                  		}).done(function(data) {  
-                  			//console.log(data)
-                  			ul = '<ul class="timeline">';
-                  			$.each( data, function( index, rs ){                  				
-                  					ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+
-	                  						 '<h5>'+rs.tipo_id.evento+'</h5>'+
-	                  						 '<p style="font-size:11px;">'+rs.evento+'</p>'+
-                  						 '</li>'; 
-                  			});                     			
-                  			ul += '</ul>';
-                  			
-                  			$("#eventos").append(ul)
-                 	  	    $('#staticBackdrop').modal('show');
-                  			 $("#loader").hide(); 
-                  		});
- 
-         	  	  }); 
-               
 
-            
+            $("[id*='tramite']").click(function(event){           	   
+                event.preventDefault();
+                var data = $(event.delegateTarget).data();
+                var id = data.recordId;
+                var numano =  data.recordNumano;
+                var ul = "";
+                $("#nprocesso").text(numano);  
+                $("#loader").show();  
+                $.ajax({
+                    url: URL + "/eventos/processo/"+id,
+                    method: "GET",
+                }).done(function(data) {  
+                    ul = '<ul class="timeline">';
+                    $.each( data, function( index, rs ){                  				
+                        ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+ 
+                               '<h5>'+rs.tipo_id.evento+'</h5>'+ 
+                               '<p style="font-size:11px;">'+rs.evento+'</p>'+ 
+                               '</li>'; 
+                    });                     			
+                    ul += '</ul>';
+                    $("#eventos").append(ul)
+                    $('#staticBackdrop').modal('show');
+                    $("#loader").hide(); 
+                });
+            }); 
         </script>
     </div>
 </body>

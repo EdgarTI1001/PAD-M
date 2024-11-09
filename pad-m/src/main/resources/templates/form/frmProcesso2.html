@@ -1,249 +1,343 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 70vh;
+            margin: 0;
+            padding: 0;
             background-color: #f8f9fa;
+            min-height: 100vh;
         }
+
         .card {
-            width: 150%;
+            width: 100%;
             max-width: 1500px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
-            overflow: hidden; 
-            margin-top: 175px
+            overflow: hidden;
+            margin-top: 20px; /* Ajuste de margem */
+            margin-left: auto;
+            margin-right: auto;
         }
+
         .card-header {
             background-color: #00537d;
             color: white;
             font-weight: bold;
             text-align: center;
         }
+
         .form-label {
             font-weight: 600;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #004085;
         }
+
+        .spinner {
+            margin-left: 10px;
+            display: none;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 15px;
+        }
+
+        .mb-4 {
+            margin-top: 30px;
+        }
+
+        section {
+            margin-top: 20px;
+            padding: 0 30px;
+            max-width: 1500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .breadcrumb-item a {
+            color: black;
+        }
+
+        .breadcrumb-item a:hover {
+            text-decoration: none;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
+
+        .stepper-wrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stepper-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stepper-item .step-counter {
+            display: block;
+            background-color: #00537d;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin: 0 auto;
+        }
+
+        .stepper-item.completed .step-counter {
+            background-color: #28a745;
+        }
+
+        .stepper-item .step-name {
+            font-size: 12px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <section layout:fragment="content">    
-          <div class="card">
-            <div class="card-header">Cadastro de Processo</div>
-            <div class="card-body">
-                <form th:action="@{/processos/finalizar}" th:object="${processo}" method="post" class="row g-3" id="frm">
-                    <input type="hidden" th:field="${processo.assunto}">   
-                    <input type="hidden" th:field="${processo.tipo}">   
-                    <input type="hidden" th:field="${processo.setorcriadorId}">   
-                    <input type="hidden" th:field="${processo.usucriadorId}">   
-                    <input type="hidden" th:field="${processo.ano}">   
-                    <input type="hidden" th:field="${processo.datacriacao}">   
-                    <input type="hidden" th:field="${processo.numproc}"> 
-                    <input type="hidden" th:field="${processo.numanoproc}">   
-                    <input type="hidden" id="processo" th:field="${processo.id}">        
-                    <input type="hidden" id="classif" th:field="${processo.classificacao}">               
-                    
-                    <div class="mb-4 p-3">    
-	                    <div class="stepper-wrapper">
-	                        <div class="stepper-item completed">
-	                            <div class="step-counter">1</div>
-	                            <div class="step-name">Criando Processo</div>
-	                        </div>
-	                        <div class="stepper-item completed">
-	                            <div class="step-counter">2</div>
-	                            <div class="step-name">Classificação do Processo</div>
-	                        </div>
-	                        <div class="stepper-item">
-	                            <div class="step-counter">3</div>
-	                            <div class="step-name">Finalizar</div>
-	                        </div>					
-	                    </div>
-                    </div>				
-                    
-   
-                    <div class="col-md-6 mb-3">
-                        <label for="cpf" class="form-label">Classificação</label>
-                        <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{classId}">
-                            <option th:text="${'Selecione a classificação'}" th:value="${'0'}"></option>
-                            <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}"></option>
-                        </select>		    
-                    </div>   
-                    
-                    <div class="col-md-6 mb-3">
-                        <label for="cpf" class="form-label">Visibilidade</label>
-                        <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
-                            <option th:text="${'Selecione a Visibilidade'}" th:value="${'0'}"></option>
-                            <option th:each="v : ${visibilidades}" th:text="${v.visibilidade}" th:value="${v.id}"></option>
-                        </select>		    
-                    </div>         
-                          
-                    
-                    <!-- FASE DESNECESSÁRIO -->
-                    
-                    <div class="col-md-6 mb-3"></div>       
-           			<div class="col-12"><hr style="color: #00537d; border: 2px solid "></div>
-           			<h5>Interessados</h5>
-                   <div class="col-md-6 mb-3">
-                       <label for="interessado" class="form-label">Setor</label>
-                       <select id="setor" class="form-select form-select-sm"> 
-                           <option th:text="${'Selecione o Setor'}" th:value="${'0'}"></option>	
-                           <option th:each="setor : ${setorUsuario}" th:text="${setor.nome}" th:value="${setor.id}"></option>		       	
-                       </select>          
-                    </div>  
-                    
-                    <div class="col-md-6 mb-3">
-                        <label for="usuario" class="form-label">Usuarios</label>                        
-                        <select id="usuario" class="form-select form-select-sm"> 
-                            <option th:text="${'Selecione o Usuario'}" th:value="${'0'}"></option>	
-                            <option th:each="usuario : ${usuarios}" th:text="${usuario.nome}" th:value="${usuario.id}"></option>		       	
-                        </select>        
-                    </div> 
-                    
-                    <div class="col-12 text-right">
-                        <button type="submit" class="btn btn-primary btn-sm rounded-pill buttonload" id="avancar">Avançar &nbsp; &nbsp;&nbsp;<i class="fa fa-spinner fa-spin"></i></button>
+
+<section layout:fragment="content">
+    <nav aria-label="breadcrumb" class="mt-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a th:href="@{/processos}">
+                    <i class="bi bi-house-fill"></i>
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="#" data-toggle="modal" data-target="#helpModal">
+                    <i class="bi bi-question-circle"></i>
+                </a>
+            </li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header">Cadastro de Processo</div>
+        <div class="card-body">
+            <form th:action="@{/processos/finalizar}" th:object="${processo}" method="post" class="row g-3" id="frm">
+                <input type="hidden" th:field="${processo.assunto}">
+                <input type="hidden" th:field="${processo.tipo}">
+                <input type="hidden" th:field="${processo.setorcriadorId}">
+                <input type="hidden" th:field="${processo.usucriadorId}">
+                <input type="hidden" th:field="${processo.ano}">
+                <input type="hidden" th:field="${processo.datacriacao}">
+                <input type="hidden" th:field="${processo.numproc}">
+                <input type="hidden" th:field="${processo.numanoproc}">
+                <input type="hidden" id="processo" th:field="${processo.id}">
+                <input type="hidden" id="classif" th:field="${processo.classificacao}">
+                
+                <div class="mb-4 p-3">
+                    <div class="stepper-wrapper">
+                        <div class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">Criando Processo</div>
+                        </div>
+                        <div class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Classificação do Processo</div>
+                        </div>
+                        <div class="stepper-item">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Finalizar</div>
+                        </div>
                     </div>
-                </form>                
-               <div class="mb-4 p-3">
-                <h5>Interessados</h5>                
-                <table class="table">
-                    <thead>				    
-                        <tr>
-                            <th>Nome</th>     
-                            <th></th>     
-                        </tr>
-                    </thead>
-                    <tbody id="tbinteressados"></tbody>
-                </table>
-               </div>
-            </div>
-        </div>        
-    </section>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="cpf" class="form-label">Classificação</label>
+                    <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{classId}">
+                        <option th:text="${'Selecione a classificação'}" th:value="${'0'}"></option>
+                        <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}"></option>
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="cpf" class="form-label">Visibilidade</label>
+                    <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
+                        <option th:text="${'Selecione a Visibilidade'}" th:value="${'0'}"></option>
+                        <option th:each="v : ${visibilidades}" th:text="${v.visibilidade}" th:value="${v.id}"></option>
+                    </select>
+                </div>
+                
+                <div class="col-12">
+                    <hr style="color: #00537d; border: 2px solid">
+                </div>
+                
+                <div class="mb-4 p-3">
+                    <h5>Interessados</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbinteressados"></tbody>
+                    </table>
+                </div>
 
- <div layout:fragment="jscript">
- 			
- 	<script type="text/javascript">      
-    
-            var URL = '[[@{/}]]api';
-            $("#classsificacao").select2();
-    
-            $("#loader").show();
-            $(".fa").hide();
-            $(document).ready(function() {
-                $("#loader").hide();
-            });    
- 
-            $("#setor").change(function() { 
-                $("#loader").show();
-                addSetorInteressado(); 
-            });
-            
-            $("#usuario").change(function() { 
-                $("#loader").show();
-                addUsuarioInteressado();
-            });
-            
-            $('#avancar').on('click', function() {
-                $("#classif").val($("#classsificacao option:selected").text()); 
-                $(this).prop("disabled", true);
-                $(".fa").show();
-                $("#frm").submit();
-            });
-            
-            function getInteressados(processo) { 
-                var table = "";
-                $('#tbinteressados').empty();
-                $.getJSON(URL + "/interessados/processo/" + processo, function(data) {		 
-                    $.each(data, function(index, value) {
-                        table += '<tr id="tr' + value.id + '">';
-                        table += '<th>' + value.interessado + '</th>';	    		 
-                        table += '<th><a class="btn btn-sm btn-danger" href="#" role="button" data-record-id="' + value.id + '" data-record-nome="' + value.interessado + '" title="excluir" onclick="excluirInteressado(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></th>';
-                        table += '</tr>';
-                    });  
-     
-                    $('#tbinteressados').append(table);
-                    $("#loader").hide();
-                });	 
-            }
- 
-            function addSetorInteressado() {
-                var setor = $("#setor").val();
-                var processo = $("#processo").val();            	 
-                $.post(URL + "/interessados/saveSetorInteressado", {
-                    idProcesso: processo,
-                    idSetor: setor,
-                    idUsuario: 0
-                },
-                function(data, status) {
-                    if (status == "success") { 
-                        getInteressados(processo);
-                        $("#loader").hide();
-                    } else {
-                        swal("Erro", "Erro ao adicionar", "error");	
-                    }
-                });
-            }
- 
-            function addUsuarioInteressado() {
-                var usuario = $("#usuario").val();	
-                var processo = $("#processo").val();            	 
-                $.post(URL + "/interessados/saveUsuarioInteressado", {
-                    idProcesso: processo,
-                    idSetor: 0,
-                    idUsuario: usuario
-                },
-                function(data, status) {
-                    if (status == "success") { 
-                        getInteressados(processo);
-                        $("#loader").hide();
-                    } else {
-                        swal("Erro", "Erro ao adicionar", "error");	
-                    }
-                });
-            }
-
-            excluirInteressado = function(handler) {
-                event.stopPropagation();
-                var idInteressado = handler.getAttribute("data-record-id"); 
-                var nome = handler.getAttribute("data-record-nome"); 
-	
-                swal({
-                    title: 'Excluir?',
-                    text: "Deseja Deletar novo Interessado?",
-                    icon: 'warning',
-                    buttons: [true, "Sim!"]
-                }).then((result) => {
-                    if (result) {
-                        $("#loader").show();
-                        $.ajax({
-                            url: URL + "/interessados/delete/" + idInteressado,
-                            type: 'DELETE',
-                            success: function(result) {
-                                if (result == 1) {
-                                    swal("Sucesso", "Procedimento Realizado", "success"); 
-                                    $("#tr" + idInteressado).fadeOut();
-                                    $("#loader").hide();
-                                } else {
-                                    swal("Erro", "Erro ao Deletar", "error");	
-                                    $("#loader").hide();
-                                }
-                            }
-                        });
-                    }
-                });
-            }
-        </script>
+                <div class="col-md-6 mb-3">
+                    <label for="interessado" class="form-label">Setor</label>
+                    <select id="setor" class="form-select form-select-sm">
+                        <option th:text="${'Selecione o Setor'}" th:value="${'0'}"></option>
+                        <option th:each="setor : ${setorUsuario}" th:text="${setor.nome}" th:value="${setor.id}"></option>
+                    </select>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="usuario" class="form-label">Usuarios</label>
+                    <select id="usuario" class="form-select form-select-sm">
+                        <option th:text="${'Selecione o Usuario'}" th:value="${'0'}"></option>
+                        <option th:each="usuario : ${usuarios}" th:text="${usuario.nome}" th:value="${usuario.id}"></option>
+                    </select>
+                </div>
+                
+                <div class="col-12 form-footer">
+                    <button type="submit" class="btn btn-primary btn-sm rounded-pill buttonload" id="avancar">
+                        Avançar <i class="fa fa-spinner fa-spin spinner"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">teste de texto</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div layout:fragment="jscript">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var URL = '[[@{/}]]api';
+        $("#classsificacao").select2();
+        $("#loader").show();
+        $(".fa").hide();
+        $(document).ready(function() {
+            $("#loader").hide();
+        });
+
+        $("#setor").change(function() {
+            $("#loader").show();
+            addSetorInteressado();
+        });
+
+        $("#usuario").change(function() {
+            $("#loader").show();
+            addUsuarioInteressado();
+        });
+
+        $('#avancar').on('click', function() {
+            $("#classif").val($("#classsificacao option:selected").text());
+            $(this).prop("disabled", true);
+            $(".fa").show();
+            $("#frm").submit();
+        });
+
+        function getInteressados(processo) {
+            var table = "";
+            $('#tbinteressados').empty();
+            $.getJSON(URL + "/interessados/processo/" + processo, function(data) {
+                $.each(data, function(index, value) {
+                    table += '<tr id="tr' + value.id + '">';
+                    table += '<th>' + value.interessado + '</th>';
+                    table += '<th><a class="btn btn-sm btn-danger" href="#" role="button" data-record-id="' + value.id + '" data-record-nome="' + value.interessado + '" title="excluir" onclick="excluirInteressado(this)"><i class="fa fa-trash-o" aria-hidden="true"></i></a></th>';
+                    table += '</tr>';
+                });
+                $('#tbinteressados').append(table);
+                $("#loader").hide();
+            });
+        }
+
+        function addSetorInteressado() {
+            var setor = $("#setor").val();
+            var processo = $("#processo").val();
+            $.post(URL + "/interessados/saveSetorInteressado", {idProcesso: processo, idSetor: setor, idUsuario: 0}, function(data, status) {
+                if (status == "success") {
+                    getInteressados(processo);
+                    $("#loader").hide();
+                } else {
+                    swal("Erro", "Erro ao adicionar", "error");
+                }
+            });
+        }
+
+        function addUsuarioInteressado() {
+            var usuario = $("#usuario").val();
+            var processo = $("#processo").val();
+            $.post(URL + "/interessados/saveUsuarioInteressado", {idProcesso: processo, idSetor: 0, idUsuario: usuario}, function(data, status) {
+                if (status == "success") {
+                    getInteressados(processo);
+                    $("#loader").hide();
+                } else {
+                    swal("Erro", "Erro ao adicionar", "error");
+                }
+            });
+        }
+
+        excluirInteressado = function(handler) {
+            event.stopPropagation();
+            var idInteressado = handler.getAttribute("data-record-id");
+            var nome = handler.getAttribute("data-record-nome");
+            swal({
+                title: 'Excluir?',
+                text: "Deseja Deletar novo Interessado?",
+                icon: 'warning',
+                buttons: [true, "Sim!"]
+            }).then((result) => {
+                if (result) {
+                    $("#loader").show();
+                    $.ajax({
+                        url: URL + "/interessados/delete/" + idInteressado,
+                        type: 'DELETE',
+                        success: function(result) {
+                            if (result == 1) {
+                                swal("Sucesso", "Procedimento Realizado", "success");
+                                $("#tr" + idInteressado).fadeOut();
+                                $("#loader").hide();
+                            } else {
+                                swal("Erro", "Erro ao Deletar", "error");
+                                $("#loader").hide();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+</div>
 </body>
 </html>
