@@ -35,13 +35,17 @@ public class TramiteService {
 	public Optional<Tramite> findById(Integer id) {
 		return tramiteRepo.findById(id);
 	}
-	
+
 	public Optional<Tramite> findBySetorDataSaidaProcesso(Integer idSetor, Integer idProcesso) {
-		return tramiteRepo.findBySetorDataSaidaProcesso(idSetor,idProcesso);
+		return tramiteRepo.findBySetorDataSaidaProcesso(idSetor, idProcesso);
 	}
 
 	public Tramite findFirstByProcessoId(Integer idProcesso) {
 		return tramiteRepo.findFirstByProcessoId(idProcesso);
+	}
+
+	public long countProcessosEmEsperaBySetor(Integer idsetor) {
+		return tramiteRepo.countProcessosEmEsperaBySetor(idsetor);
 	}
 
 	@Transactional

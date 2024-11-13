@@ -105,8 +105,11 @@ public class TramiteController {
 			eventoService.save(evento);
 			
 			Optional<Tramite> t = tramiteService.findBySetorDataSaidaProcesso(session.getUsuario().getLotacao_id().getId(),tramite.getProcId().getId());
-			t.get().setDatasaida(LocalDateTime.now());
-			tramiteService.save(t.get());
+			if(t.isPresent()){
+				t.get().setDatasaida(LocalDateTime.now());
+				tramiteService.save(t.get());
+			}
+			
 			
 			tramite.setTipo("TIPO");
 			

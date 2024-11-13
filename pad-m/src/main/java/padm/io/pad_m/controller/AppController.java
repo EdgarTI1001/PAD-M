@@ -44,10 +44,13 @@ public class AppController {
 	public ModelAndView index(Model model) {
 		ModelAndView mv = new ModelAndView("index");
 		upload += "\\";
+		long emEspera =  tramiteService.countProcessosEmEsperaBySetor(session.getUsuario().getLotacao_id().getId());		
 		String path = upload.substring(0, 11);		
 		model.addAttribute("upload", path);
+		model.addAttribute("emEspera", emEspera);
 		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id().getId()));
 		model.addAttribute("activePage", "mnuMeuRegistro");
+	
 		return mv;
 	}
 
