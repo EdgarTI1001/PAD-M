@@ -104,6 +104,10 @@ public class TramiteController {
 			evento.setDatatermino(LocalDateTime.now());
 			eventoService.save(evento);
 			
+			Optional<Tramite> t = tramiteService.findBySetorDataSaidaProcesso(session.getUsuario().getLotacao_id().getId(),tramite.getProcId().getId());
+			t.get().setDatasaida(LocalDateTime.now());
+			tramiteService.save(t.get());
+			
 			tramite.setTipo("TIPO");
 			
 			tramite.setSetororigem(setorService.findById(session.getUsuario().getLotacao_id().getId()).get() ); 
@@ -125,7 +129,7 @@ public class TramiteController {
 			
 			
 			tramite.setTramitacao("Processo: " +tramite.getProcId().getNumanoproc() + " - " + tramite.getProcId().getAssunto() + " Recebido no Setor " + 
-					setor.get().getNome() + " Em " + parser.format(LocalDateTime.now()) );
+					tramite.getSetordestino().getNome() + " Em " + parser.format(LocalDateTime.now()) );
 			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
 			
 			

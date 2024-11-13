@@ -150,9 +150,14 @@
             </div>
             <div class="col-md-6 text-end">
                 <h5>
-                    <a class="btn btn-sm btn-primary" href="#" role="button" style="border-radius: 10px;" title="Cadastrar Processo">
+                    <a class="btn btn-sm btn-primary" href="#" role="button" style="border-radius: 10px;" title="Tramitar Processo">
                         <i class="bi bi-plus"></i> Novo Tramite
                     </a>
+                    
+                     <a class="btn btn-sm btn-warning" href="#" role="button" style="border-radius: 10px;" id="eventoDoProcesso" title="Ver Eventos do Processo">
+                       <i class="bi bi-eye-fill"></i> Ver Eventos
+                    </a>
+                    
                 </h5>
             </div>
         </div>
@@ -231,7 +236,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Processo N<span id="nprocesso"></span></h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Eventos do Processo <span id="nprocesso"></span></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -265,21 +270,18 @@
     <div layout:fragment="jscript">
         <script>
             var URL = '[[@{/}]]api';
+            $("#eventoDoProcesso").hide();
         	//$('#modalTramite').modal('hide');
  			   $( document ).ready(function() {
 
                });
-  				/*
-               $("[id*='tramite']").click(function(event){
-         	  	    event.preventDefault();
-         	      	var data = $(event.delegateTarget).data();
-         	    	var id = data.recordId;
-         	  	    var numano =  data.recordNumano;
-         	  	  	var ul = "";
-         	  	    $("#nprocesso").text(numano);  
+  				
+             function getEeventosDoProcesso(idProcesso){         	      	
+         	  	    var ul = "";
+         	  	   // $("#nprocesso").text(numano);  
 						
          	  	 	 $.ajax({
-                  		  url: URL + "/eventos/processo/"+id,
+                  		  url: URL + "/eventos/processo/"+idProcesso,
                   		  method: "GET",
                   		}).done(function(data) {  
                   			//console.log(data)
@@ -296,8 +298,8 @@
                  	  	    $('#staticBackdrop').modal('show');
                   		});
  
-         	  	  }); 
-               */
+         	  	  } 
+               
                
                $("#tipoProcesso").change(function(){
             	  var tipoProcesso = $("#tipoProcesso").val();    
@@ -315,7 +317,8 @@
                 
                
                
-		        function getProcessos(tipo){		        	
+		        function getProcessos(tipo){	
+		        	 $("#loader").show();
 		        	  $("#processos option").remove();
 		        	 $.ajax({
 		        		  url: URL + "/processos/usuario/tipo/"+tipo,
@@ -334,12 +337,14 @@
 		        
 		        function getTramitesDoProcesso(processo){
 		        	  var table = "";
+		        	  $("#loader").show();
 		        	  $("#tramitesDoProcesso").empty();
 		        	 $.ajax({
 		        		  url: URL + "/tramites/processo/all/"+processo,
 		        		  method: "GET",
-		        		}).done(function(data) { 		        			
-		        			$.each( data, function( index, value ){  		        				
+		        		}).done(function(data) { 		        		
+		        			$.each( data, function( index, value ){  		
+		        				
 		        				 table += '<tr id="tr' + value.id + '">';
 		        				 table += '<td>' + value.setorcriador.nome + '</td>';	    
 		        				 table += '<td>' + value.setororigem.nome  + '</td>';	    
@@ -351,7 +356,9 @@
 		                         table += '</tr>';
 		        			});
 		        			 $('#tramitesDoProcesso').append(table);
-		        			 $("#loader").hide();
+		        			 $("#eventoDoProcesso").show();
+		        			 $("#loader").hide()
+		        			
 		        		});
 		        }
 		       
@@ -377,6 +384,13 @@
 		        		});
 		        	
 		        }
+		        
+		        $("#eventoDoProcesso").click(function(){
+		        	var idProcesso = $("#processos").val();
+		        	 getEeventosDoProcesso(idProcesso);
+		        	
+		        }); 
+		    
 		       
         </script>
     </div>

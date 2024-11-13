@@ -1,6 +1,5 @@
 package padm.io.pad_m.controller.rest;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import padm.io.pad_m.service.ProcessoService;
 public class ProcessoRestController {
 	@Autowired
 	ProcessoService processoService;
-	
+
 	@Autowired
 	AuthenticationFacade session;
 
@@ -33,12 +32,15 @@ public class ProcessoRestController {
 		Processo processo = processoService.findById(id).get();
 		return ResponseEntity.ok(processo);
 	}
-	
+
+	@GetMapping("/tramitadosSetor/{idSetor}")
+	public ResponseEntity<List<Processo>> findAllTramitadosBySetor(@PathVariable("idSetor") Integer idSetor) {
+		return ResponseEntity.ok(processoService.findAllTramitadosBySetor(idSetor));
+	}
+
 	@GetMapping("/usuario/tipo/{idTipo}")
-	public ResponseEntity<List<Processo>> findAllByUserCriador(@PathVariable("idTipo") Integer idTipo) {		
+	public ResponseEntity<List<Processo>> findAllByUserCriador(@PathVariable("idTipo") Integer idTipo) {
 		return ResponseEntity.ok(processoService.findAllByTipo(idTipo));
 	}
-	
-	
 
 }

@@ -39,7 +39,9 @@
         }
     </style>
 
-
+<script type="text/javascript">
+	$("#loader").show();  
+</script>
 </head>
 <body>
 	<section layout:fragment="content">
@@ -104,11 +106,11 @@
     <div layout:fragment="jscript">
       <script>
       var URL = '[[@{/}]]';  
-      $("#idproc").hide();  
+      $("#idproc").hide();       
       $("#idProcesso").val($("#idproc").text());     
       $("#destino").select2();
       $(document).ready(function() {
-          $("#loader").hide();
+    	  $("#loader").hide();  
           $("#salvar").click(function(event) {
               event.preventDefault();
               var data = $(event.delegateTarget).data();
@@ -120,9 +122,12 @@
                   buttons: [true, "Sim!"]
               }).then((result) => {
                   if (result) {
-                	  $("#loader").show();
-                      var frm = $("#frm").submit();
-                      swal("Sucesso", "Resgistro salvo com sucesso", "success");	
+                	  $("#loader").show();        
+                	  var frm = $("#frm").submit();
+                	  setInterval(function () { swal("Sucesso", "Resgistro salvo com sucesso", "success")}, 10000);
+                	  
+                   ;	                      
+                    
                   }
               })
           });
