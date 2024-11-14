@@ -58,6 +58,33 @@
             display: inline; 
             color: white;
         }
+        
+        .nav_dropdown {
+    position: relative;
+}
+
+.nav_dropdown_content {
+    display: none; /* Oculta o conteúdo por padrão */
+    background-color: #00537d;
+    padding: 0; /* Remove o padding para colapsar corretamente */
+    z-index: 1;
+}
+
+.nav_dropdown.active .nav_dropdown_content {
+    display: block; /* Exibe o conteúdo quando ativo */
+}
+
+.nav_link {
+    color: #00cfd3;
+    text-decoration: none;
+    display: block;
+    padding: 12px 16px;
+}
+
+.nav_link:hover {
+    background-color: #004060;
+}
+
     </style>
 </head>
 <body id="body-pd">
@@ -91,19 +118,60 @@
                     <span class="nav_logo-name">Pagina Inicial</span>
                 </a>
                 <div class="nav_list">
-                    <a th:href="@{/docs}" class="nav_link active">                    
-                        <i class="fa fa-file-pdf-o" style="font-size:23px;color:white"></i>
-                        <span class="nav_name">Documentos</span>
-                    </a>             
-                    <span class="badge badge-pill badge-primary" style="float:right;margin-bottom:-10px; background-color: red;">1</span>
-                    <a th:href="@{/processos}" class="nav_link" title="processos">                   
-                        <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
-                        <span class="nav_name">Processos</span>
-                    </a>
-                    <a href="#" class="nav_link">
-                        <i class="fa fa-clone" style="font-size:23px;color:white"></i>
+                        
+                  <!-- Dropdown for Tramite -->
+	               <div class="nav_dropdown">
+		                   <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)">
+		                   <i class="fa fa-file-pdf-o"  style="font-size:23px;color:white" aria-hidden="true"></i>	                       
+	                       <span class="nav_name">Documentos</span>
+	                       <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
+	                   </a>
+	                   <div class="nav_dropdown_content">
+	                       <a th:href="@{/docs/create}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
+	                       <a th:href="@{/docs}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
+	                   </div>
+	               </div>
+	               
+                     <!-- Dropdown for Processos -->
+	               <div class="nav_dropdown">
+	                   <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)">
+	                       <i class="fa fa-folder-open-o" style="font-size:23px;color:white" aria-hidden="true"></i>
+	                       <span class="nav_name">Processos</span>
+	                       <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
+	                   </a>
+	                   <div class="nav_dropdown_content">
+	                       <a th:href="@{/processos/new}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
+	                       <a th:href="@{/processos}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
+	                   </div>
+	               </div>
+                	
+                	  <!-- Dropdown for Tramite -->
+	               <div class="nav_dropdown">
+		                   <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)">
+		                   <i class="bi bi-arrow-left-right"  style="font-size:23px;color:white" aria-hidden="true"></i>	                       
+	                       <span class="nav_name">Tramites</span>
+	                       <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
+	                   </a>
+	                   <div class="nav_dropdown_content">
+	                       <a th:href="@{/tramite/new}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
+	                       <a th:href="@{/tramite}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
+	                   </div>
+	               </div>
+	               
+                	
+                <!-- Dropdown for Formulários -->
+                <div class="nav_dropdown">
+                    <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)">                       
+                        <i class="bi bi-clipboard-check"  style="font-size:23px;color:white"></i>
                         <span class="nav_name">Formulários</span>
+                        <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
                     </a>
+                    <div class="nav_dropdown_content">
+                        <a href="#" class="nav_link">Formulário 1</a>
+                        <a href="#" class="nav_link">Formulário 2</a>
+                    </div>
+                </div>
+                
                     <a href="#" class="nav_link">
                         <i class="fa fa-clipboard" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Relatórios</span>
@@ -112,7 +180,7 @@
                         <i class="fa fa-cog" style="font-size:23px;color:white" aria-hidden="true"></i>
                         <span class="nav_name">Opções</span>
                     </a>
-	                 <a th:href="@{/usuarios}"class="nav_link" title="usuarios">	                 
+	                 <a th:href="@{/usuarios}" class="nav_link" title="usuarios">	                 
 					    <i class="fa fa-user-plus" style="font-size:23px;color:white" aria-hidden="true"></i>
 					    <span class="nav_name">Cadastro de Usuários</span>
 					</a>
@@ -175,7 +243,13 @@
             } else {
                 icon.className = 'fa fa-bars';
             }
-        });       
+        });  
+        
+        function toggleDropdown(event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+            const dropdown = event.currentTarget.parentNode;
+            dropdown.classList.toggle('active'); // Alterna a classe 'active' para mostrar/esconder o dropdown
+        }
        
     </script>
 </body>
