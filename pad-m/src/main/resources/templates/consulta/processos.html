@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
@@ -10,15 +11,24 @@
             overflow: hidden;
             transition: transform 0.3s;
             background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
-            margin-bottom: 20px;
         }
         .card:hover {
-            transform: scale(1.01);
+            transform: scale(1.05);
         }
-
-        body { margin-top: 20px; }
-
-        .timeline {
+        .card-header {
+            background-color: #00537d;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 1rem;
+        }
+        .badge {
+            font-size: 0.875rem;
+        }
+        .btn {
+            border-radius: 5px;
+        }
+        
+                .timeline {
             border-left: 3px solid #727cf5;
             border-bottom-right-radius: 4px;
             border-top-right-radius: 4px;
@@ -117,7 +127,7 @@
             border-left: 0;
             text-align: right;
             border-bottom-right-radius: 0;
-            border-top-right-radius: 0;
+            border-top-right-radius: 0; 
             border-bottom-left-radius: 4px;
             border-top-left-radius: 4px;
             border-right: 3px solid #727cf5;
@@ -132,52 +142,11 @@
             left: 0;
             right: -55.8px;
         }
-
-     
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-container h5 {
-            margin: 0;
-        }
-
-        .header-container .btn {
-            border-radius: 15px; 
-            font-size: 14px;
-            padding: 8px 16px; 
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-            transition: all 0.3s ease; 
-        }
-
-        .header-container .btn:hover {
-            background-color: #e0a800; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-        }
-
-        .breadcrumb {
-            margin-bottom: 0;
-        }
     </style>
 </head>
 <body>
-    <section layout:fragment="content">
-        <br>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#"><i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Processos</a></li>
-            </ol>
-        </nav>
-        <div class="row">
-            <div class="col-md-12 header-container">
-                <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Processos</h5>
-            </div>
-        </div>
-       
+    <section layout:fragment="content" class="justify-content-center align-items-center p-2">
+        <div class="container text-center text-md-start mt-3">
           <div class="row mb-1">
             <div class="col-md-6">
                 <form action=""  method="get" class="row g-3" id="frm">
@@ -188,23 +157,28 @@
        			 </select>	
        			 </form>
             </div>      
-        </div>       
-       
-        <div class="row">
-            <div class="col-md-12 d-flex justify-content-center">
-                <div class="card">
-                    <div class="card-header" style="background-color: #00537d;">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="badge text-bg-secondary">
-                                <i class="bi bi-person"></i> Processos do Usuário
-                            </span>
-                            <a class="btn btn-sm btn-warning" th:href="@{/processos/new/}" role="button" title="Cadastrar Processo">
-                                <i class="bi bi-file-earmark-plus"></i> Novo Processo
-                            </a>
+        </div>   
+        
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5><i class="bi bi-people" aria-hidden="true"></i> Processos </h5>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <a class="btn btn-sm btn-primary" th:href="@{/processos/new}" role="button" title="Cadastrar Processo">
+                                        <i class="bi bi-file-earmark-plus"></i> Novo Processo
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
+                      <div class="card-body">
+               					
+               		 <table class="table">
                             <thead>
                                 <tr>
                                     <th scope="col">Número</th>
@@ -227,23 +201,34 @@
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
+                                    	<a class="btn btn-sm btn-primary" href="#" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
+                                           Indicar
+                                        </a>
+                                        
                                         <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
+                                        
+                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
+                                            arquivar
+                                        </a>
+                                        
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Modal -->
+            
+                    <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Processo N<span id="nprocesso"></span></h1>
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Processo <span id="nprocesso"></span></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -264,49 +249,53 @@
                 </div>
             </div>
         </div>
+        
+        </div>
+
+
     </section>
-
-    <div layout:fragment="jscript">
-        <script type="text/javascript">
-            var URL = '[[@{/}]]api';         
-           
-            $("[id*='tramitarProcesso']").click(function(event){
-                $("#loader").show(); 
-            });
-            
-            
-            $("[id*='tramite']").click(function(event){           	   
-                event.preventDefault();
-                var data = $(event.delegateTarget).data();
-                var id = data.recordId;
-                var numano =  data.recordNumano;
-                var ul = "";
-                $("#nprocesso").text(numano);  
-                $("#loader").show();  
-                $.ajax({
-                    url: URL + "/eventos/processo/"+id,
-                    method: "GET",
-                }).done(function(data) {  
-                    ul = '<ul class="timeline">';
-                    $.each( data, function( index, rs ){                  				
-                        ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+ 
-                               '<h5>'+rs.tipo_id.evento+'</h5>'+ 
-                               '<p style="font-size:11px;">'+rs.evento+'</p>'+ 
-                               '</li>'; 
-                    });                     			
-                    ul += '</ul>';
-                    $("#eventos").append(ul)
-                    $('#staticBackdrop').modal('show');
-                    $("#loader").hide(); 
-                });
-            }); 
-            
-            $("#tipagem").change(function(){
-	           	 $("#loader").show(); 
-	           	 $("#frm").submit();
-         	});
-
-        </script>
-    </div>
+   <div layout:fragment="jscript">
+   <script>
+    // URL base para as operações AJAX
+    const URL = '[[@{/}]]api/';       
+    
+    $("[id*='tramitarProcesso']").click(function(event){
+        $("#loader").show(); 
+    });
+    
+    
+    $("[id*='tramite']").click(function(event){           	   
+        event.preventDefault();
+        var data = $(event.delegateTarget).data();
+        var id = data.recordId;
+        var numano =  data.recordNumano;
+        var ul = "";
+        $("#nprocesso").text(numano);  
+        $("#loader").show();  
+        $.ajax({
+            url: URL + "eventos/processo/"+id,
+            method: "GET",
+        }).done(function(data) {  
+            ul = '<ul class="timeline">';
+            $.each( data, function( index, rs ){                  				
+                ul += '<li class="event" data-date=" '+rs.dataevento+' ">'+ 
+                       '<h5>'+rs.tipo_id.evento+'</h5>'+ 
+                       '<p style="font-size:11px;">'+rs.evento+'</p>'+ 
+                       '</li>'; 
+            });                     			
+            ul += '</ul>';
+            $("#eventos").append(ul)
+            $('#staticBackdrop').modal('show');
+            $("#loader").hide(); 
+        });
+    }); 
+    
+    $("#tipagem").change(function(){
+       	 $("#loader").show(); 
+       	 $("#frm").submit();
+ 	});
+</script>
+</div>
 </body>
 </html>
+
