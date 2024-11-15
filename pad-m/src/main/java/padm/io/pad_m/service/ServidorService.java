@@ -20,6 +20,10 @@ public class ServidorService {
 		return servidorRepository.findAll();
 	}
 
+	public Optional<List<Servidor>> findAllBySetor(Integer idSetor) {
+		return servidorRepository.findAllBySetor(idSetor);
+	}
+
 	public Optional<Servidor> findById(Integer id) {
 		return servidorRepository.findById(id);
 	}

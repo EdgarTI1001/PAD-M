@@ -20,10 +20,14 @@ public class UsuarioService {
 		return usuariorepo.findAll();
 	}
 
+	public Optional<List<Usuario>> findAllBySetor(Integer idSetor) {
+		return usuariorepo.findAllBySetor(idSetor);
+	}
+
 	public Optional<Usuario> findById(Integer id) {
 		return usuariorepo.findById(id);
 	}
-	
+
 	public Optional<Usuario> findByNickName(String email) {
 		return usuariorepo.findByNickName(email);
 	}

@@ -24,6 +24,10 @@ public class AtendenteService {
 		return atendenteRepository.findById(id);
 	}
 
+	public Optional<Atendente> findAByIdUsuario(Integer idUsuario) {
+		return atendenteRepository.findAByIdUsuario(idUsuario);
+	}
+
 	@Transactional
 	public void save(Atendente obj) {
 		atendenteRepository.save(obj);

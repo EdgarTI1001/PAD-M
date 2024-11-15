@@ -68,6 +68,11 @@ public class UsuarioRestController {
 	public ResponseEntity<List<Usuario>> findAll() {
 		return ResponseEntity.ok(usuarioService.findAll());
 	}
+	
+	@GetMapping("/setor/idSetor")
+	public ResponseEntity<List<Usuario>> findAllBySetor(@PathVariable("idSetor") Integer idSetor) {
+		return ResponseEntity.ok(usuarioService.findAllBySetor(idSetor).get());
+	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Usuario> findById(@PathVariable("id") Integer id) {		
@@ -94,8 +99,7 @@ public class UsuarioRestController {
 	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
-		Optional<Usuario> user = usuarioService.findById(id);	
-		System.out.println(upload+"\\"+user.get().getImage());
+		Optional<Usuario> user = usuarioService.findById(id);			
 		File fileToDelete = new File(upload+"\\"+user.get().getImage());
 	      fileToDelete.delete();
 	    
