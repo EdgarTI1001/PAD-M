@@ -139,6 +139,10 @@ public class ProcessoController {
 		processoService.save(processo);
 		model.addAttribute("processo", processo);
 		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
+		Doc doc = new Doc();
+		
+		
+		model.addAttribute("doc", doc);
 		model.addAttribute("documentos", docs);
 		return "form/frmProcesso3";
 	}
