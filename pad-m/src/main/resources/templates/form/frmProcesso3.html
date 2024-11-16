@@ -1,264 +1,134 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Processo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tinymce.init({
+                selector: '#conteudo',  // Aplica ao campo de textarea com id 'conteudo'
+                language: 'pt_BR',
+                browser_spellcheck: true,  // Ativa o corretor ortográfico do navegador
+                contextmenu: false,  // Desativa o menu de contexto
+                plugins: [
+                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                ],
+                toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
+                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+            });
+        });
 
-    <!-- Bootstrap e ícones -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Estilos personalizados -->
+        // Função para validar o formulário antes do envio
+        function validateForm() {
+            // Sincroniza o conteúdo do TinyMCE com o campo de texto
+            tinymce.triggerSave();
+
+            // Validação do campo 'conteudo' (textarea)
+            var conteudoField = document.getElementById('conteudo');
+            if (!conteudoField.checkValidity()) {
+                conteudoField.setCustomValidity('Por favor, preencha o conteúdo.');
+                conteudoField.reportValidity();  // Exibe a mensagem personalizada
+                return false;  // Impede o envio
+            } else {
+                conteudoField.setCustomValidity('');  // Limpa a mensagem se estiver válido
+            }
+
+            // Validação do campo 'nomdoc' (nome do documento)
+            var nomdocField = document.getElementById('nomdoc');
+            if (!nomdocField.checkValidity()) {
+                nomdocField.setCustomValidity('Por favor, preencha o nome do documento.');
+                nomdocField.reportValidity();  // Exibe a mensagem personalizada
+                return false;  // Impede o envio
+            } else {
+                nomdocField.setCustomValidity('');  // Limpa a mensagem se estiver válido
+            }
+
+            // Se todos os campos estão válidos, permite o envio
+            return true;
+        }
+
+        // Função para definir o flag (salvar rascunho ou criar arquivo)
+        function setFlag(value) {
+            document.getElementById("flag").value = value;
+        }
+
+        // Função para "Criar Novo Documento"
+        function criarDocumento() {
+            document.getElementById("editor-container").style.display = "block"; // Exibe o editor
+            tinymce.get("conteudo").setContent(''); // Limpa o conteúdo do editor
+            document.getElementById("flag").value = 0; // Define o valor de "flag" para novo documento
+        }
+    </script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            min-height: 100vh;
-        }
-
         .card {
-            width: 100%;
-            max-width: 1500px;
+            border: none;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
             overflow: hidden;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .card-header {
-            background-color: #00537d;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .form-label {
-            font-weight: 600;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
-        }
-
-        .spinner {
-            margin-left: 10px;
-            display: none;
-        }
-
-        .form-footer {
-            display: flex;
-            justify-content: flex-end;
-            padding-top: 15px;
-        }
-
-        .stepper-wrapper {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .stepper-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stepper-item .step-counter {
-            display: block;
-            background-color: #00537d;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin: 0 auto;
-        }
-
-        .stepper-item.completed .step-counter {
-            background-color: #28a745;
-        }
-
-        .stepper-item .step-name {
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        /* Modal */
-        .breadcrumb-item a {
-            color: black;
-        }
-
-        .breadcrumb-item a:hover {
-            text-decoration: none;
-        }
-
-        .breadcrumb {
+            transition: transform 0.3s;
+            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
             margin-bottom: 20px;
+            margin-top: 75px;
+        }
+        .card:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
-
 <body>
     <section layout:fragment="content">
-        <br>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a th:href="@{/processos}">
-                        <i class="bi bi-house-fill" style="color: black;"></i>
-                    </a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="#" data-toggle="modal" data-target="#helpModal">
-                        <i class="bi bi-question-circle" style="color: black;"></i>
-                    </a>
-                </li>
-            </ol>
-        </nav>
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header" style="background-color: #00537d; color: white;">
+                    <h5>
+                        <span class="badge text-bg-secondary">
+                            <i class="bi bi-upload"></i> 
+                            <span th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
+                        </span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div th:if="${alertMessage}" th:classappend="'alert-' + ${alertMessage.type}" class="alert alert-dismissible fade" role="alert">
+                        <span th:text="${alertMessage.message}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
-        <div class="card">
-            <div class="card-header">Cadastro de Processo</div>
-            <div class="card-body">
-                <form th:action="@{/processos/save}" th:object="${processo}" method="post" class="row g-3" id="frm">
-                    <!-- Campos ocultos -->
-                    <input type="hidden" th:field="${processo.assunto}">
-                    <input type="hidden" th:field="${processo.numproc}">
-                    <input type="hidden" th:field="${processo.numanoproc}">
-                    <input type="hidden" th:field="${processo.tipo}">
-                    <input type="hidden" th:field="${processo.setorcriadorId}">
-                    <input type="hidden" th:field="${processo.usucriadorId}">
-                    <input type="hidden" th:field="${processo.ano}">
-                    <input type="hidden" th:field="${processo.classificacao}">
-                    <input type="hidden" th:field="${processo.classId}">
-                    <input type="hidden" id="processo" th:field="${processo.id}">
-                    <input type="hidden" id="classif" th:field="${processo.classificacao}">
+                    <!-- Formulário para Criar ou Editar Documento -->
+                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
+                        <input type="hidden" th:field="*{id}" />
 
-                    <!-- Etapas do Processo -->
-                    <div class="mb-4 p-3">
-                        <div class="stepper-wrapper">
-                            <div class="stepper-item completed">
-                                <div class="step-counter">1</div>
-                                <div class="step-name">Criando Processo</div>
-                            </div>
-                            <div class="stepper-item completed">
-                                <div class="step-counter">2</div>
-                                <div class="step-name">Classificação do Processo</div>
-                            </div>
-                            <div class="stepper-item completed">
-                                <div class="step-counter">3</div>
-                                <div class="step-name">Finalizar</div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="nomdoc" class="form-label">Nome do Documento</label>
+                            <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
                         </div>
-                    </div>
+                        
+                              <div class="mb-3">
+                            <label for="fileUpload" class="form-label">Upload de Documento</label>
+                            <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
+                        </div>
 
-                    <!-- Formulário -->
-                    <div class="col-6 mb-3">
-                        <label for="documento" class="form-label">Anexar Documento</label>
-                        <select id="documento" class="form-select form-select-sm">
-                            <option th:text="${'Selecione o Documento'}" th:value="${'0'}"></option>
-                            <option th:each="doc : ${documentos}" th:text="${doc.nomdoc}" th:value="${doc.id}"></option>
-                        </select>
-                    </div>
+                        <input type="hidden" th:field="*{flag}" id="flag">
 
-                    <div class="col-6 mb-3">
-                        <label for="observacao" class="form-label">Observação do Processo</label>
-                        <input type="text" id="obs" class="form-control form-control-sm" th:field="*{obs}" placeholder="Observação">
-                    </div>
+                        <div class="mb-3">
+                            <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
+                        </div>
 
-                    <!-- Botão de Envio -->
-                    <div class="col-12 form-footer">
-                        <button type="button" class="btn btn-primary btn-sm rounded-pill buttonload" id="salvar">
-                            Salvar 
-                        </button>
-                    </div>
-                </form>
-
-                <!-- Documentos anexados -->
-                <br>
-                <label>Documentos</label>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbdocumentos"></tbody>
-                </table>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
+                            <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)">Criar Arquivo</button>
+                            <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Modal de Ajuda -->
-    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="helpModalLabel">Ajuda</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">teste de texto</div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->  
-    <div layout:fragment="jscript">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script type="text/javascript">
-        
-        $("#loader").show();
-        $(".fa").hide();
-
-        $(document).ready(function() {
-            $("#loader").hide();
-        });
-
-        
-        $('#salvar').on('click', function() {
-            $(this).prop("disabled", true);
-            $(".fa").show();
-            $("#frm").submit();
-        });
-
-        
-        $("#documento").change(function() {
-            $("#loader").show();
-            addDocumeento();
-        });
-
-  
-        function getDocumentos(processo) {
-            var table = "";
-            $('#tbdocumentos').empty();
-            $.getJSON(URL + "/processosDocumentos/getAllByProcessos/" + processo, function(data) {
-                $.each(data, function(index, value) {
-                    table += '<tr id="tr' + value.id + '">';
-                    table += '<td>' + value.documento + '</td>';
-                    table += '<td><a href="#" onclick="delDoc(' + value.id + ')">Excluir</a></td>';
-                    table += '</tr>';
-                });
-                $("#tbdocumentos").html(table);
-            });
-            $("#loader").hide();
-        }
-    </script>
+    <!-- Botão para Criar Novo Documento -->
+    <div class="container mt-3">
+        <button type="button" class="btn btn-primary" id="criarDocumentoBtn" onclick="criarDocumento()">Upar / Criar Novo Documento</button>
     </div>
 </body>
 </html>
