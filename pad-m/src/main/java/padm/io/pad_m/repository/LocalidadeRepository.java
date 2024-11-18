@@ -10,7 +10,6 @@ import padm.io.pad_m.domain.Localidade;
 
 public interface LocalidadeRepository extends JpaRepository<Localidade, Integer> {
 		
-	@Query("SELECT l FROM Localidade l WHERE l.orgaoid.id =:idOrgao ORDER BY l.nome ")
-	List<Localidade> findAllByIdOrgao(@Param("idOrgao") Integer idOrgao);
+	
 	
 }

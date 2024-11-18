@@ -13,10 +13,11 @@ public interface SetorRepository extends JpaRepository<Setor, Integer> {
 
 	@Query(value = "SELECT s FROM Setor s WHERE s.unidadelotacaoid = :unidade ORDER BY nome")
 	Optional<Setor> findSetorByUnidade(@Param("unidade") Integer unidade);
-
+	/*
 	@Query("SELECT s FROM Setor s  WHERE s.orgaoid.id =:idOrgao AND s.localidadeid.id =:idLocalidade AND s.unidadelotacaoid =:idUnidade order by s.nome")
 	List<Setor> findAllByIdOrgaoAndIdLocalidadeAndUnidade(@Param("idOrgao") Integer idOrgao,
 			@Param("idLocalidade") Integer idLocalidade, @Param("idUnidade") Integer idUnidade);
+	*/
 
 	@Query("SELECT s FROM Setor s order by s.nome")
 	List<Setor> findAll();

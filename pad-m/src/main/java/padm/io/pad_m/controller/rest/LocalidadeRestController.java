@@ -30,9 +30,4 @@ public class LocalidadeRestController {
 	}
 	
 
-	@GetMapping("/orgao/{idOrgao}")
-	public ResponseEntity<List<Localidade>> findAllByIdOrgao(@PathVariable("idOrgao") Integer idOrgao) {		
-		return ResponseEntity.ok(localidadeService.findAllByIdOrgao(idOrgao));
-	}
-
 }

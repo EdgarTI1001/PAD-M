@@ -150,6 +150,7 @@
           <div class="row mb-1">
             <div class="col-md-6">
                 <form action=""  method="get" class="row g-3" id="frm">
+                <input type="hidden" th:value="${setor}" id="idSetor">
                  <select id="tipagem"  class="form-select form-select-sm" name="tipagem">           			
            			 <option th:text="${'Selecione '}" th:value="${'0'}"></option>  
            			 <option th:text="${'Tramitados no Setor'}" th:value="${'1'}"></option>  
@@ -201,8 +202,8 @@
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
-                                    	<a class="btn btn-sm btn-primary" href="#" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
-                                           Indicar
+                                    	<a class="btn btn-sm btn-primary" href="#" th:id="'indicarProcesso' + ${rs.id}" role="button"  th:data-record-numano="${rs.numanoproc}" th:data-record-id="${rs.id}" title="Indicar para Atendimento">
+                                           <i class="fa fa-hand-o-right" aria-hidden="true"></i> Indicar
                                         </a>
                                         
                                         <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
@@ -253,6 +254,31 @@
         </div>
 
 
+
+<!-- Modal -->
+<div class="modal fade" id="modalIndicarprocesso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-5"  > Processo <span class="badge text-bg-secondary" id="modalNumProcesso"></span> </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <input type="hidden" id="modalNumProcessoInput">
+       			<label>Selecione a indicação para esse processo:</label>
+       		     <select id="indicacao"  class="form-select form-select-sm">           			
+           			            
+       			 </select>	
+       			 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Fechar</button>      
+        <button type="button" class="btn btn-success btn-sm" id="salvarIndicacao">Salvar</button>     
+      </div>
+    </div>
+  </div>
+</div>
+
     </section>
    <div layout:fragment="jscript">
    <script>
@@ -262,6 +288,59 @@
     $("[id*='tramitarProcesso']").click(function(event){
         $("#loader").show(); 
     });
+    
+    $("[id*='indicarProcesso']").click(function(event){
+    	 $("#loader").show();  
+    	  event.preventDefault();
+          var data = $(event.delegateTarget).data();
+          var id = data.recordId;
+          var numano =  data.recordNumano;
+          var idSetor = $("#idSetor").val();
+          $("#indicacao option").remove();        
+          $.ajax({
+              url: URL + "usuarios/setor/"+idSetor,
+              method: "GET",
+          }).done(function(data) { 
+        	  $('#indicacao').append($('<option>', {value: 0, text : "Selecione..." }));            
+              $.each( data, function( index, rs ){                        
+                 
+                 $('#indicacao').append($('<option>', { 
+   			        value: rs.id,
+   			        text : rs.nome
+   			    }));
+                 
+              });                     			
+            
+            
+              $("#loader").hide(); 
+          });
+          
+          $("#modalNumProcesso").text(numano);
+          $("#modalNumProcessoInput").val(id);
+          
+          $('#modalIndicarprocesso').modal('show');
+    });
+
+    
+    $("#salvarIndicacao").click(function(event){           	   
+        event.preventDefault();
+        var data = $(event.delegateTarget).data();
+        var id = data.recordId;
+        var numano =  data.recordNumano;
+		var idProcesso = $("#modalNumProcessoInput").val();
+       
+        $("#loader").show();  
+        $.ajax({
+            url: URL + "eventos/processo/"+id,
+            method: "GET",
+        }).done(function(data) {        
+                            			
+
+ 
+         
+            $("#loader").hide(); 
+        });
+    }); 
     
     
     $("[id*='tramite']").click(function(event){           	   
@@ -288,7 +367,10 @@
             $('#staticBackdrop').modal('show');
             $("#loader").hide(); 
         });
-    }); 
+    });
+    
+    
+
     
     $("#tipagem").change(function(){
        	 $("#loader").show(); 

@@ -39,11 +39,12 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "setcriador_id")
 	private Setor setorcriadorId;
-
+	
+	/*
 	@ManyToOne
 	@JoinColumn(name = "evento_id")
 	private Evento eventoId;
-
+	*/
 	@ManyToOne
 	@JoinColumn(name = "fase_id")
 	private Fase faseId;
@@ -107,7 +108,7 @@ public class Processo {
 	}
 
 	public Processo(Integer id, String numproc, TipoProcesso tipo, Integer ano, String numanoproc, String assunto,
-			Doc documento, Evento eventoId, int classId, String classificacao, Fase faseId, int rotuloId,
+			Doc documento, int classId, String classificacao, Fase faseId, int rotuloId,
 			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
 			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
 			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexado_id, String motivoanexo,
@@ -119,8 +120,7 @@ public class Processo {
 		this.ano = ano;
 		this.numanoproc = numanoproc;
 		this.assunto = assunto;
-		this.documento = documento;
-		this.eventoId = eventoId;
+		this.documento = documento;		
 		this.classId = classId;
 		this.classificacao = classificacao;
 		this.faseId = faseId;
@@ -405,14 +405,7 @@ public class Processo {
 		this.documento = documento;
 	}
 
-	public Evento getEventoId() {
-		return eventoId;
-	}
-
-	public void setEventoId(Evento eventoId) {
-		this.eventoId = eventoId;
-	}
-
+	
 	public Fase getFaseId() {
 		return faseId;
 	}
@@ -421,20 +414,6 @@ public class Processo {
 		this.faseId = faseId;
 	}
 
-	@Override
-	public String toString() {
-		return "Processo [id=" + id + ", numproc=" + numproc + ", tipo=" + tipo + ", ano=" + ano + ", numanoproc="
-				+ numanoproc + ", assunto=" + assunto + ", documento=" + documento + ", setorcriadorId="
-				+ setorcriadorId + ", eventoId=" + eventoId + ", faseId=" + faseId + ", interessadoId=" + interessadoId
-				+ ", minutaId=" + minutaId + ", lembreteId=" + lembreteId + ", sigiloId=" + sigiloId + ", classId="
-				+ classId + ", classificacao=" + classificacao + ", rotuloId=" + rotuloId + ", usucriadorId="
-				+ usucriadorId + ", datacriacao=" + datacriacao + ", procapensadoId=" + procapensadoId
-				+ ", flagapensoId=" + flagapensoId + ", motivoapenso=" + motivoapenso + ", procapensoprincId="
-				+ procapensoprincId + ", motivoapensoprinc=" + motivoapensoprinc + ", procanexado_id=" + procanexado_id
-				+ ", flaganexado_id=" + flaganexado_id + ", motivoanexo=" + motivoanexo + ", procanexoprincId="
-				+ procanexoprincId + ", flaganexoprincId=" + flaganexoprincId + ", motivoanexoprinc=" + motivoanexoprinc
-				+ ", data=" + data + ", obs=" + obs + ", seq=" + seq + ", flag=" + flag + "]";
-	}
 
 	@Override
 	public int hashCode() {

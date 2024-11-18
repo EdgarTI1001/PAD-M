@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,12 +13,12 @@ import javax.persistence.Table;
 public class Localidade {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@ManyToOne
-	@JoinColumn(name = "orgaoid")
-	private Orgao orgaoid;
+	
+	// @ManyToOne
+	// @JoinColumn(name = "orgaoid")
+	// private Orgao orgaoid;
 
 	private String nome;
 
@@ -42,11 +40,10 @@ public class Localidade {
 
 	}
 
-	public Localidade(Integer id, Orgao orgaoid, String nome, String descricao, String segmento, String sigla,
+	public Localidade(Integer id, String nome, String descricao, String segmento, String sigla,
 			String obs, int seq, int flag, int placed) {
 		super();
-		this.id = id;
-		this.orgaoid = orgaoid;
+		this.id = id;		
 		this.nome = nome;
 		this.descricao = descricao;
 		this.segmento = segmento;
@@ -63,14 +60,6 @@ public class Localidade {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Orgao getOrgaoid() {
-		return orgaoid;
-	}
-
-	public void setOrgaoid(Orgao orgaoid) {
-		this.orgaoid = orgaoid;
 	}
 
 	public String getNome() {

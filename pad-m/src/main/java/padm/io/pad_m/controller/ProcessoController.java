@@ -82,7 +82,8 @@ public class ProcessoController {
 				processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());				
 			}
 		}
-		mv.addObject("processos", processos);		
+		mv.addObject("processos", processos);	
+		mv.addObject("setor", session.getUsuario().getLotacao_id().getId());	
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}

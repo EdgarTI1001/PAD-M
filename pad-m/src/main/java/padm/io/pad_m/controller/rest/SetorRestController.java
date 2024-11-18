@@ -29,11 +29,11 @@ public class SetorRestController {
 		return ResponseEntity.ok(setor);
 	}
 	
-	
-	@GetMapping("/orgao/{idOrgao}/localidade/{idLocalidade}/unidade/{idUnidade}")
-	public ResponseEntity<List<Setor>> findByOrgaoLocalidadeUnidade(@PathVariable("idOrgao") Integer idOrgao, @PathVariable("idLocalidade") Integer idLocalidade, 
-			 @PathVariable("idUnidade") Integer idUnidade) {				
-		return ResponseEntity.ok( setorService.findAllByIdOrgaoAndIdLocalidadeAndUnidade(idOrgao,idLocalidade,idUnidade));
-	}
-
+	/*
+		@GetMapping("/orgao/{idOrgao}/localidade/{idLocalidade}/unidade/{idUnidade}")
+		public ResponseEntity<List<Setor>> findByOrgaoLocalidadeUnidade(@PathVariable("idOrgao") Integer idOrgao, @PathVariable("idLocalidade") Integer idLocalidade, 
+				 @PathVariable("idUnidade") Integer idUnidade) {				
+			return ResponseEntity.ok( setorService.findAllByIdOrgaoAndIdLocalidadeAndUnidade(idOrgao,idLocalidade,idUnidade));
+		}
+	 */
 }

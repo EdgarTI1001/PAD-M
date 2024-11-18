@@ -69,8 +69,8 @@ public class UsuarioRestController {
 		return ResponseEntity.ok(usuarioService.findAll());
 	}
 	
-	@GetMapping("/setor/idSetor")
-	public ResponseEntity<List<Usuario>> findAllBySetor(@PathVariable("idSetor") Integer idSetor) {
+	@GetMapping("/setor/{idSetor}")
+	public ResponseEntity<List<Usuario>> findAllBySetor(@PathVariable("idSetor") Integer idSetor) {		
 		return ResponseEntity.ok(usuarioService.findAllBySetor(idSetor).get());
 	}
 

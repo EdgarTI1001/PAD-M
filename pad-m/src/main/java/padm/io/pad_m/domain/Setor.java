@@ -19,14 +19,15 @@ public class Setor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@ManyToOne
-	@JoinColumn(name = "orgaoid")
-	private Orgao orgaoid;
-
-	@ManyToOne
-	@JoinColumn(name = "localidadeid")
-	private Localidade localidadeid;
-
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "orgaoid") private Orgao orgaoid;
+	 * 
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "localidadeid") private Localidade localidadeid;
+	 */
 	private int unidadelotacaoid;
 
 	private String nome;
@@ -45,10 +46,11 @@ public class Setor {
 
 	private int moderadorId;
 
-	@ManyToOne
-	@JoinColumn(name = "gestor_id")
-	private Gestor gestorId;
-
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "gestor_id") private Gestor gestorId;
+	 */
 	private String obs;
 
 	private int seq;
@@ -60,13 +62,10 @@ public class Setor {
 	public Setor() {
 	}
 
-	public Setor(Integer id, Orgao orgaoid, Localidade localidadeid, int unidadelotacaoid, String nome,
-			String descricao, String segmento, String sigla, int usercriadorId, LocalDateTime datacriacao,
-			int responsavelId, int moderadorId, Gestor gestorId, String obs, int seq, int flag,
-			int placed) {
+	public Setor(Integer id, int unidadelotacaoid, String nome, String descricao, String segmento, String sigla,
+			int usercriadorId, LocalDateTime datacriacao, int responsavelId, int moderadorId, String obs, int seq,
+			int flag, int placed) {
 		this.id = id;
-		this.orgaoid = orgaoid;
-		this.localidadeid = localidadeid;
 		this.unidadelotacaoid = unidadelotacaoid;
 		this.nome = nome;
 		this.descricao = descricao;
@@ -74,9 +73,8 @@ public class Setor {
 		this.sigla = sigla;
 		this.usercriadorId = usercriadorId;
 		this.datacriacao = datacriacao;
-		this.responsavelId = responsavelId;		
+		this.responsavelId = responsavelId;
 		this.moderadorId = moderadorId;
-		this.gestorId = gestorId;
 		this.obs = obs;
 		this.seq = seq;
 		this.flag = flag;
@@ -89,22 +87,6 @@ public class Setor {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Orgao getOrgaoid() {
-		return orgaoid;
-	}
-
-	public void setOrgaoid(Orgao orgaoid) {
-		this.orgaoid = orgaoid;
-	}
-
-	public Localidade getLocalidadeid() {
-		return localidadeid;
-	}
-
-	public void setLocalidadeid(Localidade localidadeid) {
-		this.localidadeid = localidadeid;
 	}
 
 	public int getUnidadelotacaoid() {
@@ -163,21 +145,12 @@ public class Setor {
 		this.responsavelId = responsavelId;
 	}
 
-	
 	public int getModeradorId() {
 		return moderadorId;
 	}
 
 	public void setModeradorId(int moderadorId) {
 		this.moderadorId = moderadorId;
-	}
-
-	public Gestor getGestorId() {
-		return gestorId;
-	}
-
-	public void setGestorId(Gestor gestorId) {
-		this.gestorId = gestorId;
 	}
 
 	public String getObs() {

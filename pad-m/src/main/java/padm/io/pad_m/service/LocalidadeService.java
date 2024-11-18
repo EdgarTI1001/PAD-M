@@ -23,11 +23,6 @@ public class LocalidadeService {
 	public Optional<Localidade> findById(Integer id) {
 		return localidadeRepository.findById(id);
 	}
-	
-	public List<Localidade> findAllByIdOrgao(Integer id) {
-		return localidadeRepository.findAllByIdOrgao(id);
-	}
-	
 
 	@Transactional
 	public void save(Localidade obj) {
