@@ -47,6 +47,12 @@ public class TramiteService {
 	public long countProcessosEmEsperaBySetor(Integer idsetor) {
 		return tramiteRepo.countProcessosEmEsperaBySetor(idsetor);
 	}
+	
+	public long countProcessosParaAtenderByServidor(Integer idUsuario) {
+		return tramiteRepo.countProcessosParaAtenderByServidor(idUsuario);
+	}
+	
+	
 
 	@Transactional
 	public void save(Tramite obj) {

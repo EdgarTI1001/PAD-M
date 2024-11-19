@@ -47,7 +47,8 @@ public class AppController {
 		long emEspera =  tramiteService.countProcessosEmEsperaBySetor(session.getUsuario().getLotacao_id().getId());		
 		String path = upload.substring(0, 11);		
 		model.addAttribute("upload", path);
-		model.addAttribute("emEspera", emEspera);
+		model.addAttribute("emEspera", emEspera);		
+		model.addAttribute("paraAtender", tramiteService.countProcessosParaAtenderByServidor(session.getUsuario().getId()));
 		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id().getId()));
 		model.addAttribute("activePage", "mnuMeuRegistro");
 	

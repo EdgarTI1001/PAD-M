@@ -75,6 +75,7 @@ public class ProcessoController {
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
 		ModelAndView mv = new ModelAndView("consulta/processos");		
 		List<Processo> processos = new ArrayList<Processo>();
+		System.out.println(session.getUsuario().getLotacao_id().getId());
 		if(tipagem.isPresent()){			
 			if(tipagem.get() == 1){
 				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());				

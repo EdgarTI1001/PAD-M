@@ -25,5 +25,8 @@ public interface TramiteRepository extends JpaRepository<Tramite, Integer> {
 
 	@Query("SELECT COUNT(t) FROM Tramite t WHERE t.setordestino.id = :idSetor AND t.datasaida IS NULL")
 	long countProcessosEmEsperaBySetor(@Param("idSetor") Integer category);
+	
+	@Query("SELECT COUNT(t) FROM Tramite t WHERE t.responsavelId.id = :idUsuario AND t.datasaida IS NULL")
+	long countProcessosParaAtenderByServidor(@Param("idUsuario") Integer idUsuario);
 
 }
