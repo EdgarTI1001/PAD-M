@@ -328,17 +328,20 @@
         var id = data.recordId;
         var numano =  data.recordNumano;
 		var idProcesso = $("#modalNumProcessoInput").val();
-       
+        var indicacao = $("#indicacao").val()
         $("#loader").show();  
         $.ajax({
-            url: URL + "eventos/processo/"+id,
+            url: URL + "tramites/processo/id/"+idProcesso+"/responsavel/"+indicacao,
             method: "GET",
-        }).done(function(data) {        
-                            			
-
+        }).done(function(data) {    
+        	if(data.ret == 1)
+        		swal("Sucesso", data.mensagem, data.type)		
+			else
+				swal("Error", data.mensagem, data.type)	
  
          
             $("#loader").hide(); 
+        	$('#modalIndicarprocesso').modal('hide');
         });
     }); 
     

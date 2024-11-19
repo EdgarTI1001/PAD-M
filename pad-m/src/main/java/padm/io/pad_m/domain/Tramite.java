@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -61,7 +60,9 @@ public class Tramite {
 	private Integer qtdDiasResposta;// Quantidade de dias que o ususario espera uma resposta de um processo
 									// tramitado
 
-	private int responsavelId;
+	@ManyToOne
+	@JoinColumn(name = "responsavel_id")
+	private Usuario responsavelId;
 
 	@ManyToOne
 	@JoinColumn(name = "atendente_id")
@@ -118,7 +119,7 @@ public class Tramite {
 	public Tramite(Integer id, String tipo, Setor setororigem, Setor setorcriador, int localtramite, Setor setordestino,
 			LocalDateTime datachegada, LocalDateTime datasaida, LocalDateTime datacheck,
 			LocalDateTime datavencimentoresposta, Processo procId, Usuario userId, int usercriadorId,
-			Integer qtdDiasResposta, int responsavelId, Atendente atendenteId, Moderador moderadorId, Gestor gestorId,
+			Integer qtdDiasResposta, Usuario responsavelId, Atendente atendenteId, Moderador moderadorId, Gestor gestorId,
 			String tramitacao, int finalidadeId, String finalidade, LocalDateTime datadesarquivamento,
 			LocalDateTime dataarquivamento, String obs, Sigilo sigiloId, String visibilidade, int recebimento,
 			LocalDateTime datarecebimento, int espera, LocalDateTime datainicioespera, LocalDateTime datafimespera,
@@ -240,11 +241,11 @@ public class Tramite {
 		this.usercriadorId = usercriadorId;
 	}
 
-	public int getResponsavelId() {
+	public Usuario getResponsavelId() {
 		return responsavelId;
 	}
 
-	public void setResponsavelId(int responsavelId) {
+	public void setResponsavelId(Usuario responsavelId) {
 		this.responsavelId = responsavelId;
 	}
 

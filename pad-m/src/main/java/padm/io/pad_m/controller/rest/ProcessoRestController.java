@@ -33,7 +33,7 @@ public class ProcessoRestController {
 		return ResponseEntity.ok(processo);
 	}
 
-	@GetMapping("/tramitadosSetor/{idSetor}")
+	@GetMapping("/tramitadosSetor/{idSetor}/atendente/{idUsuario}")
 	public ResponseEntity<List<Processo>> findAllTramitadosBySetor(@PathVariable("idSetor") Integer idSetor) {
 		return ResponseEntity.ok(processoService.findAllTramitadosBySetor(idSetor));
 	}

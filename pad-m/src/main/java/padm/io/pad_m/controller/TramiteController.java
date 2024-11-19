@@ -111,10 +111,10 @@ public class TramiteController {
 			}
 			
 			
-			tramite.setTipo("TIPO");
+			tramite.setTipo(tramite.getProcId().getTipo().getDescricao());
 			
-			tramite.setSetororigem(setorService.findById(session.getUsuario().getLotacao_id().getId()).get() ); 
-			tramite.setSetorcriador(setorService.findById( tramite.getProcId().getSetorcriadorId().getId()).get());			
+			tramite.setSetororigem(session.getUsuario().getLotacao_id()); 
+			tramite.setSetorcriador(session.getUsuario().getLotacao_id());			
 			tramite.setLocaltramite(session.getUsuario().getLotacao_id().getId());
 			
 			tramite.setDatachegada(LocalDateTime.now());			
@@ -123,24 +123,21 @@ public class TramiteController {
 			tramite.setDatavencimentoresposta(LocalDateTime.now().plusDays(tramite.getQtdDiasResposta())); 
 			
 			tramite.setUserId(session.getUsuario());
-			tramite.setUsercriadorId(session.getUsuario().getId());
-			tramite.setResponsavelId(session.getUsuario().getId());
+			tramite.setUsercriadorId(session.getUsuario().getId());			
 			
-			tramite.setAtendenteId(atendenteService.findById(1).get());
-			tramite.setModeradorId(moderadorService.findById(1).get());
-			tramite.setGestorId(gestorService.findById(1).get());
+			tramite.setAtendenteId(null);
+			tramite.setModeradorId(null);
+			tramite.setGestorId(null);
 			
 			
 			tramite.setTramitacao("Processo: " +tramite.getProcId().getNumanoproc() + " - " + tramite.getProcId().getAssunto() + " Recebido no Setor " + 
-					tramite.getSetordestino().getNome() + " Em " + parser.format(LocalDateTime.now()) );
-			tramite.setFinalidadeId(finalidadeService.findById(1).get().getId());
-			
+					tramite.getSetordestino().getNome() + " Em " + parser.format(LocalDateTime.now()) );			
 			
 			tramite.setDataarquivamento(null);
 			tramite.setDatadesarquivamento(null);
 			tramite.setSigiloId(sigiloService.findById(1).get());
 			
-			tramite.setVisibilidade("Publico");
+			tramite.setVisibilidade(tramite.getProcId().getSigiloId().getVisibilidade());
 			tramite.setRecebimento(1);
 			tramite.setDatarecebimento(LocalDateTime.now());		
 				
@@ -160,7 +157,7 @@ public class TramiteController {
 			novoEvento.setDatachegada(LocalDateTime.now());
 			novoEvento.setDataevento(LocalDateTime.now());
 			novoEvento.setDatainicio(LocalDateTime.now());
-			novoEvento.setProc_id(processoService.findById(tramite.getProcId().getId()).get());
+			novoEvento.setProc_id(tramite.getProcId());
 			novoEvento.setDoc_id(tramite.getProcId().getDocumento());
 			novoEvento.setTipo_id(tipoEventoService.findById(1).get());
 			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + " Enviou Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()

@@ -11,8 +11,8 @@ import padm.io.pad_m.domain.Tramite;
 
 public interface TramiteRepository extends JpaRepository<Tramite, Integer> {
 
-	@Query(value = "SELECT * FROM tbtramite WHERE proc_id = :idProcesso ORDER BY id DESC LIMIT 1", nativeQuery = true)
-	Tramite findFirstByProcessoId(@Param("idProcesso") Integer idProcesso);
+	//@Query(value = "SELECT * FROM tbtramite WHERE proc_id =:idProcesso ORDER BY id DESC", nativeQuery = true)
+	Tramite findFirstByProcId_id(@Param("idProcesso") Integer idProcesso);
 
 	@Query(value = "SELECT * FROM tbtramite WHERE proc_id = :idProcesso ORDER BY id DESC", nativeQuery = true)
 	List<Tramite> findAllByIdProcesso(@Param("idProcesso") Integer idProcesso);
