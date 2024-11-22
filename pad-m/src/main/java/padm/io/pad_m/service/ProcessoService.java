@@ -32,6 +32,10 @@ public class ProcessoService {
 		return processoRepository.findAllTramitadosBySetor(idSetor);
 	}
 
+	public List<Processo> findAllArquivadosBySetor(Integer idSetor) {
+		return processoRepository.findAllArquivadosBySetor(idSetor);
+	}
+
 	public List<Processo> findAllByUserCriador(Integer id) {
 		return processoRepository.findAllByUserCriador(id);
 	}

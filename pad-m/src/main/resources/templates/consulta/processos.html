@@ -153,8 +153,9 @@
                 <input type="hidden" th:value="${setor}" id="idSetor">
                  <select id="tipagem"  class="form-select form-select-sm" name="tipagem">           			
            			 <option th:text="${'Selecione '}" th:value="${'0'}"></option>  
-           			 <option th:text="${'Tramitados no Setor'}" th:value="${'1'}"></option>  
-           			 <option th:text="${'Não Tramitados no Setor'}" th:value="${'2'}"></option>                      
+           			 <option th:text="${'Tramitados para Setor'}" th:value="${'1'}"></option>  
+           			 <option th:text="${'Não Tramitados no Setor'}" th:value="${'2'}"></option>  
+           			 <option th:text="${'Arquivados'}" th:value="${'3'}"></option>                      
        			 </select>	
        			 </form>
             </div>      
@@ -209,11 +210,17 @@
                                         <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
-                                        
-                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
-                                            arquivar
-                                        </a>
-                                        
+                                        <span th:if="${rs.arquivado == 0}">
+	                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Arquivar Processo">
+	                                            arquivar
+	                                        </a>
+                                        </span>
+                                         <span th:unless="${rs.arquivado == 0}">                                         
+                                         	<a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Arquivar Processo">
+	                                            desarquivar
+	                                        </a>
+                                         </span>
+                                         
                                     </td>
                                 </tr>
                             </tbody>
@@ -320,6 +327,44 @@
           
           $('#modalIndicarprocesso').modal('show');
     });
+    
+    
+    $("[id*='arquivarProcesso']").click(function(event){   	
+   	     event.preventDefault();
+         var data = $(event.delegateTarget).data();
+         var id = data.recordId;
+         var numano =  data.recordNumano;
+         var idSetor = $("#idSetor").val();       
+         
+         swal({
+             title: 'Atenção!',
+             text: "Deseja Arquivar Processo?",
+             icon: 'warning',
+             buttons: [true, "Sim!"]
+         }).then((result) => {
+             if (result) {
+           	  $("#loader").show();        
+           
+              $.ajax({
+                  url: URL + "tramites/processo/arquivar/"+id,
+                  method: "GET",
+              }).done(function(data) {              
+                  $("#loader").hide(); 
+                  swal("Sucesso", data.mensagem, data.type)	
+              });
+              
+              
+           	         
+               
+             }
+         })
+         
+         
+         
+ 
+        
+   });
+
 
     
     $("#salvarIndicacao").click(function(event){           	   

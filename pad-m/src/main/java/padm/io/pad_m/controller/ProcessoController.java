@@ -74,8 +74,7 @@ public class ProcessoController {
 	@GetMapping
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
 		ModelAndView mv = new ModelAndView("consulta/processos");		
-		List<Processo> processos = new ArrayList<Processo>();
-		System.out.println(session.getUsuario().getLotacao_id().getId());
+		List<Processo> processos = new ArrayList<Processo>();		
 		if(tipagem.isPresent()){			
 			if(tipagem.get() == 1){
 				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());				
@@ -105,6 +104,8 @@ public class ProcessoController {
 		processo.setSetorcriadorId(setor.get());
 		processo.setDatacriacao(LocalDateTime.now());
 		processo.setFlaganexoprincId(0);
+		processo.setTramitado(0);
+		processo.setArquivado(0);
 		int ano = Year.now().getValue();
 		processo.setAno(ano);
 		processoService.save(processo);
@@ -163,7 +164,7 @@ public class ProcessoController {
 
 	@GetMapping("/edit/{id}")
 	public ModelAndView frmEditar(@PathVariable(name = "id") Integer id) {
-		ModelAndView model = new ModelAndView("form/frmServidor");
+		ModelAndView model = new ModelAndView("form/frmProcesso");
 
 		return model;
 	}

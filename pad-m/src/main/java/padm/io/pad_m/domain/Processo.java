@@ -32,6 +32,10 @@ public class Processo {
 
 	private String assunto;
 
+	private Integer tramitado;
+
+	private Integer arquivado;
+
 	@ManyToOne
 	@JoinColumn(name = "docproc_id")
 	private Doc documento;
@@ -39,12 +43,12 @@ public class Processo {
 	@ManyToOne
 	@JoinColumn(name = "setcriador_id")
 	private Setor setorcriadorId;
-	
+
 	/*
-	@ManyToOne
-	@JoinColumn(name = "evento_id")
-	private Evento eventoId;
-	*/
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "evento_id") private Evento eventoId;
+	 */
 	@ManyToOne
 	@JoinColumn(name = "fase_id")
 	private Fase faseId;
@@ -108,30 +112,33 @@ public class Processo {
 	}
 
 	public Processo(Integer id, String numproc, TipoProcesso tipo, Integer ano, String numanoproc, String assunto,
-			Doc documento, int classId, String classificacao, Fase faseId, int rotuloId,
-			Integer usucriadorId, Setor setorcriadorId, LocalDateTime datacriacao, Interessado interessadoId,
-			Minuta minutaId, int lembreteId, Sigilo sigiloId, int procapensadoId, int flagapensoId, String motivoapenso,
-			int procapensoprincId, String motivoapensoprinc, int procanexado_id, int flaganexado_id, String motivoanexo,
-			int procanexoprincId, int flaganexoprincId, String motivoanexoprinc, LocalDateTime data, String obs,
-			int seq, int flag) {
+			Integer tramitado, Integer arquivado, Doc documento, Setor setorcriadorId, Fase faseId,
+			Interessado interessadoId, Minuta minutaId, int lembreteId, Sigilo sigiloId, int classId,
+			String classificacao, int rotuloId, Integer usucriadorId, LocalDateTime datacriacao, int procapensadoId,
+			int flagapensoId, String motivoapenso, int procapensoprincId, String motivoapensoprinc, int procanexado_id,
+			int flaganexado_id, String motivoanexo, int procanexoprincId, int flaganexoprincId, String motivoanexoprinc,
+			LocalDateTime data, String obs, int seq, int flag) {
+		super();
 		this.id = id;
 		this.numproc = numproc;
 		this.tipo = tipo;
 		this.ano = ano;
 		this.numanoproc = numanoproc;
 		this.assunto = assunto;
-		this.documento = documento;		
-		this.classId = classId;
-		this.classificacao = classificacao;
-		this.faseId = faseId;
-		this.rotuloId = rotuloId;
-		this.usucriadorId = usucriadorId;
+		this.tramitado = tramitado;
+		this.arquivado = arquivado;
+		this.documento = documento;
 		this.setorcriadorId = setorcriadorId;
-		this.datacriacao = datacriacao;
+		this.faseId = faseId;
 		this.interessadoId = interessadoId;
 		this.minutaId = minutaId;
 		this.lembreteId = lembreteId;
 		this.sigiloId = sigiloId;
+		this.classId = classId;
+		this.classificacao = classificacao;
+		this.rotuloId = rotuloId;
+		this.usucriadorId = usucriadorId;
+		this.datacriacao = datacriacao;
 		this.procapensadoId = procapensadoId;
 		this.flagapensoId = flagapensoId;
 		this.motivoapenso = motivoapenso;
@@ -405,7 +412,6 @@ public class Processo {
 		this.documento = documento;
 	}
 
-	
 	public Fase getFaseId() {
 		return faseId;
 	}
@@ -414,6 +420,21 @@ public class Processo {
 		this.faseId = faseId;
 	}
 
+	public Integer getTramitado() {
+		return tramitado;
+	}
+
+	public void setTramitado(Integer tramitado) {
+		this.tramitado = tramitado;
+	}
+
+	public Integer getArquivado() {
+		return arquivado;
+	}
+
+	public void setArquivado(Integer arquivado) {
+		this.arquivado = arquivado;
+	}
 
 	@Override
 	public int hashCode() {

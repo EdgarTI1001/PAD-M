@@ -1,6 +1,9 @@
 package padm.io.pad_m.controller.rest;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,19 +12,41 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import padm.io.pad_m.domain.Evento;
+import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Tramite;
+import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.ResultDTO;
+import padm.io.pad_m.security.AuthenticationFacade;
+import padm.io.pad_m.service.EventoService;
+import padm.io.pad_m.service.ProcessoService;
+import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.service.TramiteService;
 import padm.io.pad_m.service.UsuarioService;
 
 @RestController
 @RequestMapping("/api/tramites")
 public class TramiteRestController {
+	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 	@Autowired
 	TramiteService tramiteService;
 	
 	@Autowired
 	UsuarioService usuarioService;
+	
+	@Autowired
+	ProcessoService processoService;
+	
+	@Autowired
+	AuthenticationFacade session;
+	
+
+	@Autowired
+	EventoService eventoService;
+	
+	@Autowired
+	TipoEventoService tipoEventoService; 
 
 	@GetMapping
 	public ResponseEntity<List<Tramite>> findAll() {
@@ -59,9 +84,21 @@ public class TramiteRestController {
 	public ResponseEntity<ResultDTO> findLastTramiteByProcesso(@PathVariable("idProcesso") Integer idProcesso, @PathVariable("idResponsavel") Integer idResponsavel) {		
 		ResultDTO result = new ResultDTO();
 		try {
-			Tramite tramite = tramiteService.findFirstByProcId(idProcesso);			
-			tramite.setResponsavelId(usuarioService.findById(idResponsavel).get());
+			Tramite tramite = tramiteService.findFirstByProcId(idProcesso);	
+			Usuario user = usuarioService.findById(idResponsavel).get();
+			tramite.setResponsavelId(user);
 			tramiteService.save(tramite);
+			
+			Evento novoEvento = new Evento();				
+			novoEvento.setProc_id(tramite.getProcId());	
+			novoEvento.setDataevento(LocalDateTime.now());
+			novoEvento.setTipo_id(tipoEventoService.findById(3).get());
+			String dataFormatada = LocalDateTime.now().format(parser);
+			novoEvento.setEvento("Usuario : " + user.getNome() + " Foi Indicado para atender o  Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
+					+ " no Setor " + session.getUsuario().getLotacao_id().getNome() + " Em " + dataFormatada);
+			
+			eventoService.save(novoEvento);
+			
 			result.setRet(1);
 			result.setMensagem("Realizado Com Sucesso");
 			result.setType("success");
@@ -75,6 +112,40 @@ public class TramiteRestController {
 		return ResponseEntity.ok(result);
 	}
 	
+	@GetMapping("/processo/arquivar/{idProcesso}")
+	public ResponseEntity<ResultDTO> arquivarProcesso(@PathVariable("idProcesso") Integer idProcesso) {		
+		ResultDTO result = new ResultDTO();
+		try {
+			Optional<Processo> p =  processoService.findById(idProcesso);
+			p.get().setArquivado(1);
+			processoService.save(p.get());	
+		
+			Tramite tramite = tramiteService.findFirstByProcId(idProcesso);
+			tramite.setDataarquivamento(LocalDateTime.now());			
+			tramiteService.save(tramite);
+			
+			Evento novoEvento = new Evento();				
+			novoEvento.setProc_id(tramite.getProcId());	
+			novoEvento.setDataevento(LocalDateTime.now());
+			novoEvento.setTipo_id(tipoEventoService.findById(8).get());
+			String dataFormatada = LocalDateTime.now().format(parser);
+			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + " Arquivou o  Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
+					+ " no Setor " + session.getUsuario().getLotacao_id().getNome() + " Em " + dataFormatada );
+			
+			eventoService.save(novoEvento);
+			
+			result.setRet(1);
+			result.setMensagem("Realizado Com Sucesso");
+			result.setType("success");
+		} catch (Exception e) {		
+			e.printStackTrace();
+			result.setRet(0);
+			result.setMensagem("Ocorreu um Erro");
+			result.setType("error");
+		}
+		
+		return ResponseEntity.ok(result);
+	}
 	
 
 }

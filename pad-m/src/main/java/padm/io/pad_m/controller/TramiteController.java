@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Evento;
+import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Tramite;
 import padm.io.pad_m.security.AuthenticationFacade;
@@ -114,7 +115,7 @@ public class TramiteController {
 			tramite.setTipo(tramite.getProcId().getTipo().getDescricao());
 			
 			tramite.setSetororigem(session.getUsuario().getLotacao_id()); 
-			tramite.setSetorcriador(session.getUsuario().getLotacao_id());			
+			tramite.setSetorcriador(session.getUsuario().getLotacao_id());	//pensar numa estratageia pq aqui so funciona no primeiro tramite, nas demais tramitacoes nao vai funcionar 		
 			tramite.setLocaltramite(session.getUsuario().getLotacao_id().getId());
 			
 			tramite.setDatachegada(LocalDateTime.now());			
@@ -148,12 +149,9 @@ public class TramiteController {
 			tramite.setSeq(1);
 			tramite.setFlag(1);
 			tramite.setPlaced(1);
-
 			tramiteService.save(tramite);
 			
-			Evento novoEvento = new Evento();
-			
-		
+			Evento novoEvento = new Evento();	
 			novoEvento.setDatachegada(LocalDateTime.now());
 			novoEvento.setDataevento(LocalDateTime.now());
 			novoEvento.setDatainicio(LocalDateTime.now());
@@ -164,9 +162,10 @@ public class TramiteController {
 					+ " para o Setor " + setor.get().getNome()  + " Em " + LocalDateTime.now());
 			
 			eventoService.save(novoEvento);
-			
-		} catch (Exception e) {
-			
+			Optional<Processo> p = Optional.ofNullable(processoService.findById(tramite.getProcId().getId()).get());
+			p.get().setTramitado(1);
+			processoService.save(p.get());
+		} catch (Exception e) {			
 			e.printStackTrace();
 		}
 		return "redirect:/processos";
