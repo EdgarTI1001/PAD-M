@@ -115,7 +115,7 @@ public class TramiteController {
 			tramite.setTipo(tramite.getProcId().getTipo().getDescricao());
 			
 			tramite.setSetororigem(session.getUsuario().getLotacao_id()); 
-			tramite.setSetorcriador(session.getUsuario().getLotacao_id());	//pensar numa estratageia pq aqui so funciona no primeiro tramite, nas demais tramitacoes nao vai funcionar 		
+			tramite.setSetorcriador(tramite.getProcId().getSetorcriadorId());	
 			tramite.setLocaltramite(session.getUsuario().getLotacao_id().getId());
 			
 			tramite.setDatachegada(LocalDateTime.now());			

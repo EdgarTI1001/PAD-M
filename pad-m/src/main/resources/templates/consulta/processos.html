@@ -203,6 +203,7 @@
                                     </td>
                                     <td th:text="${rs.classificacao}"></td>
                                     <td>
+                                    <span th:if="${rs.arquivado == 0}">
                                     	<a class="btn btn-sm btn-primary" href="#" th:id="'indicarProcesso' + ${rs.id}" role="button"  th:data-record-numano="${rs.numanoproc}" th:data-record-id="${rs.id}" title="Indicar para Atendimento">
                                            <i class="fa fa-hand-o-right" aria-hidden="true"></i> Indicar
                                         </a>
@@ -210,13 +211,13 @@
                                         <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
                                             <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
-                                        <span th:if="${rs.arquivado == 0}">
-	                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Arquivar Processo">
+                                      
+	                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarDesarquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-arquivado="${rs.arquivado}" title="Arquivar Processo">
 	                                            arquivar
 	                                        </a>
                                         </span>
-                                         <span th:unless="${rs.arquivado == 0}">                                         
-                                         	<a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Arquivar Processo">
+                                         <span th:if="${rs.arquivado == 1}">                                         
+                                         	<a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarDesarquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-arquivado="${rs.arquivado}" title="Desarquivar Processo">
 	                                            desarquivar
 	                                        </a>
                                          </span>
@@ -329,16 +330,24 @@
     });
     
     
-    $("[id*='arquivarProcesso']").click(function(event){   	
+    $("[id*='arquivarDesarquivarProcesso']").click(function(event){   	
    	     event.preventDefault();
          var data = $(event.delegateTarget).data();
          var id = data.recordId;
          var numano =  data.recordNumano;
-         var idSetor = $("#idSetor").val();       
+         var idSetor = $("#idSetor").val();      
+         var arquivado = data.recordArquivado;         
+         var situacao = "";
          
+         if(arquivado == 1)
+        	 situacao = "Desarquivar";
+         else
+        	 situacao = "Arquivar";
+         
+         alert(arquivado)
          swal({
              title: 'Atenção!',
-             text: "Deseja Arquivar Processo?",
+             text: "Deseja " + situacao + " Processo?",
              icon: 'warning',
              buttons: [true, "Sim!"]
          }).then((result) => {
@@ -346,25 +355,15 @@
            	  $("#loader").show();        
            
               $.ajax({
-                  url: URL + "tramites/processo/arquivar/"+id,
+                  url: URL + "tramites/processo/arquivar/"+id+"/arquivado/"+arquivado,
                   method: "GET",
               }).done(function(data) {              
                   $("#loader").hide(); 
                   swal("Sucesso", data.mensagem, data.type)	
-              });
-              
-              
-           	         
-               
+              });       
              }
-         })
-         
-         
-         
- 
-        
+         })    
    });
-
 
     
     $("#salvarIndicacao").click(function(event){           	   

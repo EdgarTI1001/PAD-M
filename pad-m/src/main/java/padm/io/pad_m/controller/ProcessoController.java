@@ -74,12 +74,15 @@ public class ProcessoController {
 	@GetMapping
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
 		ModelAndView mv = new ModelAndView("consulta/processos");		
-		List<Processo> processos = new ArrayList<Processo>();		
+		List<Processo> processos = new ArrayList<Processo>();				
 		if(tipagem.isPresent()){			
 			if(tipagem.get() == 1){
 				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());				
 			}else if(tipagem.get() == 2){ 
 				processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());				
+			}else if(tipagem.get() == 3){ 
+				processos = processoService.findAllArquivadosBySetor(session.getUsuario().getLotacao_id().getId());		
+				
 			}
 		}
 		mv.addObject("processos", processos);	

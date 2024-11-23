@@ -112,16 +112,26 @@ public class TramiteRestController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@GetMapping("/processo/arquivar/{idProcesso}")
-	public ResponseEntity<ResultDTO> arquivarProcesso(@PathVariable("idProcesso") Integer idProcesso) {		
+	@GetMapping("/processo/arquivar/{idProcesso}/arquivado/{arquivado}")
+	public ResponseEntity<ResultDTO> arquivarProcesso(@PathVariable("idProcesso") Integer idProcesso, @PathVariable("arquivado") Integer arquivado) {		
 		ResultDTO result = new ResultDTO();
 		try {
+			
 			Optional<Processo> p =  processoService.findById(idProcesso);
-			p.get().setArquivado(1);
-			processoService.save(p.get());	
-		
 			Tramite tramite = tramiteService.findFirstByProcId(idProcesso);
-			tramite.setDataarquivamento(LocalDateTime.now());			
+			String situacao = "";
+			if(arquivado == 1){
+				p.get().setArquivado(0);
+				tramite.setDatadesarquivamento(LocalDateTime.now());
+				situacao = "Desarquivou";
+			}else{
+				p.get().setArquivado(1);
+				tramite.setDataarquivamento(LocalDateTime.now());		
+				situacao = "Arquivou";
+			}
+				
+			
+			processoService.save(p.get());				
 			tramiteService.save(tramite);
 			
 			Evento novoEvento = new Evento();				
@@ -129,7 +139,7 @@ public class TramiteRestController {
 			novoEvento.setDataevento(LocalDateTime.now());
 			novoEvento.setTipo_id(tipoEventoService.findById(8).get());
 			String dataFormatada = LocalDateTime.now().format(parser);
-			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + " Arquivou o  Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
+			novoEvento.setEvento("Usuario : " + session.getUsuario().getNome() + "   " +  situacao + " o  Processo : " + tramite.getProcId().getNumanoproc() + " - " +  tramite.getProcId().getAssunto()
 					+ " no Setor " + session.getUsuario().getLotacao_id().getNome() + " Em " + dataFormatada );
 			
 			eventoService.save(novoEvento);
