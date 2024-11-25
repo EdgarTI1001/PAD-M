@@ -49,61 +49,72 @@
         <div class="row justify-content-center">
             <div class="col-sm-3">
                 <div class="card card-custom mb-3">
-                    <div class="card-body">
-                        <div class="card-title-custom">
-                            <h5>PARA ATENDER</h5>
-                            <i class="bi bi-list-check"></i>
-                        </div>
-                        <p><span th:text="${paraAtender}"> </span>  Processos</p> 
-                    </div>
-                    <div class="card-footer p-0">
-                        <div class="card-footer-custom bg-primary"></div>
-                    </div>
+                		
+		                <a  href="#" role="button"  title="Ver Processos">
+			                      <div class="card-body">
+			                        <div class="card-title-custom">
+			                            <h5>PARA ATENDER</h5>
+			                            <i class="bi bi-list-check"></i>
+			                        </div>
+			                        <p><span th:text="${paraAtender}"> </span>  Processos</p> 
+			                    </div>
+			                    <div class="card-footer p-0">
+			                        <div class="card-footer-custom bg-primary"></div>
+			                    </div>                  
+		                </a>   
+                </div>
+            </div>
+                         
+            <div class="col-sm-3">
+                <div class="card card-custom mb-3">
+                 <a  href="#" role="button"  title="Ver Processos">
+	                    <div class="card-body">
+	                        <div class="card-title-custom">
+	                            <h5>EM ESPERA</h5>
+	                            <i class="bi bi-hourglass-split"></i>
+	                        </div>
+	                        <p><span th:text="${emEspera}"> </span> Processos</p>
+	                    </div>
+	                    <div class="card-footer p-0">
+	                        <div class="card-footer-custom bg-danger"></div>
+	                    </div>
+                     </a>   
+                    
+                </div>
+            </div>	
+                                        
+            <div class="col-sm-3">
+                <div class="card card-custom mb-3">
+                
+                 <a  href="#" role="button"  title="Ver Processos">
+	                    <div class="card-body">
+	                        <div class="card-title-custom">
+	                            <h5>ATENDIMENTO SETOR</h5>
+	                            <i class="bi bi-building"></i>
+	                        </div>
+	                        <p>0 Processos</p>
+	                    </div>
+	                    <div class="card-footer p-0">
+	                        <div class="card-footer-custom bg-warning"></div>
+	                    </div>
+                     </a>   
                 </div>
             </div>
 
             <div class="col-sm-3">
                 <div class="card card-custom mb-3">
-                    <div class="card-body">
-                        <div class="card-title-custom">
-                            <h5>EM ESPERA</h5>
-                            <i class="bi bi-hourglass-split"></i>
-                        </div>
-                        <p><span th:text="${emEspera}"> </span> Processos</p>
-                    </div>
-                    <div class="card-footer p-0">
-                        <div class="card-footer-custom bg-danger"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="card card-custom mb-3">
-                    <div class="card-body">
-                        <div class="card-title-custom">
-                            <h5>ATENDIMENTO SETOR</h5>
-                            <i class="bi bi-building"></i>
-                        </div>
-                        <p>0 Processos</p>
-                    </div>
-                    <div class="card-footer p-0">
-                        <div class="card-footer-custom bg-warning"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-3">
-                <div class="card card-custom mb-3">
-                    <div class="card-body">
-                        <div class="card-title-custom">
-                            <h5>ATENDIMENTO SERVIDOR</h5>
-                            <i class="bi bi-person"></i>
-                        </div>
-                        <p>0 Processos</p>
-                    </div>
-                    <div class="card-footer p-0">
-                        <div class="card-footer-custom bg-success"></div>
-                    </div>
+	                  <a  href="#" role="button"  title="Ver Processos">
+	                    <div class="card-body">
+	                        <div class="card-title-custom">
+	                            <h5>ATENDIMENTO SERVIDOR</h5>
+	                            <i class="bi bi-person"></i>
+	                        </div>
+	                        <p>0 Processos</p>
+	                    </div>
+	                    <div class="card-footer p-0">
+	                        <div class="card-footer-custom bg-success"></div>
+	                    </div>
+                      </a>   
                 </div>
             </div>
         </div>
