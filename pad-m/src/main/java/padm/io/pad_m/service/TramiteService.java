@@ -40,19 +40,9 @@ public class TramiteService {
 		return tramiteRepo.findBySetorDataSaidaProcesso(idSetor, idProcesso);
 	}
 
-	public Tramite findFirstByProcId(Integer idProcesso) {		 
+	public Tramite findFirstByProcId(Integer idProcesso) {
 		return tramiteRepo.findFirstByProcId_id(idProcesso);
 	}
-
-	public long countProcessosEmEsperaBySetor(Integer idsetor) {
-		return tramiteRepo.countProcessosEmEsperaBySetor(idsetor);
-	}
-	
-	public long countProcessosParaAtenderByServidor(Integer idUsuario) {
-		return tramiteRepo.countProcessosParaAtenderByServidor(idUsuario);
-	}
-	
-	
 
 	@Transactional
 	public void save(Tramite obj) {

@@ -46,13 +46,13 @@ public class ProcessoController {
 
 	@Autowired
 	private ProcessoService processoService;
-	
+
 	@Autowired
 	private TipoEventoService tipoEventoService;
-	
+
 	@Autowired
 	private TipoProcessoService tipoProcessoService;
-	
+
 	@Autowired
 	private EventoService eventoService;
 
@@ -67,26 +67,26 @@ public class ProcessoController {
 
 	@Autowired
 	private ClassifService classifService;
-	
+
 	@Autowired
 	private SigiloService sigiloService;
 
 	@GetMapping
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
-		ModelAndView mv = new ModelAndView("consulta/processos");		
-		List<Processo> processos = new ArrayList<Processo>();				
-		if(tipagem.isPresent()){			
-			if(tipagem.get() == 1){
-				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());				
-			}else if(tipagem.get() == 2){ 
-				processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());				
-			}else if(tipagem.get() == 3){ 
-				processos = processoService.findAllArquivadosBySetor(session.getUsuario().getLotacao_id().getId());		
-				
+		ModelAndView mv = new ModelAndView("consulta/processos");
+		List<Processo> processos = new ArrayList<Processo>();
+		if (tipagem.isPresent()) {
+			if (tipagem.get() == 1) {
+				processos = processoService.findAllTramitadosBySetor(session.getUsuario().getLotacao_id().getId());
+			} else if (tipagem.get() == 2) {
+				processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());
+			} else if (tipagem.get() == 3) {
+				processos = processoService.findAllArquivadosBySetor(session.getUsuario().getLotacao_id().getId());
+
 			}
 		}
-		mv.addObject("processos", processos);	
-		mv.addObject("setor", session.getUsuario().getLotacao_id().getId());	
+		mv.addObject("processos", processos);
+		mv.addObject("setor", session.getUsuario().getLotacao_id().getId());
 		mv.addObject("activePage", "mnuServidor");
 		return mv;
 	}
@@ -96,6 +96,16 @@ public class ProcessoController {
 		model.addAttribute("tipos", tipoProcessoService.findAll());
 		model.addAttribute("processo", processo);
 		return "form/frmProcesso";
+	}
+
+	@GetMapping("/responsavel")
+	public ModelAndView listarProcessosByServidorAtendente() {
+		System.out.println(session.getUsuario().getId());
+		List<Processo> p = processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId());		
+		ModelAndView mv = new ModelAndView("consulta/processosServidorResponsavel");
+		mv.addObject("processo",	processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId()));
+		return mv;
+		
 	}
 
 	@PostMapping("/passo2")
@@ -112,10 +122,9 @@ public class ProcessoController {
 		int ano = Year.now().getValue();
 		processo.setAno(ano);
 		processoService.save(processo);
-		
-		processo.setNumproc("000"+processo.getId());
-		processo.setNumanoproc("000"+processo.getId() + "/" + ano);
 
+		processo.setNumproc("000" + processo.getId());
+		processo.setNumanoproc("000" + processo.getId() + "/" + ano);
 
 		Evento evento = new Evento();
 		evento.setTipo_id(tipoEventoService.findById(4).get());
@@ -126,11 +135,12 @@ public class ProcessoController {
 		evento.setUser_id(session.getUsuario());
 		evento.setSetor_Id(setorService.findById(session.getUsuario().getLotacao_id().getId()).get());
 		String dataFormatada = LocalDateTime.now().format(parser);
-		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc() + " em " + dataFormatada );
+		evento.setEvento("Usuario: " + session.getUsuario().getNome() + " Criou o Processo: " + processo.getNumanoproc()
+				+ " em " + dataFormatada);
 		evento.setFlag(1);
 		evento.setPlaced(1);
 		eventoService.save(evento);
-		
+
 		model.addAttribute("processo", processo);
 		model.addAttribute("setores", setorService.findAll());
 		model.addAttribute("usuarios", usuarioService.findAll());
@@ -146,8 +156,7 @@ public class ProcessoController {
 		model.addAttribute("processo", processo);
 		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
 		Doc doc = new Doc();
-		
-		
+
 		model.addAttribute("doc", doc);
 		model.addAttribute("documentos", docs);
 		return "form/frmProcesso3";
@@ -156,8 +165,8 @@ public class ProcessoController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("processo") Processo processo, BindingResult result) {
 		try {
-			
-			processoService.save(processo);		
+
+			processoService.save(processo);
 
 		} catch (Exception e) {
 			e.printStackTrace();

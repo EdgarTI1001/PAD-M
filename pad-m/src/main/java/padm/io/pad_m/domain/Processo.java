@@ -437,6 +437,22 @@ public class Processo {
 	}
 
 	@Override
+	public String toString() {
+		return "Processo [id=" + id + ", numproc=" + numproc + ", tipo=" + tipo + ", ano=" + ano + ", numanoproc="
+				+ numanoproc + ", assunto=" + assunto + ", tramitado=" + tramitado + ", arquivado=" + arquivado
+				+ ", documento=" + documento + ", setorcriadorId=" + setorcriadorId + ", faseId=" + faseId
+				+ ", interessadoId=" + interessadoId + ", minutaId=" + minutaId + ", lembreteId=" + lembreteId
+				+ ", sigiloId=" + sigiloId + ", classId=" + classId + ", classificacao=" + classificacao + ", rotuloId="
+				+ rotuloId + ", usucriadorId=" + usucriadorId + ", datacriacao=" + datacriacao + ", procapensadoId="
+				+ procapensadoId + ", flagapensoId=" + flagapensoId + ", motivoapenso=" + motivoapenso
+				+ ", procapensoprincId=" + procapensoprincId + ", motivoapensoprinc=" + motivoapensoprinc
+				+ ", procanexado_id=" + procanexado_id + ", flaganexado_id=" + flaganexado_id + ", motivoanexo="
+				+ motivoanexo + ", procanexoprincId=" + procanexoprincId + ", flaganexoprincId=" + flaganexoprincId
+				+ ", motivoanexoprinc=" + motivoanexoprinc + ", data=" + data + ", obs=" + obs + ", seq=" + seq
+				+ ", flag=" + flag + "]";
+	}
+
+	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}

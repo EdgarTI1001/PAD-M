@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.security.AuthenticationFacade;
+import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.TramiteService;
 import padm.io.pad_m.service.UsuarioService;
 
@@ -30,6 +31,9 @@ public class AppController {
 
 	@Autowired
 	private UsuarioService userService;
+	
+	@Autowired
+	private ProcessoService processoService;
 
 	@Autowired
 	private TramiteService tramiteService;
@@ -44,11 +48,11 @@ public class AppController {
 	public ModelAndView index(Model model) {
 		ModelAndView mv = new ModelAndView("index");
 		upload += "\\";
-		long emEspera =  tramiteService.countProcessosEmEsperaBySetor(session.getUsuario().getLotacao_id().getId());		
+		long emEspera =  processoService.countProcessosEmEsperaBySetor(session.getUsuario().getLotacao_id().getId());		
 		String path = upload.substring(0, 11);		
 		model.addAttribute("upload", path);
 		model.addAttribute("emEspera", emEspera);		
-		model.addAttribute("paraAtender", tramiteService.countProcessosParaAtenderByServidor(session.getUsuario().getId()));
+		model.addAttribute("paraAtender", processoService.countProcessosParaAtenderByServidor(session.getUsuario().getId()));
 		model.addAttribute("vencidos", tramiteService.findAllTramitesVencidos(session.getUsuario().getLotacao_id().getId()));
 		model.addAttribute("activePage", "mnuMeuRegistro");
 	

@@ -24,5 +24,14 @@ public interface ProcessoRepository extends JpaRepository<Processo, Integer> {
 
 	@Query("SELECT p from Processo p WHERE p.tipo.id =:idTipo ORDER BY p.id DESC")
 	List<Processo> findAllByTipo(@Param("idTipo") Integer idTipo);
+	
+	@Query("SELECT p from Processo p WHERE p.id IN (select t.procId.id from Tramite t where t.responsavelId.id =:servidorAtendente AND t.dataarquivamento IS NULL AND t.datasaida IS NULL) ORDER BY p.id DESC")
+	List<Processo> findAllByServidorAtendenteResposanvel(@Param("servidorAtendente") Integer servidorAtendente);
+	
+	@Query("SELECT COUNT(p.id) FROM Processo p WHERE p.id IN (SELECT t.procId.id FROM Tramite t WHERE t.responsavelId.id =:idUsuario AND t.datasaida IS NULL AND t.dataarquivamento IS NULL) ")
+	long countProcessosParaAtenderByServidor(@Param("idUsuario") Integer idUsuario);
+	
+	@Query(" SELECT COUNT(p.id) FROM Processo p  WHERE  p.id IN (SELECT t.procId.id FROM Tramite t WHERE t.setordestino.id =:idSetor AND t.datasaida IS NULL AND t.dataarquivamento IS NULL) ")
+	long countProcessosEmEsperaBySetor(@Param("idSetor") Integer category);
 
 }

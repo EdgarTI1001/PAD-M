@@ -11,7 +11,8 @@ import padm.io.pad_m.domain.Tramite;
 
 public interface TramiteRepository extends JpaRepository<Tramite, Integer> {
 
-	//@Query(value = "SELECT * FROM tbtramite WHERE proc_id =:idProcesso ORDER BY id DESC", nativeQuery = true)
+	// @Query(value = "SELECT * FROM tbtramite WHERE proc_id =:idProcesso ORDER BY
+	// id DESC", nativeQuery = true)
 	Tramite findFirstByProcId_id(@Param("idProcesso") Integer idProcesso);
 
 	@Query(value = "SELECT * FROM tbtramite WHERE proc_id = :idProcesso ORDER BY id DESC", nativeQuery = true)
@@ -21,12 +22,7 @@ public interface TramiteRepository extends JpaRepository<Tramite, Integer> {
 	List<Tramite> findAllTramitesVencidos(@Param("idSetor") Integer idSetor);
 
 	@Query("SELECT t FROM Tramite t WHERE t.setordestino.id =:idSetor AND t.datasaida IS NULL AND t.procId.id =:idProcesso ")
-	Optional<Tramite> findBySetorDataSaidaProcesso(@Param("idSetor") Integer idSetor, @Param("idProcesso") Integer idProcesso);
-
-	@Query("SELECT COUNT(t) FROM Tramite t WHERE t.setordestino.id = :idSetor AND t.datasaida IS NULL")
-	long countProcessosEmEsperaBySetor(@Param("idSetor") Integer category);
-	
-	@Query("SELECT COUNT(t) FROM Tramite t WHERE t.responsavelId.id = :idUsuario AND t.datasaida IS NULL")
-	long countProcessosParaAtenderByServidor(@Param("idUsuario") Integer idUsuario);
+	Optional<Tramite> findBySetorDataSaidaProcesso(@Param("idSetor") Integer idSetor,
+			@Param("idProcesso") Integer idProcesso);
 
 }

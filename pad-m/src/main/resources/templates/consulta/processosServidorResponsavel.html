@@ -149,15 +149,7 @@
         <div class="container text-center text-md-start mt-3">
           <div class="row mb-1">
             <div class="col-md-6">
-                <form action=""  method="get" class="row g-3" id="frm">
-                <input type="hidden" th:value="${setor}" id="idSetor">
-                 <select id="tipagem"  class="form-select form-select-sm" name="tipagem">           			
-           			 <option th:text="${'Selecione '}" th:value="${'0'}"></option>  
-           			 <option th:text="${'Tramitados para Setor'}" th:value="${'1'}"></option>  
-           			 <option th:text="${'Não Tramitados no Setor'}" th:value="${'2'}"></option>  
-           			 <option th:text="${'Arquivados'}" th:value="${'3'}"></option>                      
-       			 </select>	
-       			 </form>
+        
             </div>      
         </div>   
         
@@ -192,7 +184,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="rs : ${processos}" th:id="'tr' + ${rs.id}"> 
+                                <tr th:each="rs : ${processo}" th:id="'tr' + ${rs.id}"> 
                                     <td th:text="${rs.numproc}"></td>
                                     <td th:text="${rs.ano}"></td>
                                     <td th:text="${rs.numanoproc}"></td>

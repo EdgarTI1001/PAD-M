@@ -36,6 +36,18 @@ public class ProcessoService {
 		return processoRepository.findAllArquivadosBySetor(idSetor);
 	}
 
+	public List<Processo> findAllByServidorAtendenteResposanvel(Integer idServidorAtendenteRespons) {
+		return processoRepository.findAllByServidorAtendenteResposanvel(idServidorAtendenteRespons);
+	}
+
+	public long countProcessosParaAtenderByServidor(Integer idUsuario) {
+		return processoRepository.countProcessosParaAtenderByServidor(idUsuario);
+	}
+
+	public long countProcessosEmEsperaBySetor(Integer idsetor) {
+		return processoRepository.countProcessosEmEsperaBySetor(idsetor);
+	}
+
 	public List<Processo> findAllByUserCriador(Integer id) {
 		return processoRepository.findAllByUserCriador(id);
 	}

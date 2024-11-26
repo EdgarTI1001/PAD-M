@@ -112,10 +112,15 @@ public class TramiteController {
 			}
 			
 			
-			tramite.setTipo(tramite.getProcId().getTipo().getDescricao());
-			
+			tramite.setTipo(tramite.getProcId().getTipo().getDescricao());			
 			tramite.setSetororigem(session.getUsuario().getLotacao_id()); 
-			tramite.setSetorcriador(tramite.getProcId().getSetorcriadorId());	
+			
+			if(tramite.getProcId().getSetorcriadorId().getId() != session.getUsuario().getLotacao_id().getId()){
+				tramite.setSetorcriador(tramite.getProcId().getSetorcriadorId());	
+			}else{
+				tramite.setSetorcriador(session.getUsuario().getLotacao_id());	
+			}
+		
 			tramite.setLocaltramite(session.getUsuario().getLotacao_id().getId());
 			
 			tramite.setDatachegada(LocalDateTime.now());			
