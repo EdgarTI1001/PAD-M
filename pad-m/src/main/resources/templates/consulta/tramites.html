@@ -177,13 +177,13 @@
 			</div>	
 					
 			
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person"></i> Tramite do Processo</span></div>
+                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-arrow-left-right"></i> Tramite do Processo</span></div>
                     <div class="card-body">
                        
                         <table class="table">
-                            <thead>
+                            <thead style="font-size: 13px;">
                                 <tr>
                                     <th scope="col">Criador</th>
                                     <th scope="col">Origem</th>
@@ -194,7 +194,7 @@
                                     <th scope="col">Total Dias</th>
                                 </tr>
                             </thead>
-                            <tbody id="tramitesDoProcesso">
+                            <tbody id="tramitesDoProcesso" style="font-size: 12px;">
                 
                             </tbody>
                         </table>
@@ -202,22 +202,22 @@
                 </div>
             </div>
             
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <div class="card">
                     <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo</span></div>
                     <div class="card-body">
                        
                         <table class="table">
-                            <thead>
+                            <thead style="font-size: 14px;">
                                 <tr>
-                                    <th scope="col">Nome</th>
+                                    <th width="5px">Nome</th>
                                     <th scope="col">Extensao</th>
                                     <th scope="col">Tamanho</th>
                                     <th scope="col">Data</th>  
                                     <th scope="col"></th>                                    
                                 </tr>
                             </thead>
-                            <tbody id="documentosDoProcesso">
+                            <tbody id="documentosDoProcesso" style="font-size: 12px;">
                 
                             </tbody>
                         </table>
@@ -372,10 +372,15 @@
 		        			
 		        			$.each( data, function( index, value ){  		        				
 		        				 table += '<tr id="tr' + value.id + '">';
-		        				 table += '<th>' + value.documento.nomdoc + '</th>';	    
-		        				 table += '<th>' + value.documento.extdoc  + '</th>';	    
-		                         table += '<th>' + value.documento.tamdoc + '</th>';			                         
-		                         table += '<th>' + formatarData(value.datacad)  + '</th>';	                        	                        
+			        				 table += '<th>' + value.documento.nomdoc + '</th>';	    
+			        				 table += '<th>' + value.documento.extdoc  + '</th>';	    
+			                         table += '<th>' + value.documento.tamdoc + '</th>';			                         
+			                         table += '<th>' + formatarData(value.datacad)  + '</th>';	     
+			                         table += '<th >'+			                         
+				                         ' <a class="btn btn-sm btn-warning"  href="../docs/assinar/'+value.documento.id+'"  role="button" title="Assinar Documento">'+
+	                                           '<i class="bi bi-pencil-fill"></i>Assinar'+
+	                                     '</a>'+			                         
+			                          '</th>';	                 
 		                         table += '</tr>';
 		        			});
 		        			

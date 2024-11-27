@@ -124,6 +124,14 @@ public class DocController {
         model.addAttribute("doc", doc);
         return "docs/form";
     }
+    
+    @GetMapping("/assinar/{idDocumento}")
+    public String assinarDoc(@PathVariable("idDocumento") Integer idDocumento, Model model) {
+        Doc doc = docService.findById(idDocumento);
+        System.out.println("=============" + doc.getId());
+        model.addAttribute("doc", doc);
+        return "docs/form-assinar";
+    }
 
     @GetMapping("/delete/{id}")
     public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
