@@ -37,8 +37,9 @@
                         <span th:text="${alertMessage.message}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/docs/files/assinar}" th:object="${doc}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" th:field="*{id}" />
+                    <form th:action="@{/docs/files/assinar}" th:object="${doc}" method="post">
+                        <input type="text" name="id" th:value="${doc.id}" />
+                        <input type="text" th:field="*{hashdoc}" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Documento:</label>
                             <span class="badge bg-secondary" th:text="${doc.nomdoc}"></span>
