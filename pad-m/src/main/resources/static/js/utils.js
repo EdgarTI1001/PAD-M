@@ -74,4 +74,31 @@ linkColor.forEach(l=> l.addEventListener('click', colorLink))
 
  // Your code to run since DOM is loaded and ready
 });
+
+
+$(document).on('click', '[id^="excluirNomeacao"]', function(event) {
+    event.preventDefault(); 
+    var recordId = $(this).data('record-id');
+    var recordNome = $(this).data('record-nome');
+    swal({
+	  title: 'Excluir nomeação?',
+	  text: "Deseja excluir a função do(a) mesário(a) " + recordNome + "?",
+	  icon: 'warning',
+	  buttons: [true, "Sim Excluir!"]
+	}).then((result) => {
+	  if (result) {
+		  $.ajax({
+		        type: "DELETE",
+		        url: URL + "nomeacao/" + recordId,
+		        success: function(data)
+		        {
+		        	swal("Atenção",data.response,data.status.toLowerCase());
+		        	if (data.status == "SUCCESS"){
+		        	   $("#tr"+recordId).remove();
+		        	}
+		        }
+		   });
+	   }
+   }); // fim SWAL 
+});
  
