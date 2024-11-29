@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,20 +30,35 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itextpdf.html2pdf.HtmlConverter;
 
+import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
+import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.security.IAuthenticationFacade;
+import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.utils.AlertMessage;
 import padm.io.pad_m.utils.FileSizeUtil;
+import padm.io.pad_m.utils.PDFHandler;
 
 @Controller
 @RequestMapping("/docs")
 public class DocController {
-
+	
+	@Autowired
+	AuthenticationFacade session;
+	
 	@Autowired
 	private DocService docService;
+	
+
+	@Autowired
+	private AssinadorService assinadorService;
+	
+	
+	@Autowired
+	private PDFHandler assinaturaService;
 
 	@Autowired
 	private FilesStorageService storageService;
@@ -139,9 +155,21 @@ public class DocController {
 	
 	
 	@PostMapping("/files/assinar")
-    public String formAssinarDoc(@RequestParam(name="id") Integer id) {
+    public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) {
        //GET EM DOCUMENTO diretorio "documentos" no Sistema
-    	System.out.println("==============" + id);
+		 Doc doc = docService.findById(id);		
+    	
+    	Resource r = storageService.load(doc.getHashdoc(), "documentos");
+    	
+    	String newPDF = assinaturaService.InsertStamp(r.getFilename(), session.getUsuario());
+    	String hashID = assinaturaService.generateHash(newPDF); 
+    	Assinador a = new Assinador();
+    	a.setData(LocalDateTime.now());
+    	a.setDoc(doc);
+    	a.setUserId(session.getUsuario());
+    	a.setHashdoc(hashID);
+    	assinadorService.save(a);
+		model.addAttribute("doc", doc);
     	return "docs/form-assinar";
     }
 

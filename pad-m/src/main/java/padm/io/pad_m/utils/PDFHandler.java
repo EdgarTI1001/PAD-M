@@ -4,13 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
@@ -27,14 +27,16 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.xml.xmp.XmpWriter;
 
+import padm.io.pad_m.domain.Usuario;
+
 @Service
 public class PDFHandler {
-	
+	 private final Path root = Paths.get("./uploads");
 	//@Value("${path.files.stamp}")
 	private String STAMP;
 	
 	//@Value("${path.files.upload}")
-	private String pdfDir;
+	private String pdfDir = "documentos";
 	
 	/*privatee static PDFHandler uniqueInstance;
 	 * private PDFHandler() { }
@@ -44,36 +46,38 @@ public class PDFHandler {
 	 */
 	
 	
-	public String InsertStamp(String pdfFile, UUID uuid, String author) {
+	public String InsertStamp(String pdfFile, Usuario author) {
 		String dest = "";
-		String src = pdfDir + "/" + pdfFile;
+		//String src = pdfDir + "/" + pdfFile;
+		Path file = root.resolve(pdfDir).resolve(pdfFile);
 		//System.out.println(src);
 		try {
+			
 			//RENOMEANDO O ARQUIVO
-	    	dest = pdfDir + "/" + FilenameUtils.getBaseName(src) +"-"+ LocalDateTime.now().getYear() + "-"
+	    	dest = file + "/" + FilenameUtils.getBaseName(file.toString()) +"-"+ LocalDateTime.now().getYear() + "-"
 	    			+ LocalDateTime.now().getMonthValue() + "-" + LocalDateTime.now().getDayOfMonth()
 	    			+ "-" + System.currentTimeMillis() + "-ass." + FilenameUtils.getExtension(pdfFile);
 	    	//System.out.println("Criando arquivos = " + dest);
-	        PdfReader reader = new PdfReader(src);
+	        PdfReader reader = new PdfReader(file.toString());
 	        int numpages = reader.getNumberOfPages();
 	        Rectangle pageSize = reader.getPageSize(numpages);
 	        float pageX = pageSize.getRight() - 90;
 	        //System.out.println(pageX + " , " + pageSize.getBottom());
 	          
 	        // INSERINDO METADADOS PARA VERIFICAÇÃO DO HASH
-	          PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+	          PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(file.toString() ));
 	          HashMap<String, String> hMap = reader.getInfo();          
 	          hMap.put("Title", "TRE-AMAZONAS/E-Signify");
 	          hMap.put("Subject", "Documento assinado eletrônicamente");
-	          hMap.put("Keywords", uuid.toString().toUpperCase());
+	         // hMap.put("Keywords", uuid.toString().toUpperCase());
 	          hMap.put("Creator", "eSignify");
-	          hMap.put("Author", author);
+	          hMap.put("Author", author.getNome());
 	          
-	        Image image = Image.getInstance(STAMP);
-	        image.scalePercent(35);
-	        image.setAbsolutePosition(pageX, 0);
-	        PdfContentByte over = stamper.getOverContent(numpages);
-	        over.addImage(image);
+	        //Image image = Image.getInstance(STAMP);
+	       // image.scalePercent(35);
+	       // image.setAbsolutePosition(pageX, 0);
+	       // PdfContentByte over = stamper.getOverContent(numpages);
+	       // over.addImage(image);
 	        stamper.setMoreInfo(hMap);
 	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 	        XmpWriter xmp = new XmpWriter(baos, hMap);
@@ -88,6 +92,7 @@ public class PDFHandler {
 	        reader.close();
 	        //readMetaDados(dest);
       } catch (Exception e) {
+    	  e.printStackTrace();
     	  throw new RuntimeException("Ocorreu um erro: " + e.getMessage());
 	    }
 		return dest;
