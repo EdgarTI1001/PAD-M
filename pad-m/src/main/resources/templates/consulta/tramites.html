@@ -379,7 +379,12 @@
 			                         table += '<th >'+			                         
 				                         ' <a class="btn btn-sm btn-warning"  href="../docs/form/assinar/'+value.documento.id+'"  role="button" title="Assinar Documento">'+
 	                                           '<i class="bi bi-pencil-fill"></i>Assinar'+
-	                                     '</a>'+			                         
+	                                     '</a>'+	
+	                                     
+	                                     ' <a class="btn btn-sm btn-primary"  href="../docs/files/download/'+value.documento.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Assinar Documento">'+
+                                       		  '<i class="bi bi-download"></i>'+
+                                 		 '</a>'+	
+                                   
 			                          '</th>';	                 
 		                         table += '</tr>';
 		        			});

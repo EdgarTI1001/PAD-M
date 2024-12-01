@@ -7,16 +7,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +52,7 @@ import padm.io.pad_m.utils.PDFHandler;
 @Controller
 @RequestMapping("/docs")
 public class DocController {
-	
+	private final Path root = Paths.get("./uploads");
 	@Autowired
 	AuthenticationFacade session;
 	
@@ -65,6 +72,8 @@ public class DocController {
 
 	@Autowired
 	private IAuthenticationFacade authentication;
+	
+	private String pdfDir = "documentos";
 
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
@@ -155,13 +164,14 @@ public class DocController {
 	
 	
 	@PostMapping("/files/assinar")
-    public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) {
+    public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) throws IOException {
        //GET EM DOCUMENTO diretorio "documentos" no Sistema
 		 Doc doc = docService.findById(id);		
     	
-    	Resource r = storageService.load(doc.getHashdoc(), "documentos");
+    	//Resource r = storageService.load(doc.getHashdoc(), "documentos");
+   
     	
-    	String newPDF = assinaturaService.InsertStamp(r.getFilename(), session.getUsuario());
+    	String newPDF = assinaturaService.InsertStamp(doc.getHashdoc(), session.getUsuario());
     	String hashID = assinaturaService.generateHash(newPDF); 
     	Assinador a = new Assinador();
     	a.setData(LocalDateTime.now());
@@ -172,6 +182,35 @@ public class DocController {
 		model.addAttribute("doc", doc);
     	return "docs/form-assinar";
     }
+	
+	@GetMapping("/files/download/{id}")
+	public ResponseEntity<Resource> download(@PathVariable("id") Integer id) throws IOException {
+
+		try {
+			
+			Doc doc = docService.findById(id);
+			//Path path = root.resolve(pdfDir).resolve(doc.getHashdoc());
+			//Resource resource = new UrlResource(path.toUri());
+			
+			File file = new File(root.resolve(pdfDir) +"/"+ doc.getHashdoc());
+			Resource resource = new FileSystemResource(file);
+			
+			String contentType = "application/octet-stream"; // Default for binary files
+			   String header = "attachment; filename=\"" + resource.getFilename() + "\"";
+			
+			
+
+			   return ResponseEntity.ok()
+	                   .header(HttpHeaders.CONTENT_DISPOSITION, header)
+	                   .contentType(MediaType.parseMediaType(contentType))
+	                   .body(resource);
+			   
+		} catch (Exception e) {
+			e.printStackTrace();
+			  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		
+	}
 
 	@GetMapping("/delete/{id}")
 	public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
