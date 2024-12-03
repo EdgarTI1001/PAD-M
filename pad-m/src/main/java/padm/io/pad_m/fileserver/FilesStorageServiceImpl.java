@@ -21,6 +21,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class FilesStorageServiceImpl implements FilesStorageService {
   private final Path root = Paths.get("./uploads");
 
+  private String pdfDir = "documentos";
+  private String pdfVerify = "verify";
+  
   @Override
   public void init() {
     try {
@@ -30,6 +33,21 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
   }
 
+	@Override
+	public void verify(MultipartFile file) {
+		 StringBuilder fileNames = new StringBuilder();	       
+	        try {
+	        	//if (!Files.exists(fileNameAndPath)) {
+	        		fileNames.append(file.getOriginalFilename());
+	        		Files.write  (root.resolve(pdfVerify), file.getBytes());
+	        	//}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new RuntimeException("Ocorreu um erro: " + e.getMessage());
+			}
+		
+	}
+	
   @Override
   public String save(MultipartFile file) {
     // Chama a versão sobrecarregada do método save que não usa subdiretório

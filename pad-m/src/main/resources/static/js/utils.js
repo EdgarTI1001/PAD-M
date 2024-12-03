@@ -76,10 +76,27 @@ linkColor.forEach(l=> l.addEventListener('click', colorLink))
 });
 
 
-$(document).on('click', '[id^="excluirNomeacao"]', function(event) {
+$(document).on('click', '[id^="download"]', function(event) {
     event.preventDefault(); 
     var recordId = $(this).data('record-id');
     var recordNome = $(this).data('record-nome');
+		  $.ajax({
+		        type: "GET",
+		        url: URL + "/docs/files/download/" + recordId,
+		        success: function(data)
+		        {
+		        	
+		        	
+		        }
+		   });
+
+});
+/*
+$(document).on('click', '[id^="download"]', function(event) {
+    event.preventDefault(); 
+    var recordId = $(this).data('record-id');
+    var recordNome = $(this).data('record-nome');
+	alert(recordNome)
     swal({
 	  title: 'Excluir nomeação?',
 	  text: "Deseja excluir a função do(a) mesário(a) " + recordNome + "?",
@@ -88,8 +105,8 @@ $(document).on('click', '[id^="excluirNomeacao"]', function(event) {
 	}).then((result) => {
 	  if (result) {
 		  $.ajax({
-		        type: "DELETE",
-		        url: URL + "nomeacao/" + recordId,
+		        type: "GET",
+		        url: URL + "docs/files/download/" + recordId,
 		        success: function(data)
 		        {
 		        	swal("Atenção",data.response,data.status.toLowerCase());
@@ -101,4 +118,4 @@ $(document).on('click', '[id^="excluirNomeacao"]', function(event) {
 	   }
    }); // fim SWAL 
 });
- 
+ */

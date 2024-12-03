@@ -13,6 +13,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -40,6 +41,8 @@ import com.itextpdf.html2pdf.HtmlConverter;
 import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.domain.dto.InfoFileDTO;
+import padm.io.pad_m.domain.dto.ResultDTO;
 import padm.io.pad_m.fileserver.FilesStorageService;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.security.IAuthenticationFacade;
@@ -74,6 +77,8 @@ public class DocController {
 	private IAuthenticationFacade authentication;
 	
 	private String pdfDir = "documentos";
+	
+	private String pdfVerify = "verify";
 
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
@@ -88,6 +93,12 @@ public class DocController {
 		model.addAttribute("doc", new Doc());
 		return "docs/form";
 	}
+	
+	@GetMapping("/verify")
+	  public String frmFileVerify(Model model) {
+		  model.addAttribute("activePage", "mnuVerify");
+	    return "docs/verify_form";
+	  }
 
 	@GetMapping("/files/new")
 	public String createFormUpload(Model model) {
@@ -147,6 +158,39 @@ public class DocController {
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 		return "redirect:/docs";
 	}
+	
+	
+	  @PostMapping("/files/hashverify")
+	  public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
+		    InfoFileDTO fileDTO = new InfoFileDTO();
+		   
+		    ResultDTO msg = new ResultDTO();
+		    msg.setType("success");
+		    try {
+		      storageService.verify(file);
+		      String fileNameHash = storageService.save(file, "verify");
+		      String srcPDF = root.resolve(pdfVerify)+ "/" + file.getOriginalFilename();
+		      String uuidFile = assinaturaService.getIDMetaDados(srcPDF);
+		      Optional<Assinador> doc =  Optional.of(assinadorService.findAByHash(uuidFile).get()); 
+		     
+		      String hash = assinaturaService.generateHash(srcPDF);
+		      if (assinaturaService.verifyHash(hash, doc.get().getHashdoc())) {
+		    	  msg.setMensagem("Assinatura eletrônica conferida!");
+		    	  model.addAttribute("obj", fileDTO);
+		      }else {
+		    	  msg.setType("danger");
+		    	  msg.setMensagem("Assinatura eletrônica inválida!");
+		      }
+		      model.addAttribute("msg", msg);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      msg.setType("danger");
+		      msg.setMensagem("Ocorreu um erro ao tentar validar arquivo. Erro: " + e.getMessage());
+		      model.addAttribute("msg", msg);
+		    }
+
+	    return "docs/verify_form";
+	  }
 
 	@GetMapping("/edit/{id}")
 	public String editForm(@PathVariable("id") Integer id, Model model) {
@@ -171,7 +215,7 @@ public class DocController {
     	//Resource r = storageService.load(doc.getHashdoc(), "documentos");
    
     	
-    	String newPDF = assinaturaService.InsertStamp(doc.getHashdoc(), session.getUsuario());
+    	String newPDF = assinaturaService.InsertStamp(doc, session.getUsuario());
     	String hashID = assinaturaService.generateHash(newPDF); 
     	Assinador a = new Assinador();
     	a.setData(LocalDateTime.now());

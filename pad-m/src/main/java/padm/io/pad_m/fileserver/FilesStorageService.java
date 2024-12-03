@@ -14,6 +14,8 @@ public interface FilesStorageService {
 
   public Resource load(String filename);
 
+  public void verify(MultipartFile file);
+  
   Resource load(String filename, String subDirectory);
 
   public boolean delete(String filename);

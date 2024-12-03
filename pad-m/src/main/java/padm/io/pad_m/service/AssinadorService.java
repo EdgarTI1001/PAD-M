@@ -24,6 +24,10 @@ public class AssinadorService {
 		return assinadorRepositor.findById(id);
 	}
 
+	public Optional<Assinador> findAByHash(String hash) {
+		return assinadorRepositor.findAByHash(hash);
+	}
+
 	@Transactional
 	public void save(Assinador obj) {
 		assinadorRepositor.save(obj);

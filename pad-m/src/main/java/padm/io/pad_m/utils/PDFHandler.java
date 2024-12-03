@@ -9,11 +9,11 @@ import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.BaseColor;
@@ -27,13 +27,17 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.xml.xmp.XmpWriter;
 
+import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.fileserver.FilesStorageService;
 
 @Service
 public class PDFHandler {
 	 private final Path root = Paths.get("./uploads");
-	//@Value("${path.files.stamp}")
-	private String STAMP;
+	 
+	 @Autowired
+	 private FilesStorageService storageService;
+	
 	
 	//@Value("${path.files.upload}")
 	private String pdfDir = "documentos";
@@ -46,26 +50,28 @@ public class PDFHandler {
 	 */
 	
 	
-	public String InsertStamp(String pdfFile, Usuario author) {
+	public String InsertStamp(Doc doc,Usuario author) {
 		String dest = "";
 		//String src = pdfDir + "/" + pdfFile;
-		Path file = root.resolve(pdfDir).resolve(pdfFile);
+		// Path path = root.resolve(pdfDir).resolve(pdfFile);		
+		// File file = new File(root.resolve(pdfDir) +"/"+ pdfFile);
 		//System.out.println(src);
 		try {
 			
 			//RENOMEANDO O ARQUIVO
-	    	dest = file + "/" + FilenameUtils.getBaseName(file.toString()) +"-"+ LocalDateTime.now().getYear() + "-"
-	    			+ LocalDateTime.now().getMonthValue() + "-" + LocalDateTime.now().getDayOfMonth()
-	    			+ "-" + System.currentTimeMillis() + "-ass." + FilenameUtils.getExtension(pdfFile);
-	    	//System.out.println("Criando arquivos = " + dest);
-	        PdfReader reader = new PdfReader(file.toString());
+			//dest = root.resolve(pdfDir) +"/"+ pdfFile;
+			dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) +"/"+ doc.getHashdoc()) + "-ass." + FilenameUtils.getExtension(doc.getHashdoc());
+			
+	    	
+	    	//System.out.println("Criando arquivos = " + dest);			
+	        PdfReader reader = new PdfReader(root.resolve(pdfDir) +"/"+ doc.getHashdoc());
 	        int numpages = reader.getNumberOfPages();
 	        Rectangle pageSize = reader.getPageSize(numpages);
 	        float pageX = pageSize.getRight() - 90;
-	        //System.out.println(pageX + " , " + pageSize.getBottom());
-	          
-	        // INSERINDO METADADOS PARA VERIFICAÇÃO DO HASH
-	          PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(file.toString() ));
+	        //System.out.println(pageX + " , " + pageSize.getBottom());         
+	        
+	        
+	          PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 	          HashMap<String, String> hMap = reader.getInfo();          
 	          hMap.put("Title", "TRE-AMAZONAS/E-Signify");
 	          hMap.put("Subject", "Documento assinado eletrônicamente");
@@ -83,17 +89,22 @@ public class PDFHandler {
 	        XmpWriter xmp = new XmpWriter(baos, hMap);
 	        xmp.close();
 	        stamper.setXmpMetadata(baos.toByteArray());
+	        
 	        //INSERINDO UM TEXTO INFERIOR ESQUERDO
 	        PdfContentByte canva = stamper.getOverContent(numpages);
-	        ColumnText.showTextAligned(canva, Element.ALIGN_LEFT, new Phrase("[Assinado por " + author + "]",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00))),10,10,90);
-	        //new Phrase("Assinado por 015697172275")
+	      
+	        ColumnText.showTextAligned(canva, Element.ALIGN_LEFT, new Phrase("[Assinado por " + author.getServidorId().getNome() + "]",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00))),10,10,0);
+	       
+	   
+            
+	        //new Phrase("Assinado por 015697172275");
 	        //Phrase x = new Phrase("Ass",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00)));
 	        stamper.close();
 	        reader.close();
 	        //readMetaDados(dest);
       } catch (Exception e) {
     	  e.printStackTrace();
-    	  throw new RuntimeException("Ocorreu um erro: " + e.getMessage());
+    	 // throw new RuntimeException("Ocorreu um erro: " + e.getMessage());
 	    }
 		return dest;
    }
@@ -154,7 +165,8 @@ public class PDFHandler {
             //boolean isHashMatch = verifyHash(hexHash, expectedHash);
             //System.out.println("Is hash valid? " + isHashMatch);
         } catch (IOException | NoSuchAlgorithmException e) {
-        	throw new RuntimeException("Ocorreu um erro ao gerar hash do arquivo. Erro: " + e.getMessage());
+        	e.printStackTrace();
+        	//throw new RuntimeException("Ocorreu um erro ao gerar hash do arquivo. Erro: " + e.getMessage());
         }
 		return hexHash;
 	}
