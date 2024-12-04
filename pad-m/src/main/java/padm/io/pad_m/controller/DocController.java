@@ -167,10 +167,11 @@ public class DocController {
 		    ResultDTO msg = new ResultDTO();
 		    msg.setType("success");
 		    try {
+		      System.out.println(file.getOriginalFilename());
 		      storageService.verify(file);
 		      String fileNameHash = storageService.save(file, "verify");
 		      String srcPDF = root.resolve(pdfVerify)+ "/" + file.getOriginalFilename();
-		      String uuidFile = assinaturaService.getIDMetaDados(srcPDF);
+		      String uuidFile = assinaturaService.getIDMetaDados(srcPDF);		     
 		      Optional<Assinador> doc =  Optional.of(assinadorService.findAByHash(uuidFile).get()); 
 		     
 		      String hash = assinaturaService.generateHash(srcPDF);

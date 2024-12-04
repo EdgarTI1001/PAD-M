@@ -60,7 +60,7 @@ public class PDFHandler {
 			
 			//RENOMEANDO O ARQUIVO
 			//dest = root.resolve(pdfDir) +"/"+ pdfFile;
-			dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) +"/"+ doc.getHashdoc()) + "-ass." + FilenameUtils.getExtension(doc.getHashdoc());
+			dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) +"/"+ doc.getHashdoc()) + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc());
 			
 	    	
 	    	//System.out.println("Criando arquivos = " + dest);			
