@@ -211,19 +211,33 @@ public class DocController {
 	@PostMapping("/files/assinar")
     public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) throws IOException {
        //GET EM DOCUMENTO diretorio "documentos" no Sistema
-		 Doc doc = docService.findById(id);		
-    	
-    	//Resource r = storageService.load(doc.getHashdoc(), "documentos");
+		Doc doc = docService.findById(id);		
+    	Integer ret = 99; 
+    	String msg = "";
+    	String type = "";
+    	try {
+    		String newPDF = assinaturaService.InsertStamp(doc, session.getUsuario());
+        	String hashID = assinaturaService.generateHash(newPDF); 
+        	Assinador a = new Assinador();
+        	a.setData(LocalDateTime.now());
+        	a.setDoc(doc);
+        	a.setUserId(session.getUsuario());
+        	a.setHashdoc(hashID);
+        	assinadorService.save(a);
+        	msg = "Documento Assinado com Sucesso!";
+        	type="success";
+        	ret = 1;
+		} catch (Exception e) {	       	
+        	msg = "Erro ao Assinar Documento!";
+        	type="danger";
+        	ret = 0;
+			// TODO: handle exception
+		}
    
     	
-    	String newPDF = assinaturaService.InsertStamp(doc, session.getUsuario());
-    	String hashID = assinaturaService.generateHash(newPDF); 
-    	Assinador a = new Assinador();
-    	a.setData(LocalDateTime.now());
-    	a.setDoc(doc);
-    	a.setUserId(session.getUsuario());
-    	a.setHashdoc(hashID);
-    	assinadorService.save(a);
+    	model.addAttribute("msg", msg);
+    	model.addAttribute("type", type);
+    	model.addAttribute("ret", ret);
 		model.addAttribute("doc", doc);
     	return "docs/form-assinar";
     }
@@ -271,7 +285,7 @@ public class DocController {
 
 				if (existed) {
 					alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
-					// docService.deleteById(id);
+					 docService.deleteById(id);
 				} else {
 					redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
 					alertMessage = new AlertMessage("danger", "Arquivo não existe!");

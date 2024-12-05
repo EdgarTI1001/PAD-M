@@ -23,13 +23,16 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.xml.xmp.XmpWriter;
 
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
+import padm.io.pad_m.service.DocService;
 
 @Service
 public class PDFHandler {
@@ -37,6 +40,9 @@ public class PDFHandler {
 	 
 	 @Autowired
 	 private FilesStorageService storageService;
+	 
+	 @Autowired
+		private DocService docService;
 	
 	
 	//@Value("${path.files.upload}")
@@ -61,6 +67,8 @@ public class PDFHandler {
 			//RENOMEANDO O ARQUIVO
 			//dest = root.resolve(pdfDir) +"/"+ pdfFile;
 			dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) +"/"+ doc.getHashdoc()) + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc());
+			
+			
 			
 	    	
 	    	//System.out.println("Criando arquivos = " + dest);			
@@ -100,7 +108,13 @@ public class PDFHandler {
 	        //new Phrase("Assinado por 015697172275");
 	        //Phrase x = new Phrase("Ass",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00)));
 	        stamper.close();
-	        reader.close();
+	        reader.close();	        
+	       
+	        String[] parts =  doc.getHashdoc().split("\\.");	
+	        doc.setHashdoc(parts[0] + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc()));	       
+	      
+	        docService.save(doc);
+	      
 	        //readMetaDados(dest);
       } catch (Exception e) {
     	  e.printStackTrace();
