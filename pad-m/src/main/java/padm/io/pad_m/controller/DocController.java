@@ -78,8 +78,6 @@ public class DocController {
 	
 	private String pdfDir = "documentos";
 	
-	private String pdfVerify = "verify";
-
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
 		Pageable pageable = PageRequest.of(page, 10); // 5 items por página
@@ -159,7 +157,7 @@ public class DocController {
 		return "redirect:/docs";
 	}
 	
-	
+	/*
 	  @PostMapping("/files/hashverify")
 	  public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
 		    InfoFileDTO fileDTO = new InfoFileDTO();
@@ -192,7 +190,7 @@ public class DocController {
 
 	    return "docs/verify_form";
 	  }
-
+*/
 	@GetMapping("/edit/{id}")
 	public String editForm(@PathVariable("id") Integer id, Model model) {
 		Doc doc = docService.findById(id);
@@ -208,6 +206,7 @@ public class DocController {
 	}
 	
 	
+	
 	@PostMapping("/files/assinar")
     public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) throws IOException {
        //GET EM DOCUMENTO diretorio "documentos" no Sistema
@@ -215,19 +214,23 @@ public class DocController {
     	Integer ret = 99; 
     	String msg = "";
     	String type = "";
-    	try {
+    	try {    		
+    		String fileHash = assinaturaService.generateFileHash(doc,session.getUsuario(), "SHA-256");
+    		
     		String newPDF = assinaturaService.InsertStamp(doc, session.getUsuario());
-        	String hashID = assinaturaService.generateHash(newPDF); 
+        	//String hashID = assinaturaService.generateHash(newPDF); 
         	Assinador a = new Assinador();
         	a.setData(LocalDateTime.now());
         	a.setDoc(doc);
         	a.setUserId(session.getUsuario());
-        	a.setHashdoc(hashID);
-        	assinadorService.save(a);
+        	a.setHashdoc(fileHash);
+        	assinadorService.save(a);      	
+        	
         	msg = "Documento Assinado com Sucesso!";
         	type="success";
         	ret = 1;
-		} catch (Exception e) {	       	
+		} catch (Exception e) {	 
+			e.printStackTrace();     	
         	msg = "Erro ao Assinar Documento!";
         	type="danger";
         	ret = 0;
@@ -242,6 +245,42 @@ public class DocController {
     	return "docs/form-assinar";
     }
 	
+	  @PostMapping("/files/hashverify")
+	  public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
+		    InfoFileDTO fileDTO = new InfoFileDTO();
+		    boolean verificado = false;
+		    
+		    ResultDTO msg = new ResultDTO();
+		    msg.setType("success");
+		    try {	      
+		     
+		      Optional<Doc> doc = docService.findByHashdoc(file.getOriginalFilename());		
+		      Path filePath = Paths.get("uploads/verify/" + file.getOriginalFilename());
+	          Files.write(filePath, file.getBytes());  
+		     
+	          Optional<Assinador> assinador =  assinadorService.findFirstByDoc_id(doc.get().getId());
+	          verificado =   assinaturaService.isFileUnchanged(file , assinador.get().getHashdoc(),  "SHA-256");
+	          if (verificado) {
+		    	  msg.setMensagem("Assinatura eletrônica conferida!");		    	 
+		      }else {
+		    	  msg.setType("danger");
+		    	  msg.setMensagem("Assinatura eletrônica inválida!");
+		      }		    
+		   
+		      File arquivo = new File("uploads/verify/" + file.getOriginalFilename());
+		      arquivo.delete();
+	    	  model.addAttribute("obj", fileDTO);	    	  
+		      model.addAttribute("msg", msg);
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		      msg.setType("danger");
+		      msg.setMensagem("Ocorreu um erro ao tentar validar arquivo. Erro: " + e.getMessage());
+		      model.addAttribute("msg", msg);
+		    }
+
+	    return "docs/verify_form";
+	  }
+	  
 	@GetMapping("/files/download/{id}")
 	public ResponseEntity<Resource> download(@PathVariable("id") Integer id) throws IOException {
 

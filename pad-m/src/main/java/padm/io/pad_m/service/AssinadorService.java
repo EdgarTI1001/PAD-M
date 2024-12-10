@@ -27,6 +27,10 @@ public class AssinadorService {
 	public Optional<Assinador> findAByHash(String hash) {
 		return assinadorRepositor.findAByHash(hash);
 	}
+	
+	public Optional<Assinador> findFirstByDoc_id(Integer idDoc) {
+		return assinadorRepositor.findFirstByDoc_id(idDoc);
+	}
 
 	@Transactional
 	public void save(Assinador obj) {

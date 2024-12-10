@@ -1,6 +1,7 @@
 package padm.io.pad_m.utils;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,18 +16,18 @@ import java.util.Map;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.xml.xmp.XmpWriter;
 
 import padm.io.pad_m.domain.Doc;
@@ -42,11 +43,13 @@ public class PDFHandler {
 	 private FilesStorageService storageService;
 	 
 	 @Autowired
-		private DocService docService;
+	 private DocService docService;
 	
 	
 	//@Value("${path.files.upload}")
 	private String pdfDir = "documentos";
+	private String pdfVerify = "verify";
+	String dest = "";
 	
 	/*privatee static PDFHandler uniqueInstance;
 	 * private PDFHandler() { }
@@ -56,8 +59,109 @@ public class PDFHandler {
 	 */
 	
 	
+    // Método para gerar o hash de um arquivo
+    public String generateFileHash(Doc doc,Usuario author, String algorithm) throws NoSuchAlgorithmException, IOException, DocumentException {    	
+    	dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) +"/"+ doc.getHashdoc()) + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc());
+    	MessageDigest digest = MessageDigest.getInstance(algorithm);
+
+    	    PdfReader reader = new PdfReader(root.resolve(pdfDir) +"/"+ doc.getHashdoc());
+	        int numpages = reader.getNumberOfPages();
+	        Rectangle pageSize = reader.getPageSize(numpages);
+	        float pageX = pageSize.getRight() - 90;
+	        
+	           PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
+	          HashMap<String, String> hMap = reader.getInfo();          
+	          hMap.put("Title", "TRE-AMAZONAS/E-Signify");
+	          hMap.put("Subject", "Documento assinado eletrônicamente");
+	         // hMap.put("Keywords", uuid.toString().toUpperCase());
+	          hMap.put("Creator", "eSignify");
+	        //  hMap.put("Author", author.getNome());
+	          
+	        //Image image = Image.getInstance(STAMP);
+	       // image.scalePercent(35);
+	       // image.setAbsolutePosition(pageX, 0);
+	       // PdfContentByte over = stamper.getOverContent(numpages);
+	       // over.addImage(image);
+	        stamper.setMoreInfo(hMap);
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        XmpWriter xmp = new XmpWriter(baos, hMap);
+	        xmp.close();
+	        stamper.setXmpMetadata(baos.toByteArray());
+	        
+	        //INSERINDO UM TEXTO INFERIOR ESQUERDO
+	        PdfContentByte canva = stamper.getOverContent(numpages);
+	      
+	        ColumnText.showTextAligned(canva, Element.ALIGN_LEFT, new Phrase("[Assinado por " + author.getServidorId().getNome() + "]",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00))),10,10,0);
+	       
+	        String[] parts =  doc.getHashdoc().split("\\.");	
+	        doc.setHashdoc(parts[0] + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc()));	       
+	      
+	        docService.save(doc);
+          
+	        //new Phrase("Assinado por 015697172275");
+	        //Phrase x = new Phrase("Ass",FontFactory.getFont(FontFactory.COURIER,9,new BaseColor(0xFF, 0x00, 0x00)));
+	        stamper.close();
+	        reader.close();	        
+	        
+        try (FileInputStream fis = new FileInputStream(new File(dest))) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesRead);
+            }
+        }
+
+        byte[] hashBytes = digest.digest();
+        StringBuilder hashString = new StringBuilder();
+        for (byte b : hashBytes) {
+            hashString.append(String.format("%02x", b));
+        }
+        return hashString.toString();
+    }
+    
+    public boolean isFileUnchanged(MultipartFile file, String expectedHash, String algorithm) {
+        try {
+            String actualHash = generateVerificacaoFileHash(file, algorithm);
+            
+            System.out.println("=================Hash do Documento ===================");
+            System.out.println(expectedHash);
+            System.out.println("=================FIM ===================");
+            
+            System.out.println("=================HASH DO ARQUIVO QUE ESTA SENDO DADO UPLOAD ===================");
+            System.out.println(actualHash);
+            
+            return actualHash.equalsIgnoreCase(expectedHash); // Comparação do hash gerado com o esperado
+        } catch (NoSuchAlgorithmException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // Método para gerar o hash de um arquivo
+    public String generateVerificacaoFileHash(MultipartFile file, String algorithm) throws NoSuchAlgorithmException, IOException {    	
+    	String[] ext = file.getContentType().split("/");     	
+    	dest = root.resolve(pdfVerify) + "/" + FilenameUtils.getBaseName(root.resolve(pdfVerify) +"/"+ file.getOriginalFilename()) + "." + ext[1];
+    	System.out.println(dest);
+    	MessageDigest digest = MessageDigest.getInstance(algorithm);
+
+        try (FileInputStream fis = new FileInputStream(new File(dest))) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                digest.update(buffer, 0, bytesRead);
+            }
+        }
+
+        byte[] hashBytes = digest.digest();
+        StringBuilder hashString = new StringBuilder();
+        for (byte b : hashBytes) {
+            hashString.append(String.format("%02x", b));
+        }
+        return hashString.toString();
+    }
+    
 	public String InsertStamp(Doc doc,Usuario author) {
-		String dest = "";
+	
 		//String src = pdfDir + "/" + pdfFile;
 		// Path path = root.resolve(pdfDir).resolve(pdfFile);		
 		// File file = new File(root.resolve(pdfDir) +"/"+ pdfFile);

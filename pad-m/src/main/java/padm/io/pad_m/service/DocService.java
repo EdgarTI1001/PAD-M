@@ -26,6 +26,10 @@ public class DocService {
 		return docRepository.findById(id).orElse(null);
 	}
 
+	public Optional<Doc> findByHashdoc(String hash) {
+		return docRepository.findByHashdoc(hash);
+	}
+
 	public Doc save(Doc doc) {
 		return docRepository.save(doc);
 	}
