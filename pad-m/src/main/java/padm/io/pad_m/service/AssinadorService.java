@@ -29,7 +29,7 @@ public class AssinadorService {
 	}
 	
 	public Optional<Assinador> findFirstByDoc_id(Integer idDoc) {
-		return assinadorRepositor.findFirstByDoc_id(idDoc);
+		return assinadorRepositor.findFirstByDoc_idOrderByIdDesc(idDoc);
 	}
 
 	@Transactional
