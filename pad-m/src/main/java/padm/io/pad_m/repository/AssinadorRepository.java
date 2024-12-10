@@ -15,6 +15,6 @@ public interface AssinadorRepository extends JpaRepository<Assinador, Integer> {
 	
 	//Assinador findFirstByProcId_id(@Param("idProcesso") Integer idProcesso);
 	
-	Optional<Assinador> findFirstByDoc_id(@Param("idDoc") Integer idDoc);
+	Optional<Assinador> findFirstByDoc_idOrderByIdDesc(@Param("idDoc") Integer idDoc);
 
 }
