@@ -157,40 +157,7 @@ public class DocController {
 		return "redirect:/docs";
 	}
 	
-	/*
-	  @PostMapping("/files/hashverify")
-	  public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
-		    InfoFileDTO fileDTO = new InfoFileDTO();
-		   
-		    ResultDTO msg = new ResultDTO();
-		    msg.setType("success");
-		    try {
-		      System.out.println(file.getOriginalFilename());
-		      storageService.verify(file);
-		      String fileNameHash = storageService.save(file, "verify");
-		      String srcPDF = root.resolve(pdfVerify)+ "/" + file.getOriginalFilename();
-		      String uuidFile = assinaturaService.getIDMetaDados(srcPDF);		     
-		      Optional<Assinador> doc =  Optional.of(assinadorService.findAByHash(uuidFile).get()); 
-		     
-		      String hash = assinaturaService.generateHash(srcPDF);
-		      if (assinaturaService.verifyHash(hash, doc.get().getHashdoc())) {
-		    	  msg.setMensagem("Assinatura eletrônica conferida!");
-		    	  model.addAttribute("obj", fileDTO);
-		      }else {
-		    	  msg.setType("danger");
-		    	  msg.setMensagem("Assinatura eletrônica inválida!");
-		      }
-		      model.addAttribute("msg", msg);
-		    } catch (Exception e) {
-		    	e.printStackTrace();
-		      msg.setType("danger");
-		      msg.setMensagem("Ocorreu um erro ao tentar validar arquivo. Erro: " + e.getMessage());
-		      model.addAttribute("msg", msg);
-		    }
 
-	    return "docs/verify_form";
-	  }
-*/
 	@GetMapping("/edit/{id}")
 	public String editForm(@PathVariable("id") Integer id, Model model) {
 		Doc doc = docService.findById(id);
@@ -215,20 +182,25 @@ public class DocController {
     	String msg = "";
     	String type = "";
     	try {    		
-    		String fileHash = assinaturaService.generateFileHash(doc,session.getUsuario(), "SHA-256");
-    		
-    		String newPDF = assinaturaService.InsertStamp(doc, session.getUsuario());
-        	//String hashID = assinaturaService.generateHash(newPDF); 
-        	Assinador a = new Assinador();
-        	a.setData(LocalDateTime.now());
-        	a.setDoc(doc);
-        	a.setUserId(session.getUsuario());
-        	a.setHashdoc(fileHash);
-        	assinadorService.save(a);      	
+    		String fileHash = assinaturaService.generateFileHash(doc,session.getUsuario(), "SHA-256");    		
+    		Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
+    		if(isAssinou == 0){
+    			Assinador a = new Assinador();
+            	a.setData(LocalDateTime.now());
+            	a.setDoc(doc);
+            	a.setUserId(session.getUsuario());
+            	a.setHashdoc(fileHash);
+            	assinadorService.save(a);      	
+            	
+            	msg = "Documento Assinado com Sucesso!";
+            	type="success";
+            	ret = 1;
+    		}else{
+    			msg = "O Usuario já assinou esse Documento!!";
+            	type="danger";
+            	ret = 0;
+    		}
         	
-        	msg = "Documento Assinado com Sucesso!";
-        	type="success";
-        	ret = 1;
 		} catch (Exception e) {	 
 			e.printStackTrace();     	
         	msg = "Erro ao Assinar Documento!";

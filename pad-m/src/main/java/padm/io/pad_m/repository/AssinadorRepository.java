@@ -13,8 +13,11 @@ public interface AssinadorRepository extends JpaRepository<Assinador, Integer> {
 	@Query("SELECT a FROM Assinador a WHERE a.hashdoc = :hash")
 	Optional<Assinador> findAByHash(@Param("hash") String hash);
 	
-	//Assinador findFirstByProcId_id(@Param("idProcesso") Integer idProcesso);
-	
 	Optional<Assinador> findFirstByDoc_idOrderByIdDesc(@Param("idDoc") Integer idDoc);
+	
+	@Query("SELECT a FROM Assinador a WHERE a.userId.id = :idUser AND a.doc.id =:idDoc ")
+	Optional<Assinador> findByUserAndDoc(@Param("idUser") Integer idUser, @Param("idDoc") Integer idDoc);
+	
+	
 
 }

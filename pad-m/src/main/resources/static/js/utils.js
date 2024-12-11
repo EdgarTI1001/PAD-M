@@ -21,6 +21,7 @@ async function getData(idSetor) {
     }
 }
 
+
 function formatarData(data) {	
 	const dataAtual = new Date(data);
     const dia = String(dataAtual.getDate()).padStart(2, '0');

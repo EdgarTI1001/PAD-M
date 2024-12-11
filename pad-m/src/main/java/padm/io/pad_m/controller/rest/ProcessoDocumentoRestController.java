@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import padm.io.pad_m.domain.ProcessoDocs;
 import padm.io.pad_m.domain.dto.ProcessoDocumentoDTO;
 import padm.io.pad_m.security.AuthenticationFacade;
+import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.ProcessoDocsService;
 
 @RestController
@@ -24,6 +25,9 @@ public class ProcessoDocumentoRestController {
 	
 	@Autowired
 	ProcessoDocsService processoDocsService;	
+	
+	@Autowired
+	AssinadorService assinadorService;	
 	
 	@Autowired
 	AuthenticationFacade session;
@@ -36,9 +40,10 @@ public class ProcessoDocumentoRestController {
     }
 	
 	
-	@GetMapping("/getAllByProcessos/{idProcesso}")
-	public ResponseEntity<List<ProcessoDocs>> getAllByProcessos(@PathVariable("idProcesso") Integer idProcesso) {		
-		return ResponseEntity.ok(processoDocsService.findAllByProcesso(idProcesso));
+	@GetMapping("/isAssinado/documento/{idDoc}")
+	public Integer isAssinado(@PathVariable("idDoc") Integer idDoc) {	
+		Integer ret = assinadorService.findByUserAndDoc(session.getUsuario().getId(), idDoc);
+		return ret;
 	}
 	
 	@DeleteMapping("/delete/{id}")
@@ -48,5 +53,11 @@ public class ProcessoDocumentoRestController {
 		ret = processoDocsService.delete(pdocs.get());
 		return ResponseEntity.ok(ret);
 	}
+	
+	@GetMapping("/getAllByProcessos/{idProcesso}")
+	public ResponseEntity<List<ProcessoDocs>> getAllByProcessos(@PathVariable("idProcesso") Integer idProcesso) {		
+		return ResponseEntity.ok(processoDocsService.findAllByProcesso(idProcesso));
+	}
+	
 
 }
