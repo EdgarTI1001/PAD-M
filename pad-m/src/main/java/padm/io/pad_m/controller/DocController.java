@@ -42,12 +42,14 @@ import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.InfoFileDTO;
+import padm.io.pad_m.domain.dto.ProcessoDocumentoDTO;
 import padm.io.pad_m.domain.dto.ResultDTO;
 import padm.io.pad_m.fileserver.FilesStorageService;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.security.IAuthenticationFacade;
 import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
+import padm.io.pad_m.service.ProcessoDocsService;
 import padm.io.pad_m.utils.AlertMessage;
 import padm.io.pad_m.utils.FileSizeUtil;
 import padm.io.pad_m.utils.PDFHandler;
@@ -64,12 +66,15 @@ public class DocController {
 	
 
 	@Autowired
-	private AssinadorService assinadorService;
-	
+	private AssinadorService assinadorService;	
 	
 	@Autowired
 	private PDFHandler assinaturaService;
 
+	@Autowired
+	private ProcessoDocsService processoDocService;
+
+	
 	@Autowired
 	private FilesStorageService storageService;
 
@@ -317,10 +322,10 @@ public class DocController {
 	}
 
 	@PostMapping("/gerarPdf")
-	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes) {
+	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes, @RequestParam("idProcesso") Integer idProcesso) {
 
 		AlertMessage alertMessage = null;
-
+		
 		if (doc != null && doc.getFlag() == 0) {
 			try {
 
@@ -397,9 +402,15 @@ public class DocController {
 				docNew.setFlag(0);
 				if (!multipartFile.isEmpty()) {
 					docNew.setTamdoc(FileSizeUtil.formatFileSize(multipartFile.getSize()));
-				}
+				}				
+			
 				docService.save(docNew);
-
+				ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
+				procdoc.setIdDocumento(docNew.getId());
+				procdoc.setIdProcesso(idProcesso);
+				procdoc.setIdUsuario(authentication.getUsuario().getId());
+				processoDocService.save(procdoc);
+					
 				alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
 
 			} catch (Exception e) {
@@ -427,6 +438,6 @@ public class DocController {
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 
-		return "redirect:/docs";
+		return "redirect:/processos";
 	}
 }

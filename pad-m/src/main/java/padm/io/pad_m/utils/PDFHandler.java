@@ -84,10 +84,7 @@ public class PDFHandler {
 
 		// INSERINDO UM TEXTO INFERIOR ESQUERDO
 		PdfContentByte canva = stamper.getOverContent(numpages);
-		ColumnText
-				.showTextAligned(canva, Element.ALIGN_LEFT,
-						new Phrase("[Assinado por " + author.getServidorId().getNome() + "]",
-								FontFactory.getFont(FontFactory.COURIER, 9, new BaseColor(0xFF, 0x00, 0x00))),
+		ColumnText.showTextAligned(canva, Element.ALIGN_LEFT,new Phrase("[Assinado por " + author.getServidorId().getNome() + "]", FontFactory.getFont(FontFactory.COURIER, 9, new BaseColor(0xFF, 0x00, 0x00))),
 						10, 10, 0);
 
 		String[] parts = doc.getHashdoc().split("\\.");

@@ -97,6 +97,7 @@
 
                     <!-- Formulário para Criar ou Editar Documento -->
                     <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
+                       <input type="text" th:value="${processo.id}" name="idProcesso"/>
                         <input type="hidden" th:field="*{id}" />
 
                         <div class="mb-3">
