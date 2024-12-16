@@ -24,10 +24,12 @@ import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.domain.dto.ResultDTO;
 import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.ClassifService;
 import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.service.EventoService;
+import padm.io.pad_m.service.ProcessoApensoService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
@@ -46,6 +48,9 @@ public class ProcessoController {
 
 	@Autowired
 	private ProcessoService processoService;
+
+	@Autowired
+	private ProcessoApensoService processoApensoService;
 
 	@Autowired
 	private TipoEventoService tipoEventoService;
@@ -100,12 +105,11 @@ public class ProcessoController {
 
 	@GetMapping("/responsavel")
 	public ModelAndView listarProcessosByServidorAtendente() {
-		System.out.println(session.getUsuario().getId());
-		List<Processo> p = processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId());		
+		List<Processo> p = processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId());
 		ModelAndView mv = new ModelAndView("consulta/processosServidorResponsavel");
-		mv.addObject("processo",	processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId()));
+		mv.addObject("processo", processoService.findAllByServidorAtendenteResposanvel(session.getUsuario().getId()));
 		return mv;
-		
+
 	}
 
 	@PostMapping("/passo2")
@@ -165,19 +169,55 @@ public class ProcessoController {
 	@PostMapping("/save")
 	public String saveObject(@ModelAttribute("processo") Processo processo, BindingResult result) {
 		try {
-
 			processoService.save(processo);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return "redirect:/processos";
 	}
 
+	@GetMapping("/frmApensar/{id}")
+	public ModelAndView frmApensar(@PathVariable(name = "id") Integer id) {
+		ModelAndView model = new ModelAndView("form/frmApensar");
+		ResultDTO r = new ResultDTO();
+		Optional<Processo> p = processoService.findById(id);
+		List<Processo> processos = new ArrayList<Processo>();
+		model.addObject("processo", p);
+		model.addObject("numanoproc", p.get().getNumanoproc());
+		model.addObject("assunto", p.get().getAssunto());
+		model.addObject("r", r);
+		processos = processoService.findAllBySetor(session.getUsuario().getLotacao_id().getId());
+		model.addObject("processos", processos);
+		return model;
+	}
+
 	@GetMapping("/edit/{id}")
 	public ModelAndView frmEditar(@PathVariable(name = "id") Integer id) {
 		ModelAndView model = new ModelAndView("form/frmProcesso");
-
 		return model;
 	}
+
+	@PostMapping("/apensar/save")
+	public ModelAndView apensarProcessos(@ModelAttribute("processo") Processo processo,
+			@RequestParam("processos") Integer[] processos,@RequestParam("obs") String obs,  BindingResult result) {
+		ResultDTO r = new ResultDTO();
+		try {
+			processoApensoService.save(processo.getId(),obs, session.getUsuario().getId(), processos);
+			r.setType("success");
+			r.setMensagem("Processos Apensados com Sucesso!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			r.setType("error");
+			r.setMensagem("Erro ao Apensar Processos, erro:" + e.getMessage());
+		}
+		Optional<Processo> p = processoService.findById(processo.getId());
+		ModelAndView model = new ModelAndView("form/frmApensar");
+		model.addObject("processo", p);
+		model.addObject("numanoproc", p.get().getNumanoproc());
+		model.addObject("assunto", p.get().getAssunto());
+		model.addObject("r", r); 
+		return model;
+		// return "redirect:/processos";
+	}
+
 }

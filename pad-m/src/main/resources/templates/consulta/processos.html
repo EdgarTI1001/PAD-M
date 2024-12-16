@@ -197,7 +197,7 @@
                                     <td th:text="${rs.ano}"></td>
                                     <td th:text="${rs.numanoproc}"></td>
                                     <td>
-                                        <a href="#" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Ver Eventos do Processo">
+                                        <a  th:href="@{/processos/frmApensar/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Apensar Processos">
                                             <span th:text="${rs.assunto}"></span>
                                         </a> 
                                     </td>
@@ -393,7 +393,7 @@
         });
     }); 
     
-    
+    /*
     $("[id*='tramite']").click(function(event){           	   
         event.preventDefault();
         var data = $(event.delegateTarget).data();
@@ -420,7 +420,7 @@
         });
     });
     
-    
+    */
 
     
     $("#tipagem").change(function(){
