@@ -34,12 +34,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
+import padm.io.pad_m.domain.Evento;
+import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.InfoFileDTO;
 import padm.io.pad_m.domain.dto.ProcessoDocumentoDTO;
@@ -50,6 +53,7 @@ import padm.io.pad_m.security.IAuthenticationFacade;
 import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.service.ProcessoDocsService;
+import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.utils.AlertMessage;
 import padm.io.pad_m.utils.FileSizeUtil;
 import padm.io.pad_m.utils.PDFHandler;
@@ -70,6 +74,9 @@ public class DocController {
 	
 	@Autowired
 	private PDFHandler assinaturaService;
+	
+	@Autowired
+	private ProcessoService processoService;
 
 	@Autowired
 	private ProcessoDocsService processoDocService;
@@ -161,7 +168,70 @@ public class DocController {
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 		return "redirect:/docs";
 	}
+
 	
+	@GetMapping("/frmAddDoc/{idProcesso}")
+	public ModelAndView frmAddDoc(@ModelAttribute("doc") Doc doc, @PathVariable(name = "idProcesso") Integer idProcesso) {
+		ModelAndView model = new ModelAndView("docs/form-proc-add-doc");
+		ResultDTO r = new ResultDTO();
+		Optional<Processo> p = processoService.findById(idProcesso);	
+		model.addObject("processo", p);
+		model.addObject("r", r);	
+		
+		return model;
+	}
+	
+	@PostMapping("/files/upload/addDoc")
+	public String uploadFileAddDocToProc(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
+			@ModelAttribute("doc") Doc docNew, @RequestParam("id") Integer id) {
+		AlertMessage alertMessage;
+		final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
+		final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "video/mp4",
+				"application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+				"application/msword" // .doc
+		);
+
+		// Verifica o tamanho do arquivo
+		if (file.getSize() > MAX_FILE_SIZE) {
+			alertMessage = new AlertMessage("danger", "O arquivo excede o limite de 10 MB.");
+		}
+		// Verifica o tipo do arquivo
+		else if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
+			alertMessage = new AlertMessage("danger",
+					"Tipo de arquivo não permitido. Somente PNG, JPG, MP4, PDF, DOC e DOCX são aceitos.");
+		} else {
+			try {
+				String fileNameHash = storageService.save(file, "documentos");
+				Usuario usuario = authentication.getUsuario();
+
+				Doc doc = new Doc();
+				doc.setNomdoc(docNew.getNomdoc());
+				doc.setExtdoc(file.getContentType());
+				doc.setUsu_id(usuario);
+				doc.setData(LocalDateTime.now());
+				doc.setHashdoc(fileNameHash);
+
+				if (!file.isEmpty()) {
+					doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
+				}
+				docService.save(doc);
+				ProcessoDocumentoDTO pd = new ProcessoDocumentoDTO();
+				pd.setIdDocumento(doc.getId());
+				pd.setIdProcesso(id);
+				pd.setIdUsuario(authentication.getUsuario().getId());
+				processoDocService.save(pd);				
+				
+				alertMessage = new AlertMessage("success",
+						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
+			} catch (Exception e) {
+				alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: "
+						+ file.getOriginalFilename() + ". Error: " + e.getMessage());
+			}
+		}
+
+		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
+		return "redirect:/docs";
+	}
 
 	@GetMapping("/edit/{id}")
 	public String editForm(@PathVariable("id") Integer id, Model model) {
@@ -271,9 +341,7 @@ public class DocController {
 			Resource resource = new FileSystemResource(file);
 			
 			String contentType = "application/octet-stream"; // Default for binary files
-			   String header = "attachment; filename=\"" + resource.getFilename() + "\"";
-			
-			
+			   String header = "attachment; filename=\"" + resource.getFilename() + "\"";	
 
 			   return ResponseEntity.ok()
 	                   .header(HttpHeaders.CONTENT_DISPOSITION, header)

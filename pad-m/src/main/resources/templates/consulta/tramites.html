@@ -368,8 +368,7 @@
 		        	 $.ajax({
 		        		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
 		        		  method: "GET",
-		        		}).done(function(data) { 			
-		        			
+		        		}).done(function(data) {	        			
 		        			$.each( data, function( index, value ){  		        				
 		        				 table += '<tr id="tr' + value.id + '">';
 			        				 table += '<th>' + value.documento.nomdoc + '</th>';	    
@@ -381,9 +380,14 @@
 	                                           '<i class="bi bi-pencil-fill"></i>Assinar'+
 	                                      '</a>'+	
 	                                     
-	                                     ' <a class="btn btn-sm btn-primary"  href="../docs/files/download/'+value.documento.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Assinar Documento">'+
+	                                     ' <a class="btn btn-sm btn-primary"  href="../docs/files/download/'+value.documento.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Baixar Documento">'+
                                        		  '<i class="bi bi-download"></i>'+
-                                 		 '</a>'+	
+                                 		 '</a>'+
+                                 		 
+                                 		 ' <a class="btn btn-sm btn-info"  href="../docs/frmAddDoc/'+value.processo.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Adicionar Documento">'+
+                                  			  '<i class="bi bi-cloud-upload-fill"></i>'+
+                            			 '</a>'+	
+                            		 
                                    
 			                          '</th>';	                 
 		                         table += '</tr>';
