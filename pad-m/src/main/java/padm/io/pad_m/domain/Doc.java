@@ -32,8 +32,12 @@ public class Doc {
 	@Column(name = "EXTDOC")
 	private String extdoc;
 
+	@ManyToOne
+	@JoinColumn(name = "TIPODOC_ID")
+	private TipoDoc tipoDoc;
+
 	@Column(name = "TIPODOC")
-	private String tipodoc;
+	private String tipodocDesc;
 
 	@Column(name = "TAMDOC")
 	private String tamdoc;
@@ -54,15 +58,15 @@ public class Doc {
 
 	}
 
-	public Doc(Integer id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc, String tipodoc, String tamdoc,
-			LocalDateTime data, String obs, int seq, int flag) {
+	public Doc(Integer id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc, String tipodocDesc,
+			String tamdoc, LocalDateTime data, String obs, int seq, int flag) {
 
 		this.id = id;
 
 		this.usu_id = usu_id;
 		this.nomdoc = nomdoc;
 		this.extdoc = extdoc;
-		this.tipodoc = tipodoc;
+		this.tipodocDesc = tipodocDesc;
 		this.tamdoc = tamdoc;
 		this.data = data;
 		this.obs = obs;
@@ -102,12 +106,12 @@ public class Doc {
 		this.extdoc = extdoc;
 	}
 
-	public String getTipodoc() {
-		return tipodoc;
+	public String getTipodocDesc() {
+		return tipodocDesc;
 	}
 
-	public void setTipodoc(String tipodoc) {
-		this.tipodoc = tipodoc;
+	public void setTipodocDesc(String tipodocDesc) {
+		this.tipodocDesc = tipodocDesc;
 	}
 
 	public String getTamdoc() {
@@ -165,4 +169,13 @@ public class Doc {
 	public void setConteudo(String conteudo) {
 		this.conteudo = conteudo;
 	}
+
+	public TipoDoc getTipoDoc() {
+		return tipoDoc;
+	}
+
+	public void setTipoDoc(TipoDoc tipoDoc) {
+		this.tipoDoc = tipoDoc;
+	}
+
 }

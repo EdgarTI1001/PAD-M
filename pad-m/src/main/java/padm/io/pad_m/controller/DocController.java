@@ -54,6 +54,7 @@ import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.service.ProcessoDocsService;
 import padm.io.pad_m.service.ProcessoService;
+import padm.io.pad_m.service.TipoDocService;
 import padm.io.pad_m.utils.AlertMessage;
 import padm.io.pad_m.utils.FileSizeUtil;
 import padm.io.pad_m.utils.PDFHandler;
@@ -64,32 +65,33 @@ public class DocController {
 	private final Path root = Paths.get("./uploads");
 	@Autowired
 	AuthenticationFacade session;
-	
-	@Autowired
-	private DocService docService;
-	
 
 	@Autowired
-	private AssinadorService assinadorService;	
-	
+	private DocService docService;
+
+	@Autowired
+	private AssinadorService assinadorService;
+
 	@Autowired
 	private PDFHandler assinaturaService;
-	
+
 	@Autowired
 	private ProcessoService processoService;
 
 	@Autowired
 	private ProcessoDocsService processoDocService;
 
-	
+	@Autowired
+	private TipoDocService tipoDocService;
+
 	@Autowired
 	private FilesStorageService storageService;
 
 	@Autowired
 	private IAuthenticationFacade authentication;
-	
+
 	private String pdfDir = "documentos";
-	
+
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
 		Pageable pageable = PageRequest.of(page, 10); // 5 items por página
@@ -103,12 +105,12 @@ public class DocController {
 		model.addAttribute("doc", new Doc());
 		return "docs/form";
 	}
-	
+
 	@GetMapping("/verify")
-	  public String frmFileVerify(Model model) {
-		  model.addAttribute("activePage", "mnuVerify");
-	    return "docs/verify_form";
-	  }
+	public String frmFileVerify(Model model) {
+		model.addAttribute("activePage", "mnuVerify");
+		return "docs/verify_form";
+	}
 
 	@GetMapping("/files/new")
 	public String createFormUpload(Model model) {
@@ -169,21 +171,22 @@ public class DocController {
 		return "redirect:/docs";
 	}
 
-	
 	@GetMapping("/frmAddDoc/{idProcesso}")
-	public ModelAndView frmAddDoc(@ModelAttribute("doc") Doc doc, @PathVariable(name = "idProcesso") Integer idProcesso) {
+	public ModelAndView frmAddDoc(@ModelAttribute("doc") Doc doc,
+			@PathVariable(name = "idProcesso") Integer idProcesso) {
 		ModelAndView model = new ModelAndView("docs/form-proc-add-doc");
 		ResultDTO r = new ResultDTO();
-		Optional<Processo> p = processoService.findById(idProcesso);	
+		Optional<Processo> p = processoService.findById(idProcesso);
 		model.addObject("processo", p);
-		model.addObject("r", r);	
-		
+		model.addObject("r", r);
+
 		return model;
 	}
-	
+
 	@PostMapping("/files/upload/addDoc")
-	public String uploadFileAddDocToProc(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
-			@ModelAttribute("doc") Doc docNew, @RequestParam("id") Integer id) {
+	public String uploadFileAddDocToProc(RedirectAttributes redirectAttributes,
+			@RequestParam("file") MultipartFile file, @ModelAttribute("doc") Doc docNew,
+			@RequestParam("id") Integer id) {
 		AlertMessage alertMessage;
 		final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
 		final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "video/mp4",
@@ -219,8 +222,8 @@ public class DocController {
 				pd.setIdDocumento(doc.getId());
 				pd.setIdProcesso(id);
 				pd.setIdUsuario(authentication.getUsuario().getId());
-				processoDocService.save(pd);				
-				
+				processoDocService.save(pd);
+
 				alertMessage = new AlertMessage("success",
 						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
 			} catch (Exception e) {
@@ -242,117 +245,112 @@ public class DocController {
 
 	@GetMapping("/form/assinar/{idDocumento}")
 	public String assinarDoc(@PathVariable("idDocumento") Integer idDocumento, Model model) {
-		Doc doc = docService.findById(idDocumento);		
+		Doc doc = docService.findById(idDocumento);
 		model.addAttribute("doc", doc);
 		return "docs/form-assinar";
 	}
-	
-	
-	
+
 	@PostMapping("/files/assinar")
-    public String formAssinarDoc(Model model,@RequestParam(name="id") Integer id) throws IOException {
-       //GET EM DOCUMENTO diretorio "documentos" no Sistema
-		Doc doc = docService.findById(id);		
-    	Integer ret = 99; 
-    	String msg = "";
-    	String type = "";
-    	try {    		
-    		String fileHash = assinaturaService.generateFileHash(doc,session.getUsuario(), "SHA-256");    		
-    		Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
-    		if(isAssinou == 0){
-    			Assinador a = new Assinador();
-            	a.setData(LocalDateTime.now());
-            	a.setDoc(doc);
-            	a.setUserId(session.getUsuario());
-            	a.setHashdoc(fileHash);
-            	assinadorService.save(a);      	
-            	
-            	msg = "Documento Assinado com Sucesso!";
-            	type="success";
-            	ret = 1;
-    		}else{
-    			msg = "O Usuario já assinou esse Documento!!";
-            	type="danger";
-            	ret = 0;
-    		}
-        	
-		} catch (Exception e) {	 
-			e.printStackTrace();     	
-        	msg = "Erro ao Assinar Documento!";
-        	type="danger";
-        	ret = 0;
+	public String formAssinarDoc(Model model, @RequestParam(name = "id") Integer id) throws IOException {
+		// GET EM DOCUMENTO diretorio "documentos" no Sistema
+		Doc doc = docService.findById(id);
+		Integer ret = 99;
+		String msg = "";
+		String type = "";
+		try {
+			String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");
+			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
+			if (isAssinou == 0) {
+				Assinador a = new Assinador();
+				a.setData(LocalDateTime.now());
+				a.setDoc(doc);
+				a.setUserId(session.getUsuario());
+				a.setHashdoc(fileHash);
+				assinadorService.save(a);
+
+				msg = "Documento Assinado com Sucesso!";
+				type = "success";
+				ret = 1;
+			} else {
+				msg = "O Usuario já assinou esse Documento!!";
+				type = "danger";
+				ret = 0;
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg = "Erro ao Assinar Documento!";
+			type = "danger";
+			ret = 0;
 			// TODO: handle exception
 		}
-   
-    	
-    	model.addAttribute("msg", msg);
-    	model.addAttribute("type", type);
-    	model.addAttribute("ret", ret);
-		model.addAttribute("doc", doc);
-    	return "docs/form-assinar";
-    }
-	
-	  @PostMapping("/files/hashverify")
-	  public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
-		    InfoFileDTO fileDTO = new InfoFileDTO();
-		    boolean verificado = false;
-		    
-		    ResultDTO msg = new ResultDTO();
-		    msg.setType("success");
-		    try {	      
-		     
-		      Optional<Doc> doc = docService.findByHashdoc(file.getOriginalFilename());		
-		      Path filePath = Paths.get("uploads/verify/" + file.getOriginalFilename());
-	          Files.write(filePath, file.getBytes());  
-		     
-	          Optional<Assinador> assinador =  assinadorService.findFirstByDoc_id(doc.get().getId());
-	          verificado =   assinaturaService.isFileUnchanged(file , assinador.get().getHashdoc(),  "SHA-256");
-	          if (verificado) {
-		    	  msg.setMensagem("Assinatura eletrônica conferida!");		    	 
-		      }else {
-		    	  msg.setType("danger");
-		    	  msg.setMensagem("Assinatura eletrônica inválida!");
-		      }		    
-		   
-		      File arquivo = new File("uploads/verify/" + file.getOriginalFilename());
-		      arquivo.delete();
-	    	  model.addAttribute("obj", fileDTO);	    	  
-		      model.addAttribute("msg", msg);
-		    } catch (Exception e) {
-		    	e.printStackTrace();
-		      msg.setType("danger");
-		      msg.setMensagem("Ocorreu um erro ao tentar validar arquivo. Erro: " + e.getMessage());
-		      model.addAttribute("msg", msg);
-		    }
 
-	    return "docs/verify_form";
-	  }
-	  
+		model.addAttribute("msg", msg);
+		model.addAttribute("type", type);
+		model.addAttribute("ret", ret);
+		model.addAttribute("doc", doc);
+		return "docs/form-assinar";
+	}
+
+	@PostMapping("/files/hashverify")
+	public String verifyFile(Model model, @RequestParam("file") MultipartFile file) {
+		InfoFileDTO fileDTO = new InfoFileDTO();
+		boolean verificado = false;
+
+		ResultDTO msg = new ResultDTO();
+		msg.setType("success");
+		try {
+
+			Optional<Doc> doc = docService.findByHashdoc(file.getOriginalFilename());
+			Path filePath = Paths.get("uploads/verify/" + file.getOriginalFilename());
+			Files.write(filePath, file.getBytes());
+
+			Optional<Assinador> assinador = assinadorService.findFirstByDoc_id(doc.get().getId());
+			verificado = assinaturaService.isFileUnchanged(file, assinador.get().getHashdoc(), "SHA-256");
+			if (verificado) {
+				msg.setMensagem("Assinatura eletrônica conferida!");
+			} else {
+				msg.setType("danger");
+				msg.setMensagem("Assinatura eletrônica inválida!");
+			}
+
+			File arquivo = new File("uploads/verify/" + file.getOriginalFilename());
+			arquivo.delete();
+			model.addAttribute("obj", fileDTO);
+			model.addAttribute("msg", msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+			msg.setType("danger");
+			msg.setMensagem("Ocorreu um erro ao tentar validar arquivo. Erro: " + e.getMessage());
+			model.addAttribute("msg", msg);
+		}
+
+		return "docs/verify_form";
+	}
+
 	@GetMapping("/files/download/{id}")
 	public ResponseEntity<Resource> download(@PathVariable("id") Integer id) throws IOException {
 
 		try {
-			
-			Doc doc = docService.findById(id);
-			//Path path = root.resolve(pdfDir).resolve(doc.getHashdoc());
-			//Resource resource = new UrlResource(path.toUri());
-			
-			File file = new File(root.resolve(pdfDir) +"/"+ doc.getHashdoc());
-			Resource resource = new FileSystemResource(file);
-			
-			String contentType = "application/octet-stream"; // Default for binary files
-			   String header = "attachment; filename=\"" + resource.getFilename() + "\"";	
 
-			   return ResponseEntity.ok()
-	                   .header(HttpHeaders.CONTENT_DISPOSITION, header)
-	                   .contentType(MediaType.parseMediaType(contentType))
-	                   .body(resource);
-			   
+			Doc doc = docService.findById(id);
+			// Path path = root.resolve(pdfDir).resolve(doc.getHashdoc());
+			// Resource resource = new UrlResource(path.toUri());
+
+			File file = new File(root.resolve(pdfDir) + "/" + doc.getHashdoc());
+			Resource resource = new FileSystemResource(file);
+
+			String contentType = "application/octet-stream"; // Default for binary files
+			String header = "attachment; filename=\"" + resource.getFilename() + "\"";
+
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, header)
+					.contentType(MediaType.parseMediaType(contentType)).body(resource);
+
 		} catch (Exception e) {
 			e.printStackTrace();
-			  return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-		
+
 	}
 
 	@GetMapping("/delete/{id}")
@@ -369,7 +367,7 @@ public class DocController {
 
 				if (existed) {
 					alertMessage = new AlertMessage("success", "Arquivo excluido com sucesso! " + doc.getNomdoc());
-					 docService.deleteById(id);
+					docService.deleteById(id);
 				} else {
 					redirectAttributes.addFlashAttribute("message", "Arquivo não existe!");
 					alertMessage = new AlertMessage("danger", "Arquivo não existe!");
@@ -390,10 +388,11 @@ public class DocController {
 	}
 
 	@PostMapping("/gerarPdf")
-	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes, @RequestParam("idProcesso") Integer idProcesso) {
+	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,
+			@RequestParam("idProcesso") Integer idProcesso) {
 
 		AlertMessage alertMessage = null;
-		
+
 		if (doc != null && doc.getFlag() == 0) {
 			try {
 
@@ -458,27 +457,28 @@ public class DocController {
 				String fileNameHash = storageService.save(multipartFile, "documentos");
 
 				Usuario usuario = authentication.getUsuario();
-
+				
 				Doc docNew = new Doc();
 				docNew.setId(doc.getId() == null ? null : doc.getId());
 				docNew.setNomdoc(doc.getNomdoc());
 				docNew.setExtdoc("pdf");
 				docNew.setUsu_id(usuario);
+				docNew.setTipoDoc(doc.getTipoDoc());
 				docNew.setData(LocalDateTime.now());
 				docNew.setHashdoc(fileNameHash);
 				docNew.setConteudo(doc.getConteudo());
 				docNew.setFlag(0);
 				if (!multipartFile.isEmpty()) {
 					docNew.setTamdoc(FileSizeUtil.formatFileSize(multipartFile.getSize()));
-				}				
-			
+				}
+
 				docService.save(docNew);
 				ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
 				procdoc.setIdDocumento(docNew.getId());
 				procdoc.setIdProcesso(idProcesso);
 				procdoc.setIdUsuario(authentication.getUsuario().getId());
 				processoDocService.save(procdoc);
-					
+
 				alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
 
 			} catch (Exception e) {

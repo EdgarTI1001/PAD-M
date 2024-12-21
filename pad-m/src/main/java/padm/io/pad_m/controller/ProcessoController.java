@@ -23,6 +23,7 @@ import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
+import padm.io.pad_m.domain.TipoDoc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.ResultDTO;
 import padm.io.pad_m.security.AuthenticationFacade;
@@ -33,6 +34,7 @@ import padm.io.pad_m.service.ProcessoApensoService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
+import padm.io.pad_m.service.TipoDocService;
 import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.service.TipoProcessoService;
 import padm.io.pad_m.service.UsuarioService;
@@ -48,6 +50,9 @@ public class ProcessoController {
 
 	@Autowired
 	private ProcessoService processoService;
+	
+	@Autowired
+	private TipoDocService tipoDocService;
 
 	@Autowired
 	private ProcessoApensoService processoApensoService;
@@ -159,9 +164,11 @@ public class ProcessoController {
 		processoService.save(processo);
 		model.addAttribute("processo", processo);
 		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
+		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
 		Doc doc = new Doc();
 
 		model.addAttribute("doc", doc);
+		model.addAttribute("tipos", tiposDocs);
 		model.addAttribute("documentos", docs);
 		return "form/frmProcesso3";
 	}

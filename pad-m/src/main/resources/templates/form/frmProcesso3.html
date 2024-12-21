@@ -75,6 +75,37 @@
         .card:hover {
             transform: scale(1.05);
         }
+        
+              .stepper-wrapper {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stepper-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .stepper-item .step-counter {
+            display: block;
+            background-color: #00537d;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            margin: 0 auto;
+        }
+
+        .stepper-item.completed .step-counter {
+            background-color: #28a745;
+        }
+
+        .stepper-item .step-name {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
     </style>
 </head>
 <body>
@@ -90,6 +121,24 @@
                     </h5>
                 </div>
                 <div class="card-body">
+                
+                 <div class="mb-4 p-3">
+                    <div class="stepper-wrapper">
+                        <div class="stepper-item completed">
+                            <div class="step-counter">1</div>
+                            <div class="step-name">Criando Processo</div>
+                        </div>
+                        <div class="stepper-item completed">
+                            <div class="step-counter">2</div>
+                            <div class="step-name">Classificação do Processo</div>
+                        </div>
+                        <div class="stepper-item completed">
+                            <div class="step-counter">3</div>
+                            <div class="step-name">Finalizar</div>
+                        </div>
+                    </div>
+                </div>
+                
                     <div th:if="${alertMessage}" th:classappend="'alert-' + ${alertMessage.type}" class="alert alert-dismissible fade" role="alert">
                         <span th:text="${alertMessage.message}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -97,15 +146,23 @@
 
                     <!-- Formulário para Criar ou Editar Documento -->
                     <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
-                       <input type="text" th:value="${processo.id}" name="idProcesso"/>
-                        <input type="hidden" th:field="*{id}" />
-
-                        <div class="mb-3">
-                            <label for="nomdoc" class="form-label">Nome do Documento</label>
-                            <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
-                        </div>
+                       <input type="hidden" th:value="${processo.id}" name="idProcesso"/>
+                        <input type="hidden" th:field="*{id}" />              
                         
-                              <div class="mb-3">
+			                 <div class="col-6 mb-3">
+			                     <label for="nomdoc" class="form-label">Nome do Documento</label>
+			                     <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
+			                </div>
+			                
+			                <div class="col-6 mb-3">
+			                    <label for="cpf" class="form-label">Tipo</label>
+			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
+			                        <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
+			                        <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
+			                    </select>
+			                </div>               
+                        
+                        <div class="mb-3">
                             <label for="fileUpload" class="form-label">Upload de Documento</label>
                             <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
                         </div>
