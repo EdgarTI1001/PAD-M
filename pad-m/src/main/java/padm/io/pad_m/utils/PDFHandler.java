@@ -18,6 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -65,10 +70,10 @@ public class PDFHandler {
 
 		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
 		HashMap<String, String> hMap = reader.getInfo();
-		hMap.put("Title", "TRE-AMAZONAS/E-Signify");
-		hMap.put("Subject", "Documento assinado eletrônicamente");
+		//hMap.put("Title", "TRE-AMAZONAS/E-Signify");
+		//hMap.put("Subject", "Documento assinado eletrônicamente");
 		// hMap.put("Keywords", uuid.toString().toUpperCase());
-		hMap.put("Creator", "eSignify");
+		//hMap.put("Creator", "eSignify");
 		// hMap.put("Author", author.getNome());
 
 		// Image image = Image.getInstance(STAMP);
@@ -85,7 +90,7 @@ public class PDFHandler {
 		// INSERINDO UM TEXTO INFERIOR ESQUERDO
 		PdfContentByte canva = stamper.getOverContent(numpages);
 		ColumnText.showTextAligned(canva, Element.ALIGN_LEFT,new Phrase("[Assinado por " + author.getServidorId().getNome() + "]", FontFactory.getFont(FontFactory.COURIER, 9, new BaseColor(0xFF, 0x00, 0x00))),
-						10, 10, 0);
+						10, 10, 0);        
 
 		String[] parts = doc.getHashdoc().split("\\.");
 		doc.setHashdoc(parts[0] + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc()));
@@ -126,8 +131,7 @@ public class PDFHandler {
 			throws NoSuchAlgorithmException, IOException {
 		String[] ext = file.getContentType().split("/");
 		dest = root.resolve(pdfVerify) + "/"
-				+ FilenameUtils.getBaseName(root.resolve(pdfVerify) + "/" + file.getOriginalFilename()) + "." + ext[1];
-		System.out.println(dest);
+				+ FilenameUtils.getBaseName(root.resolve(pdfVerify) + "/" + file.getOriginalFilename()) + "." + ext[1];		
 		MessageDigest digest = MessageDigest.getInstance(algorithm);
 
 		try (FileInputStream fis = new FileInputStream(new File(dest))) {

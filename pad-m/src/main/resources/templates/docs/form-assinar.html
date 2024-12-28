@@ -36,6 +36,8 @@
                     <form th:action="@{/docs/files/assinar}" th:object="${doc}" method="post" id="formDoc">
                         <input type="hidden" name="id" th:value="${doc.id}" />
                         <input type="hidden" th:field="*{hashdoc}" />
+                        <input type="hidden"  id="ret" th:value="${ret}" />
+                        <input type="hidden" name="idProcesso" id="idProcesso" th:value="${idProcesso}" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Documento:</label>
                             <span class="badge bg-secondary" th:text="${doc.nomdoc}"></span>
@@ -51,11 +53,13 @@
                     </form>
                 </div>              
             </div>
-            
+           
         <div th:if="${ret == 1}">
       	     <div class="alert alert-success" role="alert"  >
-				<span th:text="${msg}"></span>
+				<span th:text="${msg}"></span><br>
+				 Redirecionando em : <div id="countdown">10</div>
 			</div>
+			 
 		</div>	
 		<div th:if="${ret == 0}">
       	     <div class="alert alert-danger" role="alert"  >
@@ -71,12 +75,37 @@
             $("#loader").show();
              $(document).ready(function() {
                 $("#loader").hide();
+                var ret = $("#ret").val();
+                if(ret == 1){                	
+                    startCountdown(10);
+                    setInterval(function () {}, 10000);
+                }
             });    
             
             $('#assinar').on('click', function() {
             	 $("#loader").show();
             	$("#formDoc").submit();
             });
+            
+          function startCountdown(seconds) {
+          	  const countdownElement = document.getElementById("countdown");
+          	  let remainingTime = seconds;
+
+          	  // Update countdown every second
+          	  const timerInterval = setInterval(() => {
+          	    countdownElement.innerHTML = remainingTime;
+
+          	    if (remainingTime <= 0) {
+          	      clearInterval(timerInterval); // Stop the countdown          	    
+          	      window.location.href = "../../tramite";
+          	    } else {
+          	      remainingTime--;
+          	    }
+          	  }, 1000);
+          	}
+         
+      
+       
         </script>
     </div>
     

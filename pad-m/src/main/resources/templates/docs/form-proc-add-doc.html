@@ -38,7 +38,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                     <form th:action="@{/docs/files/upload/addDoc}" th:object="${doc}" method="post" id="frm" enctype="multipart/form-data">
-                        <input type="text" name="idProcesso" id=""idProcesso"" th:field="${processo.id}" />
+                        <input type="hidden" name="idProcesso" id="idProcesso" th:field="${processo.id}" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Nome</label>
                             <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
