@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +44,7 @@ import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
+import padm.io.pad_m.domain.TipoEvento;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.InfoFileDTO;
 import padm.io.pad_m.domain.dto.ProcessoDocumentoDTO;
@@ -52,9 +54,11 @@ import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.security.IAuthenticationFacade;
 import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
+import padm.io.pad_m.service.EventoService;
 import padm.io.pad_m.service.ProcessoDocsService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.TipoDocService;
+import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.utils.AlertMessage;
 import padm.io.pad_m.utils.FileSizeUtil;
 import padm.io.pad_m.utils.PDFHandler;
@@ -63,12 +67,20 @@ import padm.io.pad_m.utils.PDFHandler;
 @RequestMapping("/docs")
 public class DocController {
 	private final Path root = Paths.get("./uploads");
+	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	@Autowired
 	AuthenticationFacade session;
 
 	@Autowired
 	private DocService docService;
+	
+	@Autowired
+	private EventoService eventoService;
 
+	@Autowired
+	private TipoEventoService tipoEventoService;
+
+	
 	@Autowired
 	private AssinadorService assinadorService;
 
@@ -224,6 +236,22 @@ public class DocController {
 				pd.setIdUsuario(authentication.getUsuario().getId());
 				processoDocService.save(pd);
 
+				Evento evento = new Evento();
+				evento.setDataevento(LocalDateTime.now()); //14
+				String dataFormatada = LocalDateTime.now().format(parser);
+				evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Adicionou o Documento : " + doc.getNomdoc() +
+						 " Em : " + dataFormatada);
+				
+				TipoEvento tpEvento = new TipoEvento();
+				tpEvento = tipoEventoService.findById(13).get(); // Adicionar Documento
+				evento.setTipo_id(tpEvento);
+				
+				Processo p = new Processo();
+				p = processoService.findById(id).get();
+				evento.setProc_id(p);
+				
+				eventoService.save(evento);
+				
 				alertMessage = new AlertMessage("success",
 						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
 			} catch (Exception e) {
@@ -243,21 +271,23 @@ public class DocController {
 		return "docs/form";
 	}
 
-	@GetMapping("/form/assinar/{idDocumento}")
-	public String assinarDoc(@PathVariable("idDocumento") Integer idDocumento, Model model) {
+	@GetMapping("/form/assinar/{idDocumento}/proc/{idProcesso}")
+	public String assinarDoc(@PathVariable("idDocumento") Integer idDocumento, @PathVariable("idProcesso") Integer idProcesso, Model model) {
 		Doc doc = docService.findById(idDocumento);
 		model.addAttribute("doc", doc);
+		model.addAttribute("idProcesso", idProcesso);
 		return "docs/form-assinar";
 	}
 
 	@PostMapping("/files/assinar")
-	public String formAssinarDoc(Model model, @RequestParam(name = "id") Integer id) throws IOException {
+	public String formAssinarDoc(Model model,@RequestParam(name = "idProcesso") Integer idProcesso,  @RequestParam(name = "id") Integer id) throws IOException {
 		// GET EM DOCUMENTO diretorio "documentos" no Sistema
 		Doc doc = docService.findById(id);
 		Integer ret = 99;
 		String msg = "";
 		String type = "";
-		try {
+		try {			
+			
 			String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");
 			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
 			if (isAssinou == 0) {
@@ -266,8 +296,24 @@ public class DocController {
 				a.setDoc(doc);
 				a.setUserId(session.getUsuario());
 				a.setHashdoc(fileHash);
-				assinadorService.save(a);
+				assinadorService.save(a);				
+				
+				Evento evento = new Evento();
+				evento.setDataevento(LocalDateTime.now()); //14
+				String dataFormatada = LocalDateTime.now().format(parser);
+				evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Assinou o Documento : " + doc.getNomdoc() +
+						 " Em : " + dataFormatada );				
 
+				TipoEvento tpEvento = new TipoEvento();
+				tpEvento = tipoEventoService.findById(14).get(); // Assinar Documento
+				evento.setTipo_id(tpEvento);
+				
+				Processo p = new Processo();
+				p = processoService.findById(idProcesso).get();
+				evento.setProc_id(p);
+				
+				eventoService.save(evento);
+				
 				msg = "Documento Assinado com Sucesso!";
 				type = "success";
 				ret = 1;
