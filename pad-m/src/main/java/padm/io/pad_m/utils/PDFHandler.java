@@ -1,5 +1,6 @@
 package padm.io.pad_m.utils;
 
+import java.awt.Color;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,38 +11,37 @@ import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.xml.xmp.XmpWriter;
 
+import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
+import padm.io.pad_m.service.AssinadorService;
 import padm.io.pad_m.service.DocService;
 
 @Service
 public class PDFHandler {
+	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private final Path root = Paths.get("./uploads");
 
 	@Autowired
@@ -49,6 +49,9 @@ public class PDFHandler {
 
 	@Autowired
 	private DocService docService;
+	
+	@Autowired
+	private AssinadorService assinadorService;
 
 	// @Value("${path.files.upload}")
 	private String pdfDir = "documentos";
@@ -60,45 +63,61 @@ public class PDFHandler {
 	public String generateFileHash(Doc doc, Usuario author, String algorithm)
 			throws NoSuchAlgorithmException, IOException, DocumentException {
 		dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) + "/" + doc.getHashdoc())
-				+ "_assinado." + FilenameUtils.getExtension(doc.getHashdoc());
-		MessageDigest digest = MessageDigest.getInstance(algorithm);
+		+ "." + FilenameUtils.getExtension(doc.getHashdoc());
+		MessageDigest digest = MessageDigest.getInstance(algorithm);		
+		
+		/**************************************************/   
+	     
+		PDDocument document = PDDocument.load(new File(dest));
+		int numpages = 0; 
+		//Verificar se esse doc ja foi assinado alguma vez		
+		Optional<Assinador> assinador = assinadorService.findFirstByDoc_id(doc.getId());
+		
+		PDPageContentStream contentStream = null;
+		
+		if(assinador.isPresent()){			
+			 PDPage lastPage = document.getPage(document.getNumberOfPages() - 1);
+			 contentStream = new PDPageContentStream(document, lastPage, PDPageContentStream.AppendMode.APPEND, true, true);
+		}else{			
+			PDPage newPage = new PDPage();
+	        document.addPage(newPage);
+			contentStream = new PDPageContentStream(document, newPage, PDPageContentStream.AppendMode.APPEND, true, true);
+		}		
+		 
+		long total_assinaturas = assinadorService.countByDoc_id(doc.getId());
+		
+		// Set font and size
+        contentStream.setFont(PDType1Font.COURIER, 9);    	
+    	
+        float margin = 36; // Margin from the bottom and left
+        float x = margin;
+        float y = 0;
+        if(total_assinaturas == 0){
+        	numpages = document.getNumberOfPages();
+        	y=  document.getPage(numpages).getMediaBox().getHeight() - 36; // y-coordinate from the top; // Y position from the bottom of the page
+        
+        }        	
+        else{
+        	numpages = document.getNumberOfPages() - 1;        	
+        	y = document.getPage(numpages).getMediaBox().getHeight() - (36 + (total_assinaturas * 20)); // y-coordinate from the top; // Y position from the bottom of the page
+        }
+        	
+      
 
-		PdfReader reader = new PdfReader(root.resolve(pdfDir) + "/" + doc.getHashdoc());
-		int numpages = reader.getNumberOfPages();
-		Rectangle pageSize = reader.getPageSize(numpages);
-		float pageX = pageSize.getRight() - 90;
+        String dataFormatada = LocalDateTime.now().format(parser);
+        // Write the first paragraph
+        contentStream.beginText();
+        contentStream.newLineAtOffset(x, y);
+        contentStream.setNonStrokingColor(Color.RED);
+        contentStream.showText("[Assinado por " + author.getServidorId().getNome() + "] Em : " + dataFormatada);
+        contentStream.endText();        
 
-		PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(dest));
-		HashMap<String, String> hMap = reader.getInfo();
-		//hMap.put("Title", "TRE-AMAZONAS/E-Signify");
-		//hMap.put("Subject", "Documento assinado eletrônicamente");
-		// hMap.put("Keywords", uuid.toString().toUpperCase());
-		//hMap.put("Creator", "eSignify");
-		// hMap.put("Author", author.getNome());
 
-		// Image image = Image.getInstance(STAMP);
-		// image.scalePercent(35);
-		// image.setAbsolutePosition(pageX, 0);
-		// PdfContentByte over = stamper.getOverContent(numpages);
-		// over.addImage(image);
-		stamper.setMoreInfo(hMap);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		XmpWriter xmp = new XmpWriter(baos, hMap);
-		xmp.close();
-		stamper.setXmpMetadata(baos.toByteArray());
-
-		// INSERINDO UM TEXTO INFERIOR ESQUERDO
-		PdfContentByte canva = stamper.getOverContent(numpages);
-		ColumnText.showTextAligned(canva, Element.ALIGN_LEFT,new Phrase("[Assinado por " + author.getServidorId().getNome() + "]", FontFactory.getFont(FontFactory.COURIER, 9, new BaseColor(0xFF, 0x00, 0x00))),
-						10, 10, 0);        
-
-		String[] parts = doc.getHashdoc().split("\\.");
-		doc.setHashdoc(parts[0] + "_assinado." + FilenameUtils.getExtension(doc.getHashdoc()));
-
-		docService.save(doc);
-
-		stamper.close();
-		reader.close();
+        // Close the content stream
+        contentStream.close(); 
+        
+        document.save(dest);
+        document.close();
 
 		try (FileInputStream fis = new FileInputStream(new File(dest))) {
 			byte[] buffer = new byte[1024];

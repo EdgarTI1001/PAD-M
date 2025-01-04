@@ -11,7 +11,9 @@ import padm.io.pad_m.domain.Assinador;
 public interface AssinadorRepository extends JpaRepository<Assinador, Integer> {
 
 	@Query("SELECT a FROM Assinador a WHERE a.hashdoc = :hash")
-	Optional<Assinador> findAByHash(@Param("hash") String hash);
+	Optional<Assinador> findAByHash(@Param("hash") String hash);	
+	
+	long countByDoc_id(Integer idDoc); 
 	
 	Optional<Assinador> findFirstByDoc_idOrderByIdDesc(@Param("idDoc") Integer idDoc);
 	

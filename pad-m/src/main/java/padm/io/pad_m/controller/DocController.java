@@ -289,7 +289,7 @@ public class DocController {
 		try {			
 			
 			String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");
-			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
+			Integer isAssinou = 0;//assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
 			if (isAssinou == 0) {
 				Assinador a = new Assinador();
 				a.setData(LocalDateTime.now());
