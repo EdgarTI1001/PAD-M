@@ -36,6 +36,10 @@ public class Doc {
 	@JoinColumn(name = "TIPODOC_ID")
 	private TipoDoc tipoDoc;
 
+	@ManyToOne
+	@JoinColumn(name = "sigilo_id")
+	private Sigilo sigiloId;
+
 	@Column(name = "TIPODOC")
 	private String tipodocDesc;
 
@@ -58,16 +62,19 @@ public class Doc {
 
 	}
 
-	public Doc(Integer id, Usuario usu_id, Setor set_id, String nomdoc, String extdoc, String tipodocDesc,
-			String tamdoc, LocalDateTime data, String obs, int seq, int flag) {
-
+	public Doc(Integer id, Usuario usu_id, String nomdoc, String hashdoc, String extdoc, TipoDoc tipoDoc,
+			Sigilo sigiloId, String tipodocDesc, String tamdoc, String conteudo, LocalDateTime data, String obs,
+			int seq, int flag) {
 		this.id = id;
-
 		this.usu_id = usu_id;
 		this.nomdoc = nomdoc;
+		this.hashdoc = hashdoc;
 		this.extdoc = extdoc;
+		this.tipoDoc = tipoDoc;
+		this.sigiloId = sigiloId;
 		this.tipodocDesc = tipodocDesc;
 		this.tamdoc = tamdoc;
+		this.conteudo = conteudo;
 		this.data = data;
 		this.obs = obs;
 		this.seq = seq;
@@ -176,6 +183,14 @@ public class Doc {
 
 	public void setTipoDoc(TipoDoc tipoDoc) {
 		this.tipoDoc = tipoDoc;
+	}
+
+	public Sigilo getSigiloId() {
+		return sigiloId;
+	}
+
+	public void setSigiloId(Sigilo sigiloId) {
+		this.sigiloId = sigiloId;
 	}
 
 }

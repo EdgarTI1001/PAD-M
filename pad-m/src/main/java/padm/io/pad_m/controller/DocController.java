@@ -44,6 +44,8 @@ import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
+import padm.io.pad_m.domain.Sigilo;
+import padm.io.pad_m.domain.TipoDoc;
 import padm.io.pad_m.domain.TipoEvento;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.InfoFileDTO;
@@ -57,6 +59,7 @@ import padm.io.pad_m.service.DocService;
 import padm.io.pad_m.service.EventoService;
 import padm.io.pad_m.service.ProcessoDocsService;
 import padm.io.pad_m.service.ProcessoService;
+import padm.io.pad_m.service.SigiloService;
 import padm.io.pad_m.service.TipoDocService;
 import padm.io.pad_m.service.TipoEventoService;
 import padm.io.pad_m.utils.AlertMessage;
@@ -86,6 +89,9 @@ public class DocController {
 
 	@Autowired
 	private PDFHandler assinaturaService;
+	
+	@Autowired
+	private SigiloService sigiloService;
 
 	@Autowired
 	private ProcessoService processoService;
@@ -189,8 +195,12 @@ public class DocController {
 		ModelAndView model = new ModelAndView("docs/form-proc-add-doc");
 		ResultDTO r = new ResultDTO();
 		Optional<Processo> p = processoService.findById(idProcesso);
+		List<Sigilo> sigilos =  sigiloService.findAll();
+		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
 		model.addObject("processo", p);
 		model.addObject("r", r);
+		model.addObject("sigilos", sigilos);
+		model.addObject("tipos", tiposDocs);
 
 		return model;
 	}
@@ -223,8 +233,10 @@ public class DocController {
 				doc.setNomdoc(docNew.getNomdoc());
 				doc.setExtdoc(file.getContentType());
 				doc.setUsu_id(usuario);
+				docNew.setTipoDoc(doc.getTipoDoc());
 				doc.setData(LocalDateTime.now());
 				doc.setHashdoc(fileNameHash);
+				doc.setSigiloId(docNew.getSigiloId());
 
 				if (!file.isEmpty()) {
 					doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
@@ -514,6 +526,7 @@ public class DocController {
 				docNew.setHashdoc(fileNameHash);
 				docNew.setConteudo(doc.getConteudo());
 				docNew.setFlag(0);
+				docNew.setSigiloId(doc.getSigiloId());
 				if (!multipartFile.isEmpty()) {
 					docNew.setTamdoc(FileSizeUtil.formatFileSize(multipartFile.getSize()));
 				}

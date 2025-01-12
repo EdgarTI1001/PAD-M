@@ -37,12 +37,31 @@
                         <span th:text="${alertMessage.message}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/docs/files/upload/addDoc}" th:object="${doc}" method="post" id="frm" enctype="multipart/form-data">
+                    <form th:action="@{/docs/files/upload/addDoc}" th:object="${doc}" method="post" id="frm" class="row g-3" enctype="multipart/form-data">
                         <input type="hidden" name="idProcesso" id="idProcesso" th:field="${processo.id}" />
-                        <div class="mb-3">
-                            <label for="nomdoc" class="form-label">Nome</label>
-                            <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
-                        </div>
+                      
+                     	
+                     	     <div class="col-md-4 mb-3">
+			                     <label for="nomdoc" class="form-label">Nome do Documento</label>
+			                     <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
+			                </div>
+			                
+			                <div class="col-md-4 mb-3">
+			                    <label for="cpf" class="form-label">Tipo</label>
+			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
+			                        <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
+			                        <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
+			                    </select>
+			                </div> 			                
+			                  
+			                <div class="col-md-4 mb-3">
+			                    <label for="cpf" class="form-label">Visibilidade</label>
+			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
+			                        <option th:text="${'Selecione'}" th:value="${'0'}"></option>
+			                        <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
+			                    </select>
+			                </div> 
+			                
                         <div class="mb-3">
                             <input id="input-file" type="file" name="file" class="form-control-file" />
                         </div>

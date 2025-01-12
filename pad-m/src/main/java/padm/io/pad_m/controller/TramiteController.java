@@ -20,11 +20,7 @@ import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Tramite;
 import padm.io.pad_m.security.AuthenticationFacade;
-import padm.io.pad_m.service.AtendenteService;
 import padm.io.pad_m.service.EventoService;
-import padm.io.pad_m.service.FinalidadeService;
-import padm.io.pad_m.service.GestorService;
-import padm.io.pad_m.service.ModeradorService;
 import padm.io.pad_m.service.ProcessoService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.SigiloService;
@@ -43,20 +39,8 @@ public class TramiteController {
 	private ProcessoService processoService; 
 	
 	@Autowired
-	private TipoEventoService tipoEventoService; 
-	
-	@Autowired
-	private FinalidadeService finalidadeService; 
-	
-	@Autowired
-	private ModeradorService moderadorService; 
-	
-	@Autowired
-	private GestorService gestorService; 
-	
-	@Autowired
-	private AtendenteService atendenteService; 
-	
+	private TipoEventoService tipoEventoService; 	
+
 	@Autowired
 	private TramiteService tramiteService;
 	

@@ -145,22 +145,31 @@
                     </div>
 
                     <!-- Formulário para Criar ou Editar Documento -->
-                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
+                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();">
                        <input type="hidden" th:value="${processo.id}" name="idProcesso"/>
                         <input type="hidden" th:field="*{id}" />              
                         
-			                 <div class="col-6 mb-3">
+			                 <div class="col-md-4 mb-3">
 			                     <label for="nomdoc" class="form-label">Nome do Documento</label>
-			                     <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
+			                     <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
 			                </div>
 			                
-			                <div class="col-6 mb-3">
+			                <div class="col-md-4 mb-3">
 			                    <label for="cpf" class="form-label">Tipo</label>
 			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
 			                        <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
 			                        <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
 			                    </select>
-			                </div>               
+			                </div>   
+			                
+			                  
+			                <div class="col-md-4 mb-3">
+			                    <label for="cpf" class="form-label">Visibilidade</label>
+			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
+			                        <option th:text="${'Selecione'}" th:value="${'0'}"></option>
+			                        <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
+			                    </select>
+			                </div>            
                         
                         <div class="mb-3">
                             <label for="fileUpload" class="form-label">Upload de Documento</label>

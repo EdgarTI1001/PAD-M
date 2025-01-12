@@ -23,6 +23,7 @@ import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
 import padm.io.pad_m.domain.Setor;
+import padm.io.pad_m.domain.Sigilo;
 import padm.io.pad_m.domain.TipoDoc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.domain.dto.ResultDTO;
@@ -165,11 +166,13 @@ public class ProcessoController {
 		model.addAttribute("processo", processo);
 		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
 		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
+		List<Sigilo> sigilos =  sigiloService.findAll();
 		Doc doc = new Doc();
 
 		model.addAttribute("doc", doc);
 		model.addAttribute("tipos", tiposDocs);
 		model.addAttribute("documentos", docs);
+		model.addAttribute("sigilos", sigilos);
 		return "form/frmProcesso3";
 	}
 
