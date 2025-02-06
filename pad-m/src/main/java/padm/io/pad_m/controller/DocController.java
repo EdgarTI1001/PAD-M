@@ -1,5 +1,6 @@
 package padm.io.pad_m.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -12,12 +13,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -273,7 +276,7 @@ public class DocController {
 		}
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
-		return "redirect:/docs";
+		return "redirect:/docs/frmAddDoc/" + id;
 	}
 
 	@GetMapping("/edit/{id}")
@@ -409,7 +412,35 @@ public class DocController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 
-	}
+	}	
+
+	
+    @GetMapping("/files/download/multiples")
+    public ResponseEntity<InputStreamResource> downloadMultipleFiles(@RequestParam List<String> filePaths) throws IOException {
+        // Fetch the files from the file system (or database)
+        List<File> files = new ArrayList<>();
+        for (String filePath : filePaths) {
+        	System.out.println(filePath);
+            File file = new File(filePath);
+            if (file.exists()) {
+                files.add(file);
+            }
+        }
+
+        // Create a ZIP archive
+        byte[] zipBytes = docService.createZip(files);
+
+        // Set headers for the response
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=files.zip");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
+
+        // Return the ZIP file as a response
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(zipBytes.length)
+                .body(new InputStreamResource(new ByteArrayInputStream(zipBytes)));
+    }
 
 	@GetMapping("/delete/{id}")
 	public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
@@ -444,6 +475,33 @@ public class DocController {
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 		return "redirect:/docs";
 	}
+	
+	
+	   @GetMapping("/open/{id}")
+	    public ResponseEntity<InputStreamResource> openPdf(@PathVariable("id") Integer id) throws IOException {
+	        // Path to the PDF file
+		   Doc doc = docService.findById(id);
+	    	File file = new File(root.resolve(pdfDir) + "/" + doc.getHashdoc());
+
+	        // Check if the file exists
+	        if (!file.exists()) {
+	            return ResponseEntity.notFound().build();
+	        }
+
+	        // Create an InputStreamResource from the file
+	        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+	        // Set headers for the response
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getName()); // "inline" to display in the browser
+	        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+
+	        // Return the PDF file as a response
+	        return ResponseEntity.ok()
+	                .headers(headers)
+	                .contentLength(file.length())
+	                .body(resource);
+	    }
 
 	@PostMapping("/gerarPdf")
 	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,

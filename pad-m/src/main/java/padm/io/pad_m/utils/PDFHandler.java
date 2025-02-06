@@ -92,8 +92,9 @@ public class PDFHandler {
         float margin = 36; // Margin from the bottom and left
         float x = margin;
         float y = 0;
+      
         if(total_assinaturas == 0){
-        	numpages = document.getNumberOfPages();
+        	numpages = document.getNumberOfPages() - 1;           	
         	y=  document.getPage(numpages).getMediaBox().getHeight() - 36; // y-coordinate from the top; // Y position from the bottom of the page
         
         }        	

@@ -149,13 +149,14 @@
                 <h5><i class="fa fa-list-alt" aria-hidden="true"></i> Tramites</h5>
             </div>
             <div class="col-md-6 text-end">
-                <h5>
-                    <a class="btn btn-sm btn-primary" href="#" role="button" style="border-radius: 10px;" title="Tramitar Processo">
-                        <i class="bi bi-plus"></i> Novo Tramite
-                    </a>
+                <h5>  
                     
                      <a class="btn btn-sm btn-warning" href="#" role="button" style="border-radius: 10px;" id="eventoDoProcesso" title="Ver Eventos do Processo">
                        <i class="bi bi-eye-fill"></i> Ver Eventos
+                    </a>
+                    
+                     <a class="btn btn-sm btn-info" href="#" role="button" style="border-radius: 10px;" id="addDocumento" title="Adicionar Documento ao Processo">
+                       <i class="bi bi-cloud-upload-fill"></i> Add Documento
                     </a>
                     
                 </h5>
@@ -203,27 +204,36 @@
             </div>
             
               <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo</span></div>
-                    <div class="card-body">
-                       
-                        <table class="table">
-                            <thead style="font-size: 14px;">
-                                <tr>
-                                    <th width="1px">#</th>
-                                    <th width="5px">Nome</th>
-                                    <th width="4px">Extensao</th>
-                                    <th width="4px">Tamanho</th>
-                                    <th scope="col">Data</th>  
-                                    <th scope="col"></th>                                    
-                                </tr>
-                            </thead>
-                            <tbody id="documentosDoProcesso" style="font-size: 12px;">
-                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+					
+					<div class="card">
+				    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #00537d;">
+				        <span class="badge text-bg-secondary">
+				            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo
+				        </span>
+				        <button id="btnObterMarcados" class="btn btn-primary btn-sm">
+				            Baixar Selecionados <i class="bi bi-download"></i>
+				        </button>
+				    </div>
+				    <div class="card-body">
+				        <table class="table">
+				            <thead style="font-size: 14px;">
+				                <tr>
+				                    <th width="1px"></th>
+				                    <th width="1px"></th>
+				                    <th width="5px">Nome</th>
+				                    <th width="4px">Ext</th>
+				                    <th width="4px">Tam</th>
+				                    <th scope="col">Data</th>
+				                    <th scope="col"></th>
+				                </tr>
+				            </thead>
+				            <tbody id="documentosDoProcesso" style="font-size: 12px;">
+				                <!-- Conteúdo dinâmico aqui -->
+				            </tbody>
+				        </table>
+				    </div>
+</div>
+
             </div>
 
         </div>
@@ -272,6 +282,7 @@
         <script>
             var URL = '[[@{/}]]api';
             $("#eventoDoProcesso").hide();
+            $("#addDocumento").hide();
         	//$('#modalTramite').modal('hide');
  			   $( document ).ready(function() {
 
@@ -356,8 +367,7 @@
 		                         table += '<td>' + value.totalDias + '</td>';	 	                        
 		                         table += '</tr>';
 		        			});
-		        			 $('#tramitesDoProcesso').append(table);
-		        			 $("#eventoDoProcesso").show();
+		        			 $('#tramitesDoProcesso').append(table);		        			
 		        			 $("#loader").hide()
 		        			
 		        		});
@@ -369,34 +379,30 @@
 		        	 $.ajax({
 		        		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
 		        		  method: "GET",
-		        		}).done(function(data) {	
-		        			
-		        			$.each( data, function( index, value ){ 		        				
-		        				 table += '<tr id="tr' + value.id + '">';
-		        				     table += '<th>' + (index+1) + '</th>';	 
-			        				 table += '<th>' + value.documento.nomdoc + '</th>';	    
-			        				 table += '<th>' + value.documento.extdoc  + '</th>';	    
-			                         table += '<th>' + value.documento.tamdoc + '</th>';			                         
-			                         table += '<th>' + formatarData(value.datacad)  + '</th>';	     
-			                         table += '<th >'+	                         
-				                         ' <a class="btn btn-sm btn-warning"  href="../docs/form/assinar/'+value.documento.id+'/proc/'+value.processo.id+'"  role="button" title="Assinar Documento">'+
-	                                           '<i class="bi bi-pencil-fill"></i>Assinar'+
-	                                      '</a>'+	
-	                                     
-	                                     ' <a class="btn btn-sm btn-primary"  href="../docs/files/download/'+value.documento.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Baixar Documento">'+
-                                       		  '<i class="bi bi-download"></i>'+
-                                 		 '</a>'+
-                                 		 
-                                 		 ' <a class="btn btn-sm btn-info"  href="../docs/frmAddDoc/'+value.processo.id+'"   data-record-id="'+value.documento.id+'" data-record-nome="'+value.documento.nomdoc+'" role="button" title="Adicionar Documento">'+
-                                  			  '<i class="bi bi-cloud-upload-fill"></i>'+
-                            			 '</a>'+	
-                            		 
-                                   
-			                          '</th>';	                 
-		                         table += '</tr>';
+		        		}).done(function(data) {			        			
+		        			$.each(data, function(index, value) {
+		        			    table += '<tr id="tr' + value.id + '">';
+		        			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
+		        			    table += '<th>' + (index + 1) + '</th>';
+		        			    table += '<th>' + value.documento.nomdoc + '</th>';
+		        			    table += '<th>' + value.documento.extdoc + '</th>';
+		        			    table += '<th>' + value.documento.tamdoc + '</th>';
+		        			    table += '<th>' + formatarData(value.datacad) + '</th>';
+		        			    table += '<th>' +
+		        			        ' <a class="btn btn-sm btn-warning" href="../docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
+		        			        '<i class="bi bi-pencil-fill"></i>Assinar' +
+		        			        '</a>' +
+		        			        ' <a class="btn btn-sm btn-info" href="../docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
+		        			        '<i class="bi bi-eye-fill"></i>' +
+		        			        '</a>' +
+		        			        '</th>';
+		        			    table += '</tr>';
 		        			});
+		        		
 		        			
 		        			 $('#documentosDoProcesso').append(table);
+		        			 $("#eventoDoProcesso").show();
+		        			 $("#addDocumento").show();
 		        			 $("#loader").hide();
 		        		});
 		        	
@@ -407,7 +413,53 @@
 		        	 getEeventosDoProcesso(idProcesso);
 		        	
 		        }); 
+		        
+		        
+		        $("#addDocumento").click(function(){
+		        	var idProcesso = $("#processos").find(":selected").val();
+		        	 $("#loader").show();
+		        	window.location.href = "../docs/frmAddDoc/"+idProcesso;       	
+		        	
+		        }); 
 		    
+		    
+		        $('#btnObterMarcados').click(function() {
+		            var idsMarcados = [];
+		            
+		            // Coletar os IDs marcados
+		            $('.form-check-input:checked').each(function() {
+		                idsMarcados.push($(this).data('id'));
+		            });
+
+		            if (idsMarcados.length > 0) {
+		                // Fazer a requisição AJAX para o endpoint
+		                $.ajax({
+		                    url: '../docs/files/download/multiples', // URL do endpoint
+		                    type: 'GET', // Método HTTP (deve ser GET porque o endpoint usa @GetMapping)
+		                    data: { filePaths: idsMarcados }, // Enviar os IDs como parâmetros de consulta
+		                    xhrFields: {
+		                        responseType: 'blob' // Indicar que a resposta será um arquivo binário
+		                    },
+		                    success: function(response, status, xhr) {
+		                        // Criar um link para baixar o arquivo ZIP
+		                        var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
+		                        var blob = new Blob([response], { type: 'application/zip' });
+		                        var link = document.createElement('a');
+		                        link.href = window.URL.createObjectURL(blob);
+		                        link.download = filename;
+		                        document.body.appendChild(link);
+		                        link.click();
+		                        document.body.removeChild(link);
+		                    },
+		                    error: function(xhr, status, error) {
+		                        alert('Erro ao baixar os arquivos: ' + error);
+		                    }
+		                });
+		            } else {
+		                alert('Nenhum item foi marcado.');
+		            }
+		        });
+		        
 		    
         </script>
     </div>

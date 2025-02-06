@@ -1,7 +1,13 @@
 package padm.io.pad_m.service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,4 +53,18 @@ public class DocService {
 		usuario.setId(usuarioId);
 		return findAllDocsByUsuario(usuario);
 	}
+	
+    public byte[] createZip(List<File> files) throws IOException {
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        try (ZipOutputStream zipOut = new ZipOutputStream(baos)) {
+	            for (File file : files) {
+	                // Add each file to the ZIP archive
+	                ZipEntry zipEntry = new ZipEntry(file.getName());
+	                zipOut.putNextEntry(zipEntry);
+	                Files.copy(file.toPath(), zipOut);
+	                zipOut.closeEntry();
+	            }
+	        }
+	        return baos.toByteArray();
+	    }
 }
