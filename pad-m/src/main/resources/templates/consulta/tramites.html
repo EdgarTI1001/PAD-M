@@ -424,37 +424,43 @@
 		    
 		    
 		        $('#btnObterMarcados').click(function() {
-		            var idsMarcados = [];
+		            var idDocs = [];
 		            
 		            // Coletar os IDs marcados
 		            $('.form-check-input:checked').each(function() {
-		                idsMarcados.push($(this).data('id'));
+		            	idDocs.push($(this).data('id'));
 		            });
 
-		            if (idsMarcados.length > 0) {
-		                // Fazer a requisição AJAX para o endpoint
-		                $.ajax({
-		                    url: '../docs/files/download/multiples', // URL do endpoint
-		                    type: 'GET', // Método HTTP (deve ser GET porque o endpoint usa @GetMapping)
-		                    data: { filePaths: idsMarcados }, // Enviar os IDs como parâmetros de consulta
-		                    xhrFields: {
-		                        responseType: 'blob' // Indicar que a resposta será um arquivo binário
-		                    },
-		                    success: function(response, status, xhr) {
-		                        // Criar um link para baixar o arquivo ZIP
-		                        var filename = xhr.getResponseHeader('Content-Disposition').split('filename=')[1];
-		                        var blob = new Blob([response], { type: 'application/zip' });
-		                        var link = document.createElement('a');
-		                        link.href = window.URL.createObjectURL(blob);
-		                        link.download = filename;
-		                        document.body.appendChild(link);
-		                        link.click();
-		                        document.body.removeChild(link);
-		                    },
-		                    error: function(xhr, status, error) {
-		                        alert('Erro ao baixar os arquivos: ' + error);
-		                    }
-		                });
+		            if (idDocs.length > 0) {
+		                // Fazer a requisição AJAX para o endpoint		                
+		            	$.ajax({
+		            		 url: URL + "/docs/files/download/multiples",
+		            	    type: "POST",
+		            	    contentType: "application/json",
+		            	    data: JSON.stringify(idDocs), // Your array of document IDs
+		            	    xhrFields: {
+		            	        responseType: "blob"  // Ensures the response is treated as a file
+		            	    },		            	 
+		            	    success: function(blob) {
+		            	        if (blob instanceof Blob) {
+		            	            var link = document.createElement("a");
+		            	            var url = window.URL.createObjectURL(blob);
+		            	            link.href = url;
+		            	            link.download = "arquivos.zip"; // Filename for the download
+		            	            document.body.appendChild(link);
+		            	            link.click();
+		            	            document.body.removeChild(link);
+		            	            window.URL.revokeObjectURL(url); // Cleanup memory
+		            	        } else {
+		            	            console.error("Unexpected response type:", blob);
+		            	        }
+		            	    },
+		            	    
+		            	    error: function(xhr, status, error) {
+		            	        console.error("Error downloading file:", error);
+		            	    }
+		            	});
+		                
 		            } else {
 		                alert('Nenhum item foi marcado.');
 		            }

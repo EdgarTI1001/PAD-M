@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -414,34 +415,6 @@ public class DocController {
 
 	}	
 
-	
-    @GetMapping("/files/download/multiples")
-    public ResponseEntity<InputStreamResource> downloadMultipleFiles(@RequestParam List<String> filePaths) throws IOException {
-        // Fetch the files from the file system (or database)
-        List<File> files = new ArrayList<>();
-        for (String filePath : filePaths) {
-        	System.out.println(filePath);
-            File file = new File(filePath);
-            if (file.exists()) {
-                files.add(file);
-            }
-        }
-
-        // Create a ZIP archive
-        byte[] zipBytes = docService.createZip(files);
-
-        // Set headers for the response
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=files.zip");
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-
-        // Return the ZIP file as a response
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(zipBytes.length)
-                .body(new InputStreamResource(new ByteArrayInputStream(zipBytes)));
-    }
-
 	@GetMapping("/delete/{id}")
 	public String deleteDoc(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
 
@@ -477,31 +450,31 @@ public class DocController {
 	}
 	
 	
-	   @GetMapping("/open/{id}")
-	    public ResponseEntity<InputStreamResource> openPdf(@PathVariable("id") Integer id) throws IOException {
-	        // Path to the PDF file
-		   Doc doc = docService.findById(id);
-	    	File file = new File(root.resolve(pdfDir) + "/" + doc.getHashdoc());
+   @GetMapping("/open/{id}")
+   public ResponseEntity<InputStreamResource> openPdf(@PathVariable("id") Integer id) throws IOException {
+        // Path to the PDF file
+	   Doc doc = docService.findById(id);
+    	File file = new File(root.resolve(pdfDir) + "/" + doc.getHashdoc());
 
-	        // Check if the file exists
-	        if (!file.exists()) {
-	            return ResponseEntity.notFound().build();
-	        }
+        // Check if the file exists
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
 
-	        // Create an InputStreamResource from the file
-	        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        // Create an InputStreamResource from the file
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-	        // Set headers for the response
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getName()); // "inline" to display in the browser
-	        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
+        // Set headers for the response
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + file.getName()); // "inline" to display in the browser
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_PDF_VALUE);
 
-	        // Return the PDF file as a response
-	        return ResponseEntity.ok()
-	                .headers(headers)
-	                .contentLength(file.length())
-	                .body(resource);
-	    }
+        // Return the PDF file as a response
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.length())
+                .body(resource);
+    }
 
 	@PostMapping("/gerarPdf")
 	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,

@@ -4,6 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.ZipEntry;
@@ -54,17 +56,26 @@ public class DocService {
 		return findAllDocsByUsuario(usuario);
 	}
 	
-    public byte[] createZip(List<File> files) throws IOException {
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        try (ZipOutputStream zipOut = new ZipOutputStream(baos)) {
-	            for (File file : files) {
-	                // Add each file to the ZIP archive
+	public byte[] createZip(List<File> files) throws IOException {
+	    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	    
+	    try (ZipOutputStream zipOut = new ZipOutputStream(baos)) {
+	        for (File file : files) {
+	            if (file.exists()) {
+	                System.out.println("Adicionando ao ZIP: " + file.getAbsolutePath());
+
 	                ZipEntry zipEntry = new ZipEntry(file.getName());
 	                zipOut.putNextEntry(zipEntry);
 	                Files.copy(file.toPath(), zipOut);
 	                zipOut.closeEntry();
+	            } else {
+	                System.out.println("Arquivo não encontrado: " + file.getAbsolutePath());
 	            }
 	        }
-	        return baos.toByteArray();
 	    }
+	    
+	    
+
+	    return baos.toByteArray();
+	}
 }
