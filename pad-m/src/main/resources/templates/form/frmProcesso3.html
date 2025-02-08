@@ -87,12 +87,32 @@
             document.getElementById("flag").value = 0; // Define o valor de "flag" para novo documento
         }    
        
-       $(document).ready(function() {
-    	   $("#tipo").select2({}) 
-		    $("#salvarArquivo").click(function() {
-		        $("#frm").attr("action", "/docs/files/upload").submit();
-		    });
-		});
+        $(document).ready(function() {
+            $("#tipo").select2({}); 
+
+            $("#salvarArquivo").click(function(event) {
+                event.preventDefault(); // Evita que o formulário seja enviado normalmente
+                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário
+
+                $("#loader").show();
+
+                $.ajax({
+                    url: "/docs/files/upload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $("#loader").hide();
+                        swal("Sucesso", "Documento Inserido com Sucesso", "success");
+                    },
+                    error: function() {
+                        $("#loader").hide();
+                        swal("Erro", "Ocorreu um erro ao enviar o documento", "error");
+                    }
+                });
+            });
+        });
     </script>
     <style>
         .card {
