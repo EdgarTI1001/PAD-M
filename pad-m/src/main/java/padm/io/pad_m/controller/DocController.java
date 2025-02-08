@@ -180,10 +180,8 @@ public class DocController {
 				if (!file.isEmpty()) {
 					doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
 				}
-				docService.save(doc);
+				docService.save(doc);	
 				
-				System.out.println(idProcesso);
-				System.out.println(doc.getId());
 				ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
 				procdoc.setIdDocumento(doc.getId());
 				procdoc.setIdProcesso(idProcesso);
@@ -622,6 +620,6 @@ public class DocController {
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 
-		return "redirect:/processos";
+		return "redirect:/processos/finalizarUploadDoc/"+idProcesso;
 	}
 }
