@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/js/select2.min.js}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             tinymce.init({
@@ -59,7 +61,14 @@
             document.getElementById("editor-container").style.display = "block"; // Exibe o editor
             tinymce.get("conteudo").setContent(''); // Limpa o conteúdo do editor
             document.getElementById("flag").value = 0; // Define o valor de "flag" para novo documento
-        }
+        }    
+       
+       $(document).ready(function() {
+    	   $("#tipo").select2({}) 
+		    $("#salvarArquivo").click(function() {
+		        $("#frm").attr("action", "/docs/files/upload").submit();
+		    });
+		});
     </script>
     <style>
         .card {
@@ -145,7 +154,7 @@
                     </div>
 
                     <!-- Formulário para Criar ou Editar Documento -->
-                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();">
+                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();" enctype="multipart/form-data" id="frm">
                        <input type="hidden" th:value="${processo.id}" name="idProcesso"/>
                         <input type="hidden" th:field="*{id}" />              
                         
@@ -174,9 +183,15 @@
                         <div class="mb-3">
                             <label for="fileUpload" class="form-label">Upload de Documento</label>
                             <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
-                        </div>
-
-                        <input type="hidden" th:field="*{flag}" id="flag">
+                        </div>							
+						 
+                         <input type="hidden" th:field="*{flag}" id="flag">
+						
+						<div class="d-flex justify-content-end mb-3">
+						    <button type="button"  class="btn btn-success btn-sm me-2"  onclick="setFlag(0)"    id="salvarArquivo" >
+						        Salvar
+						    </button>
+						</div>
 
                         <div class="mb-3">
                             <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
@@ -197,5 +212,8 @@
     <div class="container mt-3">
         <button type="button" class="btn btn-primary" id="criarDocumentoBtn" onclick="criarDocumento()">Upar / Criar Novo Documento</button>
     </div>
+    
+    
+
 </body>
 </html>

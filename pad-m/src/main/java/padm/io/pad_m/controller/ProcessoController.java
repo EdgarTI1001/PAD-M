@@ -82,6 +82,23 @@ public class ProcessoController {
 	@Autowired
 	private SigiloService sigiloService;
 
+	
+	@GetMapping("/finalizarUploadDoc/{id}")
+	public String frmTeste(@RequestParam(value = "page", defaultValue = "1") int page, Model model,@PathVariable("id") Integer id) {
+		Processo processo = processoService.findById(id).get();
+		model.addAttribute("processo", processo);
+		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
+		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
+		List<Sigilo> sigilos =  sigiloService.findAll();
+		Doc doc = new Doc();
+
+		model.addAttribute("doc", doc);
+		model.addAttribute("tipos", tiposDocs);
+		model.addAttribute("documentos", docs);
+		model.addAttribute("sigilos", sigilos);
+		return "form/frmProcesso3";
+	}
+	
 	@GetMapping
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
 		ModelAndView mv = new ModelAndView("consulta/processos");
@@ -163,17 +180,7 @@ public class ProcessoController {
 	public String frmCadastrarProcessoFinalizar(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
 			@ModelAttribute("processo") Processo processo) {
 		processoService.save(processo);
-		model.addAttribute("processo", processo);
-		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
-		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
-		List<Sigilo> sigilos =  sigiloService.findAll();
-		Doc doc = new Doc();
-
-		model.addAttribute("doc", doc);
-		model.addAttribute("tipos", tiposDocs);
-		model.addAttribute("documentos", docs);
-		model.addAttribute("sigilos", sigilos);
-		return "form/frmProcesso3";
+		return "redirect:/processos/finalizarUploadDoc/"+processo.getId();
 	}
 
 	@PostMapping("/save")

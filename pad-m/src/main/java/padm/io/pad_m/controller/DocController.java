@@ -149,14 +149,14 @@ public class DocController {
 
 	@PostMapping("/files/upload")
 	public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
-			@ModelAttribute("doc") Doc docNew) {
+			@ModelAttribute("doc") Doc docNew, @RequestParam("idProcesso") Integer idProcesso) {
 		AlertMessage alertMessage;
 		final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
 		final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "video/mp4",
 				"application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
 				"application/msword" // .doc
-		);
-
+		);		
+		
 		// Verifica o tamanho do arquivo
 		if (file.getSize() > MAX_FILE_SIZE) {
 			alertMessage = new AlertMessage("danger", "O arquivo excede o limite de 10 MB.");
@@ -181,7 +181,17 @@ public class DocController {
 					doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
 				}
 				docService.save(doc);
+				
+				System.out.println(idProcesso);
+				System.out.println(doc.getId());
+				ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
+				procdoc.setIdDocumento(doc.getId());
+				procdoc.setIdProcesso(idProcesso);
+				procdoc.setIdUsuario(authentication.getUsuario().getId());
+				processoDocService.save(procdoc);
 
+				//alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
+				
 				alertMessage = new AlertMessage("success",
 						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
 			} catch (Exception e) {
@@ -191,7 +201,7 @@ public class DocController {
 		}
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
-		return "redirect:/docs";
+		return "redirect:/processos/finalizarUploadDoc/"+idProcesso;
 	}
 
 	@GetMapping("/frmAddDoc/{idProcesso}")

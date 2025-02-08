@@ -195,7 +195,13 @@
                                 <tr th:each="rs : ${processos}" th:id="'tr' + ${rs.id}"> 
                                     <td th:text="${rs.numproc}"></td>
                                     <td th:text="${rs.ano}"></td>
-                                    <td th:text="${rs.numanoproc}"></td>
+                                    <td>
+                                    		
+                                       <a  th:href="@{/processos/finalizarUploadDoc/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Apensar Processos">
+                                            <span th:text="${rs.numanoproc}"></span>
+                                        </a> 
+                                        
+                                    </td>
                                     <td>
                                         <a  th:href="@{/processos/frmApensar/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Apensar Processos">
                                             <span th:text="${rs.assunto}"></span>
