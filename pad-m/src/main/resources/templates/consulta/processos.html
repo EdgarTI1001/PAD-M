@@ -187,7 +187,7 @@
                                     <th scope="col">Ano</th>
                                     <th scope="col">Número/Ano</th>
                                     <th scope="col">Assunto</th>
-                                    <th scope="col">Classificação</th>
+                                    <th style="width: 5px;">Classificação</th>
                                     <th scope="col">Tramitar</th>
                                 </tr>
                             </thead>
@@ -197,7 +197,7 @@
                                     <td th:text="${rs.ano}"></td>
                                     <td>
                                     		
-                                       <a  th:href="@{/processos/finalizarUploadDoc/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Apensar Processos">
+                                       <a  th:href="@{/processos/finalizarUploadDoc/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Processos">
                                             <span th:text="${rs.numanoproc}"></span>
                                         </a> 
                                         
@@ -215,7 +215,7 @@
                                         </a>
                                         
                                         <a class="btn btn-sm btn-warning" th:href="@{/tramite/new/} + ${rs.id}" role="button" th:id="'tramitarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" title="Tramitar Processo">
-                                            <i class="fa fa-share" aria-hidden="true"></i>
+                                           Enviar <i class="fa fa-share" aria-hidden="true"></i>
                                         </a>
                                       
 	                                         <a class="btn btn-sm btn-danger" href="#" role="button" th:id="'arquivarDesarquivarProcesso' + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-arquivado="${rs.arquivado}" title="Arquivar Processo">
