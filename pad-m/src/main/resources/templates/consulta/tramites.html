@@ -239,7 +239,7 @@
         </div>
         
 
-      
+    <div id="divDocsSelecionados"></div>  
 
   
   <!-- Modal -->
@@ -425,44 +425,30 @@
 		    
 		        $('#btnObterMarcados').click(function() {
 		            var idDocs = [];
+		            var inputsIdsDocs = 0;
 		            
+		            var idProcesso = $("#processos").find(":selected").text();
+		            console.log(idProcesso);
+		            const numAnoProcesso = idProcesso.split('-');
 		            // Coletar os IDs marcados
 		            $('.form-check-input:checked').each(function() {
 		            	idDocs.push($(this).data('id'));
 		            });
 
 		            if (idDocs.length > 0) {
-		                // Fazer a requisição AJAX para o endpoint		                
-		            	$.ajax({
-		            		 url: URL + "/docs/files/download/multiples",
-		            	    type: "POST",
-		            	    contentType: "application/json",
-		            	    data: JSON.stringify(idDocs), // Your array of document IDs
-		            	    xhrFields: {
-		            	        responseType: "blob"  // Ensures the response is treated as a file
-		            	    },		            	 
-		            	    success: function(blob) {
-		            	        if (blob instanceof Blob) {
-		            	            var link = document.createElement("a");
-		            	            var url = window.URL.createObjectURL(blob);
-		            	            link.href = url;
-		            	            link.download = "arquivos.zip"; // Filename for the download
-		            	            document.body.appendChild(link);
-		            	            link.click();
-		            	            document.body.removeChild(link);
-		            	            window.URL.revokeObjectURL(url); // Cleanup memory
-		            	        } else {
-		            	            console.error("Unexpected response type:", blob);
-		            	        }
-		            	    },
-		            	    
-		            	    error: function(xhr, status, error) {
-		            	        console.error("Error downloading file:", error);
-		            	    }
-		            	});
-		                
+		            	 $("#loader").show();
+		                // Fazer a requisição AJAX para o endpoint
+		                inputsIdsDocs +='<form action="../docs/files/download/multiples" method="post" class="row g-3" id="frmDocsSelecionados">'
+		                for(var i = 0; i<idDocs.length;i++ ){
+		                	  inputsIdsDocs += '<input type="hidden" name="idDocs" value="'+idDocs[i]+'"   />';
+		                }
+		                inputsIdsDocs += '<input type="hidden" name="numAnoProcesso" value="'+numAnoProcesso+'"   />';
+		                inputsIdsDocs += '</form>';
+		              $("#divDocsSelecionados").html(inputsIdsDocs);
+		              $("#frmDocsSelecionados").submit();	              
+		              $("#loader").hide();
 		            } else {
-		                alert('Nenhum item foi marcado.');
+		                alert('Nenhum Document foi marcado.');
 		            }
 		        });
 		        

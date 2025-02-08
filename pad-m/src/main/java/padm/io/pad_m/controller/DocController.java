@@ -1,6 +1,5 @@
 package padm.io.pad_m.controller;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -35,9 +36,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -475,6 +476,21 @@ public class DocController {
                 .contentLength(file.length())
                 .body(resource);
     }
+   
+	@PostMapping("/files/download/multiples")
+	 public void downloadZipFile(HttpServletResponse response, int[] idDocs, String numAnoProcesso) {
+		 List<String> listOfFileNames = new ArrayList<String>();
+		 List<File> files = new ArrayList<>();
+		    for (int id : idDocs) {		    	
+		        Doc doc = docService.findById(id);
+		        File file = new File(root.resolve(pdfDir) + "/" + doc.getHashdoc());
+		        if (file.exists()) {
+		            files.add(file);
+		            listOfFileNames.add(root.resolve(pdfDir) + "/" + doc.getHashdoc());
+		        }
+		    }
+		    docService.downloadZipFile(response, listOfFileNames, numAnoProcesso);
+	    }
 
 	@PostMapping("/gerarPdf")
 	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,
