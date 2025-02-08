@@ -6,22 +6,46 @@
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/select2.min.js}"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            tinymce.init({
-                selector: '#conteudo',  // Aplica ao campo de textarea com id 'conteudo'
-                language: 'pt_BR',
-                browser_spellcheck: true,  // Ativa o corretor ortográfico do navegador
-                contextmenu: false,  // Desativa o menu de contexto
-                plugins: [
-                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                    'insertdatetime', 'media', 'table', 'help', 'wordcount'
-                ],
-                toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
-                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-            });
+      	
+    document.addEventListener('DOMContentLoaded', function () {
+        tinymce.init({
+            selector: '#conteudo',
+            language: 'pt_BR',
+            browser_spellcheck: true,
+            contextmenu: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
+            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+            
+            // Configuração para inserir a imagem padrão
+            setup: function (editor) {
+                editor.on('init', function () {
+                    // Conteúdo atual do textarea (se houver)
+                    const currentContent = editor.getContent();
+                    
+                    // URL da imagem padrão (substitua pela sua URL)
+                    const defaultImageUrl = 'https://scontent-for2-2.xx.fbcdn.net/v/t39.30808-6/471511738_122096794226714893_8421630085014906934_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=dsGKW6SWpcEQ7kNvgEQsCNV&_nc_oc=AdirGToLgD43BJmT6Qu6sJMRHYQwio9YB4MlElWuxbb6765fmmI2BxEgM1r_0EelLmN_t19kBa4fwLpJdDEpFhhR&_nc_zt=23&_nc_ht=scontent-for2-2.xx&_nc_gid=A9jbBIAvC3GV3WsPyjIHGO4&oh=00_AYB2DybbBb1ET9QFhJw0hTZFJi6UDVPEsWOY9PLGXeGxWw&oe=67AD58C2';
+                    
+                    // HTML da imagem (estilo opcional para ajustes)
+                    const defaultImageHTML = `
+                        <img 
+                            src="${defaultImageUrl}" 
+                            style="display: block; margin-bottom: 15px; max-width: 5%; max-height:10%" 
+                            alt="Imagem Padrão"
+                        />
+                    `;
+                    
+                    // Insere a imagem no topo, seguida do conteúdo existente
+                    editor.setContent(defaultImageHTML + currentContent);
+                });
+            }
         });
-
+    });
+    
         // Função para validar o formulário antes do envio
         function validateForm() {
             // Sincroniza o conteúdo do TinyMCE com o campo de texto
