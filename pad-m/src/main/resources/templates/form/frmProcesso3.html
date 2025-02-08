@@ -85,11 +85,49 @@
             document.getElementById("editor-container").style.display = "block"; // Exibe o editor
             tinymce.get("conteudo").setContent(''); // Limpa o conteúdo do editor
             document.getElementById("flag").value = 0; // Define o valor de "flag" para novo documento
-        }    
-       
-        $(document).ready(function() {
-            $("#tipo").select2({}); 
+        }
+        
 
+        function getDocumentosDoProcesso(){ 
+        	var  processo = $("#idProcesso").val();
+        	var table = "";
+        	  $("#documentosDoProcesso").empty();
+        	 $.ajax({
+        		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
+        		  method: "GET",
+        		}).done(function(data) {        			
+        			$.each(data, function(index, value) {
+        			    table += '<tr id="tr' + value.id + '">';
+        			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
+        			    table += '<th>' + (index + 1) + '</th>';
+        			    table += '<th>' + value.documento.nomdoc + '</th>';
+        			    table += '<th>' + value.documento.extdoc + '</th>';
+        			    table += '<th>' + value.documento.tamdoc + '</th>';
+        			    table += '<th>' + formatarData(value.datacad) + '</th>';
+        			    table += '<th>' +
+        			        ' <a class="btn btn-sm btn-warning" href="../../docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
+        			        '<i class="bi bi-pencil-fill"></i>Assinar' +
+        			        '</a>' +
+        			        ' <a class="btn btn-sm btn-info" href="../../docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
+        			        '<i class="bi bi-eye-fill"></i>' +
+        			        '</a>' +
+        			        '</th>';
+        			    table += '</tr>';
+        			});
+        		
+        			
+        			 $('#documentosDoProcesso').append(table);
+        			 $("#eventoDoProcesso").show();
+        			 $("#addDocumento").show();
+        			 $("#loader").hide();
+        		});
+        	
+        }
+        var URL = '[[@{/}]]api';
+        $(document).ready(function() {        	
+            $("#tipo").select2({});	
+            getDocumentosDoProcesso();
+		
             $("#salvarArquivo").click(function(event) {
                 event.preventDefault(); // Evita que o formulário seja enviado normalmente
                 var formData = new FormData($("#frm")[0]); // Captura os dados do formulário
@@ -111,6 +149,32 @@
                         swal("Erro", "Ocorreu um erro ao enviar o documento", "error");
                     }
                 });
+            });
+            
+            $('#btnObterMarcados').click(function() {
+            	 $("#loader").show();
+                var idDocs = [];
+                var inputsIdsDocs = 0;                
+          
+                // Coletar os IDs marcados
+                $('.form-check-input:checked').each(function() {
+                	idDocs.push($(this).data('id'));
+                });
+
+                if (idDocs.length > 0) {
+                	 $("#loader").show();
+                    // Fazer a requisição AJAX para o endpoint
+                    inputsIdsDocs +='<form action="../../docs/files/download/multiples" method="post" class="row g-3" id="frmDocsSelecionados">'
+                    for(var i = 0; i<idDocs.length;i++ ){
+                    	  inputsIdsDocs += '<input type="hidden" name="idDocs" value="'+idDocs[i]+'"   />';
+                    }                   
+                    inputsIdsDocs += '</form>';
+                  $("#divDocsSelecionados").html(inputsIdsDocs);
+                  $("#frmDocsSelecionados").submit();	              
+                  $("#loader").hide();
+                } else {
+                    alert('Nenhum Document foi marcado.');
+                }
             });
         });
     </script>
@@ -162,95 +226,132 @@
     </style>
 </head>
 <body>
-    <section layout:fragment="content">
-        <div class="container mt-4">
-            <div class="card">
-                <div class="card-header" style="background-color: #00537d; color: white;">
-                    <h5>
-                        <span class="badge text-bg-secondary">
-                            <i class="bi bi-upload"></i> 
-                            <span th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
-                        </span>
-                    </h5>
-                </div>
-                <div class="card-body">
-                
-                 <div class="mb-4 p-3">
-                    <div class="stepper-wrapper">
-                        <div class="stepper-item completed">
-                            <div class="step-counter">1</div>
-                            <div class="step-name">Criando Processo</div>
-                        </div>
-                        <div class="stepper-item completed">
-                            <div class="step-counter">2</div>
-                            <div class="step-name">Classificação do Processo</div>
-                        </div>
-                        <div class="stepper-item completed">
-                            <div class="step-counter">3</div>
-                            <div class="step-name">Finalizar</div>
-                        </div>
+	
+	<section layout:fragment="content">
+    <div class="container-full mt-4">
+        <div class="row">
+            <!-- Primeiro Card -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" style="background-color: #00537d; color: white;">
+                        <h5>
+                            <span class="badge text-bg-secondary">
+                                <i class="bi bi-upload"></i> 
+                                <span th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
+                            </span>
+                        </h5>
                     </div>
-                </div>
-                
-                    <div th:if="${alertMessage}" th:classappend="'alert-' + ${alertMessage.type}" class="alert alert-dismissible fade" role="alert">
-                        <span th:text="${alertMessage.message}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="card-body">
+                    
+                        <div class="mb-4 p-3">
+                            <div class="stepper-wrapper">
+                                <div class="stepper-item completed">
+                                    <div class="step-counter">1</div>
+                                    <div class="step-name">Criando Processo</div>
+                                </div>
+                                <div class="stepper-item completed">
+                                    <div class="step-counter">2</div>
+                                    <div class="step-name">Classificação do Processo</div>
+                                </div>
+                                <div class="stepper-item completed">
+                                    <div class="step-counter">3</div>
+                                    <div class="step-name">Finalizar</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div th:if="${alertMessage}" th:classappend="'alert-' + ${alertMessage.type}" class="alert alert-dismissible fade" role="alert">
+                            <span th:text="${alertMessage.message}"></span>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Formulário para Criar ou Editar Documento -->
+                        <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();" enctype="multipart/form-data" id="frm">
+                            <input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso"/>
+                            <input type="hidden" th:field="*{id}" />              
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="nomdoc" class="form-label">Nome do Documento</label>
+                                <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="tipo" class="form-label">Tipo</label>
+                                <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
+                                    <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
+                                    <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
+                                </select>
+                            </div>   
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="sigilo" class="form-label">Visibilidade</label>
+                                <select id="sigilo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
+                                    <option th:text="${'Selecione'}" th:value="${'0'}"></option>
+                                    <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
+                                </select>
+                            </div>            
+                            
+                            <div class="mb-3">
+                                <label for="fileUpload" class="form-label">Upload de Documento</label>
+                                <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
+                            </div>							
+                            
+                            <input type="hidden" th:field="*{flag}" id="flag">
+                            
+                            <div class="d-flex justify-content-end mb-3">
+                                <button type="button" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
+                            </div>
+
+                            <div class="mb-3">
+                                <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
+                                <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)">Criar Arquivo</button>
+                                <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
+                            </div>
+                        </form>
                     </div>
-
-                    <!-- Formulário para Criar ou Editar Documento -->
-                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();" enctype="multipart/form-data" id="frm">
-                       <input type="hidden" th:value="${processo.id}" name="idProcesso"/>
-                        <input type="hidden" th:field="*{id}" />              
-                        
-			                 <div class="col-md-4 mb-3">
-			                     <label for="nomdoc" class="form-label">Nome do Documento</label>
-			                     <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
-			                </div>
-			                
-			                <div class="col-md-4 mb-3">
-			                    <label for="cpf" class="form-label">Tipo</label>
-			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
-			                        <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
-			                        <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
-			                    </select>
-			                </div>   
-			                
-			                  
-			                <div class="col-md-4 mb-3">
-			                    <label for="cpf" class="form-label">Visibilidade</label>
-			                    <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
-			                        <option th:text="${'Selecione'}" th:value="${'0'}"></option>
-			                        <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
-			                    </select>
-			                </div>            
-                        
-                        <div class="mb-3">
-                            <label for="fileUpload" class="form-label">Upload de Documento</label>
-                            <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
-                        </div>							
-						 
-                         <input type="hidden" th:field="*{flag}" id="flag">
-						
-						<div class="d-flex justify-content-end mb-3">
-						    <button type="button"  class="btn btn-success btn-sm me-2"  onclick="setFlag(0)"  id="salvarArquivo" >
-						        Salvar
-						    </button>
-						</div>
-
-                        <div class="mb-3">
-                            <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
-                        </div>
-
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                            <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)">Criar Arquivo</button>
-                            <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
-                        </div>
-                    </form>
                 </div>
             </div>
+
+            <!-- Segundo Card -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #00537d;">
+                        <span class="badge text-bg-secondary">
+                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo
+                        </span>
+                        <button id="btnObterMarcados" class="btn btn-primary btn-sm">
+                            Baixar Selecionados <i class="bi bi-download"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead style="font-size: 14px;">
+                                <tr>
+                                    <th width="1px"></th>
+                                    <th width="1px"></th>
+                                    <th width="5px">Nome</th>
+                                    <th width="4px">Ext</th>
+                                    <th width="4px">Tam</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="documentosDoProcesso" style="font-size: 12px;">
+                                <!-- Conteúdo dinâmico aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+        <div id="divDocsSelecionados"></div>  
+</section>
 
     <!-- Botão para Criar Novo Documento -->
     <div class="container mt-3">

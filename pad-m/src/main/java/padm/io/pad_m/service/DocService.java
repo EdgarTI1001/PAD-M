@@ -55,7 +55,7 @@ public class DocService {
 		return findAllDocsByUsuario(usuario);
 	}
 	
-	 public void downloadZipFile(HttpServletResponse response, List<String> listOfFileNames, String numAnoProcesso) {
+	 public void downloadZipFile(HttpServletResponse response, List<String> listOfFileNames) {
 	        response.setContentType("application/zip");
 	        response.setHeader("Content-Disposition", "attachment; filename=arquivos_do_processo.zip");
 	        try(ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream())) {

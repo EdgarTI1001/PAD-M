@@ -486,7 +486,7 @@ public class DocController {
     }
    
 	@PostMapping("/files/download/multiples")
-	 public void downloadZipFile(HttpServletResponse response, int[] idDocs, String numAnoProcesso) {
+	 public void downloadZipFile(HttpServletResponse response, int[] idDocs) {
 		 List<String> listOfFileNames = new ArrayList<String>();
 		 List<File> files = new ArrayList<>();
 		    for (int id : idDocs) {		    	
@@ -497,7 +497,7 @@ public class DocController {
 		            listOfFileNames.add(root.resolve(pdfDir) + "/" + doc.getHashdoc());
 		        }
 		    }
-		    docService.downloadZipFile(response, listOfFileNames, numAnoProcesso);
+		    docService.downloadZipFile(response, listOfFileNames);
 	    }
 
 	@PostMapping("/gerarPdf")
