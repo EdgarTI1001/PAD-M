@@ -134,11 +134,11 @@
                       nome=${#authentication.getPrincipal().getUsuario().getFirstName()},
                       sigla=${#authentication.getPrincipal().getUsuario().getLotacao_id().getSigla()}">
             <div class="header_img">
-                <img id="imagem" 
-                     sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  
-                     th:src="@{/images/male.png}" 
-                     alt="User Image" 
-                     style="width: 40px; height: 40px;"/>
+               <img id="imagem" 
+				     sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')"  
+				     th:src="@{'/uploads/fotos/' + ${#authentication.getPrincipal().getUsuario().getImage()}}" 
+				     alt="User Image" 
+				     style="width: 40px; height: 40px;"/>
             </div>
            <b> <small th:text="${nome}" style="margin-left: 10px;"></small>  -   <small th:text="${sigla}" style="margin-left: 10px;"></small>  </b>
         </div>

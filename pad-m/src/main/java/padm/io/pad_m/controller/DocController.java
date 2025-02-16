@@ -314,7 +314,7 @@ public class DocController {
 		try {			
 			
 			String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");
-			Integer isAssinou = 0;//assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
+			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
 			if (isAssinou == 0) {
 				Assinador a = new Assinador();
 				a.setData(LocalDateTime.now());
@@ -360,6 +360,7 @@ public class DocController {
 		model.addAttribute("type", type);
 		model.addAttribute("ret", ret);
 		model.addAttribute("doc", doc);
+		model.addAttribute("idProcesso", idProcesso);
 		return "docs/form-assinar";
 	}
 

@@ -96,6 +96,7 @@ public class ProcessoController {
 		model.addAttribute("tipos", tiposDocs);
 		model.addAttribute("documentos", docs);
 		model.addAttribute("sigilos", sigilos);
+		model.addAttribute("sigilos", sigilos);
 		return "form/frmProcesso3";
 	}
 	

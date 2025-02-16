@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import padm.io.pad_m.domain.Perfis;
 import padm.io.pad_m.domain.Servidor;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Usuario;
+import padm.io.pad_m.fileserver.FilesStorageService;
+import padm.io.pad_m.service.PerfisService;
 import padm.io.pad_m.service.ServidorService;
 import padm.io.pad_m.service.SetorService;
 import padm.io.pad_m.service.UnidadeLotacaoService;
@@ -48,6 +50,12 @@ public class UsuarioController {
 	
 	@Autowired
 	private SetorService setorService;
+	
+	@Autowired
+	PerfisService perfisService;
+	
+	@Autowired
+	private FilesStorageService storageService;
 
 	
 	@Value("${path.upload}")
@@ -85,29 +93,23 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam("file") MultipartFile file, BindingResult result) {
+	public String saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam(name = "file", required = false) MultipartFile file, BindingResult result) {
 		try {			
 			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
-			usuario.setUltimoacesso(LocalDateTime.now());
-			
-			Optional<Servidor> s = servidorService.findById(usuario.getServidorId().getId());
+			usuario.setUltimoacesso(LocalDateTime.now());	
 		
-			if(!file.isEmpty()) { 
-				StringBuilder fileNames = new StringBuilder();
-		        Path fileNameAndPath = Paths.get(upload, file.getOriginalFilename());
-		        fileNames.append(file.getOriginalFilename());
-		        Files.write(fileNameAndPath, file.getBytes()); 
-		        
-		        usuario.setImage(file.getOriginalFilename());
-		      
-			};
+			 if (file != null && !file.isEmpty()) { 
+		            storageService.save(file, "fotos");                  
+		            usuario.setImage(storageService.save(file, "fotos"));
+		        }
 		
-			  usuario.setAtivo("S");
-			
-	        
-	        
-			usuarioService.save(usuario);
+		    usuario.setAtivo("S");  
+		    Perfis perfis = new Perfis();
+			perfis.setIdUser(usuario.getId());
+			perfis.setPerfis(usuario.getPerfilId());
+			//perfisService.save(perfis);
+			//usuarioService.save(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

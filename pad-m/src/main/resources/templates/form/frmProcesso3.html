@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout.html}">
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
-    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/js/select2.min.js}"></script>
-    <script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<script th:src="@{/js/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/js/select2.min.js}"></script>
+<script>
       	
     document.addEventListener('DOMContentLoaded', function () {
         tinymce.init({
@@ -28,15 +30,17 @@
                     const currentContent = editor.getContent();
                     
                     // URL da imagem padrão (substitua pela sua URL)
-                    const defaultImageUrl = 'https://scontent-for2-2.xx.fbcdn.net/v/t39.30808-6/471511738_122096794226714893_8421630085014906934_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=dsGKW6SWpcEQ7kNvgEQsCNV&_nc_oc=AdirGToLgD43BJmT6Qu6sJMRHYQwio9YB4MlElWuxbb6765fmmI2BxEgM1r_0EelLmN_t19kBa4fwLpJdDEpFhhR&_nc_zt=23&_nc_ht=scontent-for2-2.xx&_nc_gid=A9jbBIAvC3GV3WsPyjIHGO4&oh=00_AYB2DybbBb1ET9QFhJw0hTZFJi6UDVPEsWOY9PLGXeGxWw&oe=67AD58C2';
+                    const defaultImageUrl = 'http://localhost:8080/images/maues.png';
                     
                     // HTML da imagem (estilo opcional para ajustes)
                     const defaultImageHTML = `
+                    <div style="text-align: center;">
                         <img 
                             src="${defaultImageUrl}" 
-                            style="display: block; margin-bottom: 15px; max-width: 5%; max-height:10%" 
+                            style="display: block; margin: auto; max-width: 60px; height: auto;" 
                             alt="Imagem Padrão"
                         />
+                    </div>
                     `;
                     
                     // Insere a imagem no topo, seguida do conteúdo existente
@@ -179,206 +183,249 @@
   
         });
     </script>
-    <style>
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            transition: transform 0.3s;
-            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
-            margin-bottom: 20px;
-            margin-top: 75px;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
-        
-              .stepper-wrapper {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .stepper-item {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stepper-item .step-counter {
-            display: block;
-            background-color: #00537d;
-            color: white;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            margin: 0 auto;
-        }
-
-        .stepper-item.completed .step-counter {
-            background-color: #28a745;
-        }
-
-        .stepper-item .step-name {
-            font-size: 12px;
-            margin-top: 5px;
-        }
-        
-        /* Ajustes para o Select2 em telas pequenas */
-@media (max-width: 768px) {
-    .select2-container {
-        width: 100% !important;
-    }
-    
-    #tipo {
-        width: 100% !important;
-    }
-    
-    .stepper-item .step-name {
-        font-size: 10px;
-    }
-    
-    .card-header h5 {
-        font-size: 1rem;
-    }
+<style>
+.card {
+	border: none;
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	transition: transform 0.3s;
+	background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+	margin-bottom: 20px;
+	margin-top: 75px;
 }
-        
-    </style>
+
+.card:hover {
+	transform: scale(1.05);
+}
+
+.stepper-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+
+.stepper-item {
+	text-align: center;
+	flex: 1;
+}
+
+.stepper-item .step-counter {
+	display: block;
+	background-color: #00537d;
+	color: white;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	margin: 0 auto;
+}
+
+.stepper-item.completed .step-counter {
+	background-color: #28a745;
+}
+
+.stepper-item .step-name {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+/* Ajustes para o Select2 em telas pequenas */
+@media ( max-width : 768px) {
+	.select2-container {
+		width: 100% !important;
+	}
+	#tipo {
+		width: 100% !important;
+	}
+	.stepper-item .step-name {
+		font-size: 10px;
+	}
+	.card-header h5 {
+		font-size: 1rem;
+	}
+}
+
+.stepper-wrapper {
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.card {
+	margin-top: 20px; /* Reduzir margem superior em mobile */
+}
+
+@media ( max-width : 768px) {
+	.card {
+		margin: 10px;
+		width: calc(100% - 20px);
+	}
+	.col-md-8, .col-md-4 {
+		padding: 0;
+	}
+	.btn-sm {
+		padding: 0.25rem 0.5rem;
+		font-size: 0.875rem;
+	}
+}
+</style>
 </head>
 <body>
-	
+
 	<section layout:fragment="content">
-    <div class="container-full mt-4">
-        <div class="row">
-            <!-- Primeiro Card -->
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header" style="background-color: #00537d; color: white;">
-                        <h5>
-                            <span class="badge text-bg-secondary">
-                                <i class="bi bi-upload"></i> 
-                                <span th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
-                            </span>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                    
-                        <div class="mb-4 p-3">
-                            <div class="stepper-wrapper">
-                                <div class="stepper-item completed">
-                                    <div class="step-counter">1</div>
-                                    <div class="step-name">Criando Processo</div>
-                                </div>
-                                <div class="stepper-item completed">
-                                    <div class="step-counter">2</div>
-                                    <div class="step-name">Classificação do Processo</div>
-                                </div>
-                                <div class="stepper-item completed">
-                                    <div class="step-counter">3</div>
-                                    <div class="step-name">Finalizar</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div th:if="${alertMessage}" th:classappend="'alert-' + ${alertMessage.type}" class="alert alert-dismissible fade" role="alert">
-                            <span th:text="${alertMessage.message}"></span>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
+		<div class="container-full mt-4">
+			<div class="row">
+				<!-- Primeiro Card -->
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header"
+							style="background-color: #00537d; color: white;">
+							<h5>
+								<span class="badge text-bg-secondary"> <i
+									class="bi bi-upload"></i> <span
+									th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
+								</span>
+							</h5>
+						</div>
+						<div class="card-body">
 
-                        <!-- Formulário para Criar ou Editar Documento -->
-                        <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" class="row g-3" onsubmit="return validateForm();" enctype="multipart/form-data" id="frm">
-                            <input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso"/>
-                            <input type="hidden" th:field="*{id}" />              
-                            
-                            <div class="col-md-4 mb-3">
-                                <label for="nomdoc" class="form-label">Nome do Documento</label>
-                                <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
-                            </div>
-                            
-                         <div class="col-12 col-md-4 mb-3">
-                                <label for="tipo" class="form-label">Tipo</label>
-                                <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
-                                    <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
-                                    <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
-                                </select>
-                            </div>   
-                            
-                            <div class="col-md-4 mb-3">
-                                <label for="sigilo" class="form-label">Visibilidade</label>
-                                <select id="sigilo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
-                                    <option th:text="${'Selecione'}" th:value="${'0'}"></option>
-                                    <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
-                                </select>
-                            </div>            
-                            
-                            <div class="mb-3">
-                                <label for="fileUpload" class="form-label">Upload de Documento</label>
-                                <input type="file" id="fileUpload" name="file" class="form-control" accept=".docx,.pdf" />
-                            </div>							
-                            
-                            <input type="hidden" th:field="*{flag}" id="flag">
-                            
-                            <div class="d-flex justify-content-end mb-3">
-                                <button type="button" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
-                            </div>
+							<div class="mb-4 p-3">
+								<div class="stepper-wrapper">
+									<div class="stepper-item completed">
+										<div class="step-counter">1</div>
+										<div class="step-name">Criando Processo</div>
+									</div>
+									<div class="stepper-item completed">
+										<div class="step-counter">2</div>
+										<div class="step-name">Classificação do Processo</div>
+									</div>
+									<div class="stepper-item completed">
+										<div class="step-counter">3</div>
+										<div class="step-name">Finalizar</div>
+									</div>
+								</div>
+							</div>
 
-                            <div class="mb-3">
-                                <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
-                            </div>
+							<div th:if="${alertMessage}"
+								th:classappend="'alert-' + ${alertMessage.type}"
+								class="alert alert-dismissible fade" role="alert">
+								<span th:text="${alertMessage.message}"></span>
+								<button type="button" class="btn-close" data-bs-dismiss="alert"
+									aria-label="Close"></button>
+							</div>
 
-                            <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                                <button type="submit" class="btn btn-primary btn-sm me-2" id="criarArquivo" onclick="setFlag(0)">Criar Arquivo</button>
-                                <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+							<!-- Formulário para Criar ou Editar Documento -->
+							<form th:action="@{/docs/gerarPdf}" th:object="${doc}"
+								method="post" class="row g-3" onsubmit="return validateForm();"
+								enctype="multipart/form-data" id="frm">
+								<input type="hidden" id="idProcesso" th:value="${processo.id}"
+									name="idProcesso" /> <input type="hidden" th:field="*{id}" />
 
-            <!-- Segundo Card -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #00537d;">
-                        <span class="badge text-bg-secondary">
-                            <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo
-                        </span>
-                        <button id="btnObterMarcados" class="btn btn-primary btn-sm">
-                            Baixar Selecionados <i class="bi bi-download"></i>
-                        </button>
-                    </div>
-                    <div class="card-body">
-                        <table class="table">
-                            <thead style="font-size: 14px;">
-                                <tr>
-                                    <th width="1px"></th>
-                                    <th width="1px"></th>
-                                    <th width="5px">Nome</th>
-                                    <th width="4px">Ext</th>
-                                    <th width="4px">Tam</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="documentosDoProcesso" style="font-size: 12px;">
-                                <!-- Conteúdo dinâmico aqui -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+								<div class="col-md-4 mb-3">
+									<label for="nomdoc" class="form-label">Nome do
+										Documento</label> <input type="text" id="nomdoc" name="nomdoc"
+										class="form-control form-control-sm" th:field="*{nomdoc}"
+										required />
+								</div>
 
-        </div>
-    </div>
-        <div id="divDocsSelecionados"></div>  
-</section>
+								<div class="col-md-4 mb-3">
+									<label for="tipo" class="form-label">Tipo</label> <select
+										id="tipo" th:errorclass="is-invalid"
+										class="form-select form-select-sm" th:field="*{tipoDoc}">
+										<option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
+										<option th:each="tipo : ${tipos}" th:text="${tipo.tipo}"
+											th:value="${tipo.id}"></option>
+									</select>
+								</div>
 
-    <!-- Botão para Criar Novo Documento -->
-    <div class="container mt-3">
-        <button type="button" class="btn btn-primary" id="criarDocumentoBtn" onclick="criarDocumento()">Upar / Criar Novo Documento</button>
-    </div>
-    
-   <script type="text/javascript">
+								<div class="col-md-4 mb-3">
+									<label for="sigilo" class="form-label">Visibilidade</label> <select
+										id="sigilo" th:errorclass="is-invalid"
+										class="form-select form-select-sm" th:field="*{sigiloId}">
+										<option th:text="${'Selecione'}" th:value="${'0'}"></option>
+										<option th:each="sigilo : ${sigilos}"
+											th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
+									</select>
+								</div>
+
+								<div class="mb-3">
+									<label for="fileUpload" class="form-label">Upload de
+										Documento</label> <input type="file" id="fileUpload" name="file"
+										class="form-control" accept=".docx,.pdf" />
+								</div>
+
+								<input type="hidden" th:field="*{flag}" id="flag">
+
+								<div class="d-flex justify-content-end mb-3">
+									<button type="button" class="btn btn-success btn-sm me-2"
+										onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
+								</div>
+
+								<div class="mb-3">
+									<textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
+								</div>
+
+								<div class="d-flex justify-content-end">
+									<button type="submit" class="btn btn-secondary btn-sm me-2"
+										onclick="setFlag(1)">Salvar Rascunho</button>
+									<button type="submit" class="btn btn-primary btn-sm me-2"
+										id="criarArquivo" onclick="setFlag(0)">Criar Arquivo</button>
+									<button type="button" class="btn btn-warning btn-sm"
+										id="voltar" onclick="history.back()">Voltar</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!-- Segundo Card -->
+				<div class="col-md-4">
+					<div class="card">
+						<div
+							class="card-header d-flex justify-content-between align-items-center"
+							style="background-color: #00537d;">
+							<span class="badge text-bg-secondary"> <i
+								class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do
+								Processo
+							</span>
+							<button id="btnObterMarcados" class="btn btn-primary btn-sm">
+								Baixar Selecionados <i class="bi bi-download"></i>
+							</button>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<thead style="font-size: 14px;">
+										<tr>
+											<th width="1px"></th>
+											<th width="1px"></th>
+											<th width="5px">Nome</th>
+											<th width="4px">Ext</th>
+											<th width="4px">Tam</th>
+											<th scope="col">Data</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="documentosDoProcesso" style="font-size: 12px;">
+										<!-- Conteúdo dinâmico aqui -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div id="divDocsSelecionados"></div>
+	</section>
+
+	<!-- Botão para Criar Novo Documento -->
+	<div class="container mt-3">
+		<button type="button" class="btn btn-primary" id="criarDocumentoBtn"
+			onclick="criarDocumento()">Upar / Criar Novo Documento</button>
+	</div>
+
+	<script type="text/javascript">
    $("#tipo").select2({
 	    width: 'resolve', // Usa o tamanho do elemento pai
 	    dropdownAutoWidth: true

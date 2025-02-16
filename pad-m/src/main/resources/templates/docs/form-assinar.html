@@ -47,7 +47,7 @@
                         </div>
                         <div class="d-flex">
 	                        <button type="button" class="btn btn-primary btn-sm me-2" id="assinar">Assinar</button>                        
-	                        <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
+	                        <button type="button" class="btn btn-warning btn-sm" id="voltar">Voltar</button>
                         </div>
                         
                     </form>
@@ -80,6 +80,9 @@
                     startCountdown(10);
                     setInterval(function () {}, 10000);
                 }
+                
+              
+                
             });    
             
             $('#assinar').on('click', function() {
@@ -87,24 +90,35 @@
             	$("#formDoc").submit();
             });
             
+            $('#voltar').on('click', function() {
+            	 $("#loader").show();
+               var idProcesso = $("#idProcesso").val()
+               var url = window.location.origin + "/processos/finalizarUploadDoc/" + idProcesso;
+              window.location.href = url;
+       		  
+           });            
+       
+            
           function startCountdown(seconds) {
           	  const countdownElement = document.getElementById("countdown");
           	  let remainingTime = seconds;
-
+			 
           	  // Update countdown every second
           	  const timerInterval = setInterval(() => {
           	    countdownElement.innerHTML = remainingTime;
 
           	    if (remainingTime <= 0) {
-          	      clearInterval(timerInterval); // Stop the countdown          	    
-          	      window.location.href = "../../tramite";
+          	      clearInterval(timerInterval); // Stop the countdown   
+          	      var idProcesso = $("#idProcesso").val()
+          	      window.location.href = "../../processos/finalizarUploadDoc/"+idProcesso;
           	    } else {
           	      remainingTime--;
           	    }
           	  }, 1000);
           	}
          
-      
+          
+      		
        
         </script>
     </div>
