@@ -61,31 +61,65 @@
         }
         
         .nav_dropdown {
-    position: relative;
+        position: relative;
+		}
+
+		.nav_dropdown_content {
+		    display: none; /* Oculta o conteúdo por padrão */
+		    background-color: #00537d;
+		    padding: 0; /* Remove o padding para colapsar corretamente */
+		    z-index: 1;
+		}
+
+		.nav_dropdown.active .nav_dropdown_content {
+		    display: block; /* Exibe o conteúdo quando ativo */
+		}
+		
+		.nav_link {
+		    color: #00cfd3;
+		    text-decoration: none;
+		    display: block;
+		    padding: 12px 16px;
+		}
+
+		.nav_link:hover {
+		    background-color: #004060;
+		}
+
+		/* Ajustes de responsividade */
+@media (max-width: 768px) {
+    .l-navbar {
+        width: 0;
+        position: fixed;
+        z-index: 1000;
+        height: 100vh;
+    }
+    
+    .l-navbar.expanded {
+        width: 250px;
+    }
+    
+    main.container-full {
+        margin-left: 0 !important;
+        padding: 15px;
+        width: 100%;
+    }
+    
+    #header {
+        padding-left: 15px;
+    }
 }
 
-.nav_dropdown_content {
-    display: none; /* Oculta o conteúdo por padrão */
-    background-color: #00537d;
-    padding: 0; /* Remove o padding para colapsar corretamente */
-    z-index: 1;
+@media (min-width: 769px) {
+    main.container-full {
+        margin-left: 70px;
+        transition: margin-left 0.3s ease;
+    }
+    
+    .l-navbar.expanded + main.container-full {
+        margin-left: 250px;
+    }
 }
-
-.nav_dropdown.active .nav_dropdown_content {
-    display: block; /* Exibe o conteúdo quando ativo */
-}
-
-.nav_link {
-    color: #00cfd3;
-    text-decoration: none;
-    display: block;
-    padding: 12px 16px;
-}
-
-.nav_link:hover {
-    background-color: #004060;
-}
-
     </style>
 </head>
 <body id="body-pd">
@@ -154,8 +188,7 @@
 	                       <span class="nav_name">Tramites</span>
 	                       <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
 	                   </a>
-	                   <div class="nav_dropdown_content">
-	                       <a th:href="@{/tramite/new}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
+	                   <div class="nav_dropdown_content">	                      
 	                       <a th:href="@{/tramite}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
 	                   </div>
 	               </div>
@@ -168,9 +201,8 @@
                         <span class="nav_name">Formulários</span>
                         <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
                     </a>
-                    <div class="nav_dropdown_content">
-                        <a th:href="@{/atendente}" class="nav_link">Cadastrar Atendente</a>
-                        <a href="#" class="nav_link">Formulário 2</a>
+                    <div class="nav_dropdown_content">                       
+                        <a th:href="@{/usuarios/new}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Cadastrar Usuario</a>
                     </div>
                 </div>
                 
@@ -218,8 +250,7 @@
     <!-- Loader -->
     <div id="loader" class="loader" style="display:none;"></div>
 
-    <!-- Scripts -->
-    <script th:src="@{/js/jquery-1.12.4.min.js}"></script>
+    <!-- Scripts -->   
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>

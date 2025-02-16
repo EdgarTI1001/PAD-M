@@ -152,7 +152,7 @@
             });
             
             $('#btnObterMarcados').click(function() {
-            	 $("#loader").show();
+            	$("#loader").show();
                 var idDocs = [];
                 var inputsIdsDocs = 0;                
           
@@ -175,7 +175,8 @@
                 } else {
                     alert('Nenhum Document foi marcado.');
                 }
-            });
+            });            
+  
         });
     </script>
     <style>
@@ -222,6 +223,25 @@
             font-size: 12px;
             margin-top: 5px;
         }
+        
+        /* Ajustes para o Select2 em telas pequenas */
+@media (max-width: 768px) {
+    .select2-container {
+        width: 100% !important;
+    }
+    
+    #tipo {
+        width: 100% !important;
+    }
+    
+    .stepper-item .step-name {
+        font-size: 10px;
+    }
+    
+    .card-header h5 {
+        font-size: 1rem;
+    }
+}
         
     </style>
 </head>
@@ -275,7 +295,7 @@
                                 <input type="text" id="nomdoc" name="nomdoc" class="form-control form-control-sm" th:field="*{nomdoc}" required/>
                             </div>
                             
-                            <div class="col-md-4 mb-3">
+                         <div class="col-12 col-md-4 mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
                                 <select id="tipo" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{tipoDoc}">
                                     <option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
@@ -308,7 +328,7 @@
 
                             <div class="d-flex justify-content-end">
                                 <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                                <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)">Criar Arquivo</button>
+                                <button type="submit" class="btn btn-primary btn-sm me-2" id="criarArquivo" onclick="setFlag(0)">Criar Arquivo</button>
                                 <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
                             </div>
                         </form>
@@ -358,7 +378,13 @@
         <button type="button" class="btn btn-primary" id="criarDocumentoBtn" onclick="criarDocumento()">Upar / Criar Novo Documento</button>
     </div>
     
-    
+   <script type="text/javascript">
+   $("#tipo").select2({
+	    width: 'resolve', // Usa o tamanho do elemento pai
+	    dropdownAutoWidth: true
+	});
+   
+   </script>
 
 </body>
 </html>

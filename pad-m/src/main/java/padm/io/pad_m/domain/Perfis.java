@@ -20,7 +20,7 @@ public class Perfis implements Serializable {
 	private Integer id;
 
 	@Column(name = "USUARIO_ID")
-	private String idUser;
+	private Integer idUser;
 
 	private Integer perfis;
 
@@ -44,11 +44,11 @@ public class Perfis implements Serializable {
 		this.perfis = perfis;
 	}
 
-	public String getIdUser() {
+	public Integer getIdUser() {
 		return idUser;
 	}
 
-	public void setIdUser(String idUser) {
+	public void setIdUser(Integer idUser) {
 		this.idUser = idUser;
 	}
 
