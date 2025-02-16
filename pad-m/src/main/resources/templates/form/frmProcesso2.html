@@ -28,21 +28,21 @@
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
-            display: flex; /* Alinha o conteúdo do botão */
-            align-items: center; /* Centraliza o texto e o ícone verticalmente */
-            justify-content: center; /* Alinha o conteúdo ao centro */
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
         }
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #004085;
         }
         .spinner {
-            margin-left: 10px; /* Adiciona um espaçamento entre o texto e o ícone */
-            display: none; /* Esconde o spinner inicialmente */
+            margin-left: 10px;
+            display: none; 
         }
         .form-footer {
             display: flex;
-            justify-content: flex-end; /* Garante que o botão "Avançar" fique no final (à direita) */
+            justify-content: flex-end; 
             padding-top: 15px;
         }
         
@@ -64,8 +64,6 @@
             display: none;
         }
         
-        
-          /* Ajustes para mobile */
     @media (max-width: 768px) {
         .col-6 {
             flex: 0 0 100%;
@@ -81,7 +79,6 @@
         }
     }
     
-    /* Melhoria no stepper */
     .stepper-wrapper {
         overflow-x: auto;
         padding-bottom: 10px;
@@ -220,8 +217,10 @@
 
 	    <div layout:fragment="jscript">       
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
-    <script type="text/javascript">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->    
+    <script type="text/javascript">    
+    
     
         var URL = '[[@{/}]]api';
         $("#classsificacao").select2();
