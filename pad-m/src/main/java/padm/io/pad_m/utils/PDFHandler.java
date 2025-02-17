@@ -100,7 +100,7 @@ public class PDFHandler {
         }        	
         else{
         	numpages = document.getNumberOfPages() - 1;        	
-        	y = document.getPage(numpages).getMediaBox().getHeight() - (36 + (total_assinaturas * 20)); // y-coordinate from the top; // Y position from the bottom of the page
+        	y = document.getPage(numpages).getMediaBox().getHeight() - (36 + (total_assinaturas * 30)); // y-coordinate from the top; // Y position from the bottom of the page
         }
         	
       
