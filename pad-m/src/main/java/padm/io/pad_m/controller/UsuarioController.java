@@ -109,7 +109,7 @@ public class UsuarioController {
 			perfis.setIdUser(usuario.getId());
 			perfis.setPerfis(usuario.getPerfilId());
 			//perfisService.save(perfis);
-			//usuarioService.save(usuario);
+			usuarioService.save(usuario);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
