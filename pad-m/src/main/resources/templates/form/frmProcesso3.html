@@ -7,48 +7,54 @@
 <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
 <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
 <script th:src="@{/js/select2.min.js}"></script>
+<script src="https://unpkg.com/mammoth/mammoth.browser.min.js"></script>
+
 <script>
       	
-    document.addEventListener('DOMContentLoaded', function () {
-        tinymce.init({
-            selector: '#conteudo',
-            language: 'pt_BR',
-            browser_spellcheck: true,
-            contextmenu: false,
-            plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                'insertdatetime', 'media', 'table', 'help', 'wordcount'
-            ],
-            toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
-            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-            
-            // Configuração para inserir a imagem padrão
-            setup: function (editor) {
-                editor.on('init', function () {
-                    // Conteúdo atual do textarea (se houver)
-                    const currentContent = editor.getContent();
-                    
-                    // URL da imagem padrão (substitua pela sua URL)
-                    const defaultImageUrl = 'http://localhost:8080/images/maues.png';
-                    
-                    // HTML da imagem (estilo opcional para ajustes)
-                    const defaultImageHTML = `
-                    <div style="text-align: center;">
-                        <img 
-                            src="${defaultImageUrl}" 
-                            style="display: block; margin: auto; max-width: 60px; height: auto;" 
-                            alt="Imagem Padrão"
-                        />
-                    </div>
-                    `;
-                    
-                    // Insere a imagem no topo, seguida do conteúdo existente
-                    editor.setContent(defaultImageHTML + currentContent);
-                });
-            }
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    tinymce.init({
+        selector: '#conteudo',
+        language: 'pt_BR',
+        browser_spellcheck: true,
+        contextmenu: false,
+        plugins: [
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount'
+        ],
+        toolbar: 'undo redo | blocks | bold italic backcolor | alignleft aligncenter alignright | bullist numlist outdent indent | removeformat | help',
+        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
     });
+
+    // Evento para capturar o upload do arquivo .docx
+    document.getElementById('fileUpload').addEventListener('change', function (event) {
+        var file = event.target.files[0];
+
+        if (file && file.name.endsWith('.docx')) {
+            var reader = new FileReader();
+
+            reader.onload = function (event) {
+                var arrayBuffer = reader.result;
+
+                // Converter o conteúdo do .docx para HTML usando Mammoth.js
+                mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+                    .then(function (result) {
+                        var htmlContent = result.value; // Conteúdo convertido em HTML
+                        tinymce.get("conteudo").setContent(htmlContent); // Insere no TinyMCE
+                    })
+                    .catch(function (err) {
+                        console.log("Erro ao converter o documento:", err);
+                        alert("Erro ao processar o arquivo .docx");
+                    });
+            };
+
+            reader.readAsArrayBuffer(file);
+        } else {
+            alert("Por favor, selecione um arquivo .docx válido.");
+        }
+    });
+});
+
     
         // Função para validar o formulário antes do envio
         function validateForm() {
