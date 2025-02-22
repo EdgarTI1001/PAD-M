@@ -65,14 +65,14 @@
 		}
 
 		.nav_dropdown_content {
-		    display: none; /* Oculta o conteúdo por padrão */
+		    display: none; 
 		    background-color: #00537d;
-		    padding: 0; /* Remove o padding para colapsar corretamente */
+		    padding: 0; 
 		    z-index: 1;
 		}
 
 		.nav_dropdown.active .nav_dropdown_content {
-		    display: block; /* Exibe o conteúdo quando ativo */
+		    display: block;
 		}
 		
 		.nav_link {
@@ -85,8 +85,6 @@
 		.nav_link:hover {
 		    background-color: #004060;
 		}
-
-		/* Ajustes de responsividade */
 @media (max-width: 768px) {
     .l-navbar {
         width: 0;
@@ -111,14 +109,9 @@
 }
 
 @media (min-width: 769px) {
-    main.container-full {
-        margin-left: 70px;
+    main.container-full {        
         transition: margin-left 0.3s ease;
-    }
-    
-    .l-navbar.expanded + main.container-full {
-        margin-left: 250px;
-    }
+    }    
 }
     </style>
 </head>
