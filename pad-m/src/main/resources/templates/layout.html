@@ -187,7 +187,6 @@
 	               </div>
 	               
                 	
-                <!-- Dropdown for Formulários -->
                 <div class="nav_dropdown">
                     <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)" title="Formularios">                       
                         <i class="bi bi-clipboard-check"  style="font-size:23px;color:white"></i>
@@ -229,9 +228,7 @@
                 </a>
             </div>
         </nav>
-    </div>
-
-    <!-- Main Content -->
+    </div>    
     <main class="container-full">
         <div class="p-0 rounded">
             <section layout:fragment="content">
@@ -239,11 +236,9 @@
             </section>
         </div>
     </main>
-    
-    <!-- Loader -->
+        
     <div id="loader" class="loader" style="display:none;"></div>
 
-    <!-- Scripts -->   
     <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
@@ -255,8 +250,6 @@
     <script th:src="@{/js/utils.js}"></script>
     <script th:src="@{/js/select2.full.min.js}"></script>
     <div layout:fragment="jscript"></div> 
-
-    <!-- Custom Script for Sidebar Toggle -->
     <script type="text/javascript">
    
         const toggle = document.getElementById('header-toggle');
@@ -273,9 +266,9 @@
         });  
         
         function toggleDropdown(event) {
-            event.preventDefault(); // Evita o comportamento padrão do link
+            event.preventDefault(); 
             const dropdown = event.currentTarget.parentNode;
-            dropdown.classList.toggle('active'); // Alterna a classe 'active' para mostrar/esconder o dropdown
+            dropdown.classList.toggle('active'); 
         }
        
     </script>

@@ -139,7 +139,7 @@
                 </div>
                 
                 <div class="col-md-6 mb-3">
-                    <label for="cpf" class="form-label">Classificação</label>
+                    <label for="classificacao" class="form-label"><span class="badge bg-secondary">Classificação</span></label>
                     <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{classId}">
                         <option th:text="${'Selecione a classificação'}" th:value="${'0'}"></option>
                         <option th:each="c : ${classificacoes}" th:text="${c.nome}" th:value="${c.id}"></option>
@@ -147,7 +147,7 @@
                 </div>
                 
                 <div class="col-md-6 mb-3">
-                    <label for="cpf" class="form-label">Visibilidade</label>
+                    <label for="visibilidade" class="form-label"><span class="badge bg-secondary">Visibilidade</span></label>
                     <select id="classsificacao" th:errorclass="is-invalid" class="form-select form-select-sm" th:field="*{sigiloId}">
                         <option th:text="${'Selecione a Visibilidade'}" th:value="${'0'}"></option>
                         <option th:each="v : ${visibilidades}" th:text="${v.visibilidade}" th:value="${v.id}"></option>
@@ -161,7 +161,7 @@
        
 
                 <div class="col-md-6 mb-3">
-                    <label for="interessado" class="form-label">Setor</label>
+                    <label for="setor" class="form-label"><span class="badge bg-secondary">Setor</span></label>
                     <select id="setor" class="form-select form-select-sm">
                         <option th:text="${'Selecione o Setor'}" th:value="${'0'}"></option>
                         <option th:each="setor : ${setores}" th:text="${setor.nome}" th:value="${setor.id}"></option>
@@ -169,7 +169,7 @@
                 </div>
                 
                 <div class="col-md-6 mb-3">
-                    <label for="usuario" class="form-label">Usuarios</label>
+                    <label for="usuarios" class="form-label"><span class="badge bg-secondary">Usuários</span></label>
                     <select id="usuario" class="form-select form-select-sm">
                         <option th:text="${'Selecione o Usuario'}" th:value="${'0'}"></option>
                         <option th:each="usuario : ${usuarios}" th:text="${usuario.nome}" th:value="${usuario.id}"></option>
@@ -177,11 +177,11 @@
                 </div>
                 
                <div class="mb-4 p-3">
-                    <h5>Interessados</h5>
+                    <h5><span class="badge bg-secondary">Interessados</span></h5>
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Nome</th>
+                                <th scope="col"><span class="badge bg-secondary">Nomes</span></th>
                                 <th></th>
                             </tr>
                         </thead>
