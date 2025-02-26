@@ -37,7 +37,7 @@ public class Usuario {
 
 	private String nickname;
 
-	@ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)	
+	@ManyToOne(fetch = FetchType.EAGER)	
 	@JoinColumn(name = "servidor_id")
 	private Servidor servidorId;
 

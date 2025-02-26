@@ -51,7 +51,7 @@ public class ProcessoController {
 
 	@Autowired
 	private ProcessoService processoService;
-	
+
 	@Autowired
 	private TipoDocService tipoDocService;
 
@@ -82,24 +82,22 @@ public class ProcessoController {
 	@Autowired
 	private SigiloService sigiloService;
 
-	
 	@GetMapping("/finalizarUploadDoc/{id}")
-	public String frmTeste(@RequestParam(value = "page", defaultValue = "1") int page, Model model,@PathVariable("id") Integer id) {
+	public String frmTeste(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
+			@PathVariable("id") Integer id) {
 		Processo processo = processoService.findById(id).get();
 		model.addAttribute("processo", processo);
-		List<Doc> docs = documentoService.findAllDocsByUsuarioId(session.getUsuario().getId());
-		List<TipoDoc> tiposDocs =  tipoDocService.findAll();
-		List<Sigilo> sigilos =  sigiloService.findAll();
+		List<TipoDoc> tiposDocs = tipoDocService.findAll();
+		List<Sigilo> sigilos = sigiloService.findAll();
 		Doc doc = new Doc();
 
 		model.addAttribute("doc", doc);
 		model.addAttribute("tipos", tiposDocs);
-		model.addAttribute("documentos", docs);
 		model.addAttribute("sigilos", sigilos);
 		model.addAttribute("sigilos", sigilos);
 		return "form/frmProcesso3";
 	}
-	
+
 	@GetMapping
 	public ModelAndView findAll(@RequestParam("tipagem") Optional<Integer> tipagem) {
 		ModelAndView mv = new ModelAndView("consulta/processos");
@@ -181,7 +179,7 @@ public class ProcessoController {
 	public String frmCadastrarProcessoFinalizar(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
 			@ModelAttribute("processo") Processo processo) {
 		processoService.save(processo);
-		return "redirect:/processos/finalizarUploadDoc/"+processo.getId();
+		return "redirect:/processos/finalizarUploadDoc/" + processo.getId();
 	}
 
 	@PostMapping("/save")
@@ -217,10 +215,10 @@ public class ProcessoController {
 
 	@PostMapping("/apensar/save")
 	public ModelAndView apensarProcessos(@ModelAttribute("processo") Processo processo,
-			@RequestParam("processos") Integer[] processos,@RequestParam("obs") String obs,  BindingResult result) {
+			@RequestParam("processos") Integer[] processos, @RequestParam("obs") String obs, BindingResult result) {
 		ResultDTO r = new ResultDTO();
 		try {
-			processoApensoService.save(processo.getId(),obs, session.getUsuario().getId(), processos);
+			processoApensoService.save(processo.getId(), obs, session.getUsuario().getId(), processos);
 			r.setType("success");
 			r.setMensagem("Processos Apensados com Sucesso!");
 		} catch (Exception e) {
@@ -233,7 +231,7 @@ public class ProcessoController {
 		model.addObject("processo", p);
 		model.addObject("numanoproc", p.get().getNumanoproc());
 		model.addObject("assunto", p.get().getAssunto());
-		model.addObject("r", r); 
+		model.addObject("r", r);
 		return model;
 		// return "redirect:/processos";
 	}

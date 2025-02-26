@@ -1,10 +1,9 @@
 package padm.io.pad_m.utils;
 
 import java.awt.Color;
-import java.io.ByteArrayOutputStream;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,26 +12,28 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.LosslessFactory;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
-import com.itextpdf.text.xml.xmp.XmpWriter;
 
-import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
@@ -49,7 +50,7 @@ public class PDFHandler {
 
 	@Autowired
 	private DocService docService;
-	
+
 	@Autowired
 	private AssinadorService assinadorService;
 
@@ -57,68 +58,120 @@ public class PDFHandler {
 	private String pdfDir = "documentos";
 	private String pdfVerify = "verify";
 	String dest = "";
-	
 
 	// Método para gerar o hash de um arquivo
 	public String generateFileHash(Doc doc, Usuario author, String algorithm)
-			throws NoSuchAlgorithmException, IOException, DocumentException {
+			throws NoSuchAlgorithmException, IOException, DocumentException, WriterException {
 		dest = root.resolve(pdfDir) + "/" + FilenameUtils.getBaseName(root.resolve(pdfDir) + "/" + doc.getHashdoc())
-		+ "." + FilenameUtils.getExtension(doc.getHashdoc());
-		MessageDigest digest = MessageDigest.getInstance(algorithm);		
-		
-		/**************************************************/   
-	     
+				+ "." + FilenameUtils.getExtension(doc.getHashdoc());
+		MessageDigest digest = MessageDigest.getInstance(algorithm);
+
+		/**************************************************/
+
 		PDDocument document = PDDocument.load(new File(dest));
-		int numpages = 0; 
-		//Verificar se esse doc ja foi assinado alguma vez		
-		Optional<Assinador> assinador = assinadorService.findFirstByDoc_id(doc.getId());
-		
-		PDPageContentStream contentStream = null;
-		
-		if(assinador.isPresent()){			
-			 PDPage lastPage = document.getPage(document.getNumberOfPages() - 1);
-			 contentStream = new PDPageContentStream(document, lastPage, PDPageContentStream.AppendMode.APPEND, true, true);
-		}else{			
-			PDPage newPage = new PDPage();
-	        document.addPage(newPage);
-			contentStream = new PDPageContentStream(document, newPage, PDPageContentStream.AppendMode.APPEND, true, true);
-		}		
-		 
-		long total_assinaturas = assinadorService.countByDoc_id(doc.getId());
-		
-		// Set font and size
-        contentStream.setFont(PDType1Font.COURIER, 9);    	
-    	
-        float margin = 36; // Margin from the bottom and left
-        float x = margin;
-        float y = 0;
-      
-        if(total_assinaturas == 0){
-        	numpages = document.getNumberOfPages() - 1;           	
-        	y=  document.getPage(numpages).getMediaBox().getHeight() - 36; // y-coordinate from the top; // Y position from the bottom of the page
-        
-        }        	
-        else{
-        	numpages = document.getNumberOfPages() - 1;        	
-        	y = document.getPage(numpages).getMediaBox().getHeight() - (36 + (total_assinaturas * 30)); // y-coordinate from the top; // Y position from the bottom of the page
-        }
-        	
-      
+		int numpages = 0;
 
-        String dataFormatada = LocalDateTime.now().format(parser);
-        // Write the first paragraph
-        contentStream.beginText();
-        contentStream.newLineAtOffset(x, y);
-        contentStream.setNonStrokingColor(Color.RED);
-        contentStream.showText("[Assinado por " + author.getServidorId().getNome() + "] Em : " + dataFormatada);
-        contentStream.endText();        
+		String text = new PDFTextStripper().getText(document);// Verificando o ultimo Paragrafo
 
+		String[] paragrafos = text.split("\\n\\n"); // Divide por parágrafos (duas quebras de linha)
 
-        // Close the content stream
-        contentStream.close(); 
-        
-        document.save(dest);
-        document.close();
+		// Encontrar o último parágrafo não vazio
+		String lastParagraph = "";
+		for (int i = paragrafos.length - 1; i >= 0; i--) {
+			if (!paragrafos[i].trim().isEmpty()) {
+				lastParagraph = paragrafos[i];
+				break;
+			}
+		}
+
+		// Conteúdo do QR Code
+		String qrText = "localhost:8080/documentos/";
+		 String textoAoLado = "Visite nosso site";
+		// Tamanho do QR Code em pixels
+		int qrPixelSize = 100;
+
+		// Gera o QR Code usando ZXing
+	
+		BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, qrPixelSize, qrPixelSize);
+		BufferedImage qrBufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+
+		 // Configurações em pontos (1 polegada = 72 pontos)
+	        float qrWidth = 40;     // Largura do QR Code no PDF
+	        float qrHeight = 40;    // Altura do QR Code no PDF
+	        float margin = 10;       // Margem do canto da página
+	        float fontSize = 12;     // Tamanho da fonte para o texto
+
+		// Itera por todas as páginas do documento
+		for (PDPage page : document.getPages()) {
+		    float pageWidth = page.getMediaBox().getWidth();
+		    // Define as coordenadas do QR Code (canto inferior direito)
+            float qrX = pageWidth - margin - qrWidth;
+            float qrY = margin;
+            
+            // Posiciona o texto à esquerda do QR Code
+            // Aqui, 'textX' é calculado de forma que o texto fique a uma distância fixa do QR Code.
+            float textX = qrX - 150; // ajuste esse valor conforme o comprimento do seu texto
+            // Alinha verticalmente o texto ao centro do QR Code
+            float textY = qrY + (qrHeight / 2) - (fontSize / 2);
+		    
+			// Abre um PDPageContentStream no modo APPEND para não sobrescrever o conteúdo existente
+			PDPageContentStream contentStream = new PDPageContentStream(document, page,
+					PDPageContentStream.AppendMode.APPEND, true, true);
+
+			String dataFormatada = LocalDateTime.now().format(parser);
+			// Write the first paragraph
+			contentStream.setFont(PDType1Font.HELVETICA, 12);
+			contentStream.beginText();
+			contentStream.newLineAtOffset(10, 10);
+			contentStream.setNonStrokingColor(Color.RED);
+			contentStream.showText("[Documento Eletronicamente Assinado por " + author.getServidorId().getNome()
+					+ "] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
+					+ LocalDateTime.now().getMinute());
+			contentStream.endText();
+			
+			// Converte a imagem gerada do QR Code para PDImageXObject
+            PDImageXObject qrImage = LosslessFactory.createFromImage(document, qrBufferedImage);
+
+            // Adiciona o QR Code no canto inferior direito
+            contentStream.drawImage(qrImage, qrX, qrY, qrWidth, qrHeight);
+            
+			// Close the content stream
+			contentStream.close();
+		}
+
+		/*
+		 * //Verificar se esse doc ja foi assinado alguma vez Optional<Assinador>
+		 * assinador = assinadorService.findFirstByDoc_id(doc.getId());
+		 * 
+		 * PDPageContentStream contentStream = null;
+		 * 
+		 * if(assinador.isPresent()){ PDPage lastPage =
+		 * document.getPage(document.getNumberOfPages() - 1); contentStream = new
+		 * PDPageContentStream(document, lastPage,
+		 * PDPageContentStream.AppendMode.APPEND, true, true); }else{ PDPage newPage =
+		 * new PDPage(); document.addPage(newPage); contentStream = new
+		 * PDPageContentStream(document, newPage, PDPageContentStream.AppendMode.APPEND,
+		 * true, true); }
+		 * 
+		 * long total_assinaturas = assinadorService.countByDoc_id(doc.getId());
+		 * 
+		 * // Set font and size contentStream.setFont(PDType1Font.COURIER, 9);
+		 * 
+		 * float margin = 36; // Margin from the bottom and left float x = margin; float
+		 * y = 0;
+		 * 
+		 * if(total_assinaturas == 0){ numpages = document.getNumberOfPages() - 1; y=
+		 * document.getPage(numpages).getMediaBox().getHeight() - 36; // y-coordinate
+		 * from the top; // Y position from the bottom of the page
+		 * 
+		 * } else{ numpages = document.getNumberOfPages() - 1; y =
+		 * document.getPage(numpages).getMediaBox().getHeight() - (36 +
+		 * (total_assinaturas * 30)); // y-coordinate from the top; // Y position from
+		 * the bottom of the page }
+		 */
+
+		document.save(dest);
+		document.close();
 
 		try (FileInputStream fis = new FileInputStream(new File(dest))) {
 			byte[] buffer = new byte[1024];
@@ -151,7 +204,7 @@ public class PDFHandler {
 			throws NoSuchAlgorithmException, IOException {
 		String[] ext = file.getContentType().split("/");
 		dest = root.resolve(pdfVerify) + "/"
-				+ FilenameUtils.getBaseName(root.resolve(pdfVerify) + "/" + file.getOriginalFilename()) + "." + ext[1];		
+				+ FilenameUtils.getBaseName(root.resolve(pdfVerify) + "/" + file.getOriginalFilename()) + "." + ext[1];
 		MessageDigest digest = MessageDigest.getInstance(algorithm);
 
 		try (FileInputStream fis = new FileInputStream(new File(dest))) {
@@ -193,7 +246,7 @@ public class PDFHandler {
 			throw new RuntimeException("Ocorreu um erro ao ler metadados. Erro: " + e.getMessage());
 		}
 		return idFile;
-		
+
 	}
 
 	public Map<String, String> getMetaDado(String pdfFile) {
