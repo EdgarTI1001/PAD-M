@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Evento para capturar o upload do arquivo .docx
     document.getElementById('fileUpload').addEventListener('change', function (event) {
         var file = event.target.files[0];
-
-        if (file && file.name.endsWith('.docx')) {
+			console.log(file.name.endsWith('.docx'))
+        if (file.name.endsWith('.docx')) {
             var reader = new FileReader();
 
             reader.onload = function (event) {
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             reader.readAsArrayBuffer(file);
         } else {
-            alert("Por favor, selecione um arquivo .docx válido.");
+            //alert("Por favor, selecione um arquivo .docx válido.");
         }
     });
 });
@@ -185,8 +185,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     alert('Nenhum Document foi marcado.');
                 }
-            });            
-  
+            });
+       
+            
+            $( "#salvarEAssinar" ).on( "click", function() {
+            	 
+             });
+            
         });
     </script>
 <style>
@@ -371,9 +376,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 								<div class="d-flex justify-content-end">
 									<button type="submit" class="btn btn-secondary btn-sm me-2"
-										onclick="setFlag(1)">Salvar Rascunho</button>
-									<button type="submit" class="btn btn-primary btn-sm me-2"
-										id="criarArquivo" onclick="setFlag(0)">Criar Arquivo</button>
+										onclick="setFlag(1)">Salvar Minuta</button>
+									<button type="button" class="btn btn-primary btn-sm me-2"
+										id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
 									<button type="button" class="btn btn-warning btn-sm"
 										id="voltar" onclick="history.back()">Voltar</button>
 								</div>
@@ -435,6 +440,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	    width: 'resolve', // Usa o tamanho do elemento pai
 	    dropdownAutoWidth: true
 	});
+   
+
+
    
    </script>
 

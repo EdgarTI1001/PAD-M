@@ -85,7 +85,7 @@ public class PDFHandler {
 		}
 
 		// Conteúdo do QR Code
-		String qrText = "localhost:8080/documentos/";
+		 String qrText = "localhost:8080/documentos/asinaturas"+ doc.getId();
 		 String textoAoLado = "Visite nosso site";
 		// Tamanho do QR Code em pixels
 		int qrPixelSize = 100;
@@ -124,7 +124,7 @@ public class PDFHandler {
 			contentStream.beginText();
 			contentStream.newLineAtOffset(10, 10);
 			contentStream.setNonStrokingColor(Color.RED);
-			contentStream.showText("[Documento Eletronicamente Assinado por " + author.getServidorId().getNome()
+			contentStream.showText("[Documento Assinado Eletronicamente por " + author.getServidorId().getNome()
 					+ "] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
 					+ LocalDateTime.now().getMinute());
 			contentStream.endText();
