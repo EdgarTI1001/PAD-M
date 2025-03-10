@@ -82,15 +82,17 @@ public class ProcessoController {
 	@Autowired
 	private SigiloService sigiloService;
 
-	@GetMapping("/finalizarUploadDoc/{id}")
+	@GetMapping("/finalizarUploadDoc/{id}/doc/{idDoc}")
 	public String frmTeste(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
-			@PathVariable("id") Integer id) {
+			@PathVariable("id") Integer id, @PathVariable("idDoc") Integer idDoc) {
 		Processo processo = processoService.findById(id).get();
 		model.addAttribute("processo", processo);
 		List<TipoDoc> tiposDocs = tipoDocService.findAll();
-		List<Sigilo> sigilos = sigiloService.findAll();
+		List<Sigilo> sigilos = sigiloService.findAll();		
 		Doc doc = new Doc();
-
+		if(idDoc != 0){
+			doc = documentoService.findById(idDoc);
+		}
 		model.addAttribute("doc", doc);
 		model.addAttribute("tipos", tiposDocs);
 		model.addAttribute("sigilos", sigilos);		

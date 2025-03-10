@@ -91,9 +91,9 @@
             });
             
             $('#voltar').on('click', function() {
-            	 $("#loader").show();
+               $("#loader").show();
                var idProcesso = $("#idProcesso").val()
-               var url = window.location.origin + "/processos/finalizarUploadDoc/" + idProcesso;
+               var url = window.location.origin + "/processos/finalizarUploadDoc/" + idProcesso + "/doc/0";
               window.location.href = url;
        		  
            });            

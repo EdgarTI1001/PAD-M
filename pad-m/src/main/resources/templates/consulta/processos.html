@@ -102,9 +102,13 @@
                                         <td th:text="${rs.numproc}"></td>
                                         <td th:text="${rs.ano}"></td>
                                         <td>
-                                            <a th:href="@{/processos/finalizarUploadDoc/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Processos">
-                                                <span th:text="${rs.numanoproc}"></span>
-                                            </a> 
+                                           <a th:href="@{/processos/finalizarUploadDoc/{id}/doc/{docId}(id=${rs.id}, docId=0)}" 
+											   th:data-record-id="${rs.id}" 
+											   th:data-record-numano="${rs.numanoproc}" 
+											   th:id="'tramite' + ${rs.id}" 
+											   title="Processos">
+											    <span th:text="${rs.numanoproc}"></span>
+										</a> 
                                         </td>
                                         <td>
                                             <a th:href="@{/processos/frmApensar/} + ${rs.id}" th:data-record-id="${rs.id}" th:data-record-numano="${rs.numanoproc}" th:id="'tramite' + ${rs.id}" title="Apensar Processos">

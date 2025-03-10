@@ -31,6 +31,10 @@ public class AssinadorService {
 	public Optional<Assinador> findAByHash(String hash) {
 		return assinadorRepositor.findAByHash(hash);
 	}
+	
+	public List<Assinador> findAllByDocumentoID(Integer id) {
+		return assinadorRepositor.findAllByDocumentoID(id);
+	}
 
 	public Integer findByUserAndDoc(Integer idUser, Integer idDoc) {// metodo para verificar se o usuario ja assinou o
 																	// documento 1 - SIM / 0 - NAO

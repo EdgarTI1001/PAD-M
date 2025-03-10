@@ -101,32 +101,54 @@ document.addEventListener('DOMContentLoaded', function () {
         function getDocumentosDoProcesso(){ 
         	var  processo = $("#idProcesso").val();
         	var table = "";
+        	var tableMinuta = "";
         	  $("#documentosDoProcesso").empty();
         	 $.ajax({
         		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
         		  method: "GET",
-        		}).done(function(data) {        			
+        		}).done(function(data) { 
+        			console.log(data)
         			$.each(data, function(index, value) {
-        			    table += '<tr id="tr' + value.id + '">';
-        			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
-        			    table += '<th>' + (index + 1) + '</th>';
-        			    table += '<th>' + value.documento.nomdoc + '</th>';
-        			    table += '<th>' + value.documento.extdoc + '</th>';
-        			    table += '<th>' + value.documento.tamdoc + '</th>';
-        			    table += '<th>' + formatarData(value.datacad) + '</th>';
-        			    table += '<th>' +
-        			        ' <a class="btn btn-sm btn-warning" href="../../docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
-        			        '<i class="bi bi-pencil-fill"></i>Assinar' +
-        			        '</a>' +
-        			        ' <a class="btn btn-sm btn-info" href="../../docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
-        			        '<i class="bi bi-eye-fill"></i>' +
-        			        '</a>' +
-        			        '</th>';
-        			    table += '</tr>';
+        				console.log(window.location.pathname);
+        				if(value.documento.flag == 1){ 
+        					
+        					tableMinuta += '<tr id="tr' + value.id + '">';        					
+        					tableMinuta += '<th>' + (index + 1) + '</th>';
+        					tableMinuta += '<th>' +  value.documento.nomdoc + '</th>';
+        					tableMinuta += '<th>' + (value.documento.extdoc ? value.documento.extdoc : '-' ) + '</th>';
+        					tableMinuta += '<th>' + (value.documento.tamdoc ? value.documento.tamdoc : '-') + '</th>';
+        					tableMinuta += '<th>' + formatarData(value.datacad) + '</th>';
+        					tableMinuta += '<th>' +
+        				    ' <a class="btn btn-sm btn-warning" href="/processos/finalizarUploadDoc/' + value.processo.id + "/doc/" + value.documento.id + '" role="button" title="Editar Minuta">' +
+        				    '<i class="bi bi-pencil-fill"></i>Editar' +
+        				    '</a>' + 
+        				    '</th>';
+            			        tableMinuta += '</tr>';
+        				}else{
+        				    table += '<tr id="tr' + value.id + '">';
+            			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
+            			    table += '<th>' + (index + 1) + '</th>';
+            			    table += '<th>' +  value.documento.nomdoc + '</th>';
+            			    table += '<th>' + (value.documento.extdoc ? value.documento.extdoc : '-' ) + '</th>';
+            			    table += '<th>' + (value.documento.tamdoc ? value.documento.tamdoc : '-') + '</th>';
+            			    table += '<th>' + formatarData(value.datacad) + '</th>';
+            			    table += '<th>' +
+	            			    '<a class="btn btn-sm btn-warning" href="/docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
+	            			    '<i class="bi bi-pencil-fill"></i>Assinar' +
+	            			    '</a>' +
+            			        ' <a class="btn btn-sm btn-info" href="/docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
+            			        '<i class="bi bi-eye-fill"></i>' +
+            			        '</a>' +
+            			        '</th>';
+            			    table += '</tr>';
+        					
+        				}   	       	
+        			    
         			});
         		
         			
         			 $('#documentosDoProcesso').append(table);
+        			 $('#minutasDoProcesso').append(tableMinuta);        			 
         			 $("#eventoDoProcesso").show();
         			 $("#addDocumento").show();
         			 $("#loader").hide();
@@ -386,16 +408,14 @@ document.addEventListener('DOMContentLoaded', function () {
 						</div>
 					</div>
 				</div>
-
 				<!-- Segundo Card -->
 				<div class="col-md-4">
+					<!-- Card Original -->
 					<div class="card">
-						<div
-							class="card-header d-flex justify-content-between align-items-center"
+						<div class="card-header d-flex justify-content-between align-items-center"
 							style="background-color: #00537d;">
-							<span class="badge text-bg-secondary"> <i
-								class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do
-								Processo
+							<span class="badge text-bg-secondary">
+								<i class="fa fa-file-pdf-o" aria-hidden="true"></i> Documentos do Processo
 							</span>
 							<button id="btnObterMarcados" class="btn btn-primary btn-sm">
 								Baixar Selecionados <i class="bi bi-download"></i>
@@ -403,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
-								<table class="table">
+								<table class="table" id="tbDocumentos">
 									<thead style="font-size: 14px;">
 										<tr>
 											<th width="1px"></th>
@@ -422,7 +442,38 @@ document.addEventListener('DOMContentLoaded', function () {
 							</div>
 						</div>
 					</div>
+
+					<!-- Novo Card Adicionado -->
+					<div class="card mt-4"> <!-- Adicionei margem top -->
+						<div class="card-header d-flex justify-content-between align-items-center"
+							style="background-color: #00537d;">
+							<span class="badge text-bg-secondary">
+								<i class="bi bi-archive"></i> Minutas do Processo
+							</span>					
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table" id="tbOutrosDocumentos">
+									<thead style="font-size: 14px;">
+										<tr>										
+											<th width="1px"></th>
+											<th width="5px">Nome</th>
+											<th width="4px">Ext</th>
+											<th width="4px">Tam</th>
+											<th scope="col">Data</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody id="minutasDoProcesso" style="font-size: 12px;">
+										<!-- Conteúdo dinâmico aqui -->
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
+
+<!-- ... resto do código ... -->		
 
 			</div>
 		</div>

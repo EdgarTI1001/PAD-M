@@ -295,6 +295,14 @@ public class DocController {
 		model.addAttribute("doc", doc);
 		return "docs/form";
 	}
+	
+	@GetMapping("/asinaturas/{id}")
+	public String frmTeste(Model model,@PathVariable("id") Integer id) {
+		List<Assinador> assinantes = assinadorService.findAllByDocumentoID(id);
+		model.addAttribute("assinantes", assinantes);	
+		
+		return "consulta/assinaturasProcesso";
+	}
 
 	@GetMapping("/form/assinar/{idDocumento}/proc/{idProcesso}")
 	public String assinarDoc(@PathVariable("idDocumento") Integer idDocumento, @PathVariable("idProcesso") Integer idProcesso, Model model) {
@@ -614,7 +622,14 @@ public class DocController {
 			docNew.setConteudo(doc.getConteudo());
 			docNew.setFlag(1);
 			docService.save(docNew);
-			alertMessage = new AlertMessage("success", "Rascunho salvo com sucesso!");
+			
+			ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
+			procdoc.setIdDocumento(docNew.getId());
+			procdoc.setIdProcesso(idProcesso);
+			procdoc.setIdUsuario(authentication.getUsuario().getId());
+			processoDocService.save(procdoc);
+			
+			alertMessage = new AlertMessage("success", "Minuta salvo com sucesso!");
 		} else {
 			alertMessage = new AlertMessage("danger", "Erro ao salvar arquivo!");
 		}

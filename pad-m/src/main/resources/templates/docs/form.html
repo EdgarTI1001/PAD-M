@@ -83,34 +83,9 @@
                             <span th:text="${doc.id == null ? ' Enviar Novo Documento' : 'Editar Documento'}"></span>
                         </span>
                     </h5>
-                </div>
-                <div class="card-body">
-                    <div th:if="${alertMessage}"
-                         th:classappend="'alert-' + ${alertMessage.type}"
-                         class="alert alert-dismissible fade" role="alert">
-                        <span th:text="${alertMessage.message}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
-                        <input type="hidden" th:field="*{id}" />
-                        
-                        <div class="mb-3">
-                            <label for="nomdoc" class="form-label">Nome</label>
-                            <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
-                        </div>
-
-                        <input type="hidden" th:field="*{flag}" id="flag">
-    
-                        <div class="mb-3">
-                            <textarea id="conteudo" name="conteudo" th:field="*{conteudo}" ></textarea>
-                        </div>
-    
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                        </div>
-                    </form>
+                </div>             
                     
-                                    <div class="card-body">
+                 <div class="card-body">
                     <div th:if="${alertMessage}"
                          th:classappend="'alert-' + ${alertMessage.type}"
                          class="alert alert-dismissible fade" role="alert">
@@ -119,7 +94,8 @@
                     </div>
                     <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
                         <input type="hidden" th:field="*{id}" />
-                        
+                        <input type="hidden" id="idProcesso" value=""
+                        	name="idProcesso" /> 
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Nome</label>
                             <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
@@ -139,7 +115,7 @@
                     </form>
                 </div>
                     
-                </div>
+          
             </div>
         </div>
     </section>
