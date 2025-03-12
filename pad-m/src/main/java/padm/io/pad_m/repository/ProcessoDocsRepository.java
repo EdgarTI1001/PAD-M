@@ -1,6 +1,7 @@
 package padm.io.pad_m.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,8 @@ public interface ProcessoDocsRepository extends JpaRepository<ProcessoDocs, Inte
 	
 	@Query(value="SELECT * FROM tbprocessodocs WHERE processo_id =:idProcesso ORDER BY id", nativeQuery = true)
 	List<ProcessoDocs> findAllByProcesso(@Param("idProcesso") Integer idProcesso );
+	
+	@Query(value="SELECT * FROM tbprocessodocs WHERE documento_id =:idDoc AND  processo_id =:idProcesso ORDER BY id", nativeQuery = true)
+	Optional<ProcessoDocs> findByIdDoc(@Param("idDoc") Integer idDoc, @Param("idProcesso") Integer idProcesso );
 	
 }

@@ -350,9 +350,14 @@ document.addEventListener('DOMContentLoaded', function () {
 							<form th:action="@{/docs/gerarPdf}" th:object="${doc}"
 								method="post" class="row g-3" onsubmit="return validateForm();"
 								enctype="multipart/form-data" id="frm">
-								<input type="hidden" id="idProcesso" th:value="${processo.id}"
-									name="idProcesso" /> <input type="hidden" th:field="*{id}" />
-
+								<input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso" />									
+							    <input type="hidden" th:field="*{id}" />
+								
+								     <div class="col-12 mb-3">
+                         <label for="tipo" class="form-label"><strong>Processo : </strong></label>                       
+                         <span class="badge bg-secondary" th:text="${processo.numanoproc} + ' - ' +    ${processo.assunto}"></span>
+                    </div>
+                    
 								<div class="col-md-4 mb-3">
 									<label for="nomdoc" class="form-label"><span class="badge bg-secondary">Nome do
 										Documento</span></label> <input type="text" id="nomdoc" name="nomdoc"
@@ -398,7 +403,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 								<div class="d-flex justify-content-end">
 									<button type="submit" class="btn btn-secondary btn-sm me-2"
-										onclick="setFlag(1)">Salvar Minuta</button>
+										onclick="setFlag(1)" id="salvarMinuta">Salvar Minuta</button>
 									<button type="button" class="btn btn-primary btn-sm me-2"
 										id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
 									<button type="button" class="btn btn-warning btn-sm"

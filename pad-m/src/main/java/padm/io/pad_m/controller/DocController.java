@@ -38,7 +38,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -49,6 +48,7 @@ import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
 import padm.io.pad_m.domain.Evento;
 import padm.io.pad_m.domain.Processo;
+import padm.io.pad_m.domain.ProcessoDocs;
 import padm.io.pad_m.domain.Sigilo;
 import padm.io.pad_m.domain.TipoDoc;
 import padm.io.pad_m.domain.TipoEvento;
@@ -611,7 +611,7 @@ public class DocController {
 			}
 		} else if (doc != null && doc.getFlag() == 1) {
 			Usuario usuario = authentication.getUsuario();
-
+			
 			Doc docNew = new Doc();
 			docNew.setId(doc.getId() == null ? null : doc.getId());
 			docNew.setNomdoc(doc.getNomdoc());
@@ -623,11 +623,16 @@ public class DocController {
 			docNew.setFlag(1);
 			docService.save(docNew);
 			
-			ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
-			procdoc.setIdDocumento(docNew.getId());
-			procdoc.setIdProcesso(idProcesso);
-			procdoc.setIdUsuario(authentication.getUsuario().getId());
-			processoDocService.save(procdoc);
+			Optional<ProcessoDocs> procDoc = processoDocService.findByIdDoc(doc.getId(), idProcesso);			
+		
+			if(procDoc.isEmpty()){				
+				ProcessoDocumentoDTO procdoc = new ProcessoDocumentoDTO();
+				procdoc.setIdDocumento(docNew.getId());
+				procdoc.setIdProcesso(idProcesso);
+				procdoc.setIdUsuario(authentication.getUsuario().getId());
+				processoDocService.save(procdoc);
+			}			
+			
 			
 			alertMessage = new AlertMessage("success", "Minuta salvo com sucesso!");
 		} else {
@@ -636,6 +641,6 @@ public class DocController {
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 
-		return "redirect:/processos/finalizarUploadDoc/"+idProcesso;
+		return "redirect:/processos/finalizarUploadDoc/"+idProcesso+"/doc/0";
 	}
 }

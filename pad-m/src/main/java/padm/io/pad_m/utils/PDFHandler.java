@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -44,7 +46,7 @@ import padm.io.pad_m.service.DocService;
 public class PDFHandler {
 	DateTimeFormatter parser = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private final Path root = Paths.get("./uploads");
-
+	
 	@Autowired
 	private FilesStorageService storageService;
 
@@ -56,6 +58,7 @@ public class PDFHandler {
 
 	// @Value("${path.files.upload}")
 	private String pdfDir = "documentos";
+	private String imagensDir = "imagens";
 	private String pdfVerify = "verify";
 	String dest = "";
 
@@ -86,12 +89,22 @@ public class PDFHandler {
 
 		// Conteúdo do QR Code
 		 String qrText = "localhost:8080/documentos/asinaturas"+ doc.getId();
-		 String textoAoLado = "Visite nosso site";
+		 String textoAoLado = "Assinaturas";
+		 
+		// Carregar a imagem do selo/assinatura (ajuste o caminho!)
+		 BufferedImage seloImage = ImageIO.read(new File(root.resolve(imagensDir) +"/" + "selo_assinatura.jpg"));
+		 PDImageXObject seloPDImage = LosslessFactory.createFromImage(document, seloImage);
+
+		 // Configurações da imagem e texto
+		 float seloWidth = 40; // Largura da imagem no PDF
+		 float seloHeight = 40; // Altura da imagem no PDF
+		 float seloMargin = 10; // Margem do canto
+		 float seloFontSize = 10; 
+		 
 		// Tamanho do QR Code em pixels
 		int qrPixelSize = 100;
 
-		// Gera o QR Code usando ZXing
-	
+		// Gera o QR Code usando ZXing	
 		BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, qrPixelSize, qrPixelSize);
 		BufferedImage qrBufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
@@ -118,12 +131,21 @@ public class PDFHandler {
 			PDPageContentStream contentStream = new PDPageContentStream(document, page,
 					PDPageContentStream.AppendMode.APPEND, true, true);
 
+			 // POSICIONANDO IMAGEM NO CANTO INFERIOR ESQUERDO
+		    float seloX = margin; 
+		    float seloY = margin;
+		    contentStream.drawImage(seloPDImage, seloX, seloY, seloWidth, seloHeight);
+
+		    // POSICIONANDO TEXTO AO LADO DA IMAGEM
+		    float textXSelo = seloX + seloWidth + 5; // 5pts de espaçamento
+		    float textYSelo = seloY + (seloHeight / 2) + 3; // Ajuste fino para alinhamento vertical
+		    
 			String dataFormatada = LocalDateTime.now().format(parser);
 			// Write the first paragraph
 			contentStream.setFont(PDType1Font.HELVETICA, 12);
 			contentStream.beginText();
-			contentStream.newLineAtOffset(10, 10);
-			contentStream.setNonStrokingColor(Color.RED);
+			contentStream.newLineAtOffset(textXSelo, textYSelo);
+			contentStream.setNonStrokingColor(Color.BLACK);
 			contentStream.showText("[Documento Assinado Eletronicamente por " + author.getServidorId().getNome()
 					+ "] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
 					+ LocalDateTime.now().getMinute());
@@ -139,36 +161,7 @@ public class PDFHandler {
 			contentStream.close();
 		}
 
-		/*
-		 * //Verificar se esse doc ja foi assinado alguma vez Optional<Assinador>
-		 * assinador = assinadorService.findFirstByDoc_id(doc.getId());
-		 * 
-		 * PDPageContentStream contentStream = null;
-		 * 
-		 * if(assinador.isPresent()){ PDPage lastPage =
-		 * document.getPage(document.getNumberOfPages() - 1); contentStream = new
-		 * PDPageContentStream(document, lastPage,
-		 * PDPageContentStream.AppendMode.APPEND, true, true); }else{ PDPage newPage =
-		 * new PDPage(); document.addPage(newPage); contentStream = new
-		 * PDPageContentStream(document, newPage, PDPageContentStream.AppendMode.APPEND,
-		 * true, true); }
-		 * 
-		 * long total_assinaturas = assinadorService.countByDoc_id(doc.getId());
-		 * 
-		 * // Set font and size contentStream.setFont(PDType1Font.COURIER, 9);
-		 * 
-		 * float margin = 36; // Margin from the bottom and left float x = margin; float
-		 * y = 0;
-		 * 
-		 * if(total_assinaturas == 0){ numpages = document.getNumberOfPages() - 1; y=
-		 * document.getPage(numpages).getMediaBox().getHeight() - 36; // y-coordinate
-		 * from the top; // Y position from the bottom of the page
-		 * 
-		 * } else{ numpages = document.getNumberOfPages() - 1; y =
-		 * document.getPage(numpages).getMediaBox().getHeight() - (36 +
-		 * (total_assinaturas * 30)); // y-coordinate from the top; // Y position from
-		 * the bottom of the page }
-		 */
+
 
 		document.save(dest);
 		document.close();
