@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Evento para capturar o upload do arquivo .docx
     document.getElementById('fileUpload').addEventListener('change', function (event) {
         var file = event.target.files[0];
-			console.log(file.name.endsWith('.docx'))
+			
         if (file.name.endsWith('.docx')) {
             var reader = new FileReader();
 
@@ -106,8 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
         	 $.ajax({
         		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
         		  method: "GET",
-        		}).done(function(data) { 
-        			console.log(data)
+        		}).done(function(data) {         			
         			$.each(data, function(index, value) {
         				console.log(window.location.pathname);
         				if(value.documento.flag == 1){ 
@@ -155,32 +154,55 @@ document.addEventListener('DOMContentLoaded', function () {
         		});
         	
         }
+        
+        function postForm(formData){
+        	
+            $("#loader").show();				
+            
+            $.ajax({
+                url: "/docs/files/upload",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    $("#loader").hide();
+                    swal("Sucesso", "Documento Inserido com Sucesso", "success");
+                },
+                error: function(response) {                     
+                    $("#loader").hide();
+                    swal("Erro", "Ocorreu um erro ao enviar o documento", "error");
+                }
+            });
+        	
+        }
         var URL = '[[@{/}]]api';
         $(document).ready(function() {        	
             $("#tipo").select2({});	
             getDocumentosDoProcesso();
 		
             $("#salvarArquivo").click(function(event) {
-                event.preventDefault(); // Evita que o formulário seja enviado normalmente
-                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário
+                event.preventDefault(); // Evita que o formulário seja enviado normalmente                
+                $('#assinar').val(0);               
+                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	        
+                postForm(formData)
+            });
+            
+            $("#salvarEAssinar").click(function(event) {
+                event.preventDefault(); // Evita que o formulário seja enviado normalmente       
+                $('#assinar').val(1);
+                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	        
+                postForm(formData)
+            });         
 
-                $("#loader").show();
-
-                $.ajax({
-                    url: "/docs/files/upload",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        $("#loader").hide();
-                        swal("Sucesso", "Documento Inserido com Sucesso", "success");
-                    },
-                    error: function() {
-                        $("#loader").hide();
-                        swal("Erro", "Ocorreu um erro ao enviar o documento", "error");
-                    }
-                });
+            $("#createSave").click(function() {
+            	 $("#loader").show();
+                $('#assinar').val(0);
+            });
+            
+            $("#createSaveAssinar").click(function() {
+            	 $("#loader").show();
+                $('#assinar').val(1);
             });
             
             $('#btnObterMarcados').click(function() {
@@ -207,13 +229,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     alert('Nenhum Document foi marcado.');
                 }
-            });
-       
-            
-            $( "#salvarEAssinar" ).on( "click", function() {
-            	 
-             });
-            
+            });       
+      
         });
     </script>
 <style>
@@ -350,8 +367,9 @@ document.addEventListener('DOMContentLoaded', function () {
 							<form th:action="@{/docs/gerarPdf}" th:object="${doc}"
 								method="post" class="row g-3" onsubmit="return validateForm();"
 								enctype="multipart/form-data" id="frm">
-								<input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso" />									
-							    <input type="hidden" th:field="*{id}" />
+								<input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso" />		
+								 <input type="hidden" name="assinar" id="assinar" />							
+							     <input type="hidden" th:field="*{id}" />							   
 								
 								     <div class="col-12 mb-3">
                          <label for="tipo" class="form-label"><strong>Processo : </strong></label>                       
@@ -395,6 +413,8 @@ document.addEventListener('DOMContentLoaded', function () {
 								<div class="d-flex justify-content-end mb-3">
 									<button type="button" class="btn btn-success btn-sm me-2"
 										onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
+									<button type="button" class="btn btn-primary btn-sm me-2"
+										id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
 								</div>
 
 								<div class="mb-3">
@@ -403,9 +423,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 								<div class="d-flex justify-content-end">
 									<button type="submit" class="btn btn-secondary btn-sm me-2"
-										onclick="setFlag(1)" id="salvarMinuta">Salvar Minuta</button>
-									<button type="button" class="btn btn-primary btn-sm me-2"
-										id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
+										onclick="setFlag(1)" id="salvarMinuta">Salvar Minuta</button>	
+									<button type="submit" class="btn btn-success btn-sm me-2"
+										id="createSave" onclick="setFlag(0)">Salvar</button>		
+									<button type="submit" class="btn btn-primary btn-sm me-2"
+										id="createSaveAssinar" onclick="setFlag(0)">Salvar e Assinar</button>						
 									<button type="button" class="btn btn-warning btn-sm"
 										id="voltar" onclick="history.back()">Voltar</button>
 								</div>

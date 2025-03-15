@@ -149,7 +149,7 @@ public class DocController {
 
 	@PostMapping("/files/upload")
 	public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
-			@ModelAttribute("doc") Doc docNew, @RequestParam("idProcesso") Integer idProcesso) {
+			@ModelAttribute("doc") Doc docNew, @RequestParam("idProcesso") Integer idProcesso,@RequestParam("assinar") Optional<Integer> assinar) {
 		AlertMessage alertMessage;
 		final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
 		final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "video/mp4",
@@ -167,6 +167,8 @@ public class DocController {
 					"Tipo de arquivo não permitido. Somente PNG, JPG, MP4, PDF, DOC e DOCX são aceitos.");
 		} else {
 			try {
+				
+				System.out.println(assinar.get());
 				String fileNameHash = storageService.save(file, "documentos");
 				Usuario usuario = authentication.getUsuario();
 
@@ -186,9 +188,37 @@ public class DocController {
 				procdoc.setIdDocumento(doc.getId());
 				procdoc.setIdProcesso(idProcesso);
 				procdoc.setIdUsuario(authentication.getUsuario().getId());
-				processoDocService.save(procdoc);
+				processoDocService.save(procdoc);	
+				
+				if(assinar.get() == 1){
+					String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");			
+					
+					Assinador a = new Assinador();
+					a.setData(LocalDateTime.now());
+					a.setDoc(doc);
+					a.setUserId(session.getUsuario());
+					a.setHashdoc(fileHash);
+					assinadorService.save(a);				
+					
+					Evento evento = new Evento();
+					evento.setDataevento(LocalDateTime.now()); //14
+					String dataFormatada = LocalDateTime.now().format(parser);
+					evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Assinou o Documento : " + doc.getNomdoc() +
+							 " Em : " + dataFormatada );				
 
-				//alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
+					TipoEvento tpEvento = new TipoEvento();
+					tpEvento = tipoEventoService.findById(14).get(); // Assinar Documento
+					evento.setTipo_id(tpEvento);
+					
+					Processo p = new Processo();
+					p = processoService.findById(idProcesso).get();
+					evento.setProc_id(p);
+					
+					eventoService.save(evento);
+				}
+			
+				
+				//alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");		
 				
 				alertMessage = new AlertMessage("success",
 						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
@@ -199,7 +229,7 @@ public class DocController {
 		}
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
-		return "redirect:/processos/finalizarUploadDoc/"+idProcesso;
+		return "redirect:/processos/finalizarUploadDoc/"+idProcesso+"/doc/0";
 	}
 
 	@GetMapping("/frmAddDoc/{idProcesso}")
@@ -322,7 +352,8 @@ public class DocController {
 		try {			
 			
 			String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");
-			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);
+			Integer isAssinou = assinadorService.findByUserAndDoc(session.getUsuario().getId(), id);			
+		
 			if (isAssinou == 0) {
 				Assinador a = new Assinador();
 				a.setData(LocalDateTime.now());
@@ -511,7 +542,7 @@ public class DocController {
 
 	@PostMapping("/gerarPdf")
 	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,
-			@RequestParam("idProcesso") Integer idProcesso) {
+			@RequestParam("idProcesso") Integer idProcesso, @RequestParam("assinar") Optional<Integer> assinar) {
 
 		AlertMessage alertMessage = null;
 
@@ -601,7 +632,34 @@ public class DocController {
 				procdoc.setIdProcesso(idProcesso);
 				procdoc.setIdUsuario(authentication.getUsuario().getId());
 				processoDocService.save(procdoc);
+				
+				if(assinar.get() == 1){
+					String fileHash = assinaturaService.generateFileHash(docNew, session.getUsuario(), "SHA-256");
+					
+					Assinador a = new Assinador();
+					a.setData(LocalDateTime.now());
+					a.setDoc(docNew);
+					a.setUserId(session.getUsuario());
+					a.setHashdoc(fileHash);
+					assinadorService.save(a);				
+					
+					Evento evento = new Evento();
+					evento.setDataevento(LocalDateTime.now()); //14
+					String dataFormatada = LocalDateTime.now().format(parser);
+					evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Assinou o Documento : " + doc.getNomdoc() +
+							 " Em : " + dataFormatada );				
 
+					TipoEvento tpEvento = new TipoEvento();
+					tpEvento = tipoEventoService.findById(14).get(); // Assinar Documento
+					evento.setTipo_id(tpEvento);
+					
+					Processo p = new Processo();
+					p = processoService.findById(idProcesso).get();
+					evento.setProc_id(p);
+					
+					eventoService.save(evento);
+				}
+				
 				alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
 
 			} catch (Exception e) {
