@@ -1,11 +1,9 @@
 package padm.io.pad_m.controller;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,10 +24,10 @@ import padm.io.pad_m.domain.Servidor;
 import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.domain.Usuario;
 import padm.io.pad_m.fileserver.FilesStorageService;
+import padm.io.pad_m.security.AuthenticationFacade;
 import padm.io.pad_m.service.PerfisService;
 import padm.io.pad_m.service.ServidorService;
 import padm.io.pad_m.service.SetorService;
-import padm.io.pad_m.service.UnidadeLotacaoService;
 import padm.io.pad_m.service.UsuarioService;
 
 @Controller
@@ -46,7 +44,7 @@ public class UsuarioController {
 	private ServidorService servidorService;
 
 	@Autowired
-	private UnidadeLotacaoService unidadeService;
+	AuthenticationFacade session;
 	
 	@Autowired
 	private SetorService setorService;
@@ -65,18 +63,17 @@ public class UsuarioController {
 
 	@GetMapping
 	public ModelAndView findAll() {
-		ModelAndView mv = new ModelAndView("consulta/usuarios");
-		mv.addObject("usuarios", usuarioService.findAll());
+		ModelAndView mv = new ModelAndView("consulta/usuarios");	
+		Optional<List<Usuario>> users = usuarioService.findAllBySetor(session.getUsuario().getLotacao_id().getId());	
+		mv.addObject("usuarios", usuarioService.findAllBySetor(session.getUsuario().getLotacao_id().getId()).get());
 		mv.addObject("activePage", "mnuCandidato");
 		return mv;
 	}
 
 	@GetMapping("/new")
-	public String frmCadastrar(Model model, @ModelAttribute("usuario") Usuario usuario) {
-		List<Servidor> servidores = servidorService.findAll();
+	public String frmCadastrar(Model model, @ModelAttribute("usuario") Usuario usuario) {	
 		List<Setor> setores = setorService.findAll();
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("servidores", servidores);
+		model.addAttribute("usuario", usuario);		
 		model.addAttribute("setores", setores);
 		model.addAttribute("activePage", "mnuCandidato");
 		return "form/frmCadUsuario";
@@ -86,9 +83,11 @@ public class UsuarioController {
 	public ModelAndView frmEditar(@PathVariable(name = "id") Integer id) {
 		ModelAndView model = new ModelAndView(frmUsuario);
 		Usuario user = usuarioService.findById(id).get();
-		List<Servidor> servidores = servidorService.findAll();
-		model.addObject("servidores", servidores);
+		List<Setor> setores = setorService.findAll();
+		model.addObject("setores", setores);
 		model.addObject("usuario", user);
+		model.addObject("idServidor", user.getServidorId().getId());
+		
 		return model;
 	}
 
@@ -104,12 +103,13 @@ public class UsuarioController {
 		            usuario.setImage(storageService.save(file, "fotos"));
 		        }
 		
-		    usuario.setAtivo("S");  
-		    Perfis perfis = new Perfis();
+		    usuario.setAtivo("S");  		   
+			usuarioService.save(usuario);
+			
+			Perfis perfis = new Perfis();
 			perfis.setIdUser(usuario.getId());
 			perfis.setPerfis(usuario.getPerfilId());
-			//perfisService.save(perfis);
-			usuarioService.save(usuario);
+			perfisService.save(perfis);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

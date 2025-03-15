@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      
     @Override
     public UserDetails loadUserByUsername(String username)  throws UsernameNotFoundException {
-    	Optional<Usuario> user = userRepo.findByNickName(username);    									  // .findByMatricula
+    	Optional<Usuario> user = userRepo.findByCpf(username);    									  // .findByMatricula
     	
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Usuário não encontrado ou desabilitado!");

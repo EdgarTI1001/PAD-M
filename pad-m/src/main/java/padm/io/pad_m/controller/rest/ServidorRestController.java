@@ -31,6 +31,7 @@ public class ServidorRestController {
 		return ResponseEntity.ok(servidor);
 	}
 
+
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
 		Optional<Servidor> servidor = servidorService.findById(id);

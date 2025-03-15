@@ -28,8 +28,8 @@ public class UsuarioService {
 		return usuariorepo.findById(id);
 	}
 
-	public Optional<Usuario> findByNickName(String email) {
-		return usuariorepo.findByNickName(email);
+	public Optional<Usuario> findByCpf(String email) {
+		return usuariorepo.findByCpf(email);
 	}
 
 	@Transactional

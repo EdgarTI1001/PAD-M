@@ -46,7 +46,7 @@ public class Usuario {
 
 	private int perfilId;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "lotacao_id")
 	private Setor lotacao_id;
 
@@ -67,18 +67,18 @@ public class Usuario {
 	@Transient
 	private boolean isProducao;
 
-	@Transient
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "PERFIS")
+	@CollectionTable(name = "tbperfis")
 	private Set<Integer> perfis = new HashSet<>();
 	
 	public Usuario() {
+		
 	}
 
 	public Usuario(Integer id, String nome, String cpf, String nickname, Servidor servidorId, String senha,
 			int perfilId, Setor lotacao_id, String ativo, String certificado, LocalDateTime dataexpiracao,
-			LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image, int flag) {
-		super();
+			LocalDateTime ultimoacesso, LocalDateTime datacriacao, String image, int flag) {		
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -93,7 +93,11 @@ public class Usuario {
 		this.ultimoacesso = ultimoacesso;
 		this.datacriacao = datacriacao;
 		this.image = image;
-		this.flag = flag;
+		this.flag = flag;		
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
 	}
 
 	public Set<Perfil> getPerfis() {

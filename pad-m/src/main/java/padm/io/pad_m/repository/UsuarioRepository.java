@@ -11,8 +11,8 @@ import padm.io.pad_m.domain.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	
-	@Query(value="SELECT * FROM tbusuario WHERE nickname = :nick ORDER BY nome", nativeQuery = true)
-	Optional<Usuario> findByNickName(@Param("nick") String nick );
+	@Query(value="SELECT * FROM tbusuario WHERE cpf = :cpf ORDER BY nome", nativeQuery = true)
+	Optional<Usuario> findByCpf(@Param("cpf") String cpf );
 	
 	
 	@Query(value="SELECT u FROM Usuario u WHERE u.lotacao_id.id =:idSetor ORDER BY u.nome")

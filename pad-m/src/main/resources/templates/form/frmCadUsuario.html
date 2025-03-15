@@ -22,33 +22,33 @@
                 <div class="card-body">
                     <form class="row g-3" th:object="${usuario}" th:action="@{/usuarios/save}" method="post" enctype="multipart/form-data" id="frm">
                         <input type="hidden" th:field="*{id}">
-
+                        <input type="hidden" id="idServidor" th:value="${idServidor}">
+						
+						     <!-- Servidor -->
+                        <div class="col-4 mb-3">
+                            <label for="servidor" class="form-label">Servidor</label>
+                            <select id="servidor" class="form-select form-select-sm" th:field="*{servidorId.id}">
+                               
+                            </select>
+                        </div>
+                        
                         <!-- Nome -->
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="nome" class="form-label">Nome</label>
-                            <input type="text" id="nome" class="form-control form-control-sm" th:field="*{nome}" placeholder="">
+                            <input type="text" id="nome" class="form-control form-control-sm" th:field="*{nome}" placeholder="" readonly="true">
                         </div>
 
                         <!-- CPF -->
-                        <div class="col-6 mb-3">
+                        <div class="col-4 mb-3">
                             <label for="cpf" class="form-label">CPF</label>
-                            <input type="text" id="cpf" class="form-control form-control-sm" th:field="*{cpf}" placeholder="">
+                            <input type="text" id="cpf" class="form-control form-control-sm" th:field="*{cpf}" placeholder="Digite o cpf" maxlength="11" readonly="true">
                         </div>
 
                         <!-- NickName -->
                         <div class="col-4 mb-3">
                             <label for="nickname" class="form-label">NickName</label>
                             <input type="text" id="nickname" class="form-control form-control-sm" th:field="*{nickname}" placeholder="">
-                        </div>
-
-                        <!-- Servidor -->
-                        <div class="col-4 mb-3">
-                            <label for="servidor" class="form-label">Servidor</label>
-                            <select id="servidor" class="form-select form-select-sm" th:field="*{servidorId.id}">
-                                <option th:text="${'Selecione o Servidor'}" th:value="${'0'}"></option>
-                                <option th:each="servidor : ${servidores}" th:text="${servidor.nome}" th:value="${servidor.id}"></option>
-                            </select>
-                        </div>
+                        </div>                   
 
                         <!-- Lotação -->
                         <div class="col-4 mb-3">
@@ -71,9 +71,13 @@
                             <label for="perfil" class="form-label">Perfil</label>
                             <select id="perfil" class="form-select form-select-sm" th:field="*{perfilId}">
                                 <option th:text="${'Selecione o Perfil'}" th:value="${'0'}"></option>
-                                <option value="1">Operador</option>
-                                <option value="2">Moderador</option>
-                                <option value="3">Administrador</option>
+                                <option value="1">ADMIN</option>
+                                <option value="2">GESTOR</option>
+                                <option value="3">SERVIDOR</option>
+                                <option value="4">EXTERNO</option>
+                                <option value="5">TERCEIRO INTERESSADO</option>
+                                
+                                
                             </select>
                         </div>
 
@@ -116,7 +120,8 @@
             $("#loader").show();
             $(document).ready(function() {
                 $("#loader").hide();
-
+                getServidores();
+	
                 $('#iconSelect').change(function() {
                     var selectedIcon = $(this).val();
                     $('#profileImage').attr('src', selectedIcon);
@@ -130,6 +135,18 @@
                         $('#imagePath').val(e.target.result);
                     }
                     reader.readAsDataURL(event.target.files[0]);
+                });
+                
+                $('#servidor').change(function(event) {  
+                	 $("#loader").show();
+               	 $.ajax({
+					  url: URL + "api/servidores/"+	$("#servidor").val(),
+					  method: "GET",
+					}).done(function(data) {
+						$("#nome").val(data.nome);
+						$("#cpf").val(data.cpf);
+						 $("#loader").hide();
+					});
                 });
 
                 $("#salvar").click(function(event) {
@@ -150,6 +167,32 @@
             document.getElementById("voltar").addEventListener("click", () => {
                 history.back();
             });
+            
+			function getServidores(){
+				 $.ajax({
+					  url: URL + "api/servidores",
+					  method: "GET",
+					}).done(function(data) {
+						$('#servidor').append($('<option>', {value: 0, text : "Selecione o Servidor" }));
+						$.each( data, function( index, rs ){
+							$('#servidor').append($('<option>', { 
+						        value: rs.id,
+						        text : rs.nome 
+						    }));
+						});
+						 $("#loader").hide();
+						 var idServidor = $("#idServidor").val();
+						 if(idServidor){
+							// $('#servidor option[value="'+idServidor+'"]').prop("selected", true); 
+							 
+							 $('#servidor option[value="'+idServidor+'"]').prop('selected', true).css({
+								    'cursor': 'not-allowed',
+								    'opacity': '0.7'
+								});
+						 }
+						
+					}); 
+			}
         </script>
     </div>
 </body>

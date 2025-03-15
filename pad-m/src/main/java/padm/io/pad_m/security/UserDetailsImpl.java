@@ -17,7 +17,7 @@ import padm.io.pad_m.domain.enums.Perfil;
 public class UserDetailsImpl implements UserDetails {
 	
 	private Usuario user;
-     
+    
     public UserDetailsImpl(Usuario user) {
         this.user = user;
     }
@@ -25,7 +25,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        // APLICA POR DEFAULT 'role user' A TODOS OS USUARIOS AUTENTICADOS      
+        // APLICA POR DEFAULT 'role user' A TODOS OS USUARIOS AUTENTICADOS
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         for (Perfil p : user.getPerfis()) {
             authorities.add(new SimpleGrantedAuthority(p.getDescricao()));
@@ -44,7 +44,7 @@ public class UserDetailsImpl implements UserDetails {
     
     @Override
     public String getUsername() {
-        return user.getFirstName();
+        return user.getCpf();
     }
  
     @Override

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "PERFIS")
+@Table(name = "tbperfis")
 public class Perfis implements Serializable {
 
 	@Id
@@ -27,7 +27,7 @@ public class Perfis implements Serializable {
 	public Perfis() {
 
 	}
-
+ 
 	public Integer getId() {
 		return id;
 	}

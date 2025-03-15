@@ -18,7 +18,7 @@ public class ADService {
 	
 		try {
 			if (!password.equals("")) {				
-				Optional<Usuario> user = usuarioService.findByNickName(username);  
+				Optional<Usuario> user = usuarioService.findByCpf(username);  
 				if(user.isEmpty()) {
 					return false;
 				}else {

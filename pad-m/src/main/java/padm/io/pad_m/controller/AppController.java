@@ -73,13 +73,13 @@ public class AppController {
 	public ModelAndView step_first(@ModelAttribute("usuario") Usuario user, HttpSession httpSession,
 			RedirectAttributes redirAttr) {
 
-		Optional<Usuario> usuario = userService.findByNickName(user.getNickname());
+		Optional<Usuario> usuario = userService.findByCpf(user.getCpf());
 		if (!usuario.isPresent()) {
 			redirAttr.addFlashAttribute("error", "Usuário ou senha inválidos!");
 			return new ModelAndView(REDIRECT_STEP1);
 		}
 
-		httpSession.setAttribute("username", usuario.get().getNickname());
+		httpSession.setAttribute("username", usuario.get().getCpf());
 		httpSession.setAttribute("password", usuario.get().getSenha());
 		ModelAndView mv = new ModelAndView("index2");
 		mv.addObject("activePage", "mnuLogin");

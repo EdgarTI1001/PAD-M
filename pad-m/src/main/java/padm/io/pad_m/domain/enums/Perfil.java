@@ -1,7 +1,11 @@
 package padm.io.pad_m.domain.enums;
 
 public enum Perfil {
-	ADMIN(1, "ROLE_ADMIN"), OPER(2, "ROLE_OPER"), USER(3, "ROLE_USER");
+	ADMIN(1, "ROLE_ADMIN"),
+	GESTOR(2, "ROLE_GESTOR"),
+	SERVIDOR(3, "ROLE_SERVIDOR"),
+	EXTERNO(4, "ROLE_EXTERNO"),
+	TERCEIRO(5, "ROLE_TERCEIRO");
 
 	private int cod;
 	private String descricao;
