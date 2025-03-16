@@ -7,6 +7,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -41,9 +42,16 @@ public class DocService {
 		return docRepository.save(doc);
 	}
 
+	@Transactional
 	public void deleteById(Integer id) {
 		docRepository.deleteById(id);
 	}
+	
+	@Transactional
+	public void delete(Doc obj) {
+		docRepository.delete(obj);
+	}
+
 
 	public List<Doc> findAllDocsByUsuario(Usuario usuario) {
 		return docRepository.findAllDocumentosByUsuario(usuario);

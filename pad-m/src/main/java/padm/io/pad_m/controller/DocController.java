@@ -166,9 +166,8 @@ public class DocController {
 			alertMessage = new AlertMessage("danger",
 					"Tipo de arquivo não permitido. Somente PNG, JPG, MP4, PDF, DOC e DOCX são aceitos.");
 		} else {
-			try {
+			try {			
 				
-				System.out.println(assinar.get());
 				String fileNameHash = storageService.save(file, "documentos");
 				Usuario usuario = authentication.getUsuario();
 

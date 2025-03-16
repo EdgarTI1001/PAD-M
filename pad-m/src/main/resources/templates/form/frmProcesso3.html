@@ -106,12 +106,19 @@ document.addEventListener('DOMContentLoaded', function () {
         	 $.ajax({
         		  url: URL + "/processosDocumentos/getAllByProcessos/"+processo,
         		  method: "GET",
-        		}).done(function(data) {         			
+        		}).done(function(data) {     
+        			
         			$.each(data, function(index, value) {
-        				console.log(window.location.pathname);
-        				if(value.documento.flag == 1){ 
-        					
-        					tableMinuta += '<tr id="tr' + value.id + '">';        					
+        				var delDocumento = "";
+        				
+        				if(value.processo.tramitado == 0){       						
+    						delDocumento = ' <a class="btn btn-sm btn-danger" href="javascript:void" data-record-nome="' + value.documento.nomdoc + '" data-record-id="' + value.documento.id + '" data-record-idprocesso="' + value.processo.id + '" role="button" title="Deletar Documento" onclick="excluirDocumento(this)">' +
+        				    '<i class=" fa fa-trash-o"></i>' +
+        				    '</a>  ';        				   
+    					 }
+        				
+        				if(value.documento.flag == 1){         				
+        					tableMinuta += '<tr id="tr' + value.documento.id + '">';        					
         					tableMinuta += '<th>' + (index + 1) + '</th>';
         					tableMinuta += '<th>' +  value.documento.nomdoc + '</th>';
         					tableMinuta += '<th>' + (value.documento.extdoc ? value.documento.extdoc : '-' ) + '</th>';
@@ -120,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         					tableMinuta += '<th>' +
         				    ' <a class="btn btn-sm btn-warning" href="/processos/finalizarUploadDoc/' + value.processo.id + "/doc/" + value.documento.id + '" role="button" title="Editar Minuta">' +
         				    '<i class="bi bi-pencil-fill"></i>Editar' +
-        				    '</a>' + 
+        				    '</a>' +  
         				    '</th>';
             			        tableMinuta += '</tr>';
         				}else{
@@ -135,9 +142,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	            			    '<a class="btn btn-sm btn-warning" href="/docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
 	            			    '<i class="bi bi-pencil-fill"></i>Assinar' +
 	            			    '</a>' +
-            			        ' <a class="btn btn-sm btn-info" href="/docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
+            			        '<a class="btn btn-sm btn-info" href="/docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
             			        '<i class="bi bi-eye-fill"></i>' +
-            			        '</a>' +
+            			        '</a> '+
+            			      		  delDocumento +             			       
             			        '</th>';
             			    table += '</tr>';
         					
@@ -232,6 +240,38 @@ document.addEventListener('DOMContentLoaded', function () {
             });       
       
         });
+        
+        excluirDocumento = function(handler) {
+            event.stopPropagation();
+            var idDoc = handler.getAttribute("data-record-id");
+            var idProc = handler.getAttribute("data-record-idprocesso");
+            var nome = handler.getAttribute("data-record-nome");
+            console.log(idDoc)
+            swal({
+                title: 'Excluir?',
+                text: "Deseja Deletar Documento ?",
+                icon: 'warning',
+                buttons: [true, "Sim!"]
+            }).then((result) => {
+                if (result) {
+                    $("#loader").show();
+                    $.ajax({
+                        url: URL + "/docs/delete/" + idDoc + "/processo/"+idProc,
+                        type: 'DELETE',
+                        success: function(result) {
+                            if (result.ret == 1) {
+                                swal("Sucesso", "Documento Deletado", "success");
+                                $("#tr" + idDoc).fadeOut();
+                                $("#loader").hide();
+                            } else {
+                                swal("Erro", "Erro ao Deletar", "error");
+                                $("#loader").hide();
+                            }
+                        }
+                    });
+                }
+            });
+        }
     </script>
 <style>
 .card {
