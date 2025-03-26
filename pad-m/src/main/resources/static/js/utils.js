@@ -92,6 +92,36 @@ $(document).on('click', '[id^="download"]', function(event) {
 		   });
 
 });
+
+function validarCPF(cpf) {
+    // Remove todos os caracteres não numéricos
+    cpf = cpf.replace(/\D/g, '');
+
+    // Verifica se o CPF tem 11 dígitos ou se todos são iguais
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+
+    // Validação do primeiro dígito verificador
+    let soma = 0;
+    for (let i = 0; i < 9; i++) {
+        soma += parseInt(cpf[i]) * (10 - i);
+    }
+    let resto = soma % 11;
+    const digito1 = resto < 2 ? 0 : 11 - resto;
+
+    // Validação do segundo dígito verificador
+    soma = 0;
+    for (let i = 0; i < 10; i++) {
+        soma += parseInt(cpf[i]) * (11 - i);
+    }
+    resto = soma % 11;
+    const digito2 = resto < 2 ? 0 : 11 - resto;
+
+    // Retorna true se os dígitos verificadores são válidos
+    return (
+        digito1 === parseInt(cpf[9]) && digito2 === parseInt(cpf[10])
+    );
+}
+
 /*
 $(document).on('click', '[id^="download"]', function(event) {
     event.preventDefault(); 

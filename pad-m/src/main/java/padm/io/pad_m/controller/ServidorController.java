@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import padm.io.pad_m.domain.Orgao;
 import padm.io.pad_m.domain.Servidor;
+import padm.io.pad_m.domain.Setor;
 import padm.io.pad_m.service.OrgaoService;
 import padm.io.pad_m.service.ServidorService;
 import padm.io.pad_m.service.SetorService;
@@ -48,11 +49,11 @@ public class ServidorController {
 	}
 
 	@GetMapping("/new")
-	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {
-		List<Orgao> orgaos = orgaoService.findAll();
+	public String frmCadastrar(Model model, @ModelAttribute("servidor") Servidor servidor) {		
+		List<Setor> setores = setorService.findAll();
 
 		model.addAttribute("servidor", servidor);
-		model.addAttribute("orgaos", orgaos);
+		model.addAttribute("setores", setores);
 
 		return "form/frmServidor";
 	}
@@ -61,12 +62,7 @@ public class ServidorController {
 	public String saveObject(@ModelAttribute("servidor") @Valid Servidor servidor, BindingResult result, Model model, @RequestParam("admissao") String admissao,
 			@RequestParam("desligamento") String desligamento, @RequestParam("expiracao") String expiracao) {
 		
-		if(result.hasErrors()){
-			List<Orgao> orgaos = orgaoService.findAll();
-			model.addAttribute("servidor", servidor);
-			model.addAttribute("orgaos", orgaos);
-			return "form/frmServidor";
-		}
+	
 		try {				
 			servidor.setDatacadastro(LocalDate.now());
 			
