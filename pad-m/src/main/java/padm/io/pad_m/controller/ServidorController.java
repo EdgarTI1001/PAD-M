@@ -99,7 +99,7 @@ public class ServidorController {
 		
 		System.out.println(s.getDataadmissao().format(formatters));
 		model.addObject("servidor", s);
-		model.addObject("admissao", s.getDataadmissao().format(formatters));
+		//model.addObject("admissao", s.getDataadmissao().format(formatters));
 		//model.addObject("desligamento", s.getDatadesligamento().format(formatters));
 		//model.addObject("expiracao", s.getDataexpiracao().format(formatters));
 		model.addObject("orgaos", orgaos);
