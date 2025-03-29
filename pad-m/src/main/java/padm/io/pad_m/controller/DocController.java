@@ -1,5 +1,6 @@
 package padm.io.pad_m.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -42,7 +43,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.properties.HorizontalAlignment;
 
 import padm.io.pad_m.domain.Assinador;
 import padm.io.pad_m.domain.Doc;
@@ -114,6 +123,8 @@ public class DocController {
 	private IAuthenticationFacade authentication;
 
 	private String pdfDir = "documentos";
+	
+	private String pdfImg = "imagens";
 
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
@@ -546,6 +557,7 @@ public class DocController {
 		AlertMessage alertMessage = null;
 
 		if (doc != null && doc.getFlag() == 0) {
+			
 			try {
 
 				// Gerar nome único para o arquivo PDF
@@ -555,10 +567,56 @@ public class DocController {
 				File tempPdfFile = File.createTempFile("temp", ".pdf");
 
 				// Converter o conteúdo HTML em PDF e salvar no arquivo temporário
+				// Converter o conteúdo HTML em PDF com imagem
+				
+				
+				try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
+				    // Caminho da imagem
+					String imagePath = root.resolve(pdfImg).resolve("logo-maues.jpg").toAbsolutePath().toString();
+
+				    // Criar um PdfDocument diretamente no convertToPdf()
+				    ConverterProperties properties = new ConverterProperties();
+				    
+				    /*
+				    String htmlContent = "<table style='width: 100%; margin-top: 10px; text-align: center;'>"
+				            + "<tr><td><img src='file:///" + imagePath.replace("\\", "/") + "' style='width: 100px; height: 90px;'/></td></tr>"
+				            + "</table>"
+				            + "<div style='margin-top: 20px;'>"
+				            + doc.getConteudo()
+				            + "</div>";
+				    
+				    
+				    */
+				    
+				    String htmlContent = "<table style='width: 100%; margin-top: 10px;'>"
+				            + "<tr>"
+				            + "<td style='width: 120px; text-align: left; vertical-align: middle;'>"
+				            + "<img src='file:///" + imagePath.replace("\\", "/") + "' style='width: 100px; height: 90px;'/>"
+				            + "</td>"
+				            + "<td style='text-align: left; vertical-align: middle; font-family: Arial, sans-serif;'>"
+				            + "<p style='margin: 0; font-size: 14px; font-weight: bold;'>Governo Brasileiro</p>"
+				            + "<p style='margin: 0; font-size: 14px;'>Prefeitura de Maués</p>"
+				            + "<p style='margin: 0; font-size: 14px; font-style: italic;'>Cuidando da nossa gente</p>"
+				            + "</td>"
+				            + "</tr>"
+				            + "</table>"
+				            + "<div style='margin-top: 20px;'>"
+				            + doc.getConteudo()
+				            + "</div>";
+				    
+				    // Converter o HTML para PDF
+				    HtmlConverter.convertToPdf(htmlContent, new PdfWriter(outputStream), properties);
+
+				} catch (Exception e) {
+				    e.printStackTrace();
+				}
+
+
+				/*
 				try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
 					HtmlConverter.convertToPdf(doc.getConteudo(), outputStream);
 				}
-
+				*/
 				// Criar um InputStream do arquivo temporário
 				InputStream inputStream = new FileInputStream(tempPdfFile);
 

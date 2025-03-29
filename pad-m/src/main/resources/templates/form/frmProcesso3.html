@@ -192,24 +192,28 @@ document.addEventListener('DOMContentLoaded', function () {
             $("#salvarArquivo").click(function(event) {
                 event.preventDefault(); // Evita que o formulário seja enviado normalmente                
                 $('#assinar').val(0);               
-                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	        
+                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+                $("#salvarArquivo").prop("disabled",true);
                 postForm(formData)
             });
             
             $("#salvarEAssinar").click(function(event) {
                 event.preventDefault(); // Evita que o formulário seja enviado normalmente       
                 $('#assinar').val(1);
-                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	        
+                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+                $("#salvarEAssinar").prop("disabled",true);
                 postForm(formData)
             });         
 
             $("#createSave").click(function() {
-            	 $("#loader").show();
+            	//$("#createSave").prop("disabled",true);
+            	$("#loader").show();
                 $('#assinar').val(0);
             });
             
             $("#createSaveAssinar").click(function() {
-            	 $("#loader").show();
+            	$("#createSave").prop("disabled",true);
+            	$("#loader").show();
                 $('#assinar').val(1);
             });
             

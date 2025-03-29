@@ -47,26 +47,31 @@
         }
         
 
-    @media (max-width: 768px) {
-        .col-6 {
-            flex: 0 0 100%;
-            max-width: 100%;
+      @media (max-width: 768px) {
+            .col-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .breadcrumb {
+                margin-top: 20px;
+                margin-bottom: 20px; /* Adiciona espaço abaixo do breadcrumb */
+            }
+            
+            .card-header {
+                font-size: 1.2rem;
+            }
+            
+            .card {
+                margin-top: 20px; /* Garante espaço entre o breadcrumb e o card */
+            }
         }
-        
-        .breadcrumb {
-            margin-top: 20px;
-        }
-        
-        .card-header {
-            font-size: 1.2rem;
-        }
-    }
-    
-    /* Melhoria no stepper */
-    .stepper-wrapper {
-        overflow-x: auto;
-        padding-bottom: 10px;
-    }
+	    
+	    /* Melhoria no stepper */
+	    .stepper-wrapper {
+	        overflow-x: auto;
+	        padding-bottom: 10px;
+	    }
     </style>
 </head>
 <body>
