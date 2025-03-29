@@ -130,11 +130,14 @@
             </div>
         </div>
     </section>
-
+    <div layout:fragment="jscript">  
    <script>
     // URL base para as operações AJAX
     const URL = '[[@{/}]]api/' ;
-
+    $(document).ready(function () {    
+    	
+    	
+    });
     // Função para exclusão de usuário com SweetAlert
     $("[id*='del']").click(function(event) {
         event.preventDefault();
@@ -164,6 +167,7 @@
         });
     });
 
+    
     // Função para ativar/desativar usuário
     function ativar(handler) {
         const id = handler.getAttribute("data-record-id");
@@ -178,8 +182,8 @@
         }).then((result) => {
             if (result) {
                 $.ajax({
-                    url: `${URL}/usuarios/${id}/${ativo}`,
-                    method: "PATCH" // Assumindo PATCH para atualizar o status
+                    url: `${URL}usuarios/${id}/${ativo}`,
+                    method: "GET" // Assumindo PATCH para atualizar o status
                 }).done(() => {
                     swal(title, "Executado com sucesso!", "success").then(() => {
                         location.reload();
@@ -204,6 +208,6 @@
         $('#imgModal').modal('show');
     });
 </script>
-
+    </div>
 </body>
 </html>
