@@ -75,6 +75,7 @@ public class UsuarioController {
 		List<Setor> setores = setorService.findAll();
 		model.addAttribute("usuario", usuario);		
 		model.addAttribute("setores", setores);
+		model.addAttribute("msg", 0);
 		model.addAttribute("activePage", "mnuCandidato");
 		return "form/frmCadUsuario";
 	}
@@ -86,14 +87,22 @@ public class UsuarioController {
 		List<Setor> setores = setorService.findAll();
 		model.addObject("setores", setores);
 		model.addObject("usuario", user);
+		model.addObject("msg", 0);
 		model.addObject("idServidor", user.getServidorId().getId());
 		
 		return model;
 	}
 
 	@PostMapping("/save")
-	public String saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam(name = "file", required = false) MultipartFile file, BindingResult result) {
-		try {			
+	public ModelAndView saveObject(@ModelAttribute("usuario") Usuario usuario,  @RequestParam(name = "file", required = false) MultipartFile file, BindingResult result) {
+		try {	
+			Optional<Usuario> u = usuarioService.findByCpf(usuario.getCpf().trim());			
+			if(u.isPresent()){
+				ModelAndView model = new ModelAndView(frmUsuario);
+				model.addObject("msg", 1);
+				return model;
+			}
+			
 			usuario.setFlag(1);
 			usuario.setDatacriacao(LocalDateTime.now());
 			usuario.setUltimoacesso(LocalDateTime.now());	
@@ -113,7 +122,9 @@ public class UsuarioController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return "redirect:/usuarios";
+		ModelAndView model = new ModelAndView("consulta/usuarios");
+		model.addObject("msg", 0);
+		return model;
 	}
 
 }

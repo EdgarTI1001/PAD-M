@@ -20,6 +20,9 @@
             <div class="card form-container">
                  <h5><div class="card-header" style="background-color: #00537d;"><span class="badge text-bg-secondary"><i class="bi bi-person-plus"></i> Cadastro de novo  usuário</span></div></h5>
                 <div class="card-body">
+                		<div class="alert alert-danger" role="alert" th:if="${msg == 1}" id="mensagem">
+  							Já Existe um usuario para o Servidor especificado
+						</div>
                     <form class="row g-3" th:object="${usuario}" th:action="@{/usuarios/save}" method="post" enctype="multipart/form-data" id="frm">
                         <input type="hidden" th:field="*{id}">
                         <input type="hidden" id="idServidor" th:value="${idServidor}">
@@ -118,7 +121,11 @@
         <script type="text/javascript">
             var URL = '[[@{/}]]';
             $("#loader").show();
-            $(document).ready(function() {
+            $(document).ready(function() {     
+            	
+            	 setTimeout(function() {
+            	      $("#mensagem").slideUp('slow'); // Animação dura 5 segundos
+            	    }, 5000);            	
                 $("#loader").hide();
                 getServidores();
 	
