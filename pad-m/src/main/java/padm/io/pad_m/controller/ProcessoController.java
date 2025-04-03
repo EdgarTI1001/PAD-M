@@ -121,8 +121,7 @@ public class ProcessoController {
 
 	@GetMapping("/new")
 	public String frmCadastrar(Model model, @ModelAttribute("processo") Processo processo) {
-		model.addAttribute("tipos", tipoProcessoService.findAll());
-		model.addAttribute("processo", processo);
+		model.addAttribute("tipos", tipoProcessoService.findAll());		
 		return "form/frmProcesso";
 	}
 
@@ -137,11 +136,9 @@ public class ProcessoController {
 
 	@PostMapping("/passo2")
 	public String frmCadastrarProcessoPasso2(Model model, @ModelAttribute("processo") Processo processo) {
-		Optional<Usuario> usuario = usuarioService.findById(session.getUsuario().getId());
-		Optional<Setor> setor = setorService.findById(usuario.get().getLotacao_id().getId());
-
-		processo.setUsucriadorId(usuario.get().getId());
-		processo.setSetorcriadorId(setor.get());
+		
+		processo.setUsucriadorId(session.getUsuario().getId());
+		processo.setSetorcriadorId(session.getUsuario().getLotacao_id());
 		processo.setDatacriacao(LocalDateTime.now());
 		processo.setFlaganexoprincId(0);
 		processo.setTramitado(0);
@@ -179,8 +176,8 @@ public class ProcessoController {
 	@PostMapping("/finalizar")
 	public String frmCadastrarProcessoFinalizar(@RequestParam(value = "page", defaultValue = "1") int page, Model model,
 			@ModelAttribute("processo") Processo processo) {
-		processoService.save(processo);
-		return "redirect:/processos/finalizarUploadDoc/" + processo.getId();
+		processoService.save(processo);		
+		return "redirect:/processos/finalizarUploadDoc/" + processo.getId() + "/doc/0";
 	}
 
 	@PostMapping("/save")
