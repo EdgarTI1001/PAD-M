@@ -70,7 +70,7 @@
                 </div>      
             </div>   
 
-            <div class="row">
+            <div class="row"> 
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
@@ -88,9 +88,7 @@
                         <div class="card-body">
                             <table class="table" id="myTable">
                                 <thead>
-                                    <tr>
-                                        <th scope="col"><span class="badge bg-secondary">Número</span></th>
-                                        <th scope="col"><span class="badge bg-secondary">Ano</span></th>
+                                    <tr>                                       
                                         <th scope="col"><span class="badge bg-secondary">Número/Ano</span></th>
                                         <th scope="col"><span class="badge bg-secondary">Assunto</span></th>
                                         <th style="width: 5px;"><span class="badge bg-secondary">Classificação</span></th>
@@ -98,9 +96,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="rs : ${processos}" th:id="'tr' + ${rs.id}"> 
-                                        <td th:text="${rs.numproc}"></td>
-                                        <td th:text="${rs.ano}"></td>
+                                    <tr th:each="rs : ${processos}" th:id="'tr' + ${rs.id}">                                  
                                         <td>
                                            <a th:href="@{/processos/finalizarUploadDoc/{id}/doc/{docId}(id=${rs.id}, docId=0)}" 
 											   th:data-record-id="${rs.id}" 

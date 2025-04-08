@@ -120,9 +120,7 @@ document.addEventListener('DOMContentLoaded', function () {
         				if(value.documento.flag == 1){         				
         					tableMinuta += '<tr id="tr' + value.documento.id + '">';        					
         					tableMinuta += '<th>' + (index + 1) + '</th>';
-        					tableMinuta += '<th>' +  value.documento.nomdoc + '</th>';
-        					tableMinuta += '<th>' + (value.documento.extdoc ? value.documento.extdoc : '-' ) + '</th>';
-        					tableMinuta += '<th>' + (value.documento.tamdoc ? value.documento.tamdoc : '-') + '</th>';
+        					tableMinuta += '<th>' +  value.documento.nomdoc + '</th>';        				
         					tableMinuta += '<th>' + formatarData(value.datacad) + '</th>';
         					tableMinuta += '<th>' +
         				    ' <a class="btn btn-sm btn-warning" href="/processos/finalizarUploadDoc/' + value.processo.id + "/doc/" + value.documento.id + '" role="button" title="Editar Minuta">' +
@@ -134,9 +132,7 @@ document.addEventListener('DOMContentLoaded', function () {
         				    table += '<tr id="tr' + value.id + '">';
             			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
             			    table += '<th>' + (index + 1) + '</th>';
-            			    table += '<th>' +  value.documento.nomdoc + '</th>';
-            			    table += '<th>' + (value.documento.extdoc ? value.documento.extdoc : '-' ) + '</th>';
-            			    table += '<th>' + (value.documento.tamdoc ? value.documento.tamdoc : '-') + '</th>';
+            			    table += '<th>' +  value.documento.nomdoc + '</th>';            			  
             			    table += '<th>' + formatarData(value.datacad) + '</th>';
             			    table += '<th>' +
 	            			    '<a class="btn btn-sm btn-warning" href="/docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
@@ -216,6 +212,12 @@ document.addEventListener('DOMContentLoaded', function () {
             	$("#loader").show();
                 $('#assinar').val(1);
             });
+            
+            $("#enviarProcesso").click(function() {   
+            	$(this).addClass("disabled"); // Add Bootstrap's disabled style
+            	$(this).css("pointer-events", "none"); // Disable click
+            	$("#loader").show();               
+            });     
             
             $('#btnObterMarcados').click(function() {
             	$("#loader").show();
@@ -323,6 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	margin-top: 5px;
 }
 
+
 /* Ajustes para o Select2 em telas pequenas */
 @media ( max-width : 768px) {
 	.select2-container {
@@ -367,6 +370,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	<section layout:fragment="content">
 		<div class="container-full mt-4">
+	
 			<div class="row">
 				<!-- Primeiro Card -->
 				<div class="col-md-7">
@@ -481,6 +485,14 @@ document.addEventListener('DOMContentLoaded', function () {
 				</div>
 				<!-- Segundo Card -->
 				<div class="col-md-5">
+				  <div class="d-flex justify-content-end mb-2 mt-2">    
+				        
+				        <a class="btn btn-sm btn-success" th:href="@{/tramite/new/} + ${processo.id}" role="button" id="enviarProcesso" title="Tramitar Processo">
+                                  Enviar Processo  <i class="fa fa-share" aria-hidden="true"></i>
+                         </a>
+                                                    
+  						  </div>
+    
 					<!-- Card Original -->
 					<div class="card">
 						<div class="card-header d-flex justify-content-between align-items-center"
@@ -499,9 +511,7 @@ document.addEventListener('DOMContentLoaded', function () {
 										<tr>
 											<th width="1px"></th>
 											<th width="1px"></th>
-											<th width="5px">Nome</th>
-											<th width="4px">Ext</th>
-											<th width="4px">Tam</th>
+											<th width="5px">Nome</th>										
 											<th scope="col">Data</th>
 											<th scope="col"></th>
 										</tr>
@@ -528,9 +538,7 @@ document.addEventListener('DOMContentLoaded', function () {
 									<thead style="font-size: 14px;">
 										<tr>										
 											<th width="1px"></th>
-											<th width="5px">Nome</th>
-											<th width="4px">Ext</th>
-											<th width="4px">Tam</th>
+											<th width="5px">Nome</th>											
 											<th scope="col">Data</th>
 											<th scope="col"></th>
 										</tr>

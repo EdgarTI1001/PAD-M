@@ -65,12 +65,10 @@
                                             <i class="fa fa-file-video-o" th:if="${doc.extdoc == 'video/mp4'}" aria-hidden="true"></i>
                                             <i class="fa fa-file-o" th:if="${doc.extdoc != 'application/pdf' && doc.extdoc != 'application/msword' && doc.extdoc != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && doc.extdoc != 'image/png' && doc.extdoc != 'image/jpeg' && doc.extdoc != 'video/mp4' && doc.extdoc != 'pdf'}" aria-hidden="true"></i>
                                         </a>
-                                        <a th:title="'Excluir documento'" th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
+                                        <!--  <a th:title="'Excluir documento'" th:href="@{/docs/delete/{id}(id=${doc.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja deletar?')">
                                             <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                        </a>
-                                        <a th:title="'Assinar documento'" class="btn btn-success btn-sm" onclick="return confirm('Tem certeza que deseja assinar documento?')">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                        </a>
+                                        </a>  
+                                         -->                                 
                                     </td>
                                 </tr>
                             </tbody>

@@ -55,6 +55,23 @@
         function setFlag(value){
             document.getElementById("flag").value = value;
         }
+        
+        $("#salvarEAssinar").click(function(event) {
+            event.preventDefault(); // Evita que o formulário seja enviado normalmente       
+            $('#assinar').val(1);
+            var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+            $("#salvarEAssinar").prop("disabled",true);
+            postForm(formData)
+        });
+        
+        
+        $("#salvar").click(function(event) {
+            event.preventDefault(); // Evita que o formulário seja enviado normalmente          
+            var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+            $("#salvar").prop("disabled",true);
+            postForm(formData)
+        });  
+        
     </script>
     <style>
         .card {
@@ -92,10 +109,9 @@
                         <span th:text="${alertMessage.message}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/docs/gerarPdf}" th:object="${doc}" method="post" onsubmit="return validateForm();">
-                        <input type="hidden" th:field="*{id}" />
-                        <input type="hidden" id="idProcesso" value=""
-                        	name="idProcesso" /> 
+                    <form th:action="@{/docs/criarDocPDF}" th:object="${doc}" method="post" id="frm" onsubmit="return validateForm();">
+                        <input type="hidden" th:field="*{id}" />                       
+                        <input type="hidden" name="assinar" id="assinar" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Nome</label>
                             <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
@@ -109,7 +125,8 @@
     
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                            <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)">Criar arquivo</button>
+                            <button type="button" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="salvar">Salvar</button>
+                            <button type="button" class="btn btn-primary btn-sm me-2" id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
                             <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
                         </div>
                     </form>
