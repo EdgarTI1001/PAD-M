@@ -12,7 +12,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StreamUtils;
 
@@ -26,9 +28,18 @@ public class DocService {
 	@Autowired
 	private DocRepository docRepository;
 
-	public Page<Doc> findAll(Pageable pageable) {
-		return docRepository.findAll(pageable);
+	public Page<Doc> findAll(Integer idUsuario, Pageable pageable) {
+	    // Cria o Pageable com ordenação por ID decrescente 
+	    Pageable sortedPageable = PageRequest.of(
+	        pageable.getPageNumber(),
+	        pageable.getPageSize(),
+	        Sort.by("id").descending()
+	    );
+	    
+	    // Retorna os resultados filtrados por idUsuario
+	    return docRepository.findByUsuarioIdCustom(idUsuario, sortedPageable);
 	}
+	
 
 	public Doc findById(Integer id) {
 		return docRepository.findById(id).orElse(null);
@@ -50,17 +61,6 @@ public class DocService {
 	@Transactional
 	public void delete(Doc obj) {
 		docRepository.delete(obj);
-	}
-
-
-	public List<Doc> findAllDocsByUsuario(Usuario usuario) {
-		return docRepository.findAllDocumentosByUsuario(usuario);
-	}
-
-	public List<Doc> findAllDocsByUsuarioId(Integer usuarioId) {
-		Usuario usuario = new Usuario();
-		usuario.setId(usuarioId);
-		return findAllDocsByUsuario(usuario);
 	}
 	
 	 public void downloadZipFile(HttpServletResponse response, List<String> listOfFileNames) {

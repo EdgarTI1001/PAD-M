@@ -129,7 +129,7 @@ public class DocController {
 	@GetMapping
 	public String listDocs(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
 		Pageable pageable = PageRequest.of(page, 10); // 5 items por página
-		Page<Doc> docPage = docService.findAll(pageable);
+		Page<Doc> docPage = docService.findAll(session.getUsuario().getId(),     pageable);
 		model.addAttribute("docPage", docPage);
 		return "docs/list";
 	}
@@ -757,5 +757,185 @@ public class DocController {
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 
 		return "redirect:/processos/finalizarUploadDoc/"+idProcesso+"/doc/0";
+	}
+	
+	
+	
+	
+	
+	@PostMapping("/criarDocPDF")
+	public String gerarPdf(@ModelAttribute("doc") Doc doc, RedirectAttributes redirectAttributes,@RequestParam("assinar") Optional<Integer> assinar) {
+
+		AlertMessage alertMessage = null;
+
+		if (doc != null && doc.getFlag() == 0) {
+			
+			try {
+
+				// Gerar nome único para o arquivo PDF
+				String nomeArquivo = "arquivo_" + System.currentTimeMillis() + ".pdf";
+
+				// Criar um arquivo temporário para o PDF
+				File tempPdfFile = File.createTempFile("temp", ".pdf");
+
+				// Converter o conteúdo HTML em PDF e salvar no arquivo temporário
+				// Converter o conteúdo HTML em PDF com imagem
+				
+				
+				try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
+				    // Caminho da imagem
+					String imagePath = root.resolve(pdfImg).resolve("logo-maues.jpg").toAbsolutePath().toString();
+
+				    // Criar um PdfDocument diretamente no convertToPdf()
+				    ConverterProperties properties = new ConverterProperties();
+				    
+	
+				    
+				    String htmlContent = "<table style='width: 100%; margin-top: 10px;'>"
+				            + "<tr>"
+				            + "<td style='width: 120px; text-align: left; vertical-align: middle;'>"
+				            + "<img src='file:///" + imagePath.replace("\\", "/") + "' style='width: 100px; height: 90px;'/>"
+				            + "</td>"
+				            + "<td style='text-align: left; vertical-align: middle; font-family: Arial, sans-serif;'>"
+				            + "<p style='margin: 0; font-size: 14px; font-weight: bold;'>Governo Brasileiro</p>"
+				            + "<p style='margin: 0; font-size: 14px;'>Prefeitura de Maués</p>"
+				            + "<p style='margin: 0; font-size: 14px; font-style: italic;'>Cuidando da nossa gente</p>"
+				            + "</td>"
+				            + "</tr>"
+				            + "</table>"
+				            + "<div style='margin-top: 20px;'>"
+				            + doc.getConteudo()
+				            + "</div>";
+				    
+				    // Converter o HTML para PDF
+				    HtmlConverter.convertToPdf(htmlContent, new PdfWriter(outputStream), properties);
+
+				} catch (Exception e) {
+				    e.printStackTrace();
+				}
+
+			
+				// Criar um InputStream do arquivo temporário
+				InputStream inputStream = new FileInputStream(tempPdfFile);
+
+				// Implementar MultipartFile manualmente
+				MultipartFile multipartFile = new MultipartFile() {
+					@Override
+					public String getName() {
+						return "file";
+					}
+
+					@Override
+					public String getOriginalFilename() {
+						return nomeArquivo;
+					}
+
+					@Override
+					public String getContentType() {
+						return "application/pdf";
+					}
+
+					@Override
+					public boolean isEmpty() {
+						return tempPdfFile.length() == 0;
+					}
+
+					@Override
+					public long getSize() {
+						return tempPdfFile.length();
+					}
+
+					@Override
+					public byte[] getBytes() throws IOException {
+						return Files.readAllBytes(tempPdfFile.toPath());
+					}
+
+					@Override
+					public InputStream getInputStream() throws IOException {
+						return new FileInputStream(tempPdfFile);
+					}
+
+					@Override
+					public void transferTo(File dest) throws IOException, IllegalStateException {
+						Files.copy(tempPdfFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+					}
+				};
+
+				// Usar o método existente save para salvar o arquivo
+				String fileNameHash = storageService.save(multipartFile, "documentos");
+
+				Usuario usuario = authentication.getUsuario();
+				
+				Doc docNew = new Doc();
+				docNew.setId(doc.getId() == null ? null : doc.getId());
+				docNew.setNomdoc(doc.getNomdoc());
+				docNew.setExtdoc("pdf");
+				docNew.setUsu_id(usuario);
+				docNew.setTipoDoc(doc.getTipoDoc());
+				docNew.setData(LocalDateTime.now());
+				docNew.setHashdoc(fileNameHash);
+				docNew.setConteudo(doc.getConteudo());
+				docNew.setFlag(0);
+				docNew.setSigiloId(doc.getSigiloId());
+				if (!multipartFile.isEmpty()) {
+					docNew.setTamdoc(FileSizeUtil.formatFileSize(multipartFile.getSize()));
+				}
+
+				docService.save(docNew);
+		
+				if(assinar.isPresent()){				
+						String fileHash = assinaturaService.generateFileHash(docNew, session.getUsuario(), "SHA-256");
+						
+						Assinador a = new Assinador();
+						a.setData(LocalDateTime.now());
+						a.setDoc(docNew);
+						a.setUserId(session.getUsuario());
+						a.setHashdoc(fileHash);
+						assinadorService.save(a);				
+						
+						Evento evento = new Evento();
+						evento.setDataevento(LocalDateTime.now()); //14
+						String dataFormatada = LocalDateTime.now().format(parser);
+						evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Assinou o Documento : " + doc.getNomdoc() +
+								 " Em : " + dataFormatada );				
+
+						TipoEvento tpEvento = new TipoEvento();
+						tpEvento = tipoEventoService.findById(14).get(); // Assinar Documento
+						evento.setTipo_id(tpEvento);			
+						
+						eventoService.save(evento);
+					
+				}
+
+				
+				alertMessage = new AlertMessage("success", "Arquivo gerado com sucesso!");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				alertMessage = new AlertMessage("danger",
+						"Não foi possível fazer upload do arquivo: " + doc.getNomdoc() + ". Error: " + e.getMessage());
+			}
+		} else if (doc != null && doc.getFlag() == 1) {
+			Usuario usuario = authentication.getUsuario();
+			
+			Doc docNew = new Doc();
+			docNew.setId(doc.getId() == null ? null : doc.getId());
+			docNew.setNomdoc(doc.getNomdoc());
+			docNew.setExtdoc(null);
+			docNew.setUsu_id(usuario);
+			docNew.setData(LocalDateTime.now());
+			docNew.setHashdoc(null);
+			docNew.setConteudo(doc.getConteudo());
+			docNew.setFlag(1);
+			docService.save(docNew);
+
+			alertMessage = new AlertMessage("success", "Minuta salvo com sucesso!");
+		} else {
+			alertMessage = new AlertMessage("danger", "Erro ao salvar arquivo!");
+		}
+
+		redirectAttributes.addFlashAttribute("alertMessage", alertMessage); 
+
+		return "redirect:/docs";
 	}
 }
