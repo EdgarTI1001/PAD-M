@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script th:src="@{/js/tinymce/tinymce.min.js}"></script>
     <script>
@@ -50,27 +51,31 @@
 
             // Se todos os campos estão válidos, permite o envio do formulário
             return true;
-        }
-
-        function setFlag(value){
-            document.getElementById("flag").value = value;
+        }    
+        
+        function setFlag(value) {               
+            $("#flag").val(value); // Certifique-se de que o campo "flag" existe no formulário
         }
         
-        $("#salvarEAssinar").click(function(event) {
-            event.preventDefault(); // Evita que o formulário seja enviado normalmente       
-            $('#assinar').val(1);
-            var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
-            $("#salvarEAssinar").prop("disabled",true);
-            postForm(formData)
+        $(document).ready(function() { 
+            // Remove o comportamento padrão do botão e define a ação
+            $("#salvarEAssinar").click(function(event) {
+                event.preventDefault(); // Impede o envio padrão
+                setFlag(0); // Define o flag para 0
+                tinymce.triggerSave(); // Sincroniza o editor com o textarea
+                $('#assinar').val(1); // Define 'assinar' para 1
+                $("#salvarEAssinar").prop("disabled", true); // Desabilita o botão
+                $("#frm").submit(); // Submete o formulário manualmente
+            });
+            
+            // Adicione também para o botão "Salvar"
+            $("#salvar").click(function(event) {
+                event.preventDefault();
+                setFlag(0);
+                $("#salvar").prop("disabled", true);
+                $("#frm").submit();
+            });
         });
-        
-        
-        $("#salvar").click(function(event) {
-            event.preventDefault(); // Evita que o formulário seja enviado normalmente          
-            var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
-            $("#salvar").prop("disabled",true);
-            postForm(formData)
-        });  
         
     </script>
     <style>
@@ -90,49 +95,29 @@
     </style>
 </head>
 <body>
-    <section layout:fragment="content">
+		    <section layout:fragment="content">
         <div class="container mt-4">
             <div class="card">
-                <div class="card-header" style="background-color: #00537d; color: white;">
-                    <h5>
-                        <span class="badge text-bg-secondary">
-                            <i class="bi bi-upload"></i> 
-                            <span th:text="${doc.id == null ? ' Enviar Novo Documento' : 'Editar Documento'}"></span>
-                        </span>
-                    </h5>
-                </div>             
-                    
-                 <div class="card-body">
-                    <div th:if="${alertMessage}"
-                         th:classappend="'alert-' + ${alertMessage.type}"
-                         class="alert alert-dismissible fade" role="alert">
-                        <span th:text="${alertMessage.message}"></span>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
+                <div class="card-body">
                     <form th:action="@{/docs/criarDocPDF}" th:object="${doc}" method="post" id="frm" onsubmit="return validateForm();">
-                        <input type="hidden" th:field="*{id}" />                       
+                        <input type="hidden" th:field="*{id}" />
+                        <input type="hidden" id="flag" name="flag" th:field="*{flag}" />
                         <input type="hidden" name="assinar" id="assinar" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Nome</label>
                             <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
                         </div>
-
-                        <input type="hidden" th:field="*{flag}" id="flag">
-    
                         <div class="mb-3">
-                            <textarea id="conteudo" name="conteudo" th:field="*{conteudo}" ></textarea>
+                            <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
                         </div>
-    
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)">Salvar Rascunho</button>
-                            <button type="button" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="salvar">Salvar</button>
-                            <button type="button" class="btn btn-primary btn-sm me-2" id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
-                            <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
+                            <button type="button" class="btn btn-success btn-sm me-2" id="salvar">Salvar</button>    
+                            <button type="button" class="btn btn-primary btn-sm me-2" id="salvarEAssinar">Salvar e Assinar</button>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="history.back()">Voltar</button>
                         </div>
                     </form>
                 </div>
-                    
-          
             </div>
         </div>
     </section>

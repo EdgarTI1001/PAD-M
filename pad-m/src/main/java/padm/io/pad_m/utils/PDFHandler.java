@@ -96,7 +96,7 @@ public class PDFHandler {
 		 PDImageXObject seloPDImage = LosslessFactory.createFromImage(document, seloImage);
 
 		 // Configurações da imagem e texto
-		 float seloWidth = 40; // Largura da imagem no PDF
+		 float seloWidth = 65; // Largura da imagem no PDF
 		 float seloHeight = 40; // Altura da imagem no PDF
 		 float seloMargin = 10; // Margem do canto
 		 float seloFontSize = 10; 
@@ -146,7 +146,7 @@ public class PDFHandler {
 			contentStream.beginText();
 			contentStream.newLineAtOffset(textXSelo, textYSelo);
 			contentStream.setNonStrokingColor(Color.BLACK);
-			contentStream.showText("[Documento Assinado Eletronicamente por " + author.getServidorId().getNome()
+			contentStream.showText("[Assinado Eletronicamente por " + author.getServidorId().getNome()
 					+ "] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
 					+ LocalDateTime.now().getMinute());
 			contentStream.endText();

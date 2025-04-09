@@ -158,6 +158,11 @@ public class DocController {
 		return "redirect:/docs";
 	}
 
+	@GetMapping("/getAssinaturas/{idDoc}")
+	public String getAssinaturas(Model model, @PathVariable(name = "idProcesso") Integer idProcesso) {		
+		return "docs/assinaturas";
+	}
+	
 	@PostMapping("/files/upload")
 	public String uploadFile(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
 			@ModelAttribute("doc") Doc docNew, @RequestParam("idProcesso") Integer idProcesso,@RequestParam("assinar") Optional<Integer> assinar) {
@@ -586,8 +591,8 @@ public class DocController {
 				            + "</div>";
 				    
 				    
-				    */
-				    
+				    */			    
+				   
 				    String htmlContent = "<table style='width: 100%; margin-top: 10px;'>"
 				            + "<tr>"
 				            + "<td style='width: 120px; text-align: left; vertical-align: middle;'>"
@@ -790,7 +795,7 @@ public class DocController {
 				    ConverterProperties properties = new ConverterProperties();
 				    
 	
-				    
+				    System.out.println("============" + doc.getConteudo());
 				    String htmlContent = "<table style='width: 100%; margin-top: 10px;'>"
 				            + "<tr>"
 				            + "<td style='width: 120px; text-align: left; vertical-align: middle;'>"
@@ -883,7 +888,8 @@ public class DocController {
 
 				docService.save(docNew);
 		
-				if(assinar.isPresent()){				
+				if(assinar.isPresent()){	
+					
 						String fileHash = assinaturaService.generateFileHash(docNew, session.getUsuario(), "SHA-256");
 						
 						Assinador a = new Assinador();
@@ -936,6 +942,83 @@ public class DocController {
 
 		redirectAttributes.addFlashAttribute("alertMessage", alertMessage); 
 
+		return "redirect:/docs";
+	}
+	
+	
+	@PostMapping("/files/uploadPDF")
+	public String uploadFilePDF(RedirectAttributes redirectAttributes, @RequestParam("file") MultipartFile file,
+			@ModelAttribute("doc") Doc docNew,@RequestParam("assinar") Optional<Integer> assinar) {
+		AlertMessage alertMessage;
+		final long MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB em bytes
+		final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/png", "image/jpeg", "video/mp4",
+				"application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+				"application/msword" // .doc
+		);		
+		
+		// Verifica o tamanho do arquivo
+		if (file.getSize() > MAX_FILE_SIZE) {
+			alertMessage = new AlertMessage("danger", "O arquivo excede o limite de 10 MB.");
+		}
+		// Verifica o tipo do arquivo
+		else if (!ALLOWED_CONTENT_TYPES.contains(file.getContentType())) {
+			alertMessage = new AlertMessage("danger",
+					"Tipo de arquivo não permitido. Somente PNG, JPG, MP4, PDF, DOC e DOCX são aceitos.");
+		} else {
+			try {			
+				
+				String fileNameHash = storageService.save(file, "documentos");
+				Usuario usuario = authentication.getUsuario();
+
+				Doc doc = new Doc();
+				doc.setNomdoc(docNew.getNomdoc());
+				doc.setExtdoc(file.getContentType());
+				doc.setUsu_id(usuario);
+				doc.setData(LocalDateTime.now());
+				doc.setHashdoc(fileNameHash);
+
+				if (!file.isEmpty()) {
+					doc.setTamdoc(FileSizeUtil.formatFileSize(file.getSize()));
+				}
+				docService.save(doc);	
+				
+		
+				
+				if(assinar.isPresent()){		
+					String fileHash = assinaturaService.generateFileHash(doc, session.getUsuario(), "SHA-256");			
+					
+					Assinador a = new Assinador();
+					a.setData(LocalDateTime.now());
+					a.setDoc(doc);
+					a.setUserId(session.getUsuario());
+					a.setHashdoc(fileHash);
+					assinadorService.save(a);				
+					
+					Evento evento = new Evento();
+					evento.setDataevento(LocalDateTime.now()); //14
+					String dataFormatada = LocalDateTime.now().format(parser);
+					evento.setEvento("Usuario : " + session.getUsuario().getNome() + " Assinou o Documento : " + doc.getNomdoc() +
+							 " Em : " + dataFormatada );				
+
+					TipoEvento tpEvento = new TipoEvento();
+					tpEvento = tipoEventoService.findById(14).get(); // Assinar Documento
+					evento.setTipo_id(tpEvento);				
+					
+					eventoService.save(evento);
+				}
+			
+				
+			
+				
+				alertMessage = new AlertMessage("success",
+						"Arquivo enviado com sucesso: " + file.getOriginalFilename());
+			} catch (Exception e) {
+				alertMessage = new AlertMessage("danger", "Não foi possível fazer upload do arquivo: "
+						+ file.getOriginalFilename() + ". Error: " + e.getMessage());
+			}
+		}
+
+		redirectAttributes.addFlashAttribute("alertMessage", alertMessage);
 		return "redirect:/docs";
 	}
 }

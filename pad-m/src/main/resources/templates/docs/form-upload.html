@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout.html}">
 <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
@@ -19,6 +20,52 @@
         }
     
 </style>
+<script type="text/javascript">
+
+$(document).ready(function() { // <--- Adicione isto
+    $("#salvarEAssinar").click(function(event) {
+        event.preventDefault();
+        $('#assinar').val(1);       
+        var formData = new FormData($("#frm")[0]);
+        $("#salvarEAssinar").prop("disabled", true);
+        postForm(formData); // Função que precisa ser definida
+    });
+
+    function setFlag(value) {       
+        $("#flag").val(value); // Certifique-se de que o campo "flag" existe no formulário
+    }
+    
+    $("#salvarEAssinar").click(function() {
+    	$("#salvarEAssinar").prop("disabled",true);
+    	$("#loader").show();
+        $('#assinar').val(1);
+    });
+    
+    function postForm(formData){
+    	
+        $("#loader").show();				
+        
+        $.ajax({
+            url: "/docs/files/uploadPDF",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $("#loader").hide();
+                swal("Sucesso", "Documento Inserido com Sucesso", "success");
+            },
+            error: function(response) {                     
+                $("#loader").hide();
+                swal("Erro", "Ocorreu um erro ao enviar o documento", "error");
+            }
+        });
+    	
+    }
+    
+});
+
+</script>
 </head>
 <body>
     <section layout:fragment="content">
@@ -37,8 +84,10 @@
                         <span th:text="${alertMessage.message}"></span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <form th:action="@{/docs/files/upload}" th:object="${doc}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" th:field="*{id}" />
+                    <form th:action="@{/docs/files/uploadPDF}" th:object="${doc}" method="post" id="frm" enctype="multipart/form-data">
+                         <input type="hidden" th:field="*{id}" />
+                         <input type="hidden" name="assinar" id="assinar" />
+                         <input type="hidden" id="flag" name="flag" th:field="*{flag}" />
                         <div class="mb-3">
                             <label for="nomdoc" class="form-label">Nome</label>
                             <input type="text" id="nomdoc" name="nomdoc" class="form-control" th:field="*{nomdoc}" required/>
@@ -47,7 +96,8 @@
                             <input id="input-file" type="file" name="file" class="form-control-file" />
                         </div>
                         <div class="d-flex justify-content-end">
-	                        <button type="submit" class="btn btn-primary btn-sm me-2">Salvar</button>                        
+	                        <button type="submit" class="btn btn-primary btn-sm me-2">Salvar</button>    
+	                        <button type="button" class="btn btn-success btn-sm me-2" id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>                    
 	                        <button type="button" class="btn btn-warning btn-sm" id="voltar" onclick="history.back()">Voltar</button>
                         </div>
                         
@@ -56,5 +106,9 @@
             </div>
         </div>
     </section>
+      <div layout:fragment="jscript">
+      
+      
+      </div>
 </body>
 </html>
