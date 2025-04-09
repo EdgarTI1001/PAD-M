@@ -48,9 +48,11 @@
         .l-navbar {
             width: 70px;
             transition: width 0.3s ease;
+            z-index: 1000;
         }
-        .l-navbar.expanded {
+        .l-navbar.expanded { 
             width: 250px;
+             z-index: 1000;
         }
         .nav_name {
             display: none;
@@ -132,6 +134,7 @@
     
     #header {
         padding-left: 15px;
+         z-index: 1100;
     }
     
      .nav {
@@ -307,12 +310,13 @@
             const dropdown = event.currentTarget.parentNode;
             dropdown.classList.toggle('active'); 
 
-            const navBar = document.getElementById('nav-bar');
             if (!navBar.classList.contains('expanded')) {
                 navBar.classList.add('expanded');
             }
         }
        
+
+        
     </script>
 </body>
 </html>
