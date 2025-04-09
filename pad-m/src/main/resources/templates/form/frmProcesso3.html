@@ -132,16 +132,16 @@ document.addEventListener('DOMContentLoaded', function () {
         				    table += '<tr id="tr' + value.id + '">';
             			    table += '<td><input type="checkbox" class="form-check-input" id="check' + value.documento.id + '" data-id="' + value.documento.id + '"></td>'; // Adiciona o checkbox
             			    table += '<th>' + (index + 1) + '</th>';
-            			    table += '<th>' +  value.documento.nomdoc + '</th>';            			  
+            			    table += '<th>' + 
+            			    '<a href="/docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
+        			         value.documento.nomdoc +
+        			        '</a> </th>';            			  
             			    table += '<th>' + formatarData(value.datacad) + '</th>';
             			    table += '<th>' +
 	            			    '<a class="btn btn-sm btn-warning" href="/docs/form/assinar/' + value.documento.id + '/proc/' + value.processo.id + '" role="button" title="Assinar Documento">' +
 	            			    '<i class="bi bi-pencil-fill"></i>Assinar' +
-	            			    '</a>' +
-            			        '<a class="btn btn-sm btn-info" href="/docs/open/' + value.documento.id + '" target="_blank"  data-record-id="' + value.documento.id + '" data-record-nome="' + value.documento.nomdoc + '" role="button" title="Baixar Documento">' +
-            			        '<i class="bi bi-eye-fill"></i>' +
-            			        '</a> '+
-            			      		  delDocumento +             			       
+	            			    '</a>' +            			       
+            			      		delDocumento +             			       
             			        '</th>';
             			    table += '</tr>';
         					
