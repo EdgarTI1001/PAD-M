@@ -89,6 +89,8 @@
             margin-bottom: 20px;
             margin-top: 75px;
         }
+        
+        
         .card:hover {
             transform: scale(1.00);
         }
@@ -98,6 +100,13 @@
 		    <section layout:fragment="content">
         <div class="container mt-4">
             <div class="card">
+                   <div class="card-header" style="background-color: #00537d; color: white;">
+                    <h5><span class="badge text-bg-secondary">
+                        <i class="bi bi-upload"></i> 
+                        <span th:text="${doc.id == null ? ' Criar Novo Documento' : 'Editar Documento'}"></span>
+                    </span></h5>
+                </div>
+                
                 <div class="card-body">
                     <form th:action="@{/docs/criarDocPDF}" th:object="${doc}" method="post" id="frm" onsubmit="return validateForm();">
                         <input type="hidden" th:field="*{id}" />
