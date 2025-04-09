@@ -86,7 +86,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <table class="table" id="myTable">
+                            <table class="table" id="processos">
                                 <thead>
                                     <tr>                                       
                                         <th scope="col"><span class="badge bg-secondary">Número/Ano</span></th>
@@ -196,10 +196,11 @@
             const URL = '[[@{/}]]api/';
             
             $(document).ready(function () {
-                $('#myTable').DataTable({
+                $('#processos').DataTable({
                     language: {
                         url: 'https://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese.json' // Adiciona o idioma em português
-                    }
+                    },
+                    ordering: false // Desativa a ordenação globalmente
                 });
             });
             
