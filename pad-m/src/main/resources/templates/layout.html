@@ -185,19 +185,18 @@
                 </a>
                 <div class="nav_list">
                         
-                  <!-- Dropdown for Tramite -->
-	               <div class="nav_dropdown">
-		                   <a href="#" class="nav_link nav_dropdown_link" onclick="toggleDropdown(event)" title="Documentos">
-		                   <i class="fa fa-file-pdf-o"  style="font-size:23px;color:white" aria-hidden="true"></i>	                       
-	                       <span class="nav_name">Documentos</span>
-	                       <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
-	                   </a>
-	                   <div class="nav_dropdown_content">
-	                       <a th:href="@{/docs/create}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
-	                       <a th:href="@{/docs}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
-	                       <a th:href="@{/docs/verify}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Verificar</a>
-	                   </div>
-	               </div>
+              		<div class="nav_dropdown">
+					    <a href="#" class="nav_link nav_dropdown_link" title="Documentos">
+					        <i class="fa fa-file-pdf-o" style="font-size:23px;color:white" aria-hidden="true"></i>	                       
+					        <span class="nav_name">Documentos</span>
+					        <i class="fa fa-chevron-down" style="margin-left: 10px; color: white;"></i>
+					    </a>
+					    <div class="nav_dropdown_content">
+					        <a th:href="@{/docs/create}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Criar</a>
+					        <a th:href="@{/docs}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Listar</a>
+					        <a th:href="@{/docs/verify}" class="nav_link">&nbsp;<i class="bi bi-chevron-compact-right"></i>Verificar</a>
+					    </div>
+					</div>
 	               
                      <!-- Dropdown for Processos -->
 	               <div class="nav_dropdown">
@@ -289,34 +288,36 @@
     <script th:src="@{/js/utils.js}"></script>
     <script th:src="@{/js/select2.full.min.js}"></script>
     <div layout:fragment="jscript"></div> 
-    <script type="text/javascript">
-   
-        const toggle = document.getElementById('header-toggle');
-        const icon = document.getElementById('icon');
-        const navBar = document.getElementById('nav-bar');
-       
+	<script type="text/javascript">
+    const toggle = document.getElementById('header-toggle');
+    const icon = document.getElementById('icon');
+    const navBar = document.getElementById('nav-bar');
 
-        toggle.addEventListener('click', () => {
-            navBar.classList.toggle('expanded');
-            if (icon.classList.contains('fa fa-bars')) {
-                icon.className = 'fa fa-bars';
-            } else {
-                icon.className = 'fa fa-bars';
-            }
-        }); 
-        
-        function toggleDropdown(event) {
-            event.preventDefault(); 
-            const dropdown = event.currentTarget.parentNode;
-            dropdown.classList.toggle('active'); 
+    // Função para alternar o menu lateral
+    function toggleNavbar() {
+        navBar.classList.toggle('expanded');
+        icon.className = 'fa fa-bars'; // mantém o ícone fixo
+    }
 
-            if (!navBar.classList.contains('expanded')) {
-                navBar.classList.add('expanded');
-            }
-        }
-       
+    // Evento ao clicar no ícone do menu (hamburger)
+    toggle.addEventListener('click', () => {
+        toggleNavbar();
+    });
 
-        
-    </script>
+    // Função para abrir/fechar dropdown individual
+    function toggleDropdown(event) {
+        const dropdown = event.currentTarget.closest('.nav_dropdown');
+        dropdown.classList.toggle('active');
+    }
+
+    // Aplica toggle do menu e do dropdown ao clicar em .nav_dropdown_link
+    document.querySelectorAll('.nav_dropdown_link').forEach(dropdownLink => {
+        dropdownLink.addEventListener('click', (e) => {
+            e.preventDefault(); // evita navegação
+            toggleNavbar();     // alterna o menu lateral
+            toggleDropdown(e);  // mostra ou esconde submenu
+        });
+    });
+</script>
 </body>
 </html>
