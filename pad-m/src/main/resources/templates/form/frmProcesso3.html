@@ -390,15 +390,15 @@ document.addEventListener('DOMContentLoaded', function () {
 								<div class="stepper-wrapper">
 									<div class="stepper-item completed">
 										<div class="step-counter">1</div>
-										<div class="step-name">Criando Processo</div>
+										<div class="step-name"><span class="badge text-bg-success">Criando Processo</span> </div>
 									</div>
 									<div class="stepper-item completed">
 										<div class="step-counter">2</div>
-										<div class="step-name">Classificação do Processo</div>
+										<div class="step-name"><span class="badge text-bg-success">Classificação do Processo</span> </div>
 									</div>
 									<div class="stepper-item completed">
 										<div class="step-counter">3</div>
-										<div class="step-name">Finalizar</div>
+										<div class="step-name"><span class="badge text-bg-success">Finalizar</span></div>
 									</div>
 								</div>
 							</div>
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
 							     <input type="hidden" th:field="*{id}" />							   
 								
 								     <div class="col-12 mb-3">
-                         <label for="tipo" class="form-label"><strong>Processo : </strong></label>                       
+                         <label for="tipo" class="form-label"><strong><span class="badge text-bg-info">Processo</span>  : </strong></label>                       
                          <span class="badge bg-secondary" th:text="${processo.numanoproc} + ' - ' +    ${processo.assunto}"></span>
                     </div>
                     
@@ -485,13 +485,7 @@ document.addEventListener('DOMContentLoaded', function () {
 				</div>
 				<!-- Segundo Card -->
 				<div class="col-md-5">
-				  <div class="d-flex justify-content-end mb-2 mt-2">    
-				        
-				        <a class="btn btn-sm btn-success" th:href="@{/tramite/new/} + ${processo.id}" role="button" id="enviarProcesso" title="Tramitar Processo">
-                                  Enviar Processo  <i class="fa fa-share" aria-hidden="true"></i>
-                         </a>
-                                                    
-  						  </div>
+	
     
 					<!-- Card Original -->
 					<div class="card">
@@ -523,7 +517,14 @@ document.addEventListener('DOMContentLoaded', function () {
 							</div>
 						</div>
 					</div>
-
+					
+					<div class="d-flex justify-content-end mb-2 mt-2">    
+				        
+				        <a class="btn btn-sm btn-success" th:href="@{/tramite/new/} + ${processo.id}" role="button" id="enviarProcesso" title="Tramitar Processo">
+                                  Enviar Processo  <i class="fa fa-share" aria-hidden="true"></i>
+                         </a>                                                    
+  					</div>
+  						  
 					<!-- Novo Card Adicionado -->
 					<div class="card mt-4"> <!-- Adicionei margem top -->
 						<div class="card-header d-flex justify-content-between align-items-center"

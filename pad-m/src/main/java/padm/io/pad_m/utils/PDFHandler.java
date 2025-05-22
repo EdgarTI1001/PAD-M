@@ -147,7 +147,7 @@ public class PDFHandler {
 			contentStream.newLineAtOffset(textXSelo, textYSelo);
 			contentStream.setNonStrokingColor(Color.BLACK);
 			contentStream.showText("[Assinado Eletronicamente por " + author.getServidorId().getNome()
-					+ "] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
+					+ " e outros ] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
 					+ LocalDateTime.now().getMinute());
 			contentStream.endText();
 			
