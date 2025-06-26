@@ -46,7 +46,8 @@
                            
                         </div>
                         <div class="d-flex">
-	                        <button type="button" class="btn btn-primary btn-sm me-2" id="assinar">Assinar</button>                        
+	                        <button type="button" class="btn btn-primary btn-sm me-2" id="assinar">Assinar <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>                  
+	                        <a th:href="@{/docs/open/} + ${doc.id}"  class="btn btn-success btn-sm me-2" target="_blank" role="button" title="Baixar Documento">Baixar Documento <i class="fa fa-download" aria-hidden="true"></i></a>
 	                        <button type="button" class="btn btn-warning btn-sm" id="voltar">Voltar</button>
                         </div>
                         
@@ -94,7 +95,7 @@
                $("#loader").show();
                var idProcesso = $("#idProcesso").val()
                var url = window.location.origin + "/processos/finalizarUploadDoc/" + idProcesso + "/doc/0";
-              window.location.href = url;
+               window.location.href = url;
        		  
            });            
        
@@ -109,8 +110,9 @@
 
           	    if (remainingTime <= 0) {
           	      clearInterval(timerInterval); // Stop the countdown   
-          	      var idProcesso = $("#idProcesso").val()
-          	      window.location.href = "../../processos/finalizarUploadDoc/"+idProcesso;
+          	      var idProcesso = $("#idProcesso").val();
+          	      var url = window.location.origin + "/processos/finalizarUploadDoc/" + idProcesso + "/doc/0";
+          	      window.location.href = url;
           	    } else {
           	      remainingTime--;
           	    }

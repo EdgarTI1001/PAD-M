@@ -186,23 +186,60 @@ document.addEventListener('DOMContentLoaded', function () {
             getDocumentosDoProcesso();
 		
             $("#salvarArquivo").click(function(event) {
-                event.preventDefault(); // Evita que o formulário seja enviado normalmente                
-                $('#assinar').val(0);               
-                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
-                $("#salvarArquivo").prop("disabled",true);
-                postForm(formData)
+                event.preventDefault(); // Evita que o formulário seja enviado normalmente  
+                var nomdoc = $("#nomdoc").val(); 
+                var tipo =  $("#tipo").val(); 
+                var sigilo =  $("#sigilo").val(); 
+                const arquivo = document.getElementById('fileUpload').files[0];
+                if(nomdoc == ""){
+                	swal("Erro", "Informe o nome do Documento", "error");
+ 				}else if(tipo ==0){
+ 					swal("Erro", "Informe o Tipo do Documento", "error");
+ 				}else if(sigilo ==0){
+ 					swal("Erro", "Informe a Visibilidade do Documento", "error");
+ 				}else if(!arquivo){
+ 					swal("Erro", "Por favor, selecione um arquivo antes de enviar.", "error");
+ 				}else{
+ 					$("#loader").show();
+ 					$('#assinar').val(0);               
+ 	                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+ 	                $("#salvarArquivo").prop("disabled",true);
+ 	                postForm(formData)
+ 				}
+
+               
             });
             
             $("#salvarEAssinar").click(function(event) {
-                event.preventDefault(); // Evita que o formulário seja enviado normalmente       
-                $('#assinar').val(1);
-                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
-                $("#salvarEAssinar").prop("disabled",true);
-                postForm(formData)
+                event.preventDefault(); // Evita que o formulário seja enviado normalmente     
+                var nomdoc = $("#nomdoc").val(); 
+                var tipo =  $("#tipo").val(); 
+                var sigilo =  $("#sigilo").val(); 
+                const arquivo = document.getElementById('fileUpload').files[0];
+                if(nomdoc == ""){
+                	swal("Erro", "Informe o nome do Documento", "error");
+ 				}else if(tipo ==0){
+ 					swal("Erro", "Informe o Tipo do Documento", "error");
+ 				}else if(sigilo ==0){
+ 					swal("Erro", "Informe a Visibilidade do Documento", "error");
+ 				}else if(!arquivo){
+ 					swal("Erro", "Por favor, selecione um arquivo antes de enviar.", "error");
+ 				}else{
+	                $('#assinar').val(1);
+	                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
+	                $("#salvarEAssinar").prop("disabled",true);
+	                postForm(formData);
+ 				 }
             });         
 
             $("#createSave").click(function() {
-            	//$("#createSave").prop("disabled",true);
+            	$("#createSave").prop("disabled",true);
+            	$("#loader").show();
+                $('#assinar').val(0);
+            });
+            
+            $("#salvarMinuta").click(function() {
+            	$("#salvarMinuta").prop("disabled",true);
             	$("#loader").show();
                 $('#assinar').val(0);
             });
@@ -364,13 +401,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		font-size: 0.875rem;
 	}
 }
+
+.nav-tabs {
+    flex-direction: row !important;
+    justify-content: flex-start !important; /* Garante alinhamento à esquerda */
+    gap: 0.5rem; /* Espaçamento entre abas */
+}
 </style>
 </head>
 <body>
 
 	<section layout:fragment="content">
 		<div class="container-full mt-4">
-	
+			
+			
+			
 			<div class="row">
 				<!-- Primeiro Card -->
 				<div class="col-md-7">
@@ -411,75 +456,94 @@ document.addEventListener('DOMContentLoaded', function () {
 									aria-label="Close"></button>
 							</div>
 
-							<!-- Formulário para Criar ou Editar Documento -->
-							<form th:action="@{/docs/gerarPdf}" th:object="${doc}"
-								method="post" class="row g-3" onsubmit="return validateForm();"
-								enctype="multipart/form-data" id="frm">
-								<input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso" />		
-								 <input type="hidden" name="assinar" id="assinar" />							
-							     <input type="hidden" th:field="*{id}" />							   
-								
-								     <div class="col-12 mb-3">
-                         <label for="tipo" class="form-label"><strong><span class="badge text-bg-info">Processo</span>  : </strong></label>                       
-                         <span class="badge bg-secondary" th:text="${processo.numanoproc} + ' - ' +    ${processo.assunto}"></span>
-                    </div>
-                    
-								<div class="col-md-4 mb-3">
-									<label for="nomdoc" class="form-label"><span class="badge bg-secondary">Nome do
-										Documento</span></label> <input type="text" id="nomdoc" name="nomdoc"
-										class="form-control form-control-sm" th:field="*{nomdoc}"
-										required />
-								</div>
+<form th:action="@{/docs/gerarPdf}" th:object="${doc}"
+      method="post" class="row g-3" onsubmit="return validateForm();"
+      enctype="multipart/form-data" id="frm">
 
-								<div class="col-md-4 mb-3">
-									<label for="tipo" class="form-label"><span class="badge bg-secondary">Tipo</span></label> <select
-										id="tipo" th:errorclass="is-invalid"
-										class="form-select form-select-sm" th:field="*{tipoDoc}">
-										<option th:text="${'Selecione o Tipo'}" th:value="${'0'}"></option>
-										<option th:each="tipo : ${tipos}" th:text="${tipo.tipo}"
-											th:value="${tipo.id}"></option>
-									</select>
-								</div>
+  <!-- Hiddens -->
+  <input type="hidden" id="idProcesso" th:value="${processo.id}" name="idProcesso" />
+  <input type="hidden" name="assinar" id="assinar" />
+  <input type="hidden" th:field="*{id}" />
+  <input type="hidden" th:field="*{flag}" id="flag">
 
-								<div class="col-md-4 mb-3">
-									<label for="sigilo" class="form-label"><span class="badge bg-secondary">Visibilidade</span></label> <select
-										id="sigilo" th:errorclass="is-invalid"
-										class="form-select form-select-sm" th:field="*{sigiloId}">
-										<option th:text="${'Selecione'}" th:value="${'0'}"></option>
-										<option th:each="sigilo : ${sigilos}"
-											th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
-									</select>
-								</div>
+  <!-- Processo Info -->
+  <div class="col-12 mb-3">
+    <label class="form-label"><strong><span class="badge text-bg-info">Processo</span>:</strong></label>
+    <span class="badge bg-secondary" th:text="${processo.numanoproc} + ' - ' + ${processo.assunto}"></span>
+  </div>
 
-								<div class="mb-3">
-									<label for="fileUpload" class="form-label"><span class="badge bg-secondary">Upload de Documento</span></label> <input type="file" id="fileUpload" name="file"
-										class="form-control" accept=".docx,.pdf" />
-								</div>
+  <!-- Campos fixos -->
+  <div class="col-md-4 mb-3">
+    <label for="nomdoc" class="form-label"><span class="badge bg-secondary">Nome do Documento</span></label>
+    <input type="text" id="nomdoc" name="nomdoc"
+           class="form-control form-control-sm" th:field="*{nomdoc}" required />
+  </div>
 
-								<input type="hidden" th:field="*{flag}" id="flag">
+  <div class="col-md-4 mb-3">
+    <label for="tipo" class="form-label"><span class="badge bg-secondary">Tipo</span></label>
+    <select id="tipo" th:errorclass="is-invalid"
+            class="form-select form-select-sm" th:field="*{tipoDoc}">
+      <option th:value="0">Selecione o Tipo</option>
+      <option th:each="tipo : ${tipos}" th:text="${tipo.tipo}" th:value="${tipo.id}"></option>
+    </select>
+  </div>
 
-								<div class="d-flex justify-content-end mb-3">
-									<button type="button" class="btn btn-success btn-sm me-2"
-										onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
-									<button type="button" class="btn btn-primary btn-sm me-2"
-										id="salvarEAssinar" onclick="setFlag(0)">Salvar e Assinar</button>
-								</div>
+  <div class="col-md-4 mb-3">
+    <label for="sigilo" class="form-label"><span class="badge bg-secondary">Visibilidade</span></label>
+    <select id="sigilo" th:errorclass="is-invalid"
+            class="form-select form-select-sm" th:field="*{sigiloId}">
+      <option th:value="0">Selecione</option>
+      <option th:each="sigilo : ${sigilos}" th:text="${sigilo.visibilidade}" th:value="${sigilo.id}"></option>
+    </select>
+  </div>
 
-								<div class="mb-3">
-									<textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
-								</div>
+  <!-- Abas -->
+  <ul class="nav nav-tabs mb-3" id="docTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload" type="button" role="tab">
+        <i class="bi bi-upload"></i> Upload de Documento
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="minuta-tab" data-bs-toggle="tab" data-bs-target="#minuta" type="button" role="tab">
+        <i class="bi bi-file-earmark-plus"></i> Criar Documento
+      </button>
+    </li>
+  </ul>
 
-								<div class="d-flex justify-content-end">
-									<button type="submit" class="btn btn-secondary btn-sm me-2"
-										onclick="setFlag(1)" id="salvarMinuta">Salvar Minuta</button>	
-									<button type="submit" class="btn btn-success btn-sm me-2"
-										id="createSave" onclick="setFlag(0)">Salvar</button>		
-									<button type="submit" class="btn btn-primary btn-sm me-2"
-										id="createSaveAssinar" onclick="setFlag(0)">Salvar e Assinar</button>						
-									<button type="button" class="btn btn-warning btn-sm"
-										id="voltar" onclick="history.back()">Voltar</button>
-								</div>
-							</form>
+  <div class="tab-content" id="docTabContent">
+    <!-- Aba Upload -->
+    <div class="tab-pane fade show active" id="upload" role="tabpanel" aria-labelledby="upload-tab">
+      <div class="mb-3">
+        <label for="fileUpload" class="form-label"><span class="badge bg-secondary">Upload de Documento</span></label>
+        <input type="file" id="fileUpload" name="file"
+               class="form-control" accept=".docx,.pdf" />
+        <small class="text-muted">Use esta opção se já possui o documento no seu computador.</small>
+      </div>
+
+      <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="salvarArquivo">Salvar</button>
+        <button type="button" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)" id="salvarEAssinar">Salvar e Assinar</button>
+      </div>
+    </div>
+
+    <!-- Aba Minuta -->
+    <div class="tab-pane fade" id="minuta" role="tabpanel" aria-labelledby="minuta-tab">
+      <div class="mb-3">
+        <label for="conteudo" class="form-label"><span class="badge bg-secondary">Conteúdo do Documento</span></label>
+        <textarea id="conteudo" name="conteudo" th:field="*{conteudo}"></textarea>
+        <small class="text-muted">Digite o conteúdo do documento.</small>
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="submit" class="btn btn-secondary btn-sm me-2" onclick="setFlag(1)" id="salvarMinuta">Salvar Minuta</button>
+        <button type="submit" class="btn btn-success btn-sm me-2" onclick="setFlag(0)" id="createSave">Salvar</button>
+        <button type="submit" class="btn btn-primary btn-sm me-2" onclick="setFlag(0)" id="createSaveAssinar">Salvar e Assinar</button>
+        <button type="button" class="btn btn-warning btn-sm" onclick="history.back()">Voltar</button>
+      </div>
+    </div>
+  </div>
+</form>
 						</div>
 					</div>
 				</div>

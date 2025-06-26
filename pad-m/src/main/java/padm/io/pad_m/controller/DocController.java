@@ -577,7 +577,7 @@ public class DocController {
 				
 				try (OutputStream outputStream = new FileOutputStream(tempPdfFile)) {
 				    // Caminho da imagem
-					String imagePath = root.resolve(pdfImg).resolve("logo-maues.jpg").toAbsolutePath().toString();
+					String imagePath = root.resolve(pdfImg).resolve("logo-padm.jpg").toAbsolutePath().toString();
 
 				    // Criar um PdfDocument diretamente no convertToPdf()
 				    ConverterProperties properties = new ConverterProperties();
@@ -599,9 +599,9 @@ public class DocController {
 				            + "<img src='file:///" + imagePath.replace("\\", "/") + "' style='width: 100px; height: 90px;'/>"
 				            + "</td>"
 				            + "<td style='text-align: left; vertical-align: middle; font-family: Arial, sans-serif;'>"
-				            + "<p style='margin: 0; font-size: 14px; font-weight: bold;'>Governo Brasileiro</p>"
-				            + "<p style='margin: 0; font-size: 14px;'>Prefeitura de Maués</p>"
-				            + "<p style='margin: 0; font-size: 14px; font-style: italic;'>Cuidando da nossa gente</p>"
+				            + "<p style='margin: 0; font-size: 14px; font-weight: bold;'>Sistema Integrado de Software</p>"
+				            + "<p style='margin: 0; font-size: 14px;'>Consultoria Empresariale de Gestão</p>"
+				            + "<p style='margin: 0; font-size: 14px; font-style: italic;'>Administrativa Sisofc LTDA</p>"
 				            + "</td>"
 				            + "</tr>"
 				            + "</table>"

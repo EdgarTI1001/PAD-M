@@ -88,16 +88,15 @@ public class PDFHandler {
 		}
 
 		// Conteúdo do QR Code
-		 String qrText = "localhost:8080/documentos/asinaturas"+ doc.getId();
-		 String textoAoLado = "Assinaturas";
+		 //String qrText = "localhost:8080/documentos/asinaturas"+ doc.getId();
+		// String textoAoLado = "Assinaturas";
 		 
 		// Carregar a imagem do selo/assinatura (ajuste o caminho!)
-		 BufferedImage seloImage = ImageIO.read(new File(root.resolve(imagensDir) +"/" + "selo_assinatura.jpg"));
+		 BufferedImage seloImage = ImageIO.read(new File(root.resolve(imagensDir) +"/" + "logo-padm.jpg"));
 		 PDImageXObject seloPDImage = LosslessFactory.createFromImage(document, seloImage);
 
 		 // Configurações da imagem e texto
-		 float seloWidth = 65; // Largura da imagem no PDF
-		 float seloHeight = 40; // Altura da imagem no PDF
+		
 		 float seloMargin = 10; // Margem do canto
 		 float seloFontSize = 10; 
 		 
@@ -105,61 +104,65 @@ public class PDFHandler {
 		int qrPixelSize = 100;
 
 		// Gera o QR Code usando ZXing	
-		BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, qrPixelSize, qrPixelSize);
-		BufferedImage qrBufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+		//BitMatrix bitMatrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, qrPixelSize, qrPixelSize);
+		//BufferedImage qrBufferedImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
 
 		 // Configurações em pontos (1 polegada = 72 pontos)
-	        float qrWidth = 40;     // Largura do QR Code no PDF
-	        float qrHeight = 40;    // Altura do QR Code no PDF
-	        float margin = 10;       // Margem do canto da página
+	        //float qrWidth = 40;     // Largura do QR Code no PDF
+	       // float qrHeight = 40;    // Altura do QR Code no PDF
+	     
 	        float fontSize = 12;     // Tamanho da fonte para o texto
 
 		// Itera por todas as páginas do documento
-		for (PDPage page : document.getPages()) {
-		    float pageWidth = page.getMediaBox().getWidth();
-		    // Define as coordenadas do QR Code (canto inferior direito)
-            float qrX = pageWidth - margin - qrWidth;
-            float qrY = margin;
-            
-            // Posiciona o texto à esquerda do QR Code
-            // Aqui, 'textX' é calculado de forma que o texto fique a uma distância fixa do QR Code.
-            float textX = qrX - 150; // ajuste esse valor conforme o comprimento do seu texto
-            // Alinha verticalmente o texto ao centro do QR Code
-            float textY = qrY + (qrHeight / 2) - (fontSize / 2);
-		    
-			// Abre um PDPageContentStream no modo APPEND para não sobrescrever o conteúdo existente
-			PDPageContentStream contentStream = new PDPageContentStream(document, page,
-					PDPageContentStream.AppendMode.APPEND, true, true);
+	        for (PDPage page : document.getPages()) {
+	            float pageWidth = page.getMediaBox().getWidth();
+	            float pageHeight = page.getMediaBox().getHeight();
 
-			 // POSICIONANDO IMAGEM NO CANTO INFERIOR ESQUERDO
-		    float seloX = margin; 
-		    float seloY = margin;
-		    contentStream.drawImage(seloPDImage, seloX, seloY, seloWidth, seloHeight);
+	            // Margens e tamanhos
+	            float margin = 20;
+	            float seloWidth = 65;
+	            float seloHeight = 40;
+	            float textFontSize = 10;
 
-		    // POSICIONANDO TEXTO AO LADO DA IMAGEM
-		    float textXSelo = seloX + seloWidth + 5; // 5pts de espaçamento
-		    float textYSelo = seloY + (seloHeight / 2) + 3; // Ajuste fino para alinhamento vertical
-		    
-			String dataFormatada = LocalDateTime.now().format(parser);
-			// Write the first paragraph
-			contentStream.setFont(PDType1Font.HELVETICA, 12);
-			contentStream.beginText();
-			contentStream.newLineAtOffset(textXSelo, textYSelo);
-			contentStream.setNonStrokingColor(Color.BLACK);
-			contentStream.showText("[Assinado Eletronicamente por " + author.getServidorId().getNome()
-					+ " e outros ] Em : " + dataFormatada + " ás " + LocalDateTime.now().getHour() + ":"
-					+ LocalDateTime.now().getMinute());
-			contentStream.endText();
-			
-			// Converte a imagem gerada do QR Code para PDImageXObject
-            PDImageXObject qrImage = LosslessFactory.createFromImage(document, qrBufferedImage);
+	            float seloX = margin;
+	            float seloY = margin;
 
-            // Adiciona o QR Code no canto inferior direito
-            contentStream.drawImage(qrImage, qrX, qrY, qrWidth, qrHeight);
-            
-			// Close the content stream
-			contentStream.close();
-		}
+	            float textX = seloX + seloWidth + 10; // texto à direita da imagem
+	            float textY = seloY + seloHeight / 2 - textFontSize / 2;
+
+	            // Opcional: desenhar fundo branco como tarja (como no SEI)
+	            float barraAltura = seloHeight + 10;
+	            float barraY = seloY - 5;
+	            float barraX = 0;
+	            float barraLargura = pageWidth;
+
+	            PDPageContentStream contentStream = new PDPageContentStream(document, page,
+	                    PDPageContentStream.AppendMode.APPEND, true, true);
+
+	            // Tarja branca de fundo
+	            contentStream.setNonStrokingColor(Color.WHITE);
+	            contentStream.addRect(barraX, barraY, barraLargura, barraAltura);
+	            contentStream.fill();
+
+	            // Desenha imagem do selo
+	            contentStream.drawImage(seloPDImage, seloX, seloY, seloWidth, seloHeight);
+
+	            // Texto da assinatura
+	            contentStream.setFont(PDType1Font.HELVETICA, textFontSize);
+	            contentStream.setNonStrokingColor(Color.BLACK);
+	            contentStream.beginText();
+	            contentStream.newLineAtOffset(textX, textY);
+
+	            String dataFormatada = LocalDateTime.now().format(parser);
+	            String textoAssinatura = "Documento assinado eletronicamente por " + author.getServidorId().getNome() +
+	                    " em " + dataFormatada + " às " + String.format("%02d:%02d",
+	                    LocalDateTime.now().getHour(), LocalDateTime.now().getMinute());
+
+	            contentStream.showText(textoAssinatura);
+	            contentStream.endText();
+
+	            contentStream.close();
+	        }
 
 
 

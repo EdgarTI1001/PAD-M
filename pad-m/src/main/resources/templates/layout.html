@@ -25,7 +25,7 @@
         .header_img {
             margin-bottom: 8.5px;
         }
-        .nav {        
+       .l-navbar .nav {          
             display: flex;
             flex-direction: column;
             height: 100vh; 
@@ -290,6 +290,7 @@
     <script th:src="@{/js/select2.full.min.js}"></script>
     <div layout:fragment="jscript"></div> 
 	<script type="text/javascript">
+	
     const toggle = document.getElementById('header-toggle');
     const icon = document.getElementById('icon');
     const navBar = document.getElementById('nav-bar');
@@ -307,7 +308,7 @@
 
     // Função para abrir/fechar dropdown individual
     function toggleDropdown(event) {
-        const dropdown = event.currentTarget.closest('.nav_dropdown');
+        const dropdown = event.currentTarget.closest('.nav_dropdown'); 
         dropdown.classList.toggle('active');
     }
 
@@ -315,10 +316,11 @@
     document.querySelectorAll('.nav_dropdown_link').forEach(dropdownLink => {
         dropdownLink.addEventListener('click', (e) => {
             e.preventDefault(); // evita navegação
-            toggleNavbar();     // alterna o menu lateral
+           // toggleNavbar();     // alterna o menu lateral
             toggleDropdown(e);  // mostra ou esconde submenu
         });
     });
+    
 </script>
 </body>
 </html>
