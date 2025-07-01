@@ -118,39 +118,53 @@ public class PDFHandler {
 	            float pageWidth = page.getMediaBox().getWidth();
 	            float pageHeight = page.getMediaBox().getHeight();
 
-	            // Margens e tamanhos
+	            // Configurações
 	            float margin = 20;
 	            float seloWidth = 65;
 	            float seloHeight = 40;
 	            float textFontSize = 10;
 
-	            float seloX = margin;
-	            float seloY = margin;
-
-	            float textX = seloX + seloWidth + 10; // texto à direita da imagem
-	            float textY = seloY + seloHeight / 2 - textFontSize / 2;
-
-	            // Opcional: desenhar fundo branco como tarja (como no SEI)
+	            // Posição da tarja
 	            float barraAltura = seloHeight + 10;
-	            float barraY = seloY - 5;
+	            float barraY = margin - 5;
 	            float barraX = 0;
 	            float barraLargura = pageWidth;
+
+	            // Posição da imagem
+	            float seloX = margin;
+	            float seloY = barraY + 5;
+
+	            // Posição do texto
+	            float textX = seloX + seloWidth + 10;
+	            float textY = seloY + (seloHeight / 2) - (textFontSize / 2);
 
 	            PDPageContentStream contentStream = new PDPageContentStream(document, page,
 	                    PDPageContentStream.AppendMode.APPEND, true, true);
 
-	            // Tarja branca de fundo
+	            // Tarja branca
 	            contentStream.setNonStrokingColor(Color.WHITE);
 	            contentStream.addRect(barraX, barraY, barraLargura, barraAltura);
 	            contentStream.fill();
 
-	            // Desenha imagem do selo
+	            // Linha superior
+	            contentStream.setStrokingColor(Color.BLACK);
+	            contentStream.setLineWidth(0.5f);
+	            contentStream.moveTo(barraX, barraY + barraAltura);
+	            contentStream.lineTo(barraX + barraLargura, barraY + barraAltura);
+	            contentStream.stroke();
+
+	            // Linha inferior
+	            contentStream.moveTo(barraX, barraY);
+	            contentStream.lineTo(barraX + barraLargura, barraY);
+	            contentStream.stroke();
+
+	            // Imagem
 	            contentStream.drawImage(seloPDImage, seloX, seloY, seloWidth, seloHeight);
 
-	            // Texto da assinatura
+	            // Texto
+	            contentStream.beginText();
 	            contentStream.setFont(PDType1Font.HELVETICA, textFontSize);
 	            contentStream.setNonStrokingColor(Color.BLACK);
-	            contentStream.beginText();
 	            contentStream.newLineAtOffset(textX, textY);
 
 	            String dataFormatada = LocalDateTime.now().format(parser);
@@ -164,10 +178,8 @@ public class PDFHandler {
 	            contentStream.close();
 	        }
 
-
-
-		document.save(dest);
-		document.close();
+	        document.save(dest);
+	        document.close();
 
 		try (FileInputStream fis = new FileInputStream(new File(dest))) {
 			byte[] buffer = new byte[1024];
