@@ -233,19 +233,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });         
 
             $("#createSave").click(function() {
-            	$("#createSave").prop("disabled",true);
+            	//$("#createSave").prop("disabled",true);
             	$("#loader").show();
                 $('#assinar').val(0);
             });
             
-            $("#salvarMinuta").click(function() {
-            	$("#salvarMinuta").prop("disabled",true);
+            $("#salvarMinuta").click(function() {				
+            	//$("#salvarMinuta").prop("disabled",true);
             	$("#loader").show();
                 $('#assinar').val(0);
             });
             
             $("#createSaveAssinar").click(function() {
-            	$("#createSave").prop("disabled",true);
+            	//$("#createSaveAssinar").prop("disabled",true);
             	$("#loader").show();
                 $('#assinar').val(1);
             });
@@ -306,6 +306,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 swal("Sucesso", "Documento Deletado", "success");
                                 $("#tr" + idDoc).fadeOut();
                                 $("#loader").hide();
+                                location.reload();
                             } else {
                                 swal("Erro", "Erro ao Deletar", "error");
                                 $("#loader").hide();

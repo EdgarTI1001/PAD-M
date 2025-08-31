@@ -6,45 +6,61 @@
 
     <style>
         body {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-            height: 70vh; 
             background-color: #f8f9fa;
         }
         .card {
-            width: 150%;
-            max-width: 1500px;
+            border: none;
+            border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            overflow: hidden; 
+            overflow: hidden;
+            transition: transform 0.3s;
+            background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+        }
+        .card:hover {
+            transform: scale(1.00);
         }
         .card-header {
             background-color: #00537d;
-            color: white;
-            font-weight: bold;
-            text-align: center;
+            color: #fff;
+            border-radius: 10px 10px 0 0;
+            padding: 1rem;
         }
+        .badge {
+            font-size: 0.875rem;
+        }
+        .btn {
+            border-radius: 5px;
+        }
+        
+        /* Ajustes para os campos de formulário */
         .form-label {
-            font-weight: 600;
+            margin-bottom: 0.5rem;
         }
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
+        .form-control-sm {
+            height: calc(1.8125rem + 2px);
         }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004085;
+        
+        /* Melhoria no stepper */
+        .stepper-wrapper {
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            .card {
+                margin-top: 20px;
+            }
         }
     </style>
 
-<script type="text/javascript">
-	$("#loader").show();  
-</script>
+
 </head>
 <body>
-	<section layout:fragment="content">
+	<section layout:fragment="content" class="justify-content-center align-items-center p-2">
 	 <nav aria-label="breadcrumb">
 	  <ol class="breadcrumb">
 	    <li class="breadcrumb-item"><a href="#"> <i class="fa fa-home fa-sm" style="font-size:20px;color:black;"></i></a></li>
@@ -55,7 +71,10 @@
 	    
 	  </ol>
 </nav>
-
+		
+<div class="container text-center text-md-start mt-3">
+   <div class="row">
+       <div class="col-12 ">
         <div class="card">
             <div class="card-header">Tramitar de Processo</div>
             <div class="card-body">
@@ -85,7 +104,7 @@
                      <div class="col-4 mb-3">
                         <label for="tipo" class="form-label">Responder Quantos dias </label>
                         <input type="text" id="assunto" class="form-control form-control-sm" title="Quantidade de dias para uma resposta" th:field="*{qtdDiasResposta}" placeholder="Quantidade Dias">
-                    </div>   
+                    </div>  
                     
                     
                     <div class="col-6 mb-3">                     
@@ -104,11 +123,19 @@
                 </form>
             </div>
         </div>
+        </div>
+      </div>
+        
+        
+        
     </section>
 
     <div layout:fragment="jscript">
       <script>
       var URL = '[[@{/}]]';  
+      $("#loader").show();
+    
+      
       $("#idproc").hide();       
       $("#idProcesso").val($("#idproc").text());     
       $("#destino").select2();

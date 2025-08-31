@@ -594,20 +594,21 @@ public class DocController {
 				    */			    
 				   
 				    String htmlContent = "<table style='width: 100%; margin-top: 10px;'>"
-				            + "<tr>"
-				            + "<td style='width: 120px; text-align: left; vertical-align: middle;'>"
-				            + "<img src='file:///" + imagePath.replace("\\", "/") + "' style='width: 100px; height: 90px;'/>"
-				            + "</td>"
-				            + "<td style='text-align: left; vertical-align: middle; font-family: Arial, sans-serif;'>"
-				            + "<p style='margin: 0; font-size: 14px; font-weight: bold;'>Sistema Integrado de Software</p>"
-				            + "<p style='margin: 0; font-size: 14px;'>Consultoria Empresariale de Gestão</p>"
-				            + "<p style='margin: 0; font-size: 14px; font-style: italic;'>Administrativa Sisofc LTDA</p>"
-				            + "</td>"
-				            + "</tr>"
-				            + "</table>"
-				            + "<div style='margin-top: 20px;'>"
-				            + doc.getConteudo()
-				            + "</div>";
+		                    + "<tr>"
+		                    + "<td style='width: 100px; text-align: left; vertical-align: middle; padding-right: 10px;'>"
+		                    + "<img src='file:///" + imagePath.replace("\\", "/") 
+		                    + "' style='width: 110px; height: 70px; border: 2px solid #ddd; padding: 2px; border-radius: 8px;'/>"
+		                    + "</td>"
+		                    + "<td style='text-align: left; vertical-align: middle; font-family: Arial, sans-serif; padding-left: 0; margin-left: -10px;'>"
+		                    + "<p style='margin: 0; font-size: 16px; font-weight: bold;'>Sistema Integrado de Software</p>"
+		                    + "<p style='margin: 0; font-size: 16px;'>Consultoria Empresarial de Gestão</p>"
+		                    + "<p style='margin: 0; font-size: 16px; font-style: italic;'>Administrativa Sisofc LTDA</p>"
+		                    + "</td>"
+		                    + "</tr>"
+		                    + "</table>"
+		                    + "<div style='margin-top: 20px;'>"
+		                    + doc.getConteudo()
+		                    + "</div>";
 				    
 				    // Converter o HTML para PDF
 				    HtmlConverter.convertToPdf(htmlContent, new PdfWriter(outputStream), properties);
