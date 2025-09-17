@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 success: function(response) {
                     $("#loader").hide();
                     swal("Sucesso", "Documento Inserido com Sucesso", "success");
+                    location.reload();
                 },
                 error: function(response) {                     
                     $("#loader").hide();
@@ -229,6 +230,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	                var formData = new FormData($("#frm")[0]); // Captura os dados do formulário	
 	                $("#salvarEAssinar").prop("disabled",true);
 	                postForm(formData);
+	               
  				 }
             });         
 
