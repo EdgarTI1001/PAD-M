@@ -11,7 +11,7 @@
 	<groupId>padm.io</groupId>
 	<artifactId>pad-m</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>pad-m</name>
 	<description>Projeto de controle de documentos</description>
 	<url/>
